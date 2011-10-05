@@ -1,0 +1,39 @@
+.header-tab {
+    background-color: #999999;
+    padding: 5px;
+    font-weight: 200;
+    text-align: center;
+}
+
+.header-tab a {
+    text-decoration: none;
+}
+
+.header-tab-logo {
+    padding-top: 10px;
+}
+
+.header-logo {
+    vertical-align: middle;/*werkt niet*/
+    padding: 5;
+}
+
+.header-loginPanel {
+    padding: 5px;
+    text-align: right;
+    vertical-align: top;
+}
+
+.header-loginPanel-settingIcon {
+    padding: 0 10 0;
+}
+
+.icon_dummy {
+    background-image:url('media/lizard_ui/location-light.png');
+    display:inline;
+    overflow:hidden;
+    height:18px;
+    padding-left:20px;
+    padding-bottom:0px;
+    background-repeat:no-repeat;
+}
