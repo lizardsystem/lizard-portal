@@ -22,6 +22,6 @@ Ext.application({
         
 
 
-        Ext.create('Lizard.Window.Dashboard');
+        Ext.create('Lizard.window.Dashboard');
     }
 });

@@ -6,15 +6,15 @@
  * To change this template use File | Settings | File Templates.
  */
 
-Ext.define('Lizard.Window.Dashboard', {
+Ext.define('Lizard.window.Dashboard', {
     /** @readonly */
     extend:'Ext.container.Viewport',
 
-    uses: ['Lizard.Portlet.Portlet',
-        'Lizard.Portlet.PortalPanel',
-        'Lizard.Portlet.PortalColumn',
-        'Lizard.Portlet.GridPortlet',
-        'Lizard.Portlet.ChartPortlet',
+    uses: ['Lizard.portlet.Portlet',
+        'Lizard.portlet.PortalPanel',
+        'Lizard.portlet.PortalColumn',
+        'Lizard.portlet.GridPortlet',
+        'Lizard.portlet.ChartPortlet',
         'Lizard.container.Header'
     ],
 
@@ -46,6 +46,30 @@ Ext.define('Lizard.Window.Dashboard', {
             }
         });
     },
+	loadPortal: function () {
+		//alert('load');
+		var container = Ext.getCmp('app-portal');
+		container.setLoading(true);
+		container.removeAll();
+		Ext.Ajax.request({
+			url: '/portal/example_portal.json',
+			// send additional parameters to instruct server script
+			//params: {
+			//	startDate: Ext.getCmp('start-date').getValue(),
+			//	endDate: Ext.getCmp('end-date').getValue()
+			//},
+			// process the response object to add it to the TabPanel:
+			success: function(xhr) {
+				var newComponent = eval(xhr.responseText); // see discussion below
+				container.add(newComponent); // add the component to the TabPanel
+				container.setLoading(false);
+			},
+			failure: function() {
+				Ext.Msg.alert("Grid create failed", "Server communication failure");
+                container.setLoading(false);
+			}
+		});
+	},
     initComponent: function(arguments) {
         var content = '<div class="portlet-content">hier moet iets komen</div>';
         
@@ -75,66 +99,26 @@ Ext.define('Lizard.Window.Dashboard', {
                 frame:false,
                 width: 250,
                 autoScroll: true,
-                // store: this.getStore(),
-                store: this.getStore()
+                listeners: {
+                    click: {
+                        element: 'el', //bind to the underlying el property on the panel
+                        fn: this.loadPortal
+                    }
+                },
+                store: this.getStore(),
+                bbar:[{
+                    text: 'selecteer op kaart -->',
+                    border:1,
+                    handler: function() {
+                        alert('laat nu kaart zien');
+                    }
+                }]
             },{
                 region: 'center',
                 collapsible: false,
                 floatable: false,
                 split: false,
-                id: 'app-portal',
-                xtype: 'portalpanel',
-                items: [{
-                    id: 'col-1',
-                    columnWidthRel: .4,
-                    items: [{
-                        id: 'portlet-1',
-                        title: 'Grid Portlet',
-                        tools: this.getTools(),
-                        items: Ext.create('Lizard.Portlet.GridPortlet'),
-                        listeners: {
-                            'close': Ext.bind(this.onPortletClose, this)
-                        }
-                    },{
-                        id: 'portlet-2',
-                        title: 'Portlet 2',
-                        tools: this.getTools(),
-                        html: content,
-                        listeners: {
-                            'close': Ext.bind(this.onPortletClose, this)
-                        }
-                    }]
-                },{
-                    id: 'col-2',
-                    columnWidthRel: .2,
-                    items: [{
-                        id: 'portlet-3',
-                        title: 'Portlet 3',
-                        tools: this.getTools(),
-                        html: '<div class="portlet-content">Hier moet iets komen</div>',
-                        listeners: {
-                            'close': Ext.bind(this.onPortletClose, this)
-                        }
-                    }]
-                },{
-                    id: 'col-3',
-                    columnWidthRel: .4,
-                    items: [{
-                        id: 'portlet-4',
-                        title: 'Stock Portlet',
-                        tools: this.getTools(),
-                        items: Ext.create('Lizard.Portlet.ChartPortlet'),
-                        listeners: {
-                            'close': Ext.bind(this.onPortletClose, this)
-                    }
-                    }]
-                }]
-            },{
-                region: 'south',
-                collapsed: true,
-                height: 200,
-                title: 'beheer',
-                html: 'beheer/ instel/ ontwikkelschermen'
+                id: 'app-portal'
             }]
         });
 
@@ -142,7 +126,7 @@ Ext.define('Lizard.Window.Dashboard', {
 
         //this.initConfig(config);
         //this.callParent();
-        Lizard.Window.Dashboard.superclass.initComponent.apply(this, arguments);
+        Lizard.window.Dashboard.superclass.initComponent.apply(this, arguments);
 
         return this;
     },
