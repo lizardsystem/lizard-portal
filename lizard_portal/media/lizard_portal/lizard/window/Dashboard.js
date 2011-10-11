@@ -44,16 +44,21 @@
         }
       });
     },
-    loadPortal: function() {
+    loadPortal: function(node) {
       var container;
+      if (node.leaf) {
+        alert('node');
+      }
       container = Ext.getCmp('app-portal');
       container.setLoading(true);
       container.removeAll();
       return Ext.Ajax.request({
         url: '/portal/example_portal.json',
         success: __bind(function(xhr) {
-          var newComponent;
+          var navigation, newComponent;
           newComponent = eval(xhr.responseText);
+          navigation = Ext.getCmp('areaNavigation');
+          navigation.collapse();
           container.add(newComponent);
           return container.setLoading(false);
         }, this),
@@ -63,6 +68,7 @@
         }, this)
       });
     },
+    linkTo: function() {},
     initComponent: function(arguments) {
       var content;
       content = '<div class="portlet-content">hier moet iets komen</div>';
@@ -88,14 +94,15 @@
             height: 60
           }, {
             region: 'west',
+            id: 'areaNavigation',
+            animCollapse: 500,
             xtype: 'treepanel',
             title: 'Navigatie',
             frame: false,
             width: 250,
             autoScroll: true,
             listeners: {
-              click: {
-                element: 'el',
+              itemclick: {
                 fn: this.loadPortal
               }
             },

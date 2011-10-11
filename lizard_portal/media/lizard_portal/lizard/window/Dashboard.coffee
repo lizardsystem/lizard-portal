@@ -30,7 +30,9 @@ Ext.define 'Lizard.window.Dashboard',
                     ]
     
 
-    loadPortal: ->
+    loadPortal:(node) ->
+        if node.leaf
+            alert 'node'
         container = Ext.getCmp 'app-portal';
         container.setLoading true
         container.removeAll()
@@ -39,12 +41,16 @@ Ext.define 'Lizard.window.Dashboard',
             url: '/portal/example_portal.json',
             success: (xhr) =>
                 newComponent = eval xhr.responseText
+                navigation = Ext.getCmp 'areaNavigation'
+                navigation.collapse()
                 container.add newComponent
                 container.setLoading false
                 
             failure: =>
                 Ext.Msg.alert "Grid creation failed", "Server communication failure"
                 container.setLoading false
+        
+    linkTo: () ->
         
     initComponent: (arguments) ->
         content = '<div class="portlet-content">hier moet iets komen</div>'
@@ -67,14 +73,15 @@ Ext.define 'Lizard.window.Dashboard',
                 border:false
                 height: 60}
                 {region: 'west'
+                id: 'areaNavigation'
+                animCollapse:500
                 xtype: 'treepanel'
                 title: 'Navigatie'
                 frame: false
                 width: 250
                 autoScroll: true
                 listeners:
-                    click:
-                        element: 'el'
+                    itemclick:
                         fn: this.loadPortal
                 store: this.getStore()
                 bbar: [

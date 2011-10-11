@@ -2,7 +2,7 @@ Ext.create('Lizard.portlet.PortalPanel',{
 	//xtype: 'portalpanel',
 	items: [{
 		id: 'col-1',
-		columnWidthRel: .4,
+		width: 200,
 		items: [{
 			id: 'portlet-1',
 			title: 'Grid Portlet',
@@ -15,14 +15,14 @@ Ext.create('Lizard.portlet.PortalPanel',{
 			id: 'portlet-2',
 			title: 'Portlet 2',
 			//tools: this.getTools(),
-			html: 'test',
+			html: '<a href="javascript:linkTo(null, \'a\')">a</a>',
 			//listeners: {
 			//	'close': Ext.bind(this.onPortletClose, this)
 			//}
 		}]
 	},{
 		id: 'col-2',
-		columnWidthRel: .2,
+		width: 400,
 		items: [{
 			id: 'portlet-3',
 			title: 'Portlet 3',
@@ -34,7 +34,7 @@ Ext.create('Lizard.portlet.PortalPanel',{
 		}]
 	},{
 		id: 'col-3',
-		columnWidthRel: .4,
+		columnWidthRel: 1,
 		items: [{
 			id: 'portlet-4',
 			title: 'Stock Portlet',
