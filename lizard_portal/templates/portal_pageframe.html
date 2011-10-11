@@ -1,0 +1,35 @@
+{% extends "lizard_ui/lizardbase.html" %}{% load compress i18n %}
+
+{% compress js %}
+{% block javascript %}
+{# Extjs and app scripts #}
+<script type="text/javascript"
+        src="{{ STATIC_URL }}lizard_portal/extjs/ext-debug.js"></script>
+<script type="text/javascript"
+        src="{{ STATIC_URL }}lizard_portal/dashboard.js"></script>
+{{ block.super }}
+{% endblock %}
+{% endcompress %}
+
+{% compress css %}
+{% block css %}
+{# Customizations for Extjs. #}
+<link rel="stylesheet"
+      href="{{ STATIC_URL }}lizard_portal/portal.css"
+      type="text/css"
+      media="screen, projection" />
+<link rel="stylesheet"
+      href="{{ STATIC_URL }}lizard_portal/extjs/resources/css/ext-all-gray.css"
+      type="text/css"
+      media="screen, projection" />
+<link rel="stylesheet"
+      href="{{ STATIC_URL }}lizard_portal/lizard.css"
+      type="text/css"
+      media="screen, projection" />
+{{ block.super }}
+{% endblock %}
+{% endcompress %}
+
+{% block title %}{% trans "Volg- en Stuursysteem" %}{% endblock %}
+
+{% block page %}{% endblock page %}

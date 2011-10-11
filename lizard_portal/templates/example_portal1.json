@@ -1,0 +1,48 @@
+Ext.create('Lizard.portlet.PortalPanel',{
+	//xtype: 'portalpanel',
+	items: [{
+		id: 'col-1',
+		columnWidthRel: .4,
+		items: [{
+			id: 'portlet-1',
+			title: 'Grid Portlet',
+			//tools: this.getTools(),
+			items: Ext.create('Lizard.portlet.GridPortlet'),
+			//listeners: {
+			//	'close': Ext.bind(this.onPortletClose, this)
+			//}
+		},{
+			id: 'portlet-2',
+			title: 'Portlet 2',
+			//tools: this.getTools(),
+			html: 'test',
+			//listeners: {
+			//	'close': Ext.bind(this.onPortletClose, this)
+			//}
+		}]
+	},{
+		id: 'col-2',
+		columnWidthRel: .2,
+		items: [{
+			id: 'portlet-3',
+			title: 'Portlet 3',
+			//tools: this.getTools(),
+			html: '<div class="portlet-content">Hier moet iets komen</div>',
+			//listeners: {
+			//	'close': Ext.bind(this.onPortletClose, this)
+			//}
+		}]
+	},{
+		id: 'col-3',
+		columnWidthRel: .4,
+		items: [{
+			id: 'portlet-4',
+			title: 'Stock Portlet',
+			//tools: this.getTools(),
+			items: Ext.create('Lizard.portlet.ChartPortlet'),
+			//listeners: {
+			//	'close': Ext.bind(this.onPortletClose, this)
+		//}
+		}]
+	}]
+})

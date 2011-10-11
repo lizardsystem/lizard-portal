@@ -12,10 +12,17 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     (r'^admin/', include(admin.site.urls)),
-    url(r'^example_treedata.json$', 
+    url(r'^$',
         direct_to_template,
-        {'template': 'example_treedata.json', 'mimetype': 'application/json'},
-        name="example-treedata"),    
-
+        {'template': 'portal_pageframe.html'},
+        name="portalpage"),
+    url(r'^example_portal.json',
+        direct_to_template,
+        {'template': 'example_portal1.json'},
+        name='portal'),
+    url(r'^example_treedata.json',
+        direct_to_template,
+        {'template': 'example_treedata.json'},
+        name='treedata'),
     )
 urlpatterns += debugmode_urlpatterns()

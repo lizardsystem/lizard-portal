@@ -17,7 +17,7 @@ If you are unsure which license is appropriate for your use, please contact the 
  * @extends Ext.Panel
  * A {@link Ext.Panel Panel} class that is managed by {@link Ext.app.PortalPanel}.
  */
-Ext.define('Lizard.Portlet.Portlet', {
+Ext.define('Lizard.portlet.Portlet', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.portlet',
     layout: 'fit',

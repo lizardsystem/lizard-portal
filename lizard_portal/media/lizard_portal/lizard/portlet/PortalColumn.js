@@ -17,7 +17,7 @@ If you are unsure which license is appropriate for your use, please contact the 
  * @extends Ext.container.Container
  * A layout column class used internally be {@link Ext.app.PortalPanel}.
  */
-Ext.define('Lizard.Portlet.PortalColumn', {
+Ext.define('Lizard.portlet.PortalColumn', {
     extend: 'Ext.container.Container',
     alias: 'widget.portalcolumn',
     layout: {
