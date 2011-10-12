@@ -13,7 +13,7 @@ Ext.define 'Lizard.window.Dashboard',
         Ext.create 'Ext.data.TreeStore' 
             proxy: 
                 type: 'ajax'
-                url: '/portal/example_treedata.json'
+                url: '/portal/configuration/1'
                 extraParams:
                     isJSON: true
                 reader:
@@ -21,26 +21,29 @@ Ext.define 'Lizard.window.Dashboard',
             root:
                 expanded: true
                 children: [
-                        {text: "Tekst A", leaf: true}
-                        {text: "Tekst B", expanded: true, children: [
-                            {text: "tekst 2", leaf: true}
-                            {text: "tekst 3", leaf: true}
-                            {text: "tekst 4", leaf: false}
+                        {id: 1, text: "Tekst A", leaf: true}
+                        {id: 2, text: "Tekst B", expanded: true, children: [
+                            {id: 3, text: "tekst 2", leaf: true}
+                            {id: 4, text: "tekst 3", leaf: true}
+                            {id: 5, text: "tekst 4", leaf: false}
                             ]}
                     ]
     
 
-    loadPortal:(node) ->
-        if node.leaf
-            alert 'node'
-        container = Ext.getCmp 'app-portal';
+    
+    
+    loadPortal:(params) ->
+        console.log params
+        container = Ext.getCmp 'app-portal'
         container.setLoading true
         container.removeAll()
         
         Ext.Ajax.request
-            url: '/portal/example_portal.json',
+            url: '/portal/configuration/1',
+            params: params
+            method: 'GET'
             success: (xhr) =>
-                newComponent = eval xhr.responseText
+                newComponent = eval 'eval( ' + xhr.responseText + ')'
                 navigation = Ext.getCmp 'areaNavigation'
                 navigation.collapse()
                 container.add newComponent
@@ -49,13 +52,29 @@ Ext.define 'Lizard.window.Dashboard',
             failure: =>
                 Ext.Msg.alert "Grid creation failed", "Server communication failure"
                 container.setLoading false
+
+
+    linkTo:(options) ->
+        console.log options
+        #console.log lizard_context
+        #@lizard_context = Ext.Object.merge(@lizard_context, options)
+        #@loadPortal(@lizard_context)  
+        @loadPortal(options)
         
-    linkTo: () ->
         
     initComponent: (arguments) ->
         content = '<div class="portlet-content">hier moet iets komen</div>'
 
         Ext.apply this,
+            id: 'portalWindow',
+            lizard_context:
+                period: 
+                    start: '2000-01-01T00:00'
+                    end: '2002-01-01T00:00'
+                area: null
+                portalTemplate:1
+                activeOrganisation: [1,2]
+            
             layout:
                 type: 'border'
                 padding: 5
@@ -72,24 +91,27 @@ Ext.define 'Lizard.window.Dashboard',
                 frame:false
                 border:false
                 height: 60}
-                {region: 'west'
-                id: 'areaNavigation'
-                animCollapse:500
-                xtype: 'treepanel'
-                title: 'Navigatie'
-                frame: false
-                width: 250
-                autoScroll: true
-                listeners:
-                    itemclick:
-                        fn: this.loadPortal
-                store: this.getStore()
-                bbar: [
-                    text: 'Selecteer op kaart -->'
-                    border: 1
-                    handler: ->
-                        alert 'Laat nu kaart zien'
-                    ]}
+                {
+                    region: 'west'
+                    id: 'areaNavigation'
+                    animCollapse:500
+                    xtype: 'treepanel'
+                    title: 'Navigatie'
+                    frame: false
+                    width: 250
+                    autoScroll: true
+                    listeners:
+                        itemclick:
+                            fn: (node) =>
+                                this.linkTo node.id
+                    store: this.getStore()
+                    bbar: [
+                        text: 'Selecteer op kaart -->'
+                        border: 1
+                        handler: ->
+                            alert 'Laat nu kaart zien'
+                        ]
+                }
     
                 {region: 'center'
                 collapsible: false

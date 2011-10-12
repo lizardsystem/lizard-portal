@@ -10,7 +10,7 @@
       return Ext.create('Ext.data.TreeStore', {
         proxy: {
           type: 'ajax',
-          url: '/portal/example_treedata.json',
+          url: '/portal/configuration/1',
           extraParams: {
             isJSON: true
           },
@@ -22,19 +22,24 @@
           expanded: true,
           children: [
             {
+              id: 1,
               text: "Tekst A",
               leaf: true
             }, {
+              id: 2,
               text: "Tekst B",
               expanded: true,
               children: [
                 {
+                  id: 3,
                   text: "tekst 2",
                   leaf: true
                 }, {
+                  id: 4,
                   text: "tekst 3",
                   leaf: true
                 }, {
+                  id: 5,
                   text: "tekst 4",
                   leaf: false
                 }
@@ -44,19 +49,19 @@
         }
       });
     },
-    loadPortal: function(node) {
+    loadPortal: function(params) {
       var container;
-      if (node.leaf) {
-        alert('node');
-      }
+      console.log(params);
       container = Ext.getCmp('app-portal');
       container.setLoading(true);
       container.removeAll();
       return Ext.Ajax.request({
-        url: '/portal/example_portal.json',
+        url: '/portal/configuration/1',
+        params: params,
+        method: 'GET',
         success: __bind(function(xhr) {
           var navigation, newComponent;
-          newComponent = eval(xhr.responseText);
+          newComponent = eval('eval( ' + xhr.responseText + ')');
           navigation = Ext.getCmp('areaNavigation');
           navigation.collapse();
           container.add(newComponent);
@@ -68,11 +73,24 @@
         }, this)
       });
     },
-    linkTo: function() {},
+    linkTo: function(options) {
+      console.log(options);
+      return this.loadPortal(options);
+    },
     initComponent: function(arguments) {
       var content;
       content = '<div class="portlet-content">hier moet iets komen</div>';
       Ext.apply(this, {
+        id: 'portalWindow',
+        lizard_context: {
+          period: {
+            start: '2000-01-01T00:00',
+            end: '2002-01-01T00:00'
+          },
+          area: null,
+          portalTemplate: 1,
+          activeOrganisation: [1, 2]
+        },
         layout: {
           type: 'border',
           padding: 5
@@ -103,7 +121,9 @@
             autoScroll: true,
             listeners: {
               itemclick: {
-                fn: this.loadPortal
+                fn: __bind(function(node) {
+                  return this.linkTo(node.id);
+                }, this)
               }
             },
             store: this.getStore(),
