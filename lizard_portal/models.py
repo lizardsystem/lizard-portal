@@ -10,7 +10,7 @@ class PortalConfiguration(models.Model):
     TODO: Add JSON validation?
     """
     name = models.CharField(blank=False, null=False, max_length=255)
-    slug = models.SlugField(blank=False)
+    slug = models.SlugField(blank=False, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     configuration = models.TextField(blank=False, default="{}")

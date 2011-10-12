@@ -10,7 +10,7 @@
       return Ext.create('Ext.data.TreeStore', {
         proxy: {
           type: 'ajax',
-          url: '/portal/configuration/1',
+          url: '/portal/configuration/test/',
           extraParams: {
             isJSON: true
           },
@@ -56,7 +56,7 @@
       container.setLoading(true);
       container.removeAll();
       return Ext.Ajax.request({
-        url: '/portal/configuration/1',
+        url: '/portal/configuration/test/',
         params: params,
         method: 'GET',
         success: __bind(function(xhr) {

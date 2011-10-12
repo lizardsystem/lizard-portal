@@ -4,11 +4,11 @@ from django.http import HttpResponse
 from lizard_portal.models import PortalConfiguration
     
 
-def json_configuration(request, id):
+def json_configuration(request, slug):
     """
     Return JSON for request.
     """
-    pc = PortalConfiguration.objects.get(pk=id)
+    pc = PortalConfiguration.objects.filter(slug=slug)[0]
     return HttpResponse(pc.configuration, mimetype="application/json")
     
 

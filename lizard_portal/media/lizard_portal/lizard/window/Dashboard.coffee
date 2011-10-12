@@ -13,7 +13,7 @@ Ext.define 'Lizard.window.Dashboard',
         Ext.create 'Ext.data.TreeStore' 
             proxy: 
                 type: 'ajax'
-                url: '/portal/configuration/1'
+                url: '/portal/configuration/test/'
                 extraParams:
                     isJSON: true
                 reader:
@@ -39,7 +39,7 @@ Ext.define 'Lizard.window.Dashboard',
         container.removeAll()
         
         Ext.Ajax.request
-            url: '/portal/configuration/1',
+            url: '/portal/configuration/test/',
             params: params
             method: 'GET'
             success: (xhr) =>
