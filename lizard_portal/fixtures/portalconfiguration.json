@@ -1,0 +1,46 @@
+[
+    {
+        "pk": 1, 
+        "model": "lizard_portal.portalconfiguration", 
+        "fields": {
+            "configuration": "{\r\n\txtype: 'portalpanel',\r\n\titems: [{\r\n\t\tid: 'col-1',\r\n\t\twidth: 200,\r\n\t\titems: [{\r\n\t\t\tid: 'portlet-1',\r\n\t\t\ttitle: 'Grid Portlet',\r\n\t\t\t//tools: this.getTools(),\r\n\t\t\titems: Ext.create('Lizard.portlet.GridPortlet'),\r\n\t\t\t//listeners: {\r\n\t\t\t//\t'close': Ext.bind(this.onPortletClose, this)\r\n\t\t\t//}\r\n\t\t},{\r\n\t\t\tid: 'portlet-2',\r\n\t\t\ttitle: 'Portlet 2',\r\n\t\t\t//tools: this.getTools(),\r\n\t\t\thtml: '<a href=\"javascript:Ext.getCmp(\\'portalWindow\\').linkTo({portalTemplate:\\'bla\\' });\">template 3</a><br/><a href=\"javascript:Ext.getCmp(\\'portalWindow\\').loadPortal({portalTemplate:\\'bla\\' });\">template 3</a>',\r\n\t\t\t//listeners: {\r\n\t\t\t//\t'close': Ext.bind(this.onPortletClose, this)\r\n\t\t\t//}\r\n\t\t}]\r\n\t},{\r\n\t\tid: 'col-2',\r\n\t\twidth: 400,\r\n\t\titems: [{\r\n\t\t\tid: 'portlet-3',\r\n\t\t\ttitle: 'Portlet 3',\r\n\t\t\t//tools: this.getTools(),\r\n\t\t\thtml: '<div class=\"portlet-content\">Hier moet iets komen</div>',\r\n\t\t\t//listeners: {\r\n\t\t\t//\t'close': Ext.bind(this.onPortletClose, this)\r\n\t\t\t//}\r\n\t\t}]\r\n\t},{\r\n\t\tid: 'col-3',\r\n\t\tcolumnWidthRel: 1,\r\n\t\titems: [{\r\n\t\t\tid: 'portlet-4',\r\n\t\t\ttitle: 'Stock Portlet',\r\n\t\t\t//tools: this.getTools(),\r\n\t\t\titems: Ext.create('Lizard.portlet.ChartPortlet'),\r\n\t\t\t//listeners: {\r\n\t\t\t//\t'close': Ext.bind(this.onPortletClose, this)\r\n\t\t//}\r\n\t\t}]\r\n\t}]\r\n}", 
+            "created": "2011-10-12 14:13:35", 
+            "name": "Test", 
+            "modified": "2011-10-14 13:28:27", 
+            "slug": "test"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "lizard_portal.portalconfiguration", 
+        "fields": {
+            "configuration": "{\r\n\txtype: 'portalpanel',\r\n\titems: [{\r\n\t\tid: 'col-1',\r\n\t\twidth: 200,\r\n\t\titems: [{\r\n\t\t\tid: 'portlet-1',\r\n\t\t\ttitle: 'Grid Portlet',\r\n\t\t\t//tools: this.getTools(),\r\n\t\t\titems: Ext.create('Lizard.portlet.GridPortlet'),\r\n\t\t\t//listeners: {\r\n\t\t\t//\t'close': Ext.bind(this.onPortletClose, this)\r\n\t\t\t//}\r\n\t\t},{\r\n\t\t\tid: 'portlet-2',\r\n\t\t\ttitle: 'Portlet 2',\r\n\t\t\t//tools: this.getTools(),\r\n\t\t\thtml: '<a href=\"javascript:Ext.getCmp(\\'portalWindow\\').loadPortal({portalTemplate:\\'bla\\' });\">template 3</a><br/><a href=\"javascript:Ext.getCmp(\\'portalWindow\\').loadPortal({portalTemplate:\\'bla\\' });\">template 3</a>',\r\n                        request: '{{ request.user|safe }}',\r\n\t\t\t//listeners: {\r\n\t\t\t//\t'close': Ext.bind(this.onPortletClose, this)\r\n\t\t\t//}\r\n\t\t}]\r\n\t},{\r\n\t\tid: 'col-2',\r\n\t\twidth: 400,\r\n\t\titems: [{\r\n\t\t\tid: 'portlet-3',\r\n\t\t\ttitle: 'Portlet 3',\r\n\t\t\t//tools: this.getTools(),\r\n\t\t\thtml: '<div class=\"portlet-content\">Hier moet iets komen</div>',\r\n\t\t\t//listeners: {\r\n\t\t\t//\t'close': Ext.bind(this.onPortletClose, this)\r\n\t\t\t//}\r\n\t\t}]\r\n\t}]\r\n}", 
+            "created": "2011-10-14 10:56:34", 
+            "name": "Bla", 
+            "modified": "2011-10-14 14:04:25", 
+            "slug": "bla"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "lizard_portal.portalconfiguration", 
+        "fields": {
+            "configuration": "{\r\n\txtype: 'portalpanel',\r\n\titems: [{\r\n\t\tid: 'col-1',\r\n\t\twidth: 200,\r\n\t\titems: [{\r\n\t\t\tid: 'portlet-1',\r\n\t\t\ttitle: 'Grid Portlet',\r\n\t\t\t//tools: this.getTools(),\r\n\t\t\titems: Ext.create('Lizard.portlet.GridPortlet'),\r\n\t\t\t//listeners: {\r\n\t\t\t//\t'close': Ext.bind(this.onPortletClose, this)\r\n\t\t\t//}\r\n\t\t},{\r\n\t\t\tid: 'portlet-2',\r\n\t\t\ttitle: 'Portlet 2',\r\n\t\t\t//tools: this.getTools(),\r\n\t\t\thtml: '<a href=\"javascript:Ext.getCmp(\\'portalWindow\\').loadPortal({portalTemplate:\\'bla\\' });\">template 3</a><br/><a href=\"javascript:Ext.getCmp(\\'portalWindow\\').loadPortal({portalTemplate:\\'bla\\' });\">template 3</a>',\r\n                        communiques: '{% for communique in communiques %}{{ communique }}{% endfor %}',\r\n\t\t\t//listeners: {\r\n\t\t\t//\t'close': Ext.bind(this.onPortletClose, this)\r\n\t\t\t//}\r\n\t\t}]\r\n\t},{\r\n\t\tid: 'col-2',\r\n\t\twidth: 400,\r\n\t\titems: [{\r\n\t\t\tid: 'portlet-3',\r\n\t\t\ttitle: 'Portlet 3',\r\n\t\t\t//tools: this.getTools(),\r\n\t\t\thtml: '<div class=\"portlet-content\">Hier moet iets komen</div>',\r\n\t\t\t//listeners: {\r\n\t\t\t//\t'close': Ext.bind(this.onPortletClose, this)\r\n\t\t\t//}\r\n\t\t}]\r\n\t}]\r\n}", 
+            "created": "2011-10-14 14:23:56", 
+            "name": "Communiques", 
+            "modified": "2011-10-14 14:23:56", 
+            "slug": "communiques"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "lizard_portal.portalconfiguration", 
+        "fields": {
+            "configuration": "{\r\n\txtype: 'portalpanel',\r\n\titems: [{\r\n\t\tid: 'col-1',\r\n\t\twidth: 200,\r\n\t\titems: [{\r\n\t\t\tid: 'portlet-1',\r\n\t\t\ttitle: 'Grid Portlet',\r\n\t\t\titems: Ext.create('Lizard.portlet.GridPortlet'),\r\n\t\t}]\r\n\t},{\r\n\t\tid: 'col-2',\r\n\t\twidth: 400,\r\n\t\titems: [{\r\n\t\t\tid: 'portlet-3',\r\n\t\t\ttitle: 'Portlet 3',\r\n\t\t\thtml: '<div class=\"portlet-content\">Hier moet iets komen</div>',\r\n\t\t},{\r\n\t\t\tid: 'portlet-4',\r\n\t\t\ttitle: 'Stock Portlet',\r\n\t\t\titems: Ext.create('Lizard.portlet.ChartPortlet'),\r\n\t\t}]\r\n\t},{\r\n\t\tid: 'col-3',\r\n\t\tcolumnWidthRel: 1,\r\n\t\titems: [{\r\n\t\t\tid: 'portlet-2',\r\n\t\t\ttitle: 'Portlet 2',\r\n\t\t\t//tools: this.getTools(),\r\n\t\t\thtml: '<a href=\"javascript:Ext.getCmp(\\'portalWindow\\').linkTo({portalTemplate:\\'bla\\' });\">template 3</a><br/><a href=\"javascript:Ext.getCmp(\\'portalWindow\\').loadPortal({portalTemplate:\\'bla\\' });\">template 3</a>',\r\n\t\t}]\r\n\t}]\r\n}", 
+            "created": "2011-10-14 15:53:12", 
+            "name": "Homepage", 
+            "modified": "2011-10-14 16:17:00", 
+            "slug": "homepage"
+        }
+    }
+]
