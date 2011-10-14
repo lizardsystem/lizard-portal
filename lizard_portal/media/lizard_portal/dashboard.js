@@ -6,7 +6,12 @@
   Ext.application({
     name: 'lizardViewer',
     launch: function() {
-      return Ext.create('Lizard.window.Dashboard');
+      var pw;
+      Ext.create('Lizard.window.Dashboard');
+      pw = Ext.getCmp('portalWindow');
+      return pw.loadPortal({
+        portalTemplate: 'homepage'
+      });
     }
   });
 }).call(this);

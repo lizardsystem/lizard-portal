@@ -52,11 +52,12 @@
     loadPortal: function(params) {
       var container;
       console.log(params);
+      console.log("portalTemplate:" + params.portalTemplate);
       container = Ext.getCmp('app-portal');
       container.setLoading(true);
       container.removeAll();
       return Ext.Ajax.request({
-        url: '/portal/configuration/test/',
+        url: "/portal/configuration/" + params.portalTemplate + "/",
         params: params,
         method: 'GET',
         success: __bind(function(xhr) {
@@ -75,7 +76,8 @@
     },
     linkTo: function(options) {
       console.log(options);
-      return this.loadPortal(options);
+      this.lizard_context = Ext.Object.merge(this.lizard_context, options);
+      return this.loadPortal(this.lizard_context);
     },
     initComponent: function(arguments) {
       var content;
@@ -88,7 +90,7 @@
             end: '2002-01-01T00:00'
           },
           area: null,
-          portalTemplate: 1,
+          portalTemplate: "test",
           activeOrganisation: [1, 2]
         },
         layout: {
@@ -121,8 +123,12 @@
             autoScroll: true,
             listeners: {
               itemclick: {
-                fn: __bind(function(node) {
-                  return this.linkTo(node.id);
+                fn: __bind(function(view, record) {
+                  console.log(view);
+                  console.log(record);
+                  return this.linkTo({
+                    area: record.data.id
+                  });
                 }, this)
               }
             },

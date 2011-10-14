@@ -15,3 +15,5 @@ class PortalConfiguration(models.Model):
     modified = models.DateTimeField(auto_now=True)
     configuration = models.TextField(blank=False, default="{}")
     
+    def __unicode__(self):
+        return str(self.name)

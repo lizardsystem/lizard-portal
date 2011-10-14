@@ -34,12 +34,13 @@ Ext.define 'Lizard.window.Dashboard',
     
     loadPortal:(params) ->
         console.log params
+        console.log "portalTemplate:" + params.portalTemplate
         container = Ext.getCmp 'app-portal'
         container.setLoading true
         container.removeAll()
         
         Ext.Ajax.request
-            url: '/portal/configuration/test/',
+            url: "/portal/configuration/#{params.portalTemplate}/",
             params: params
             method: 'GET'
             success: (xhr) =>
@@ -56,10 +57,9 @@ Ext.define 'Lizard.window.Dashboard',
 
     linkTo:(options) ->
         console.log options
-        #console.log lizard_context
-        #@lizard_context = Ext.Object.merge(@lizard_context, options)
-        #@loadPortal(@lizard_context)  
-        @loadPortal(options)
+        @lizard_context = Ext.Object.merge(@lizard_context, options)
+        @loadPortal(@lizard_context)  
+        # @loadPortal(options)
         
         
     initComponent: (arguments) ->
@@ -72,7 +72,7 @@ Ext.define 'Lizard.window.Dashboard',
                     start: '2000-01-01T00:00'
                     end: '2002-01-01T00:00'
                 area: null
-                portalTemplate:1
+                portalTemplate:"test"
                 activeOrganisation: [1,2]
             
             layout:
@@ -102,9 +102,11 @@ Ext.define 'Lizard.window.Dashboard',
                     autoScroll: true
                     listeners:
                         itemclick:
-                            fn: (node) =>
-                                this.linkTo node.id
-                    store: this.getStore()
+                            fn: (view, record) =>
+                                console.log view
+                                console.log record
+                                @linkTo {area: record.data.id}
+                    store: @getStore()
                     bbar: [
                         text: 'Selecteer op kaart -->'
                         border: 1
@@ -123,18 +125,18 @@ Ext.define 'Lizard.window.Dashboard',
         return this
 
     onPortletClose: (portlet) ->
-        this.showMsg this.portlet.title + " was removed"
+        @showMsg @portlet.title + " was removed"
 
 
     showMsg: (msg) ->
         el = Ext.get 'app-msg'
         msgId = Ext.id()
         
-        this.msgId = msgId
+        @msgId = msgId
         
         el.update(msg).show()
         
-        Ext.defer this.clearMsg, 3000, this, [msgId]
+        Ext.defer @clearMsg, 3000, this, [msgId]
 
 
     clearMsg: (msgId) ->
@@ -153,3 +155,6 @@ Ext.define 'Lizard.window.Dashboard',
                 ), 2000
                 
             ]
+
+
+    # @loadPortal()
