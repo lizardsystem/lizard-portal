@@ -38,6 +38,7 @@ Ext.define 'Lizard.window.Dashboard',
     
     loadPortal:(params) ->
         console.log params
+        console.log "portalTemplate:" + params.portalTemplate
         container = Ext.getCmp 'app-portal'
         container.setLoading true
         container.removeAll()
@@ -62,7 +63,6 @@ Ext.define 'Lizard.window.Dashboard',
         console.log options
         @lizard_context = Ext.Object.merge(@lizard_context, options)
         @loadPortal(this.lizard_context)
-
         
     initComponent: (arguments) ->
         content = '<div class="portlet-content">hier moet iets komen</div>'
@@ -124,18 +124,18 @@ Ext.define 'Lizard.window.Dashboard',
         return this
 
     onPortletClose: (portlet) ->
-        this.showMsg this.portlet.title + " was removed"
+        @showMsg @portlet.title + " was removed"
 
 
     showMsg: (msg) ->
         el = Ext.get 'app-msg'
         msgId = Ext.id()
         
-        this.msgId = msgId
+        @msgId = msgId
         
         el.update(msg).show()
         
-        Ext.defer this.clearMsg, 3000, this, [msgId]
+        Ext.defer @clearMsg, 3000, this, [msgId]
 
 
     clearMsg: (msgId) ->
@@ -154,3 +154,6 @@ Ext.define 'Lizard.window.Dashboard',
                 ), 2000
                 
             ]
+
+
+    # @loadPortal()

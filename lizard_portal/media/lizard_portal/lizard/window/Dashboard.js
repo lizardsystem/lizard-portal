@@ -52,6 +52,7 @@
     loadPortal: function(params) {
       var container;
       console.log(params);
+      console.log("portalTemplate:" + params.portalTemplate);
       container = Ext.getCmp('app-portal');
       container.setLoading(true);
       container.removeAll();
