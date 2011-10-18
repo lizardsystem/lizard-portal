@@ -1,4 +1,5 @@
-Ext.define 'Lizard.window.Dashboard', 
+
+Ext.define 'Lizard.window.Dashboard',
     extend:'Ext.container.Viewport'
     uses: ['Lizard.portlet.Portlet',
             'Lizard.portlet.PortalPanel',
@@ -6,6 +7,11 @@ Ext.define 'Lizard.window.Dashboard',
             'Lizard.portlet.GridPortlet',
             'Lizard.portlet.ChartPortlet',
             'GeoExt.MapPanel',
+            'Ext.Img',
+            'Ext.grid.property.Grid',
+            'Ext.data.Model',
+            'Ext.data.TreeStore',
+            'Ext.tree.Panel',
             #'GeoExt.data.LayerStore',
             #'GeoExt.data.LayerRecord',
             #'GeoExt.data.LayerReader',
@@ -53,15 +59,17 @@ Ext.define 'Lizard.window.Dashboard',
                 navigation.collapse()
                 container.add newComponent
                 container.setLoading false
-                
+
             failure: =>
                 Ext.Msg.alert "portal creation failed", "Server communication failure"
                 container.setLoading false
 
 
-    linkTo:(options) ->
+    linkTo:(options, save_state=true) ->
         console.log options
         @lizard_context = Ext.Object.merge(@lizard_context, options)
+        if save_state
+          window.history.pushState(@lizard_context, "#{options}", "/portal/#{@lizard_context.portalTemplate}/#{@lizard_context.area}")
         @loadPortal(this.lizard_context)
         
     initComponent: (arguments) ->
@@ -91,6 +99,8 @@ Ext.define 'Lizard.window.Dashboard',
                 split: false
                 frame:false
                 border:false
+                items:
+                    id:'header'
                 height: 60}
                 {
                     region: 'west'
@@ -104,7 +114,7 @@ Ext.define 'Lizard.window.Dashboard',
                     listeners:
                         itemclick:
                             fn: (tree, node) =>
-                                this.linkTo node.data.id
+                                this.linkTo {area: node.data.id}
                     store: this.getStore()
                     bbar: [
                         text: 'Selecteer op kaart -->'
@@ -122,6 +132,11 @@ Ext.define 'Lizard.window.Dashboard',
 
         Lizard.window.Dashboard.superclass.initComponent.apply this, arguments
         return this
+    afterRender: ->
+        Lizard.window.Dashboard.superclass.afterRender.apply this, arguments
+        header = Ext.get 'header'
+        console.log header
+        Ext.get('test').replace header
 
     onPortletClose: (portlet) ->
         @showMsg @portlet.title + " was removed"

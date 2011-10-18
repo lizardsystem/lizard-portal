@@ -11,6 +11,19 @@
     type="text/javascript"
     src="{{ STATIC_URL }}openlayers/OpenLayers.js"
     data-openlayers-url="{{ STATIC_URL }}openlayers/"></script-->
+<script>
+
+
+window.onpopstate = function(event) {
+    console.log(event.state);
+    if (event.state != null) {
+        Ext.getCmp('portalWindow').linkTo(event.state, false);
+    }
+}
+
+
+
+</script>
 {{ block.super }}
 {% endblock %}
 {% endcompress %}
@@ -36,4 +49,4 @@
 
 {% block title %}{% trans "Volg- en Stuursysteem" %}{% endblock %}
 
-{% block page %}{% endblock page %}
+{% block page %}<div id=test>test tes test test </div> {% endblock page %}

@@ -7,7 +7,7 @@ Ext.application
     name: 'lizardViewer'
     launch: -> 
         Ext.create 'Lizard.window.Dashboard'
-        pw = Ext.getCmp 'portalWindow'
-        pw.loadPortal {portalTemplate:'homepage'}
+        #pw = Ext.getCmp 'portalWindow'
+        #pw.loadPortal {portalTemplate:'homepage'}
         # ^^^ TODO: Hardcoded to homepage!
         

@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Ext.define('Lizard.window.Dashboard', {
     extend: 'Ext.container.Viewport',
-    uses: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.ChartPortlet', 'GeoExt.MapPanel', 'Ext.MessageBox'],
+    uses: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.ChartPortlet', 'GeoExt.MapPanel', 'Ext.Img', 'Ext.grid.property.Grid', 'Ext.data.Model', 'Ext.data.TreeStore', 'Ext.tree.Panel', 'Ext.MessageBox'],
     config: {
       special: true
     },
@@ -74,9 +74,15 @@
         }, this)
       });
     },
-    linkTo: function(options) {
+    linkTo: function(options, save_state) {
+      if (save_state == null) {
+        save_state = true;
+      }
       console.log(options);
       this.lizard_context = Ext.Object.merge(this.lizard_context, options);
+      if (save_state) {
+        window.history.pushState(this.lizard_context, "" + options, "/portal/" + this.lizard_context.portalTemplate + "/" + this.lizard_context.area);
+      }
       return this.loadPortal(this.lizard_context);
     },
     initComponent: function(arguments) {
@@ -109,6 +115,9 @@
             split: false,
             frame: false,
             border: false,
+            items: {
+              id: 'header'
+            },
             height: 60
           }, {
             region: 'west',
@@ -122,7 +131,9 @@
             listeners: {
               itemclick: {
                 fn: __bind(function(tree, node) {
-                  return this.linkTo(node.data.id);
+                  return this.linkTo({
+                    area: node.data.id
+                  });
                 }, this)
               }
             },
@@ -147,6 +158,13 @@
       });
       Lizard.window.Dashboard.superclass.initComponent.apply(this, arguments);
       return this;
+    },
+    afterRender: function() {
+      var header;
+      Lizard.window.Dashboard.superclass.afterRender.apply(this, arguments);
+      header = Ext.get('header');
+      console.log(header);
+      return Ext.get('test').replace(header);
     },
     onPortletClose: function(portlet) {
       return this.showMsg(this.portlet.title + " was removed");
