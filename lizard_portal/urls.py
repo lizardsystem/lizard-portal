@@ -16,7 +16,7 @@ urlpatterns = patterns(
         direct_to_template,
         {'template': 'portal_pageframe.html'},
         name="portalpage"),
-    url(r'^configuration/(?P<slug>.*)/$',
+    url(r'^configuration/',
         'lizard_portal.views.json_configuration',
         name="json_configuration"),
     url(r'^example_portal.json',

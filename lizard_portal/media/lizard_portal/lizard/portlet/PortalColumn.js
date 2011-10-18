@@ -21,11 +21,11 @@ Ext.define('Lizard.portlet.PortalColumn', {
     extend: 'Ext.container.Container',
     alias: 'widget.portalcolumn',
     layout: {
-        type: 'anchor'
+        type: 'vbox',
+        align: 'stretch'
     },
     defaultType: 'portlet',
-    cls: 'x-portal-column',
-    autoHeight: true
+    cls: 'x-portal-column'
     //
     // This is a class so that it could be easily extended
     // if necessary to provide additional behavior.
