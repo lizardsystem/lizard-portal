@@ -4,9 +4,13 @@
 {% block javascript %}
 {# Extjs and app scripts #}
 <script type="text/javascript"
-        src="{{ STATIC_URL }}lizard_portal/extjs/ext-debug.js"></script>
+        src="{{ STATIC_URL }}extjs/ext-debug.js"></script>
 <script type="text/javascript"
         src="{{ STATIC_URL }}lizard_portal/dashboard.js"></script>
+<!--script id="openlayers-script"
+    type="text/javascript"
+    src="{{ STATIC_URL }}openlayers/OpenLayers.js"
+    data-openlayers-url="{{ STATIC_URL }}openlayers/"></script-->
 {{ block.super }}
 {% endblock %}
 {% endcompress %}
@@ -19,7 +23,7 @@
       type="text/css"
       media="screen, projection" />
 <link rel="stylesheet"
-      href="{{ STATIC_URL }}lizard_portal/extjs/resources/css/ext-all-gray.css"
+      href="{{ STATIC_URL }}extjs/resources/css/ext-all-gray.css"
       type="text/css"
       media="screen, projection" />
 <link rel="stylesheet"

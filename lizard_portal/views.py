@@ -7,21 +7,12 @@ from django.template import Template
 from lizard_portal.models import PortalConfiguration
 from lizard_area.models import Communique
 
-def json_configuration(request, slug):
+def json_configuration(request):
     """
     Return JSON for request.
     """
     communiques = Communique.objects.all()
     
-    try:
-        pc = PortalConfiguration.objects.filter(slug=slug)[0]
-        t = Template(pc.configuration)
-        c = Context({'communiques': communiques})
-        
-        configuration = t.render(c)
-    except:
-        return HttpResponse("{}", mimetype="application/json")
-        
-    return HttpResponse(configuration, mimetype="application/json")
-    
-
+    portal_template = request.GET.get('portalTemplate', 'homepage')
+    pc = PortalConfiguration.objects.filter(slug=portal_template)[0]
+    return HttpResponse(pc.configuration, mimetype="application/json")

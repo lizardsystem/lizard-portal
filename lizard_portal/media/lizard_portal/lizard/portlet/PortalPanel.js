@@ -29,13 +29,15 @@ Ext.define('Lizard.portlet.PortalPanel', {
     defaultType: 'portalcolumn',
     componentLayout: 'body',
     autoScroll: true,
+    height:'100%',
 
     initComponent : function() {
         var me = this;
 
         // Implement a Container beforeLayout call from the layout to this Container
         this.layout = {
-            type : 'column'
+            type : 'hbox',
+            align: 'stretch'
         };
         this.callParent();
 
@@ -46,7 +48,10 @@ Ext.define('Lizard.portlet.PortalPanel', {
             beforedrop: true,
             drop: true
         });
-        this.on('drop', this.doLayout, this);
+        this.on('drop', function () {
+                console.log('drop');
+                this.doLayout();
+            }, this);
     },
 
     // Set columnWidth, and set first and last column classes to allow exact CSS targeting.
@@ -58,7 +63,7 @@ Ext.define('Lizard.portlet.PortalPanel', {
 
         for (; i < len; i++) {
             item = items[i];
-            item.columnWidth = item.columnWidthRel; //original: 1 / len;
+
             item.removeCls(['x-portal-column-first', 'x-portal-column-last']);
         }
         items[0].addCls('x-portal-column-first');

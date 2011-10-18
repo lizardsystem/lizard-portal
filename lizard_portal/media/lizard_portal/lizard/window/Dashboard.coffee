@@ -5,7 +5,11 @@ Ext.define 'Lizard.window.Dashboard',
             'Lizard.portlet.PortalColumn',
             'Lizard.portlet.GridPortlet',
             'Lizard.portlet.ChartPortlet',
-            'Lizard.container.Header']
+            'GeoExt.MapPanel',
+            #'GeoExt.data.LayerStore',
+            #'GeoExt.data.LayerRecord',
+            #'GeoExt.data.LayerReader',
+            'Ext.MessageBox']
     config:
         special: true
         
@@ -13,7 +17,7 @@ Ext.define 'Lizard.window.Dashboard',
         Ext.create 'Ext.data.TreeStore' 
             proxy: 
                 type: 'ajax'
-                url: '/portal/configuration/test/'
+                url: '/portal/example_treedata.json'
                 extraParams:
                     isJSON: true
                 reader:
@@ -40,7 +44,7 @@ Ext.define 'Lizard.window.Dashboard',
         container.removeAll()
         
         Ext.Ajax.request
-            url: "/portal/configuration/#{params.portalTemplate}/",
+            url: '/portal/configuration/',
             params: params
             method: 'GET'
             success: (xhr) =>
@@ -51,16 +55,14 @@ Ext.define 'Lizard.window.Dashboard',
                 container.setLoading false
                 
             failure: =>
-                Ext.Msg.alert "Grid creation failed", "Server communication failure"
+                Ext.Msg.alert "portal creation failed", "Server communication failure"
                 container.setLoading false
 
 
     linkTo:(options) ->
         console.log options
         @lizard_context = Ext.Object.merge(@lizard_context, options)
-        @loadPortal(@lizard_context)  
-        # @loadPortal(options)
-        
+        @loadPortal(this.lizard_context)
         
     initComponent: (arguments) ->
         content = '<div class="portlet-content">hier moet iets komen</div>'
@@ -68,11 +70,10 @@ Ext.define 'Lizard.window.Dashboard',
         Ext.apply this,
             id: 'portalWindow',
             lizard_context:
-                period: 
-                    start: '2000-01-01T00:00'
-                    end: '2002-01-01T00:00'
+                period_start:'2000-01-01T00:00'
+                period_end: '2002-01-01T00:00'
                 area: null
-                portalTemplate:"test"
+                portalTemplate:'homepage'
                 activeOrganisation: [1,2]
             
             layout:
@@ -102,11 +103,9 @@ Ext.define 'Lizard.window.Dashboard',
                     autoScroll: true
                     listeners:
                         itemclick:
-                            fn: (view, record) =>
-                                console.log view
-                                console.log record
-                                @linkTo {area: record.data.id}
-                    store: @getStore()
+                            fn: (tree, node) =>
+                                this.linkTo node.data.id
+                    store: this.getStore()
                     bbar: [
                         text: 'Selecteer op kaart -->'
                         border: 1
@@ -118,7 +117,7 @@ Ext.define 'Lizard.window.Dashboard',
                 {region: 'center'
                 collapsible: false
                 floatable: false
-                split: false               
+                split: false
                 id: 'app-portal'}]
 
         Lizard.window.Dashboard.superclass.initComponent.apply this, arguments

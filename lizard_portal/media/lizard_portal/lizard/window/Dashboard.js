@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Ext.define('Lizard.window.Dashboard', {
     extend: 'Ext.container.Viewport',
-    uses: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.ChartPortlet', 'Lizard.container.Header'],
+    uses: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.ChartPortlet', 'GeoExt.MapPanel', 'Ext.MessageBox'],
     config: {
       special: true
     },
@@ -10,7 +10,7 @@
       return Ext.create('Ext.data.TreeStore', {
         proxy: {
           type: 'ajax',
-          url: '/portal/configuration/test/',
+          url: '/portal/example_treedata.json',
           extraParams: {
             isJSON: true
           },
@@ -57,7 +57,7 @@
       container.setLoading(true);
       container.removeAll();
       return Ext.Ajax.request({
-        url: "/portal/configuration/" + params.portalTemplate + "/",
+        url: '/portal/configuration/',
         params: params,
         method: 'GET',
         success: __bind(function(xhr) {
@@ -69,7 +69,7 @@
           return container.setLoading(false);
         }, this),
         failure: __bind(function() {
-          Ext.Msg.alert("Grid creation failed", "Server communication failure");
+          Ext.Msg.alert("portal creation failed", "Server communication failure");
           return container.setLoading(false);
         }, this)
       });
@@ -85,12 +85,10 @@
       Ext.apply(this, {
         id: 'portalWindow',
         lizard_context: {
-          period: {
-            start: '2000-01-01T00:00',
-            end: '2002-01-01T00:00'
-          },
+          period_start: '2000-01-01T00:00',
+          period_end: '2002-01-01T00:00',
           area: null,
-          portalTemplate: "test",
+          portalTemplate: 'homepage',
           activeOrganisation: [1, 2]
         },
         layout: {
@@ -123,12 +121,8 @@
             autoScroll: true,
             listeners: {
               itemclick: {
-                fn: __bind(function(view, record) {
-                  console.log(view);
-                  console.log(record);
-                  return this.linkTo({
-                    area: record.data.id
-                  });
+                fn: __bind(function(tree, node) {
+                  return this.linkTo(node.data.id);
                 }, this)
               }
             },

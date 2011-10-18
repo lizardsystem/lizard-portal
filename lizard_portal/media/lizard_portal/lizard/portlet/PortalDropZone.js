@@ -49,6 +49,7 @@ Ext.define('Lizard.portlet.PortalDropZone', {
     },
 
     notifyOver: function(dd, e, data) {
+        console.log('over');
         var xy = e.getXY(),
             portal = this.portal,
             proxy = dd.proxy;
@@ -144,6 +145,8 @@ Ext.define('Lizard.portlet.PortalDropZone', {
     },
 
     notifyDrop: function(dd, e, data) {
+        console.log('drop');
+
         delete this.grid;
         if (!this.lastPos) {
             return;
@@ -185,6 +188,7 @@ Ext.define('Lizard.portlet.PortalDropZone', {
 
     // internal cache of body and column coords
     getGrid: function() {
+        console.log('over');
         var box = this.portal.body.getBox();
         box.columnX = [];
         this.portal.items.each(function(c) {
