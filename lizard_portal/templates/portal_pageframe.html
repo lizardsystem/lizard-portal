@@ -1,6 +1,6 @@
 {% extends "lizard_ui/lizardbase.html" %}{% load compress i18n %}
 
-{% block javascript %}
+{% block head-extras %}
 {# Extjs and app scripts #}
 <script type="text/javascript"
         src="{{ STATIC_URL }}extjs/ext-debug.js"></script>
@@ -24,7 +24,7 @@ window.onpopstate = function(event) {
 
 </script>
 {{ block.super }}
-{% endblock %}
+{% endblock head-extras %}
 
 {% compress css %}
 {% block css %}
