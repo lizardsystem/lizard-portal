@@ -70,12 +70,12 @@ Ext.define 'Lizard.window.Dashboard',
         @lizard_context = Ext.Object.merge(@lizard_context, options)
         if save_state
           window.history.pushState(@lizard_context, "#{options}", "/portal/#{@lizard_context.portalTemplate}/#{@lizard_context.area}")
-        @loadPortal(this.lizard_context)
+        @loadPortal(@lizard_context)
         
     initComponent: (arguments) ->
         content = '<div class="portlet-content">hier moet iets komen</div>'
 
-        Ext.apply this,
+        Ext.apply @,
             id: 'portalWindow',
             lizard_context:
                 period_start:'2000-01-01T00:00'
@@ -114,8 +114,8 @@ Ext.define 'Lizard.window.Dashboard',
                     listeners:
                         itemclick:
                             fn: (tree, node) =>
-                                this.linkTo {area: node.data.id}
-                    store: this.getStore()
+                                @linkTo {area: node.data.id}
+                    store: @getStore()
                     bbar: [
                         text: 'Selecteer op kaart -->'
                         border: 1
@@ -130,10 +130,19 @@ Ext.define 'Lizard.window.Dashboard',
                 split: false
                 id: 'app-portal'}]
 
-        Lizard.window.Dashboard.superclass.initComponent.apply this, arguments
-        return this
+        Lizard.window.Dashboard.superclass.initComponent.apply @, arguments
+        return @
     afterRender: ->
-        Lizard.window.Dashboard.superclass.afterRender.apply this, arguments
+        Lizard.window.Dashboard.superclass.afterRender.apply @, arguments
+        Ext.Ajax.request
+            url: '/ui/examples/'
+            success: (response, opts) ->
+                obj = Ext.decode response.responseText
+                console.log "------------>"
+                console.log obj 
+            failure: (response, opts) ->
+                console.log "Server-side failure with status code #{response.status}"
+
         header = Ext.get 'header'
         console.log header
         Ext.get('test').replace header
@@ -150,7 +159,7 @@ Ext.define 'Lizard.window.Dashboard',
         
         el.update(msg).show()
         
-        Ext.defer @clearMsg, 3000, this, [msgId]
+        Ext.defer @clearMsg, 3000, @, [msgId]
 
 
     clearMsg: (msgId) ->
