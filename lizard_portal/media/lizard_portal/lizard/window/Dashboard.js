@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Ext.define('Lizard.window.Dashboard', {
     extend: 'Ext.container.Viewport',
-    uses: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.ChartPortlet', 'GeoExt.MapPanel', 'Ext.Img', 'Ext.grid.property.Grid', 'Ext.data.Model', 'Ext.data.TreeStore', 'Ext.tree.Panel', 'Ext.MessageBox'],
+    uses: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.ChartPortlet', 'GeoExt.MapPanel', 'Ext.Img', 'Ext.grid.*', 'Ext.data.Model', 'Ext.data.*', 'Ext.tree.*', 'Ext.button.*', 'Lizard.ux.CheckColumn', 'Ext.MessageBox'],
     config: {
       special: true
     },
@@ -55,7 +55,7 @@
       console.log("portalTemplate:" + params.portalTemplate);
       container = Ext.getCmp('app-portal');
       container.setLoading(true);
-      container.removeAll();
+      container.removeAll(true);
       return Ext.Ajax.request({
         url: '/portal/configuration/',
         params: params,
