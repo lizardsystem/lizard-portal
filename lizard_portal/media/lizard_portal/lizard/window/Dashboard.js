@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Ext.define('Lizard.window.Dashboard', {
     extend: 'Ext.container.Viewport',
-    uses: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.ChartPortlet', 'GeoExt.MapPanel', 'Ext.Img', 'Ext.grid.*', 'Ext.data.Model', 'Ext.data.*', 'Ext.tree.*', 'Ext.button.*', 'Lizard.ux.CheckColumn', 'Ext.MessageBox'],
+    uses: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.ChartPortlet', 'GeoExt.MapPanel', 'Ext.Img', 'Ext.grid.*', 'Ext.data.Model', 'Ext.data.*', 'Ext.tree.*', 'Ext.button.*', 'Ext.MessageBox'],
     config: {
       special: true
     },

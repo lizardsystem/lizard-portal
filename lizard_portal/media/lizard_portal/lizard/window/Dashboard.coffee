@@ -13,7 +13,7 @@ Ext.define 'Lizard.window.Dashboard',
             'Ext.data.*'
             'Ext.tree.*'
             'Ext.button.*'
-            'Lizard.ux.CheckColumn'
+            # 'Lizard.ux.CheckColumn'
             #'GeoExt.data.LayerStore',
             #'GeoExt.data.LayerRecord',
             #'GeoExt.data.LayerReader',
