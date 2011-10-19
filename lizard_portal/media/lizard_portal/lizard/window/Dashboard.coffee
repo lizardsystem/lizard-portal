@@ -1,17 +1,19 @@
 
 Ext.define 'Lizard.window.Dashboard',
     extend:'Ext.container.Viewport'
-    uses: ['Lizard.portlet.Portlet',
-            'Lizard.portlet.PortalPanel',
-            'Lizard.portlet.PortalColumn',
-            'Lizard.portlet.GridPortlet',
-            'Lizard.portlet.ChartPortlet',
-            'GeoExt.MapPanel',
+    uses: ['Lizard.portlet.Portlet'
+            'Lizard.portlet.PortalPanel'
+            'Lizard.portlet.PortalColumn'
+            'Lizard.portlet.GridPortlet'
+            'Lizard.portlet.ChartPortlet'
+            'GeoExt.MapPanel'
             'Ext.Img',
-            'Ext.grid.property.Grid',
-            'Ext.data.Model',
-            'Ext.data.TreeStore',
-            'Ext.tree.Panel',
+            'Ext.grid.*'
+            'Ext.data.Model'
+            'Ext.data.*'
+            'Ext.tree.*'
+            'Ext.button.*'
+            'Lizard.ux.CheckColumn'
             #'GeoExt.data.LayerStore',
             #'GeoExt.data.LayerRecord',
             #'GeoExt.data.LayerReader',
@@ -47,7 +49,7 @@ Ext.define 'Lizard.window.Dashboard',
         console.log "portalTemplate:" + params.portalTemplate
         container = Ext.getCmp 'app-portal'
         container.setLoading true
-        container.removeAll()
+        container.removeAll(true)
         
         Ext.Ajax.request
             url: '/portal/configuration/',

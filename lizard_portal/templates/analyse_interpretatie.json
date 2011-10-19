@@ -1,0 +1,22 @@
+[{
+        "naam": "bal",
+        "categorie": "buiten",
+        "datum": "199/02/03",
+        "object": "verschillende",
+        "auteur": "ik"
+    },
+    {
+        "naam": "bla",
+        "categorie": "binnen",
+        "datum": "199/02/03",
+        "object": "verschillende",
+        "auteur": "jij"
+    },
+    {
+        "naam": "bal",
+        "categorie": "3",
+        "datum": "199/02/03",
+        "object": "verschillende",
+        "auteur": "zij"
+    }
+]
