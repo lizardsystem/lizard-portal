@@ -1,4 +1,3 @@
-
 Ext.define 'Lizard.window.Dashboard',
     extend:'Ext.container.Viewport'
     uses: ['Lizard.portlet.Portlet'
@@ -8,6 +7,7 @@ Ext.define 'Lizard.window.Dashboard',
             'Lizard.portlet.ChartPortlet'
             'GeoExt.MapPanel'
             'Ext.Img',
+            # 'Ext.DomHelper',
             'Ext.grid.*'
             'Ext.data.Model'
             'Ext.data.*'
@@ -103,6 +103,8 @@ Ext.define 'Lizard.window.Dashboard',
                 border:false
                 items:
                     id:'header'
+                    height: 60
+                    html: ""
                 height: 60}
                 {
                     region: 'west'
@@ -136,19 +138,14 @@ Ext.define 'Lizard.window.Dashboard',
         return @
     afterRender: ->
         Lizard.window.Dashboard.superclass.afterRender.apply @, arguments
-        Ext.Ajax.request
-            url: '/ui/examples/'
-            success: (response, opts) ->
-                obj = Ext.decode response.responseText
-                console.log "------------>"
-                console.log obj 
-            failure: (response, opts) ->
-                console.log "Server-side failure with status code #{response.status}"
-
-        header = Ext.get 'header'
-        console.log header
-        Ext.get('test').replace header
-
+        Ext.get('header').load
+            url: '/portal/portalheader/'
+            scripts: true
+        # Ext.Ajax.request
+        #     url: '/ui/examples/'
+        #     success: (req) ->
+        #         Ext.DomHelper.overwrite('header', req.responseText)
+        
     onPortletClose: (portlet) ->
         @showMsg @portlet.title + " was removed"
 

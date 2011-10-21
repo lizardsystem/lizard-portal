@@ -116,7 +116,9 @@
             frame: false,
             border: false,
             items: {
-              id: 'header'
+              id: 'header',
+              height: 60,
+              html: ""
             },
             height: 60
           }, {
@@ -160,23 +162,11 @@
       return this;
     },
     afterRender: function() {
-      var header;
       Lizard.window.Dashboard.superclass.afterRender.apply(this, arguments);
-      Ext.Ajax.request({
-        url: '/ui/examples/',
-        success: function(response, opts) {
-          var obj;
-          obj = Ext.decode(response.responseText);
-          console.log("------------>");
-          return console.log(obj);
-        },
-        failure: function(response, opts) {
-          return console.log("Server-side failure with status code " + response.status);
-        }
+      return Ext.get('header').load({
+        url: '/portal/portalheader/',
+        scripts: true
       });
-      header = Ext.get('header');
-      console.log(header);
-      return Ext.get('test').replace(header);
     },
     onPortletClose: function(portlet) {
       return this.showMsg(this.portlet.title + " was removed");
