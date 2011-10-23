@@ -23,6 +23,10 @@ def json_configuration(request):
         t = get_template('portals/esf-1.js')
     elif portal_template == 'analyse-interpretatie':
         t = get_template('portals/analyse-interpretatie.js')
+    elif portal_template == 'waterbalans':
+        t = get_template('portals/waterbalans.js')
+    elif portal_template == 'waterbalans-configuratie':
+        t = get_template('portals/waterbalans-configuratie.js')
     else:
         pc = PortalConfiguration.objects.filter(slug=portal_template)[0]
         t = Template(pc.configuration)
