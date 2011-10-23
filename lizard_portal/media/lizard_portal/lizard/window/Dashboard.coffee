@@ -1,4 +1,3 @@
-
 Ext.define 'Lizard.window.Dashboard',
     extend:'Ext.container.Viewport'
     uses: ['Lizard.portlet.Portlet'
@@ -8,12 +7,13 @@ Ext.define 'Lizard.window.Dashboard',
             'Lizard.portlet.ChartPortlet'
             'GeoExt.MapPanel'
             'Ext.Img',
+            # 'Ext.DomHelper',
             'Ext.grid.*'
             'Ext.data.Model'
             'Ext.data.*'
             'Ext.tree.*'
             'Ext.button.*'
-            'Lizard.ux.CheckColumn'
+            # 'Lizard.ux.CheckColumn'
             #'GeoExt.data.LayerStore',
             #'GeoExt.data.LayerRecord',
             #'GeoExt.data.LayerReader',
@@ -72,12 +72,12 @@ Ext.define 'Lizard.window.Dashboard',
         @lizard_context = Ext.Object.merge(@lizard_context, options)
         if save_state
           window.history.pushState(@lizard_context, "#{options}", "/portal/#{@lizard_context.portalTemplate}/#{@lizard_context.area}")
-        @loadPortal(this.lizard_context)
+        @loadPortal(@lizard_context)
         
     initComponent: (arguments) ->
         content = '<div class="portlet-content">hier moet iets komen</div>'
 
-        Ext.apply this,
+        Ext.apply @,
             id: 'portalWindow',
             lizard_context:
                 period_start:'2000-01-01T00:00'
@@ -103,6 +103,8 @@ Ext.define 'Lizard.window.Dashboard',
                 border:false
                 items:
                     id:'header'
+                    height: 60
+                    html: ""
                 height: 60}
                 {
                     region: 'west'
@@ -116,8 +118,8 @@ Ext.define 'Lizard.window.Dashboard',
                     listeners:
                         itemclick:
                             fn: (tree, node) =>
-                                this.linkTo {area: node.data.id}
-                    store: this.getStore()
+                                @linkTo {area: node.data.id}
+                    store: @getStore()
                     bbar: [
                         text: 'Selecteer op kaart -->'
                         border: 1
@@ -132,14 +134,18 @@ Ext.define 'Lizard.window.Dashboard',
                 split: false
                 id: 'app-portal'}]
 
-        Lizard.window.Dashboard.superclass.initComponent.apply this, arguments
-        return this
+        Lizard.window.Dashboard.superclass.initComponent.apply @, arguments
+        return @
     afterRender: ->
-        Lizard.window.Dashboard.superclass.afterRender.apply this, arguments
-        header = Ext.get 'header'
-        console.log header
-        Ext.get('test').replace header
-
+        Lizard.window.Dashboard.superclass.afterRender.apply @, arguments
+        Ext.get('header').load
+            url: '/portal/portalheader/'
+            scripts: true
+        # Ext.Ajax.request
+        #     url: '/ui/examples/'
+        #     success: (req) ->
+        #         Ext.DomHelper.overwrite('header', req.responseText)
+        
     onPortletClose: (portlet) ->
         @showMsg @portlet.title + " was removed"
 
@@ -152,7 +158,7 @@ Ext.define 'Lizard.window.Dashboard',
         
         el.update(msg).show()
         
-        Ext.defer @clearMsg, 3000, this, [msgId]
+        Ext.defer @clearMsg, 3000, @, [msgId]
 
 
     clearMsg: (msgId) ->

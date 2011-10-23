@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Ext.define('Lizard.window.Dashboard', {
     extend: 'Ext.container.Viewport',
-    uses: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.ChartPortlet', 'GeoExt.MapPanel', 'Ext.Img', 'Ext.grid.*', 'Ext.data.Model', 'Ext.data.*', 'Ext.tree.*', 'Ext.button.*', 'Lizard.ux.CheckColumn', 'Ext.MessageBox'],
+    uses: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.ChartPortlet', 'GeoExt.MapPanel', 'Ext.Img', 'Ext.grid.*', 'Ext.data.Model', 'Ext.data.*', 'Ext.tree.*', 'Ext.button.*', 'Ext.MessageBox'],
     config: {
       special: true
     },
@@ -116,7 +116,9 @@
             frame: false,
             border: false,
             items: {
-              id: 'header'
+              id: 'header',
+              height: 60,
+              html: ""
             },
             height: 60
           }, {
@@ -160,11 +162,11 @@
       return this;
     },
     afterRender: function() {
-      var header;
       Lizard.window.Dashboard.superclass.afterRender.apply(this, arguments);
-      header = Ext.get('header');
-      console.log(header);
-      return Ext.get('test').replace(header);
+      return Ext.get('header').load({
+        url: '/portal/portalheader/',
+        scripts: true
+      });
     },
     onPortletClose: function(portlet) {
       return this.showMsg(this.portlet.title + " was removed");

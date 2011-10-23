@@ -1,7 +1,6 @@
 {% extends "lizard_ui/lizardbase.html" %}{% load compress i18n %}
 
-{% compress js %}
-{% block javascript %}
+{% block head-extras %}
 {# Extjs and app scripts #}
 <script type="text/javascript"
         src="{{ STATIC_URL }}extjs/ext-debug.js"></script>
@@ -11,22 +10,17 @@
     type="text/javascript"
     src="{{ STATIC_URL }}openlayers/OpenLayers.js"
     data-openlayers-url="{{ STATIC_URL }}openlayers/"></script-->
+
 <script>
-
-
 window.onpopstate = function(event) {
     console.log(event.state);
     if (event.state != null) {
         Ext.getCmp('portalWindow').linkTo(event.state, false);
     }
 }
-
-
-
 </script>
 {{ block.super }}
-{% endblock %}
-{% endcompress %}
+{% endblock head-extras %}
 
 {% compress css %}
 {% block css %}
@@ -44,9 +38,9 @@ window.onpopstate = function(event) {
       type="text/css"
       media="screen, projection" />
 {{ block.super }}
-{% endblock %}
+{% endblock css %}
 {% endcompress %}
 
-{% block title %}{% trans "Volg- en Stuursysteem" %}{% endblock %}
+{% block title %}{% trans "Volg- en Stuursysteem" %}{% endblock title %}
 
-{% block page %}<div id=test>test tes test test </div> {% endblock page %}
+{% block page %}{% endblock page %}
