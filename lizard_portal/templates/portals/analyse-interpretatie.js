@@ -14,27 +14,39 @@
             flex:1,
             items: {
                 xtype: 'grid',
+                listeners: {
+                    itemclick: {
+                        fn: function(grid, record) {
+                            console.log(record);
+                            Ext.getCmp('portalWindow').linkTo({
+                                area:record.data.id,
+                                portalTemplate:'analyse-interpretatie-details'
+                              }) ;
+                        }
+                    }      
+                },
                 plugins: [
                     Ext.create('Ext.grid.plugin.CellEditing', {
                             clicksToEdit: 1
                  })],
-                columns: [{
-                    text: 'Naam',
+                columns: [
+                {   
+                    text: 'Titel',
                     width:150,
                     sortable: true,
-                    dataIndex: 'naam',
+                    dataIndex: 'title',
                     field: {
                         allowBlank: false
                     }
                 },{
                     text: 'Categorie',
                     flex: 1,
-                    dataIndex: 'categorie',
+                    dataIndex: 'category',
                     sortable: true
                 },{
                     text: 'Datum',
                     flex: 1,
-                    dataIndex: 'datum',
+                    dataIndex: 'period_start',
                     sortable: true,
                     //renderer: formatDate,
                     field: {
@@ -45,14 +57,14 @@
                         disabledDaysText: 'Plants are not available on the weekends'
                     }
                 },{
-                    text: 'Object',
+                    text: 'Status',
                     flex: 1,
-                    dataIndex: 'object',
+                    dataIndex: 'status',
                     sortable: true
                 },{
                     text: 'Auteur',
                     flex: 1,
-                    dataIndex: 'auteur',
+                    dataIndex: 'user_creator',
                     sortable: true
                 }],
                 store: {
@@ -62,22 +74,25 @@
                     model: Ext.define('Analyse_interpretatie', {
                         extend: 'Ext.data.Model',
                         fields: [
-                            {name: 'naam', type: 'string'},
-                            {name: 'categorie', type: 'string'},
-                            {name: 'datum', type: 'auto'},
-                            {name: 'object', type: 'string'},
-                            {name: 'auteur', type: 'string'}
+                            {name: 'title', type: 'string'},
+                            {name: 'category', type: 'string'},
+                            {name: 'period_start', type: 'auto'},
+                            {name: 'user_creator', type: 'string'},
+                            {name: 'status', type: 'string'},
+                            {name: 'id', type: 'string'}
                         ]
                     }),
                     proxy: {
                         type: 'ajax',
-                        url: '/portal/analyse_interpretatie.json',
+                        url: '/annotation/api/annotation/',
                         extraParams: {
-                            isJSON: true
+                            _accept: 'application/json',
+                            type: 'interpretatie'
+                        },
+                        reader: {
+                            root: 'annotations',
+                            type: 'json'
                         }
-                    },
-                    reader: {
-                        type: 'json'
                     }
                 },
                 bbar: [{
