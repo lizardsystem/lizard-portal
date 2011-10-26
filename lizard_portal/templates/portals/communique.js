@@ -17,8 +17,9 @@
             height:400,
             items: {
                 xtype: 'propertygrid',
+                sortableColumns: false,
                 source: {
-                    "(Naam Waterlichaam)": "Reeuwijkse Plassen",
+                    "Naam Waterlichaam": "Reeuwijkse Plassen",
                     "Code waterlichaam": "NL13_11",
                     "Status": "Kunstmatig",
                     "Type en omschrijving": "M27 - Matig grote ondiepe laagveenplassen",

@@ -6,15 +6,21 @@ from django.template.loader import get_template
 
 
 from lizard_portal.models import PortalConfiguration
-from lizard_area.models import Communique
+from lizard_area.models import Area
 
 def json_configuration(request):
     """
     Return JSON for request.
     """
-    communiques = Communique.objects.all()
+    area_id = request.GET.get('object_id', None)
 
-    c = Context({'bla': 'bla'})
+    if area_id:
+        c = Context({'bla': 'bla',
+                    'area': Area.objects.get(ident=area_id)})
+    else:
+        c = Context()
+
+
     
     portal_template = request.GET.get('portalTemplate', 'homepage')
     if portal_template == 'homepage':
@@ -27,7 +33,9 @@ def json_configuration(request):
         t = get_template('portals/waterbalans.js')
     elif portal_template == 'waterbalans-configuratie':
         t = get_template('portals/waterbalans-configuratie.js')
+    elif portal_template == 'aan_afvoergebied_selectie':
+        t = get_template('portals/aan_afvoergebied_selectie.js')
     else:
         pc = PortalConfiguration.objects.filter(slug=portal_template)[0]
         t = Template(pc.configuration)
-    return HttpResponse(t.render(c),  mimetype="application/json")
+    return HttpResponse(t.render(c),  mimetype="text/plain")

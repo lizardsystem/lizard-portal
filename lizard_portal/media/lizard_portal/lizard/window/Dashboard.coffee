@@ -1,64 +1,36 @@
 Ext.define 'Lizard.window.Dashboard',
     extend:'Ext.container.Viewport'
-    uses: ['Lizard.portlet.Portlet'
-            'Lizard.portlet.PortalPanel'
-            'Lizard.portlet.PortalColumn'
-            'Lizard.portlet.GridPortlet'
-            'Lizard.portlet.ChartPortlet'
-            'GeoExt.MapPanel'
-            'Ext.Img',
-            # 'Ext.DomHelper',
-            'Ext.grid.*'
-            'Ext.data.Model'
-            'Ext.data.*'
-            'Ext.tree.*'
-            'Ext.button.*'
-            # 'Lizard.ux.CheckColumn'
-            #'GeoExt.data.LayerStore',
-            #'GeoExt.data.LayerRecord',
-            #'GeoExt.data.LayerReader',
-            'Ext.MessageBox']
+
     config:
         special: true
-        
-    getStore: ->
-        Ext.create 'Ext.data.TreeStore' 
-            proxy: 
-                type: 'ajax'
-                url: '/portal/example_treedata.json'
-                extraParams:
-                    isJSON: true
-                reader:
-                    type: 'json'
-            root:
-                expanded: true
-                children: [
-                        {id: 1, text: "Tekst A", leaf: true}
-                        {id: 2, text: "Tekst B", expanded: true, children: [
-                            {id: 3, text: "tekst 2", leaf: true}
-                            {id: 4, text: "tekst 3", leaf: true}
-                            {id: 5, text: "tekst 4", leaf: false}
-                            ]}
-                    ]
-    
 
-    
-    
-    loadPortal:(params) ->
+    linkTo:(options, save_state=true) ->
+        @setContext(options, save_state)
+        @loadPortal(@lizard_context)
+
+    setContext:(options, save_state=true) ->
+        console.log options
+        console.log @lizard_context
+        @lizard_context = Ext.Object.merge(@lizard_context, options)
+        if save_state
+            window.history.pushState(@lizard_context, "#{options}", "/portal/##{@lizard_context.portalTemplate}/#{@lizard_context.object}/#{@lizard_context.object_id}")
+
+    loadPortal:(params, area_selection_collapse=true) ->
         console.log params
         console.log "portalTemplate:" + params.portalTemplate
         container = Ext.getCmp 'app-portal'
         container.setLoading true
         container.removeAll(true)
-        
+
         Ext.Ajax.request
             url: '/portal/configuration/',
             params: params
             method: 'GET'
             success: (xhr) =>
                 newComponent = eval 'eval( ' + xhr.responseText + ')'
-                navigation = Ext.getCmp 'areaNavigation'
-                navigation.collapse()
+                if area_selection_collapse
+                  navigation = Ext.getCmp 'areaNavigation'
+                  navigation.collapse()
                 container.add newComponent
                 container.setLoading false
 
@@ -66,14 +38,10 @@ Ext.define 'Lizard.window.Dashboard',
                 Ext.Msg.alert "portal creation failed", "Server communication failure"
                 container.setLoading false
 
+    showAreaSelection: ->
+        arguments = Ext.Object.merge({}, @lizard_context, {portalTemplate: 'aan_afvoergebied_selectie'})
+        @loadPortal(arguments, false)
 
-    linkTo:(options, save_state=true) ->
-        console.log options
-        @lizard_context = Ext.Object.merge(@lizard_context, options)
-        if save_state
-          window.history.pushState(@lizard_context, "#{options}", "/portal/#{@lizard_context.portalTemplate}/#{@lizard_context.area}")
-        @loadPortal(@lizard_context)
-        
     initComponent: (arguments) ->
         content = '<div class="portlet-content">hier moet iets komen</div>'
 
@@ -82,10 +50,11 @@ Ext.define 'Lizard.window.Dashboard',
             lizard_context:
                 period_start:'2000-01-01T00:00'
                 period_end: '2002-01-01T00:00'
-                area: null
+                object: 'aan_afvoergebied'
+                object_id: null
                 portalTemplate:'homepage'
                 activeOrganisation: [1,2]
-            
+
             layout:
                 type: 'border'
                 padding: 5
@@ -118,16 +87,16 @@ Ext.define 'Lizard.window.Dashboard',
                     listeners:
                         itemclick:
                             fn: (tree, node) =>
-                                @linkTo {area: node.data.id}
-                    store: @getStore()
+                                @linkTo {object_id: node.data.id}
+                    store: 'Vss.store.CatchmentTree'
                     bbar: [
                         text: 'Selecteer op kaart -->'
                         border: 1
                         handler: ->
-                            alert 'Laat nu kaart zien'
+                            Ext.getCmp('portalWindow').showAreaSelection()
                         ]
                 }
-    
+
                 {region: 'center'
                 collapsible: false
                 floatable: false
@@ -141,42 +110,17 @@ Ext.define 'Lizard.window.Dashboard',
         Ext.get('header').load
             url: '/portal/portalheader/'
             scripts: true
+
+        if @lizard_context.object_id == null
+            @showAreaSelection()
+
         # Ext.Ajax.request
         #     url: '/ui/examples/'
         #     success: (req) ->
         #         Ext.DomHelper.overwrite('header', req.responseText)
-        
-    onPortletClose: (portlet) ->
-        @showMsg @portlet.title + " was removed"
 
 
-    showMsg: (msg) ->
-        el = Ext.get 'app-msg'
-        msgId = Ext.id()
-        
-        @msgId = msgId
-        
-        el.update(msg).show()
-        
-        Ext.defer @clearMsg, 3000, @, [msgId]
 
-
-    clearMsg: (msgId) ->
-        if msgId is @msgId
-            Ext.get('app-msg').hide()
-
-    getTools: ->
-        [
-            xtype: 'tool',
-            type: 'gear',
-            handler: (e, target, panelHeader, tool) ->
-                portlet = panelHeader.ownerCt
-                portlet.setLoading 'Working...'
-                Ext.defer ( ->
-                    portlet.setLoading false
-                ), 2000
-                
-            ]
 
 
     # @loadPortal()
