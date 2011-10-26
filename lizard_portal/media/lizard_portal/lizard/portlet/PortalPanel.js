@@ -17,6 +17,10 @@ If you are unsure which license is appropriate for your use, please contact the 
  * @extends Ext.Panel
  * A {@link Ext.Panel Panel} class used for providing drag-drop-enabled portal layouts.
  */
+
+
+
+
 Ext.define('Lizard.portlet.PortalPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.portalpanel',
@@ -49,7 +53,7 @@ Ext.define('Lizard.portlet.PortalPanel', {
             drop: true
         });
         this.on('drop', function () {
-                console.log('drop');
+                console.log('drop do layout');
                 this.doLayout();
             }, this);
     },
