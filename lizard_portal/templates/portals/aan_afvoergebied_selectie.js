@@ -20,11 +20,11 @@
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],
 
-            extent: new OpenLayers.Bounds(560169.88665341539, 6826897.476821214, 566537.70563144214, 6831609.8270714562),
+            extent: new OpenLayers.Bounds(560169, 6814897, 616537, 6831609),
             //(4.7221503096837303, 52.097418937370598, 5.3054492200965404, 52.431493172200199)
             layers: [
                 new OpenLayers.Layer.OSM(),
-                new OpenLayers.Layer.WMS('gebieden', '/fewsnorm/workspace/1/wms/',
+                new OpenLayers.Layer.WMS('gebieden', '/map/workspace/1/wms/',
                     {layers:'basic'}, {singleTile: true, displayOutsideMaxExtent: true, projection: new OpenLayers.Projection("EPSG:900913")})
             ]
 		}]

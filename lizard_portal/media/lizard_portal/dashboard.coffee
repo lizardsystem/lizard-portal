@@ -1,3 +1,5 @@
+
+
 Ext.Loader.setConfig disableCaching: false
 Ext.Loader.setPath 'Lizard', '/static_media/lizard_portal/lizard'
 Ext.Loader.setPath 'Vss', '/static_media/lizard_portal/vss'
@@ -42,4 +44,7 @@ Ext.application
 
 
     launch: ->
-        Ext.create 'Lizard.window.Dashboard'        
+        # OpenLayers.ImgPath = "http://js.mapbox.com/theme/dark/";
+        OpenLayers.ImgPath = "/static_media/themes/dark/";
+
+        Ext.create 'Lizard.window.Dashboard'
