@@ -79,7 +79,7 @@
                             {name: 'period_start', type: 'auto'},
                             {name: 'user_creator', type: 'string'},
                             {name: 'status', type: 'string'},
-                            {name: 'id', type: 'string'}
+                            {name: 'url', type: 'string'}
                         ]
                     }),
                     proxy: {
