@@ -46,7 +46,7 @@
                 },{
                     text: 'Datum',
                     flex: 1,
-                    dataIndex: 'period_start',
+                    dataIndex: 'datetime_period_start',
                     sortable: true,
                     //renderer: formatDate,
                     field: {
@@ -64,7 +64,7 @@
                 },{
                     text: 'Auteur',
                     flex: 1,
-                    dataIndex: 'user_creator',
+                    dataIndex: 'created_by',
                     sortable: true
                 }],
                 store: {
@@ -76,15 +76,15 @@
                         fields: [
                             {name: 'title', type: 'string'},
                             {name: 'category', type: 'string'},
-                            {name: 'period_start', type: 'auto'},
-                            {name: 'user_creator', type: 'string'},
+                            {name: 'datetime_period_start', type: 'auto'},
+                            {name: 'created_by', type: 'string'},
                             {name: 'status', type: 'string'},
                             {name: 'id', type: 'string'}
                         ]
                     }),
                     proxy: {
                         type: 'ajax',
-                        url: '/annotation/api/annotation/',
+                        url: '/annotation/api/grid/',
                         extraParams: {
                             _accept: 'application/json',
                             type: 'interpretatie'
