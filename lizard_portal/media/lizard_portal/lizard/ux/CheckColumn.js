@@ -85,7 +85,10 @@ Ext.define('Lizard.ux.CheckColumn', {
 
         if (value) {
             cls.push(cssPrefix + 'grid-checkheader-checked');
+        } else if (value===null){
+            cls= " ";
         }
+
         return '<div class="' + cls.join(' ') + '">&#160;</div>';
     }
 });

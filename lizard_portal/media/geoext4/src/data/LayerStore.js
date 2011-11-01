@@ -205,7 +205,8 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  appropriate record within the store.
 	 */
 	onChangeLayer : function(evt) {
-		var me = this, layer = evt.layer;
+		console.log(evt);
+        var me = this, layer = evt.layer;
 		var recordIndex = this.findBy(function(rec, id) {
 			return rec.getLayer() === layer;
 		});
@@ -225,6 +226,9 @@ Ext.define('GeoExt.data.LayerStore', {
 				}
 			} else if(evt.property === "name") {
 				record.set("title", layer.name);
+
+            } else if(evt.property === "visibility") {
+				record.set("visibility", layer.visibility);
 			} else {
 				me.fireEvent("update", me, record, Ext.data.Model.EDIT);
 			}
@@ -365,7 +369,15 @@ Ext.define('GeoExt.data.LayerStore', {
 				if(title !== layer.name) {
 					layer.setName(title);
 				}
+			} else if(record.modified && typeof(record.modified.visibility) !== "undefined") {
+				var layer = record.getLayer();
+				var visibility = record.get("visibility");
+				layer.setVisibility(visibility);
+                if(visibility !== layer.visibility) {
+					layer.setVisibility(visibility);
+				}
 			}
+            record.commit(false);
 		}
 	},
 	/** private: method[removeMapLayer]

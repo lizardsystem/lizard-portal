@@ -4,6 +4,7 @@ from django.conf.urls.defaults import patterns
 from django.conf.urls.defaults import url
 from django.contrib import admin
 from django.views.generic.simple import direct_to_template
+from django.views.generic.simple import redirect_to
 
 from lizard_ui.urls import debugmode_urlpatterns
 
@@ -13,9 +14,19 @@ urlpatterns = patterns(
     '',
     (r'^admin/', include(admin.site.urls)),
     url(r'^$',
-        direct_to_template,
-        {'template': 'portal_pageframe.html'},
+        redirect_to,
+        {'url': 'watersysteem/'},
         name="portalpage"),
+    url(r'^watersysteem/',
+        direct_to_template,
+        {   'template': 'portal_pageframe.html',
+            'extra_context': {'extjs_app': 'lizard_portal/watersysteem.js'}},
+        name="watersysteempage"),
+    url(r'^beleid/',
+        direct_to_template,
+        {   'template': 'portal_pageframe.html',
+            'extra_context': {'extjs_app': 'lizard_portal/beleid.js'}},
+        name="beleidpage"),
     url(r'^portalheader/',
         direct_to_template,
         {'template': 'header.html'},

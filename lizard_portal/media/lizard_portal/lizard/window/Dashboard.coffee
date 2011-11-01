@@ -2,7 +2,17 @@ Ext.define 'Lizard.window.Dashboard',
     extend:'Ext.container.Viewport'
 
     config:
-        special: true
+        id: 'portalWindow',
+        area_selection_template:'aan_afvoergebied_selectie',
+        lizard_context:
+            period_start:'2000-01-01T00:00'
+            period_end: '2002-01-01T00:00'
+            object: 'aan_afvoergebied'
+            object_id: null
+            portalTemplate:'homepage'
+            base_url: 'portal/watersysteem'
+            activeOrganisation: [1,2]
+
 
     linkTo:(options, save_state=true) ->
         @setContext(options, save_state)
@@ -12,8 +22,12 @@ Ext.define 'Lizard.window.Dashboard',
         console.log options
         console.log @lizard_context
         @lizard_context = Ext.Object.merge(@lizard_context, options)
+
         if save_state
-            window.history.pushState(@lizard_context, "#{options}", "/portal/##{@lizard_context.portalTemplate}/#{@lizard_context.object}/#{@lizard_context.object_id}")
+            try
+                window.history.pushState(@lizard_context, "#{options}", "/#{@lizard_context.base_url}/##{@lizard_context.portalTemplate}/#{@lizard_context.object}/#{@lizard_context.object_id}")
+            catch error
+                console.log "not able to set pushState"
 
     loadPortal:(params, area_selection_collapse=true) ->
         console.log params
@@ -21,6 +35,9 @@ Ext.define 'Lizard.window.Dashboard',
         container = Ext.getCmp 'app-portal'
         container.setLoading true
         container.removeAll(true)
+        maps = Ext.ComponentQuery.query("gx_mappanel")
+        if maps.length > 0
+          maps[0].map.destroy()
 
         Ext.Ajax.request
             url: '/portal/configuration/',
@@ -39,22 +56,44 @@ Ext.define 'Lizard.window.Dashboard',
                 container.setLoading false
 
     showAreaSelection: ->
-        arguments = Ext.Object.merge({}, @lizard_context, {portalTemplate: 'aan_afvoergebied_selectie'})
+        arguments = Ext.Object.merge({}, @lizard_context, {portalTemplate: @area_selection_template})
         @loadPortal(arguments, false)
+
+
 
     initComponent: (arguments) ->
         content = '<div class="portlet-content">hier moet iets komen</div>'
 
-        Ext.apply @,
-            id: 'portalWindow',
-            lizard_context:
-                period_start:'2000-01-01T00:00'
-                period_end: '2002-01-01T00:00'
-                object: 'aan_afvoergebied'
-                object_id: null
-                portalTemplate:'homepage'
-                activeOrganisation: [1,2]
+        Ext.create(GeoExt.data.LayerStore,
+            layers: [
+                new OpenLayers.Layer.OSM()
+                new OpenLayers.Layer.WMS('Waterlopen', 'http://maps.waterschapservices.nl/wms?namespace=inspire',{
+                        layers:['HY.PhysicalWaters.Waterbodies'],
+                        transparent: "true",
+                        format: "image/png"
+                    },{
+                        singleTile: true,
+                        displayOutsideMaxExtent: true,
+                        projection: new OpenLayers.Projection("EPSG:900913")
 
+                    }
+                )
+                new OpenLayers.Layer.WMS('Kunstwerken', 'http://maps.waterschapservices.nl/wms?namespace=inspire',{
+                        layers:['HY.PhysicalWaters.ManMadeObject'],
+                        transparent: "true",
+                        format: "image/png"
+                    },{
+                        singleTile: true,
+                        displayOutsideMaxExtent: true,
+                        projection: new OpenLayers.Projection("EPSG:900913")
+
+                    }
+                )
+                ],
+            storeId:'Layers'
+        )
+
+        Ext.apply @,
             layout:
                 type: 'border'
                 padding: 5
@@ -102,6 +141,8 @@ Ext.define 'Lizard.window.Dashboard',
                 floatable: false
                 split: false
                 id: 'app-portal'}]
+                
+
 
         Lizard.window.Dashboard.superclass.initComponent.apply @, arguments
         return @
@@ -110,6 +151,15 @@ Ext.define 'Lizard.window.Dashboard',
         Ext.get('header').load
             url: '/portal/portalheader/'
             scripts: true
+        if window.location.hash
+            hash = window.location.hash
+            parts = hash.replace('#', '').split('/');
+            Ext.getCmp('portalWindow').linkTo({
+                portalTemplate: parts[0]
+                object: parts[1]
+                object_id: parts[2]
+            }, false)
+        
 
         if @lizard_context.object_id == null
             @showAreaSelection()

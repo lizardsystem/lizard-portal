@@ -10,7 +10,7 @@ Ext.define('Vss.store.CatchmentTree', {
     requires: 'Vss.model.ObjectTree',
     model: 'Vss.model.ObjectTree',
     root: {
-        text: 'krw gebieden',
+        text: 'Aan/afvoergebieden',
         id: 'root'
     }
 });

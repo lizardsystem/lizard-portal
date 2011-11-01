@@ -35,6 +35,8 @@ def json_configuration(request):
         t = get_template('portals/waterbalans-configuratie.js')
     elif portal_template == 'aan_afvoergebied_selectie':
         t = get_template('portals/aan_afvoergebied_selectie.js')
+    elif portal_template == 'krw_selectie':
+        t = get_template('portals/krw_selectie.js')
     else:
         pc = PortalConfiguration.objects.filter(slug=portal_template)[0]
         t = Template(pc.configuration)

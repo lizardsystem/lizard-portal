@@ -25,11 +25,15 @@ Ext.define('GeoExt.data.LayerModel', {
 	extend : 'Ext.data.Model',
 	idProperty : "name",
 	fields : [{
-		name : "layer",
+		name : "layer"
 	}, {
 		name : "title",
 		type : "string",
 		mapping : "name"
+	},{
+		name : "visibility",
+		type : "boolean",
+		mapping : "visibility"
 	}],
 	getLayer : function() {
 		return this.get("layer");

@@ -57,7 +57,7 @@ Ext.define('GeoExt.panel.Map', {
 
 	statics : {
 		guess : function() {
-			return Ext.ComponentQuery("gx_mappanel")
+			return Ext.ComponentQuery.query("gx_mappanel")
 		}
 	},
 
@@ -93,7 +93,7 @@ Ext.define('GeoExt.panel.Map', {
 	/** api: config[controls]
 	 *  array: additional controls
 	 */
-    controls : null,
+    controls : [],
 
 	/** api: config[zoom]
 	 *  ``Number``  An initial zoom level for the map.
@@ -155,10 +155,9 @@ Ext.define('GeoExt.panel.Map', {
         this.map.addControl(zoom_panel);
         this.map.addControl(new OpenLayers.Control.Navigation());
 
-        me.controls.forEach(function(obj) {
-                me.map.addControl(obj)
-            }
-        );
+        for (var i = 0; i < me.controls.length; i++) {
+            me.map.addControl(me.controls[i]);
+        }
 
         var layers = me.layers;
 		if(!layers || layers instanceof Array) {
@@ -277,22 +276,6 @@ Ext.define('GeoExt.panel.Map', {
     onMapClick: function(event, lonlat) {
         console.log(event);
         console.log(lonlat);
-        Ext.Ajax.request
-            url: '/portal/configuration/',
-            params: params
-            method: 'GET'
-            success: (xhr) =>
-                newComponent = eval 'eval( ' + xhr.responseText + ')'
-                if area_selection_collapse
-                  navigation = Ext.getCmp 'areaNavigation'
-                  navigation.collapse()
-                container.add newComponent
-                container.setLoading false
-
-            failure: =>
-                Ext.Msg.alert "portal creation failed", "Server communication failure"
-                container.setLoading false
-
 
     },
 
@@ -313,6 +296,7 @@ Ext.define('GeoExt.panel.Map', {
 		var me=this;
 		if(e.property) {
 			if(e.property === "visibility") {
+                console.log('visibility change')
 				me.fireEvent("afterlayervisibilitychange");
 			} else if(e.property === "opacity") {
 				me.fireEvent("afterlayeropacitychange");

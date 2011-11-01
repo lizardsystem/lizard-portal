@@ -47,9 +47,10 @@ Ext.define('GeoExt.data.reader.Layer', {
 		for (i = 0; i < length; i++) {
 			data[i] = {
 				layer:root[i],
-				name:root[i].name
+				name:root[i].name,
+                visibility: root[i].visibility || true
 			}
 		}
 		return this.callParent([data]);
-	},
+	}
 });

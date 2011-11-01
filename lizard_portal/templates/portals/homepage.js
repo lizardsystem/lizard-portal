@@ -22,27 +22,31 @@
             xtype: 'grid',
             columns:[{
                     text: 'aan',
-                    width:25,
-                    dataIndex: 'on',
+                    width:35,
+                    dataIndex: 'visibility',
                     xtype: 'checkcolumn',
                     sortable: true
                 },{
                     text: 'Naam',
                     flex: 1,
                     sortable: true,
-                    dataIndex: 'name'
+                    dataIndex: 'title'
                 }],
-            store: 'Vss.store.Maplayer'
+            store: Ext.data.StoreManager.lookup('Layers')
 		}]
 	},{
 		flex: 1,
 		items: [{
 			title: 'Watersysteemkaart',
+            id:'extmap',
             flex:1,
             xtype: "gx_mappanel",
+            controls: [new OpenLayers.Control.LayerSwitcher()
+            ],
             extent: new OpenLayers.Bounds{{ area.extent }},
-            layers: [new OpenLayers.Layer.OSM()
-                ]
+            layers: Ext.data.StoreManager.lookup('Layers')
+//{layers: [new OpenLayers.Layer.OSM()], storeId: 'Layers'}
+
 		}]
 	},{
 		width: 250,
@@ -71,6 +75,8 @@
                 }]
  		},{
 			title: 'Gerelateerde deelgebieden',
+            flex:1,
+            autoScroll:true,
             layout: {
                 type: 'table',
                 columns:1
@@ -79,13 +85,21 @@
                 width:150,
                 xtype:'button'
             },
-            items:[{
-                    text: 'Gebied A',
-                    handler: function() { Ext.getCmp('portalWindow').linkTo({area:1}); }
-                }, {
-                    text: 'Gebied B',
-                    handler: function() { Ext.getCmp('portalWindow').linkTo({area:2}); }
-              }]
+            items:[
+                {% if area.parent %}
+                {
+                    text: '{{area.parent.name}}',
+                    handler: function() { Ext.getCmp('portalWindow').linkTo({area:"{{ area.parent.ident }}" }); }
+                },
+                {% endif %}
+
+                {% for a in area.get_children %}
+                {
+                    text: '{{a.name}}',
+                    handler: function() { Ext.getCmp('portalWindow').linkTo({area:"{{ a.ident }}" }); }
+                },
+                {% endfor %}
+            ]
 		}]
        }]
 }

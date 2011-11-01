@@ -5,19 +5,26 @@
 <script type="text/javascript"
         src="{{ STATIC_URL }}extjs/ext-debug.js"></script>
 <script type="text/javascript"
-        src="{{ STATIC_URL }}lizard_portal/dashboard.js"></script>
+        src="{{ STATIC_URL }}{{ extjs_app }}"></script>
 <script id="openlayers-script"
     type="text/javascript"
     src="{{ STATIC_URL }}OpenLayers-2.11/OpenLayers.js"
     data-openlayers-url="{{ STATIC_URL }}openlayers/"></script>
 
 <script>
-window.onpopstate = function(event) {
-    console.log(event.state);
-    if (event.state != null) {
-        Ext.getCmp('portalWindow').linkTo(event.state, false);
+try {
+    window.onpopstate = function(event) {
+        console.log(event.state);
+        if (event.state != null) {
+            Ext.getCmp('portalWindow').linkTo(event.state, false);
+        }
     }
 }
+catch (e) {
+    console.warning('no window.onpopstate');
+}
+
+
 </script>
 {{ block.super }}
 {% endblock head-extras %}

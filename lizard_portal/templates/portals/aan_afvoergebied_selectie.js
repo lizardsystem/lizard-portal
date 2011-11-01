@@ -19,7 +19,35 @@
             },
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],
+            onMapClick: function(event, lonlat) {
+                console.log(event);
+                console.log(lonlat);
+                Ext.Ajax.request({
+                    url: '/map/search_name/',
+                    reader:{
+                        type: 'json'
+                    },
+                    params: {
+                        x: lonlat.lon,
+                        y: lonlat.lat,
+                        radius: 0,
+                        epsg: 900913,
+                        user_workspace_id: 1,
+                        format: 'object'
+                    },
+                    method: 'GET',
+                    success: function(xhr, request) {
+                        var areas = Ext.JSON.decode(xhr.responseText);
+                        console.log(areas);;
+                        Ext.getCmp('portalWindow').linkTo({object_id:areas[0].id.ident});
+                    },
+                    failure: function(xhr) {
+                        alert('failure');
 
+                    }
+
+                });
+            },
             extent: new OpenLayers.Bounds(560169, 6814897, 616537, 6831609),
             //(4.7221503096837303, 52.097418937370598, 5.3054492200965404, 52.431493172200199)
             layers: [
