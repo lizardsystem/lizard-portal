@@ -2,7 +2,6 @@ Ext.define 'Lizard.window.Dashboard',
     extend:'Ext.container.Viewport'
 
     config:
-        id: 'portalWindow',
         area_selection_template:'aan_afvoergebied_selectie',
         lizard_context:
             period_start:'2000-01-01T00:00'
@@ -20,8 +19,9 @@ Ext.define 'Lizard.window.Dashboard',
 
     setContext:(options, save_state=true) ->
         console.log options
-        console.log @lizard_context
-        @lizard_context = Ext.Object.merge(@lizard_context, options)
+        console.log @getLizard_context()
+
+        @setLizard_context(Ext.Object.merge(@.getLizard_context(), options))
 
         if save_state
             try
@@ -59,7 +59,10 @@ Ext.define 'Lizard.window.Dashboard',
         arguments = Ext.Object.merge({}, @lizard_context, {portalTemplate: @area_selection_template})
         @loadPortal(arguments, false)
 
+    constructor: (config) ->
+        @initConfig(config)
 
+        Lizard.window.Dashboard.superclass.constructor.apply @
 
     initComponent: (arguments) ->
         content = '<div class="portlet-content">hier moet iets komen</div>'
@@ -94,6 +97,7 @@ Ext.define 'Lizard.window.Dashboard',
         )
 
         Ext.apply @,
+            id: 'portalWindow',
             layout:
                 type: 'border'
                 padding: 5
@@ -161,16 +165,6 @@ Ext.define 'Lizard.window.Dashboard',
             }, false)
         
 
-        if @lizard_context.object_id == null
+        if @getLizard_context().object_id == null
             @showAreaSelection()
 
-        # Ext.Ajax.request
-        #     url: '/ui/examples/'
-        #     success: (req) ->
-        #         Ext.DomHelper.overwrite('header', req.responseText)
-
-
-
-
-
-    # @loadPortal()

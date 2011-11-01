@@ -3,7 +3,6 @@
   Ext.define('Lizard.window.Dashboard', {
     extend: 'Ext.container.Viewport',
     config: {
-      id: 'portalWindow',
       area_selection_template: 'aan_afvoergebied_selectie',
       lizard_context: {
         period_start: '2000-01-01T00:00',
@@ -27,8 +26,8 @@
         save_state = true;
       }
       console.log(options);
-      console.log(this.lizard_context);
-      this.lizard_context = Ext.Object.merge(this.lizard_context, options);
+      console.log(this.getLizard_context());
+      this.setLizard_context(Ext.Object.merge(this.getLizard_context(), options));
       if (save_state) {
         try {
           return window.history.pushState(this.lizard_context, "" + options, "/" + this.lizard_context.base_url + "/#" + this.lizard_context.portalTemplate + "/" + this.lizard_context.object + "/" + this.lizard_context.object_id);
@@ -77,6 +76,10 @@
       });
       return this.loadPortal(arguments, false);
     },
+    constructor: function(config) {
+      this.initConfig(config);
+      return Lizard.window.Dashboard.superclass.constructor.apply(this);
+    },
     initComponent: function(arguments) {
       var content;
       content = '<div class="portlet-content">hier moet iets komen</div>';
@@ -103,6 +106,7 @@
         storeId: 'Layers'
       });
       Ext.apply(this, {
+        id: 'portalWindow',
         layout: {
           type: 'border',
           padding: 5
@@ -183,7 +187,7 @@
           object_id: parts[2]
         }, false);
       }
-      if (this.lizard_context.object_id === null) {
+      if (this.getLizard_context().object_id === null) {
         return this.showAreaSelection();
       }
     }
