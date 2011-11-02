@@ -4,9 +4,9 @@ from django.template import Context
 from django.template import Template
 from django.template.loader import get_template
 
-
 from lizard_portal.models import PortalConfiguration
 from lizard_area.models import Area
+
 
 def json_configuration(request):
     """
@@ -20,8 +20,6 @@ def json_configuration(request):
     else:
         c = Context()
 
-
-    
     portal_template = request.GET.get('portalTemplate', 'homepage')
     if portal_template == 'homepage':
         t = get_template('portals/homepage.js')
