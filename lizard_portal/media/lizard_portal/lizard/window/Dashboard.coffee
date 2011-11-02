@@ -153,7 +153,7 @@ Ext.define 'Lizard.window.Dashboard',
     afterRender: ->
         Lizard.window.Dashboard.superclass.afterRender.apply @, arguments
         Ext.get('header').load
-            url: '/portal/portalheader/'
+            url: '/portalheader/'
             scripts: true
         if window.location.hash
             hash = window.location.hash

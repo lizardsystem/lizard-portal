@@ -175,7 +175,7 @@
       var hash, parts;
       Lizard.window.Dashboard.superclass.afterRender.apply(this, arguments);
       Ext.get('header').load({
-        url: '/portal/portalheader/',
+        url: '/portalheader/',
         scripts: true
       });
       if (window.location.hash) {
