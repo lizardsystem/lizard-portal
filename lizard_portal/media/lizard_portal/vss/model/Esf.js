@@ -7,17 +7,10 @@
  */
 Ext.define('Vss.model.Esf', {
     extend: 'Ext.data.Model',
-    fields: ['id', 'name'],
-
-    proxy: {
-        type: 'rest',
-        url: 'data/recentsongs.json',
-        extraParams: {
-            _accept: 'application/json'
-        },
-        reader: {
-            type: 'json',
-            root: 'esf'
-        }
-    }
+    fields: [{name: 'id', type: 'auto'},
+            {name: 'naam', type: 'string'},
+            {name: 'bron', type: 'auto'},
+            {name: 'waarde', type: 'auto'},
+            {name: 'handmatig', type: 'auto'},
+            {name: 'auto_waarde', type: 'string'}]
 });

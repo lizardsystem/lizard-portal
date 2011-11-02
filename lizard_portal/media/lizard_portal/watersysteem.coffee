@@ -25,6 +25,7 @@ Ext.application
         'Lizard.portlet.PortalPanel'
         'Lizard.portlet.PortalColumn'
         'Lizard.portlet.GridPortlet'
+        'Vss.grid.Esf'
         'Ext.Img',
         # 'Ext.DomHelper',
         'Ext.grid.*'

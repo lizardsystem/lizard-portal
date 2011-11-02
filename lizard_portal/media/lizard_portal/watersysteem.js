@@ -9,7 +9,7 @@
     name: 'lizardViewer',
     models: ['Vss.model.Communique', 'Vss.model.Esf', 'Vss.model.ObjectTree'],
     stores: ['Vss.store.Communique', 'Vss.store.Esf', 'Vss.store.CatchmentTree', 'Vss.store.KrwGebiedenTree'],
-    requires: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Ext.Img', 'Ext.grid.*', 'Ext.data.Model', 'Ext.data.*', 'Ext.tree.*', 'Ext.button.*', 'Lizard.ux.CheckColumn', 'GeoExt.panel.Map', 'GeoExt.data.LayerStore', 'GeoExt.data.LayerModel', 'GeoExt.data.reader.Layer', 'Ext.MessageBox'],
+    requires: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Vss.grid.Esf', 'Ext.Img', 'Ext.grid.*', 'Ext.data.Model', 'Ext.data.*', 'Ext.tree.*', 'Ext.button.*', 'Lizard.ux.CheckColumn', 'GeoExt.panel.Map', 'GeoExt.data.LayerStore', 'GeoExt.data.LayerModel', 'GeoExt.data.reader.Layer', 'Ext.MessageBox'],
     launch: function() {
       OpenLayers.ImgPath = "/static_media/themes/dark/";
       return Ext.create('Lizard.window.Dashboard');
