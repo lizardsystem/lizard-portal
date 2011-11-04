@@ -23,8 +23,6 @@ try {
 catch (e) {
     console.warning('no window.onpopstate');
 }
-
-
 </script>
 {{ block.super }}
 {% endblock head-extras %}
@@ -44,7 +42,6 @@ catch (e) {
       href="{{ STATIC_URL }}lizard_portal/lizard.css"
       type="text/css"
       media="screen, projection" />
-{{ block.super }}
 {% endblock css %}
 {% endcompress %}
 
