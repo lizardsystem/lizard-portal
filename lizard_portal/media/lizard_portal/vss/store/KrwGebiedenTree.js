@@ -14,13 +14,13 @@ Ext.define('Vss.store.KrwGebiedenTree', {
     },
     proxy: {
         type: 'rest',
-        url: 'area/api/krw-areas/',
+        url: '/area/api/krw-areas/',
         extraParams: {
             _accept: 'application/json'
         },
         reader: {
             type: 'json',
-            root: 'krw-areas'
+            root: 'areas'
         }
     }
 });

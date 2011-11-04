@@ -9,7 +9,7 @@
         "handmatig": false,
         "children": [
             {"id": 2, "naam": "Hoofd - Kritische belasting", "waarde": "goed", "auto_waarde": "goed","bron": "", "expanded": false, "children": [
-                {"id": 3, "naam": "Algemeen", "handmatig": false, "waarde": "", "bron": "", "expanded": false, "children": [
+                {"id": 3, "naam": "Algemeen", "waarde": "", "bron": "", "expanded": false, "children": [
                     {"id": 4, "leaf": true, "naam": "Metamodel", "handmatig": true, "waarde": "PC lake", "bron": "Invoer"},
                     {"id": 5, "leaf": true, "naam": "Gemiddelde toepassing", "waarde": "zomer", "bron": "Invoer"}
                  ]},
@@ -42,14 +42,12 @@
         "naam": "Ecologische Sleutel factor 2",
         "waarde": "goed",
         "auto_waarde": "goed",
-        "handmatig": false,
         "leaf": true
     },{
         "id": 30,
         "naam": "Ecologische Sleutel factor 3",
         "waarde": "goed",
         "auto_waarde": "goed",
-        "handmatig": false,
         "leaf": true
     }]
 }

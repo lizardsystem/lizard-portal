@@ -35,6 +35,17 @@ Ext.define('Lizard.portlet.PortalPanel', {
     autoScroll: true,
     height:'100%',
 
+    params: {
+
+    },
+    setContext: function(params) {
+        this.params = Ext.merge({}, this.params, params);
+        this.fireEvent("contextchange", params);
+        //this.contextChange(this, new_params);
+   },
+    contextChange: function() {
+        console.log('context change portalpanel ' + this.id);
+    },
     initComponent : function() {
         var me = this;
 
@@ -46,6 +57,7 @@ Ext.define('Lizard.portlet.PortalPanel', {
         this.callParent();
 
         this.addEvents({
+            contextchange: true,
             validatedrop: true,
             beforedragover: true,
             dragover: true,
@@ -56,6 +68,9 @@ Ext.define('Lizard.portlet.PortalPanel', {
                 console.log('drop do layout');
                 this.doLayout();
             }, this);
+        this.on('contextchange',
+            this.contextChange,
+            this);
     },
 
     // Set columnWidth, and set first and last column classes to allow exact CSS targeting.

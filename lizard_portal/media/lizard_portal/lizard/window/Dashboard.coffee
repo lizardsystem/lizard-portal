@@ -1,16 +1,24 @@
+
+
+
+
+
+
+
+
 Ext.define 'Lizard.window.Dashboard',
     extend:'Ext.container.Viewport'
 
     config:
-        area_selection_template:'aan_afvoergebied_selectie',
+        area_selection_template: 'aan_afvoergebied_selectie',
+        area_store: 'Vss.store.CatchmentTree'
         lizard_context:
-            period_start:'2000-01-01T00:00'
+            period_start: '2000-01-01T00:00'
             period_end: '2002-01-01T00:00'
             object: 'aan_afvoergebied'
             object_id: null
             portalTemplate:'homepage'
             base_url: 'portal/watersysteem'
-            activeOrganisation: [1,2]
 
 
     linkTo:(options, save_state=true) ->
@@ -18,10 +26,7 @@ Ext.define 'Lizard.window.Dashboard',
         @loadPortal(@lizard_context)
 
     setContext:(options, save_state=true) ->
-        console.log options
-        console.log @getLizard_context()
-
-        @setLizard_context(Ext.Object.merge(@.getLizard_context(), options))
+        @setLizard_context(Ext.merge(@.getLizard_context(), options))
 
         if save_state
             try
@@ -30,30 +35,38 @@ Ext.define 'Lizard.window.Dashboard',
                 console.log "not able to set pushState"
 
     loadPortal:(params, area_selection_collapse=true) ->
-        console.log params
         console.log "portalTemplate:" + params.portalTemplate
+        console.log params
+
         container = Ext.getCmp 'app-portal'
-        container.setLoading true
-        container.removeAll(true)
-        maps = Ext.ComponentQuery.query("gx_mappanel")
-        if maps.length > 0
-          maps[0].map.destroy()
 
-        Ext.Ajax.request
-            url: '/portal/configuration/',
-            params: params
-            method: 'GET'
-            success: (xhr) =>
-                newComponent = eval 'eval( ' + xhr.responseText + ')'
-                if area_selection_collapse
-                  navigation = Ext.getCmp 'areaNavigation'
-                  navigation.collapse()
-                container.add newComponent
-                container.setLoading false
+        tab = container.child("##{params.portalTemplate}")
 
-            failure: =>
-                Ext.Msg.alert "portal creation failed", "Server communication failure"
-                container.setLoading false
+        if tab
+            #switch to tab
+            container.setActiveTab(tab)
+            tab.setContext(params)
+        else
+            #load portal and put in tab
+            container.setLoading true
+            #container.removeAll(true)
+
+            Ext.Ajax.request
+                url: '/portal/configuration/',
+                params: params
+                method: 'GET'
+                success: (xhr) =>
+                    newComponent = eval 'eval( ' + xhr.responseText + ')'
+                    if area_selection_collapse
+                        navigation = Ext.getCmp 'areaNavigation'
+                        navigation.collapse()
+                    tab = container.add newComponent
+                    container.setActiveTab(tab)
+                    container.setLoading false
+
+                failure: =>
+                    Ext.Msg.alert "portal creation failed", "Server communication failure"
+                    container.setLoading false
 
     showAreaSelection: ->
         arguments = Ext.Object.merge({}, @lizard_context, {portalTemplate: @area_selection_template})
@@ -65,36 +78,7 @@ Ext.define 'Lizard.window.Dashboard',
         Lizard.window.Dashboard.superclass.constructor.apply @
 
     initComponent: (arguments) ->
-        content = '<div class="portlet-content">hier moet iets komen</div>'
-
-        Ext.create(GeoExt.data.LayerStore,
-            layers: [
-                new OpenLayers.Layer.OSM()
-                new OpenLayers.Layer.WMS('Waterlopen', 'http://maps.waterschapservices.nl/wms?namespace=inspire',{
-                        layers:['HY.PhysicalWaters.Waterbodies'],
-                        transparent: "true",
-                        format: "image/png"
-                    },{
-                        singleTile: true,
-                        displayOutsideMaxExtent: true,
-                        projection: new OpenLayers.Projection("EPSG:900913")
-
-                    }
-                )
-                new OpenLayers.Layer.WMS('Kunstwerken', 'http://maps.waterschapservices.nl/wms?namespace=inspire',{
-                        layers:['HY.PhysicalWaters.ManMadeObject'],
-                        transparent: "true",
-                        format: "image/png"
-                    },{
-                        singleTile: true,
-                        displayOutsideMaxExtent: true,
-                        projection: new OpenLayers.Projection("EPSG:900913")
-
-                    }
-                )
-                ],
-            storeId:'Layers'
-        )
+        me = @
 
         Ext.apply @,
             id: 'portalWindow',
@@ -131,7 +115,7 @@ Ext.define 'Lizard.window.Dashboard',
                         itemclick:
                             fn: (tree, node) =>
                                 @linkTo {object_id: node.data.id}
-                    store: 'Vss.store.CatchmentTree'
+                    store: me.area_store
                     bbar: [
                         text: 'Selecteer op kaart -->'
                         border: 1
@@ -144,6 +128,7 @@ Ext.define 'Lizard.window.Dashboard',
                 collapsible: false
                 floatable: false
                 split: false
+                xtype: 'tabpanel'
                 id: 'app-portal'}]
                 
 

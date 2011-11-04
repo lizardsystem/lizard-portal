@@ -129,7 +129,6 @@ Ext.define('Vss.grid.Esf', {
                 renderer: value_renderer,
                 listeners: {
                     'mouseover': function(a,b,c,d){
-                        alert('mouseover');
                         console.log(a);
                         console.log(b);
                         console.log(c);
@@ -158,8 +157,6 @@ Ext.define('Vss.grid.Esf', {
                         multiline: true,
                         buttons: Ext.MessageBox.OKCANCEL,
                         fn: function (btn, text) {
-                             Ext.MessageBox.alert('Opgeslagen');
-                             console.log(btn);
                              if (btn=='ok') {
                                  me.store.sync();
                              }

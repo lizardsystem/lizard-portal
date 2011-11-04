@@ -6,6 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 {
+    itemId: 'krw_selectie',
+    title: 'KRW gebied selectie',
 	xtype: 'portalpanel',
 	items: [{
 		flex: 1,

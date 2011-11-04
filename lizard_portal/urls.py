@@ -47,5 +47,8 @@ urlpatterns = patterns(
         direct_to_template,
         {'template': 'example_treedata.json'},
         name='treedata'),
+    url(r'^getFeatureInfo',
+        'lizard_portal.views.feature_info',
+        name='feature_info'),
     )
 urlpatterns += debugmode_urlpatterns()

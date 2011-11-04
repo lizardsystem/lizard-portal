@@ -4,14 +4,14 @@
     extend: 'Ext.container.Viewport',
     config: {
       area_selection_template: 'aan_afvoergebied_selectie',
+      area_store: 'Vss.store.CatchmentTree',
       lizard_context: {
         period_start: '2000-01-01T00:00',
         period_end: '2002-01-01T00:00',
         object: 'aan_afvoergebied',
         object_id: null,
         portalTemplate: 'homepage',
-        base_url: 'portal/watersysteem',
-        activeOrganisation: [1, 2]
+        base_url: 'portal/watersysteem'
       }
     },
     linkTo: function(options, save_state) {
@@ -25,9 +25,7 @@
       if (save_state == null) {
         save_state = true;
       }
-      console.log(options);
-      console.log(this.getLizard_context());
-      this.setLizard_context(Ext.Object.merge(this.getLizard_context(), options));
+      this.setLizard_context(Ext.merge(this.getLizard_context(), options));
       if (save_state) {
         try {
           return window.history.pushState(this.lizard_context, "" + options, "/" + this.lizard_context.base_url + "/#" + this.lizard_context.portalTemplate + "/" + this.lizard_context.object + "/" + this.lizard_context.object_id);
@@ -37,38 +35,40 @@
       }
     },
     loadPortal: function(params, area_selection_collapse) {
-      var container, maps;
+      var container, tab;
       if (area_selection_collapse == null) {
         area_selection_collapse = true;
       }
-      console.log(params);
       console.log("portalTemplate:" + params.portalTemplate);
+      console.log(params);
       container = Ext.getCmp('app-portal');
-      container.setLoading(true);
-      container.removeAll(true);
-      maps = Ext.ComponentQuery.query("gx_mappanel");
-      if (maps.length > 0) {
-        maps[0].map.destroy();
+      tab = container.child("#" + params.portalTemplate);
+      if (tab) {
+        container.setActiveTab(tab);
+        return tab.setContext(params);
+      } else {
+        container.setLoading(true);
+        return Ext.Ajax.request({
+          url: '/portal/configuration/',
+          params: params,
+          method: 'GET',
+          success: __bind(function(xhr) {
+            var navigation, newComponent;
+            newComponent = eval('eval( ' + xhr.responseText + ')');
+            if (area_selection_collapse) {
+              navigation = Ext.getCmp('areaNavigation');
+              navigation.collapse();
+            }
+            tab = container.add(newComponent);
+            container.setActiveTab(tab);
+            return container.setLoading(false);
+          }, this),
+          failure: __bind(function() {
+            Ext.Msg.alert("portal creation failed", "Server communication failure");
+            return container.setLoading(false);
+          }, this)
+        });
       }
-      return Ext.Ajax.request({
-        url: '/portal/configuration/',
-        params: params,
-        method: 'GET',
-        success: __bind(function(xhr) {
-          var navigation, newComponent;
-          newComponent = eval('eval( ' + xhr.responseText + ')');
-          if (area_selection_collapse) {
-            navigation = Ext.getCmp('areaNavigation');
-            navigation.collapse();
-          }
-          container.add(newComponent);
-          return container.setLoading(false);
-        }, this),
-        failure: __bind(function() {
-          Ext.Msg.alert("portal creation failed", "Server communication failure");
-          return container.setLoading(false);
-        }, this)
-      });
     },
     showAreaSelection: function() {
       arguments = Ext.Object.merge({}, this.lizard_context, {
@@ -81,30 +81,8 @@
       return Lizard.window.Dashboard.superclass.constructor.apply(this);
     },
     initComponent: function(arguments) {
-      var content;
-      content = '<div class="portlet-content">hier moet iets komen</div>';
-      Ext.create(GeoExt.data.LayerStore, {
-        layers: [
-          new OpenLayers.Layer.OSM(), new OpenLayers.Layer.WMS('Waterlopen', 'http://maps.waterschapservices.nl/wms?namespace=inspire', {
-            layers: ['HY.PhysicalWaters.Waterbodies'],
-            transparent: "true",
-            format: "image/png"
-          }, {
-            singleTile: true,
-            displayOutsideMaxExtent: true,
-            projection: new OpenLayers.Projection("EPSG:900913")
-          }), new OpenLayers.Layer.WMS('Kunstwerken', 'http://maps.waterschapservices.nl/wms?namespace=inspire', {
-            layers: ['HY.PhysicalWaters.ManMadeObject'],
-            transparent: "true",
-            format: "image/png"
-          }, {
-            singleTile: true,
-            displayOutsideMaxExtent: true,
-            projection: new OpenLayers.Projection("EPSG:900913")
-          })
-        ],
-        storeId: 'Layers'
-      });
+      var me;
+      me = this;
       Ext.apply(this, {
         id: 'portalWindow',
         layout: {
@@ -149,7 +127,7 @@
                 }, this)
               }
             },
-            store: 'Vss.store.CatchmentTree',
+            store: me.area_store,
             bbar: [
               {
                 text: 'Selecteer op kaart -->',
@@ -164,6 +142,7 @@
             collapsible: false,
             floatable: false,
             split: false,
+            xtype: 'tabpanel',
             id: 'app-portal'
           }
         ]

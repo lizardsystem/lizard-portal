@@ -43,8 +43,13 @@ var grid = Ext.create('Ext.grid.Panel', {
 Ext.define('Lizard.ux.CheckColumn', {
     extend: 'Ext.grid.column.Column',
     alias: 'widget.checkcolumn',
-    
-    constructor: function() {
+    config: {
+        class_checked: 'grid-checkheader-checked',
+        class_unchecked: 'grid-checkheader-unchecked',
+        class_null: 'grid-checkheader-null'
+    },
+    constructor: function(config) {
+        //this.initConfig(config);
         this.addEvents(
             /**
              * @event checkchange
@@ -55,8 +60,12 @@ Ext.define('Lizard.ux.CheckColumn', {
              */
             'checkchange'
         );
+
+
+
         this.callParent(arguments);
     },
+
 
     /**
      * @private
@@ -64,9 +73,10 @@ Ext.define('Lizard.ux.CheckColumn', {
      */
     processEvent: function(type, view, cell, recordIndex, cellIndex, e) {
         if (type == 'mousedown' || (type == 'keydown' && (e.getKey() == e.ENTER || e.getKey() == e.SPACE))) {
-            var record = view.panel.store.getAt(recordIndex),
-                dataIndex = this.dataIndex,
-                checked = !record.get(dataIndex);
+            
+            var record = view.panel.store.getAt(recordIndex);
+            var dataIndex = this.dataIndex;
+            var checked = !record.get(dataIndex);
                 
             record.set(dataIndex, checked);
             this.fireEvent('checkchange', this, recordIndex, checked);
@@ -80,13 +90,15 @@ Ext.define('Lizard.ux.CheckColumn', {
     // Note: class names are not placed on the prototype bc renderer scope
     // is not in the header.
     renderer : function(value){
-        var cssPrefix = Ext.baseCSSPrefix,
-            cls = [cssPrefix + 'grid-checkheader'];
+        var cssPrefix = Ext.baseCSSPrefix;
+        var cls = [cssPrefix + 'grid-checkheader'];
 
         if (value) {
             cls.push(cssPrefix + 'grid-checkheader-checked');
+        } else if (value===false) {
+            cls.push(cssPrefix + 'grid-checkheader-unchecked');
         } else if (value===null){
-            cls= " ";
+            cls.push(cssPrefix + 'grid-checkheader-null');
         }
 
         return '<div class="' + cls.join(' ') + '">&#160;</div>';

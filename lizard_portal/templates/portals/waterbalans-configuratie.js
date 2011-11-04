@@ -5,7 +5,9 @@
  * Time: 17:52
  * To change this template use File | Settings | File Templates.
  */
- {
+{
+    itemId: 'waterbalans-configuratie',
+    title: 'Waterbalans-configuratie',
 	xtype: 'portalpanel',
 	items:[{
 		flex:1,

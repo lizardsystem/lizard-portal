@@ -1,10 +1,6 @@
 Ext.define('Lizard.plugin.ApplyContext', {
     alias: 'plugin.applycontext',
 
-    applyParams: function(params) {
-        console.log('apply params');
-        console.log(params);
-    },
     register_event_parent: function(object_self, eventname, event_function, max_levels_deep) {
         var max_levels_deep = max_levels_deep || 10;
         var parent = object_self.ownerCt;
@@ -20,17 +16,25 @@ Ext.define('Lizard.plugin.ApplyContext', {
     },
 
     /**
-     * Called by plug-in system to initialize the plugin for a specific grid panel
+     * Called by plug-in system to initialize the plugin for a specific class
      */
     init: function(obj) {
+        var me = this
 
-    },
-    afterRender: function(arguments) {
-        this.callParent();
-        success = this.register_event_parent(this, 'contextchange', this.applyParams);
-        console.log(success);
+        if (!obj.applyParams) {
+            obj.applyParams = function(params) {
+                console.log('add applyParams to function for '+ this.id);
+                console.log(params);
+            }
+        }
+
+
+
+        obj.on('afterrender', function(event){
+               success = me.register_event_parent(this, 'contextchange', this.applyParams);
+               console.log('status event registration: '+ success);
+
+            }, obj);
+
     }
-    
-
-
 });

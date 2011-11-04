@@ -6,7 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 {
-	xtype: 'portalpanel',
+    itemId: 'analyse-interpretatie-details',
+    title: 'Details analyse interpretaties',
+    xtype: 'portalpanel',
 	items: [{
 		flex:1,
 		items: [{

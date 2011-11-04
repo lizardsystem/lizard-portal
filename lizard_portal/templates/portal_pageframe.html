@@ -3,7 +3,7 @@
 {% block head-extras %}
 {# Extjs and app scripts #}
 <script type="text/javascript"
-        src="{{ STATIC_URL }}extjs/ext-debug.js"></script>
+        src="{{ STATIC_URL }}extjs/ext-all-debug.js"></script>
 <script type="text/javascript"
         src="{{ STATIC_URL }}{{ extjs_app }}"></script>
 <script id="openlayers-script"
@@ -23,6 +23,7 @@ try {
 catch (e) {
     console.warning('no window.onpopstate');
 }
+
 
 
 </script>

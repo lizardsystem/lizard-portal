@@ -26,6 +26,7 @@ Ext.application
         'Lizard.portlet.PortalColumn'
         'Lizard.portlet.GridPortlet'
         'Ext.Img',
+        'Lizard.plugin.ApplyContext',
         # 'Ext.DomHelper',
         'Ext.grid.*'
         'Ext.data.Model'
@@ -54,7 +55,8 @@ Ext.application
                 portalTemplate:'krw-overzicht'
                 base_url: 'portal/beleid'
                 activeOrganisation: [1,2]
-            area_selection_template:'krw_selectie'
+            area_selection_template: 'krw_selectie'
+            area_store: 'Vss.store.KrwGebiedenTree'
         }
 
 

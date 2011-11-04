@@ -27,6 +27,10 @@ def json_configuration(request):
         t = get_template('portals/homepage.js')
     elif portal_template == 'esf-1':
         t = get_template('portals/esf-1.js')
+    elif portal_template == 'esf-overzicht':
+        t = get_template('portals/esf-overzicht.js')
+    elif portal_template == 'communique':
+        t = get_template('portals/communique.js')
     elif portal_template == 'analyse-interpretatie':
         t = get_template('portals/analyse-interpretatie.js')
     elif portal_template == 'waterbalans':
@@ -41,3 +45,22 @@ def json_configuration(request):
         pc = PortalConfiguration.objects.filter(slug=portal_template)[0]
         t = Template(pc.configuration)
     return HttpResponse(t.render(c),  mimetype="text/plain")
+
+
+def feature_info(request):
+    """
+    Return JSON for request.
+    """
+    url = request.GET.get('request', None)
+
+    import httplib
+
+    urls = url.rstrip('"').rstrip("'").split('/')
+    conn = httplib.HTTPConnection(urls[2])
+    conn.request('GET', '/%s'%urls[3])
+    resp = conn.getresponse()
+
+    print resp.status
+    content =  resp.read()
+    print content
+    return HttpResponse(content,  mimetype="text/plain")

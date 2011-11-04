@@ -7,6 +7,8 @@
  */
 
 {
+    itemId: 'communique',
+    title: 'Communique',
 	xtype: 'portalpanel',
 	items: [{
 		id: 'col-a1',

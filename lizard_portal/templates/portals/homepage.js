@@ -5,7 +5,9 @@
  * Time: 15:33
  * To change this template use File | Settings | File Templates.
  */
- {
+{
+    itemId: 'homepage',
+    title: 'Watersysteemkaart',
 	xtype: 'portalpanel',
 	items: [{
 		width: 300,
@@ -39,13 +41,112 @@
 		items: [{
 			title: 'Watersysteemkaart',
             id:'extmap',
+            plugins: [
+                'applycontext'
+            ],
             flex:1,
             xtype: "gx_mappanel",
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],
-            extent: new OpenLayers.Bounds{{ area.extent }},
-            layers: Ext.data.StoreManager.lookup('Layers')
-//{layers: [new OpenLayers.Layer.OSM()], storeId: 'Layers'}
+            layers: Ext.data.StoreManager.lookup('Layers'),
+            onMapClick: function (event) {
+
+                layerlist = "here,there,everywhere";
+
+                mouseLoc = this.map.getLonLatFromPixel(event.xy);
+
+                var url = this.map.layers[2].getFullRequestString({
+                            namespace: 'inspire',
+                            REQUEST: "GetFeatureInfo",
+                            EXCEPTIONS: "application/vnd.ogc.se_xml",
+                            BBOX: this.map.getExtent().toBBOX(),
+                            X: event.xy.x,
+                            Y: event.xy.y,
+                            //X: mouseLoc.X,
+                            //Y: mouseLoc.Y,
+                            INFO_FORMAT: 'text/html',
+                            QUERY_LAYERS: 'HY.PhysicalWaters.ManMadeObject',
+                            LAYERS: 'HY.PhysicalWaters.ManMadeObject',
+                            FEATURE_COUNT: 1,
+                            WIDTH: this.map.size.w,
+                            HEIGHT: this.map.size.h
+                    },
+                            "http://maps.waterschapservices.nl/wms?");
+
+                Ext.create('Ext.window.Window', {
+                        title: 'object_info',
+                        width: 400,
+                        height: 300,
+                        //layout: 'fit',
+                        autoScroll: true,
+                        loader:{
+                            load_mask: true,
+
+                            autoLoad: true,
+                            url: '/portal/getFeatureInfo/',
+                            ajaxOptions: {
+                                method: 'GET'
+                            },
+                            params: {
+                                request: Ext.JSON.encode(url)
+                            },
+                            renderer: 'html'
+                        }
+                    }
+                ).show();
+
+
+
+                /*Ext.Ajax.request({
+                    url: '/portal/getFeatureInfo/',
+                    method: 'GET',
+                    params: {
+                        request: Ext.JSON.encode(url)
+                    },
+                    success: function(xhr) {
+                        var response = xhr.responseText;
+                        console.log(response)
+                        //me.map.zoomToExtent(new OpenLayers.Bounds.fromArray(area_data.extent));
+
+                        //return me.setLoading(false);
+                    },
+                    failure: function() {
+                        Ext.Msg.alert("portal creation failed", "Server communication failure");
+                        //return container.setLoading(false);
+                    }
+                });
+                //OpenLayers.loadURL(url, '', this, function(response) {console.log(response);});
+
+                Event.stop(event);*/
+            },
+            applyParams: function(params) {
+                var me = this;
+                me.setLoading(true);
+                Ext.Ajax.request({
+                    url: '/area/api/area_special/'+ params.object_id +'/',
+                    method: 'GET',
+                    params: {
+                        _accept: 'application/json'
+                    },
+                    success: function(xhr) {
+                        var area_data = Ext.JSON.decode(xhr.responseText).area;
+                        console.log(area_data)
+                        me.map.zoomToExtent(new OpenLayers.Bounds.fromArray(area_data.extent));
+
+                        return me.setLoading(false);
+                    },
+                    failure: function() {
+                        Ext.Msg.alert("portal creation failed", "Server communication failure");
+                        return container.setLoading(false);
+                    }
+                });
+
+
+
+
+                console.log('gelukt');
+            }
+
 
 		}]
 	},{
@@ -68,7 +169,7 @@
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans'}); }
                 }, {
                    text: 'Communique',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'communiques'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'communique'}); }
                 }, {
                    text: 'Analyse interpretaties',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'analyse-interpretatie'}); }

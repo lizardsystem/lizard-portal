@@ -6423,7 +6423,8 @@ var Base = Ext.Base = function() {};
                 cls = this.get(name);
             }
 
-
+            console.log(cls);
+            console.log(args);
 
             return this.getInstantiator(args.length)(cls, args);
         },

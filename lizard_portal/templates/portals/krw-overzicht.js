@@ -5,7 +5,9 @@
  * Time: 17:52
  * To change this template use File | Settings | File Templates.
  */
- {
+{
+    itemId: 'krw-overzicht',
+    title: 'KRW overzicht',
 	xtype: 'portalpanel',
 	items:[{
 		width: 300,

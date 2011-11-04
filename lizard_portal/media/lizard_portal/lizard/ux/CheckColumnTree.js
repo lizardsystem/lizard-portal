@@ -40,9 +40,9 @@ var grid = Ext.create('Ext.grid.Panel', {
  * based on whether or not it is checked to alter the background image used
  * for a column.
  */
-Ext.define('Lizard.ux.CheckColumn', {
+Ext.define('Lizard.ux.CheckColumnTree', {
     extend: 'Ext.grid.column.Column',
-    alias: 'widget.checkcolumn',
+    alias: 'widget.checkcolumntree',
     config: {
         class_checked: 'grid-checkheader-checked',
         class_unchecked: 'grid-checkheader-unchecked',
@@ -50,49 +50,8 @@ Ext.define('Lizard.ux.CheckColumn', {
     },
     constructor: function(config) {
         //this.initConfig(config);
-        this.addEvents(
-            /**
-             * @event checkchange
-             * Fires when the checked state of a row changes
-             * @param {Ext.ux.CheckColumn} this
-             * @param {Number} rowIndex The row index
-             * @param {Boolean} checked True if the box is checked
-             */
-            'checkchange'
-        );
-
-
 
         this.callParent(arguments);
-    },
-
-
-    /**
-     * @private
-     * Process and refire events routed from the GridView's processEvent method.
-     */
-    processEvent: function(type, view, cell, recordIndex, cellIndex, e) {
-        if (type == 'mousedown' || (type == 'keydown' && (e.getKey() == e.ENTER || e.getKey() == e.SPACE))) {
-            
-            console.log(recordIndex);
-            if (view.panel.store.getAt) {
-                var record = view.panel.store.getAt(recordIndex);
-            } else {
-                var record = view.panel.getDockedComponent(recordIndex);
-            }
-            console.log(view)
-
-            var dataIndex = this.dataIndex;
-            console.log(this)
-            var checked = !record.get(dataIndex);
-                
-            record.set(dataIndex, checked);
-            this.fireEvent('checkchange', this, recordIndex, checked);
-            // cancel selection.
-            return false;
-        } else {
-            return this.callParent(arguments);
-        }
     },
 
     // Note: class names are not placed on the prototype bc renderer scope
@@ -101,11 +60,11 @@ Ext.define('Lizard.ux.CheckColumn', {
         var cssPrefix = Ext.baseCSSPrefix;
         var cls = [cssPrefix + 'grid-checkheader'];
 
-        if (value) {
+        if (value==1) {
             cls.push(cssPrefix + 'grid-checkheader-checked');
-        } else if (value===false) {
+        } else if (value==0) {
             cls.push(cssPrefix + 'grid-checkheader-unchecked');
-        } else if (value===null){
+        } else if (value==-1){
             cls.push(cssPrefix + 'grid-checkheader-null');
         }
 

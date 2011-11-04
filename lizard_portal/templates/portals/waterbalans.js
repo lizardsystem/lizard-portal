@@ -5,7 +5,9 @@
  * Time: 17:52
  * To change this template use File | Settings | File Templates.
  */
- {
+{
+    itemId: 'waterbalans',
+    title: 'Waterbalans',
 	xtype: 'portalpanel',
 	items:[{
 		width: 300,

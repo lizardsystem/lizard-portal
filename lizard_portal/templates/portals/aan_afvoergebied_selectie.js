@@ -6,7 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 {
-	xtype: 'portalpanel',
+	itemId: 'aan_afvoergebied_selectie',
+    title: 'Selectie aan/afvoergebied',
+    xtype: 'portalpanel',
 	items: [{
 		flex: 1,
 		items: [{

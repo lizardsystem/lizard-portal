@@ -1,15 +1,16 @@
 {
+    itemId: 'esf-1',
+    title: 'ESF details',
     xtype: 'portalpanel',
 	items: [{
 		width:500,
 		items: [{
             flex:2,
             title: 'Opbouw ESF 1',
+            closable: false,
             items: {
                 flex: 1,
-                xtype: 'esf_grid',
-                area_id: 33,
-                id: 'rrr'
+                xtype: 'esf_grid'
             }
         }]
 	},{
