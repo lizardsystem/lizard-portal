@@ -8,6 +8,15 @@
 {
     itemId: 'homepage',
     title: 'Watersysteemkaart',
+    breadcrumb: [
+        {
+            name: 'aan-afvoergebied',
+            link: 'javascript:Ext.getCmp("portalWindow").linkTo({template:"aan_afvoergeboed_selectie"})'
+        },
+        {
+            name: 'watersysteemkaart'
+        }
+    ],
 	xtype: 'portalpanel',
 	items: [{
 		width: 300,

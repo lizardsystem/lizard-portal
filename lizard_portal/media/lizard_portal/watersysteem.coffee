@@ -1,6 +1,3 @@
-
-
-Ext.Loader.setConfig({disableCaching: true, enabled: true})
 Ext.Loader.setPath 'Lizard', '/static_media/lizard_portal/lizard'
 Ext.Loader.setPath 'Vss', '/static_media/lizard_portal/vss'
 Ext.Loader.setPath 'GeoExt', '/static_media/geoext4/src'

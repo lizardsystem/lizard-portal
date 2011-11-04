@@ -2,8 +2,16 @@
 
 {% block head-extras %}
 {# Extjs and app scripts #}
+{% if debug %}
 <script type="text/javascript"
         src="{{ STATIC_URL }}extjs/ext-all-debug.js"></script>
+{% else %}
+<script type="text/javascript"
+        src="{{ STATIC_URL }}extjs/ext-all.js"></script>
+{% endif %}
+<script>
+    Ext.Loader.setConfig({disableCaching: true, enabled: true});
+</script>
 <script type="text/javascript"
         src="{{ STATIC_URL }}{{ extjs_app }}"></script>
 <script id="openlayers-script"
