@@ -276,7 +276,6 @@ Ext.define('GeoExt.panel.Map', {
     onMapClick: function(event, lonlat) {
         console.log(event);
         console.log(lonlat);
-
     },
 
 

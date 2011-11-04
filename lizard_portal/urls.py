@@ -27,11 +27,6 @@ urlpatterns = patterns(
         {   'template': 'portal_pageframe.html',
             'extra_context': {'extjs_app': 'lizard_portal/beleid.js'}},
         name="beleidpage"),
-    url(r'^portalheader/',
-        direct_to_template,
-        {'template': 'header.html'},
-        name="portalheader"),
-        
     url(r'^configuration/',
         'lizard_portal.views.json_configuration',
         name="json_configuration"),
