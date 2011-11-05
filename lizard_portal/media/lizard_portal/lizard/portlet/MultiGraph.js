@@ -5,15 +5,21 @@ Ext.define('Lizard.portlet.MultiGraph', {
     alias: 'widget.multigraph',
     config: {
         graph_service_url: 'bla',
-        graph_module_instance: 'bal bal',
+        adapter_layer_json: {module_id:null,parameter_id:"ALMR110","fews_norm_source_slug":""},
         graphs: [{
-            title: 'Belasting'
+            title: 'Belasting',
+            timeseries:[{
+                parameter_id: "ALMR110",
+                module_id: "ImportLE",
+                ident: "53R0017"
+            }]
         }, {
            title: 'Verblijftijd'
         }, {
            title: 'P/N ratio'
         }]
     },
+
     setGraphFit: function(fit) {
         var items = this.items.items;
         if (fit) {
@@ -26,15 +32,31 @@ Ext.define('Lizard.portlet.MultiGraph', {
             }
         }
         this.doLayout();
+
+        for (nr in items) {
+            items[nr].doLayout();
+        }
     },
     initGraphs: function() {
+        var getImageConfig = function (graph) {
+            result = {}
+            result['orig_src'] = graph['graph_service_url'] || this.graph_service_url;
+            result['params'] = {}
+            result['params']['adapter_layer_json'] = graph['adapter_layer_json'] || this.graph_module_instance;
+            result['params']['ident'] = []
+            for (ts in graph.timeseries) {
+                result.params.ident.push(graph.timeseries[ts])
+            }
+            return result
+        }
+
         console.log('setGraphs');
         var graphs = this.getGraphs();
         console.log(graphs)
         for (nr in graphs) {
             var graph_config = graphs[nr];
 
-            var graph = Ext.create('Ext.tcontainer.Container', { html: 'grafiek' })
+            var graph = Ext.create('Lizard.ux.ImageResize', getImageConfig(graph_config));
 
             this.items.push(graph);
 
@@ -73,7 +95,8 @@ Ext.define('Lizard.portlet.MultiGraph', {
                 flex: 1,
                 height: 250
             },
-            tbar: ['|'],
+            autoScroll:true,
+            tbar: [],
             items: [],
             tools: [{
                 type: 'plus',

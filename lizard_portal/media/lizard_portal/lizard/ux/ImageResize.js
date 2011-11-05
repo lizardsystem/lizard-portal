@@ -10,68 +10,42 @@ Ext.define('Lizard.ux.ImageResize', {
     extend: 'Ext.Img',
     alias: 'widget.imageResize',
     config: {
-        class_checked: 'grid-checkheader-checked',
-        class_unchecked: 'grid-checkheader-unchecked',
-        class_null: 'grid-checkheader-null'
+        params: {}
     },
 
-    setParams: function(params) {
-        self.setSrc();
+    applyParams: function(new_params) {
+        var url = this.orig_src
+
+        var params = Ext.merge(this.params, new_params);
+
+        for (key in params) {
+            url += '&' + key + '=' + Ext.JSON.encode(params[key]);
+        }
+
+        this.setSrc(url);
     },
 
     constructor: function(config) {
-        //this.initConfig(config);
-        this.addEvents(
-            /**
-             * @event checkchange
-             * Fires when the checked state of a row changes
-             * @param {Ext.ux.CheckColumn} this
-             * @param {Number} rowIndex The row index
-             * @param {Boolean} checked True if the box is checked
-             */
-            'checkchange'
-        );
+        this.initConfig(arguments);
+        this.callParent(arguments);
+    },
+    initComponent: function() {
 
+        Ext.apply(this,{
+            //orig_src: '/map/adapter/adapter_fewsnorm/image/?adapter_layer_json={%22module_id%22:%20null,%20%22parameter_id%22:%20%22ALMR110%22,%20%22fews_norm_source_slug%22:%20%22%22}&identifier={%22parameter_id%22:%20%22ALMR110%22,%20%22module_id%22:%20%22ImportLE%22,%20%22ident%22:%20%2253R0017%22}'
+        });
 
+        this.on({
+            resize: function(Component, adjWidth, adjHeight, eOpts) {
+                Component.applyParams({width: adjWidth, height: adjHeight});
+            }
+        })
 
         this.callParent(arguments);
     },
-
-
-    /**
-     * @private
-     * Process and refire events routed from the GridView's processEvent method.
-     */
-    processEvent: function(type, view, cell, recordIndex, cellIndex, e) {
-        if (type == 'mousedown' || (type == 'keydown' && (e.getKey() == e.ENTER || e.getKey() == e.SPACE))) {
-
-            var record = view.panel.store.getAt(recordIndex);
-            var dataIndex = this.dataIndex;
-            var checked = !record.get(dataIndex);
-
-            record.set(dataIndex, checked);
-            this.fireEvent('checkchange', this, recordIndex, checked);
-            // cancel selection.
-            return false;
-        } else {
-            return this.callParent(arguments);
-        }
-    },
-
-    // Note: class names are not placed on the prototype bc renderer scope
-    // is not in the header.
-    renderer : function(value){
-        var cssPrefix = Ext.baseCSSPrefix;
-        var cls = [cssPrefix + 'grid-checkheader'];
-
-        if (value) {
-            cls.push(cssPrefix + 'grid-checkheader-checked');
-        } else if (value===false) {
-            cls.push(cssPrefix + 'grid-checkheader-unchecked');
-        } else if (value===null){
-            cls.push(cssPrefix + 'grid-checkheader-null');
-        }
-
-        return '<div class="' + cls.join(' ') + '">&#160;</div>';
+    afterRender: function() {
+        this.applyParams({width: this.getWidth(), height: this.getHeight()});
     }
+
+
 });
