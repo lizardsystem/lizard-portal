@@ -1,14 +1,5 @@
-
-
-
-
-
-
-
-
 Ext.define 'Lizard.window.Dashboard',
     extend:'Ext.container.Viewport'
-
     config:
         area_selection_template: 'aan_afvoergebied_selectie',
         area_store: 'Vss.store.CatchmentTree'
@@ -20,6 +11,63 @@ Ext.define 'Lizard.window.Dashboard',
             portalTemplate:'homepage'
             base_url: 'portal/watersysteem'
 
+
+    setBreadCrumb:(bread_crumbs) ->
+        me = this
+        bread_div = Ext.get('breadcrumbs')
+
+        a = bread_div.down('div')
+        while a
+            a.remove()
+            a = bread_div.down('div')
+
+        a = bread_div.down('a')
+        while a
+            a.remove()
+            a = bread_div.down('a')
+
+        element = {
+            tag: 'div',
+            cls: 'link',
+            html: 'aan-afvoergebied'
+        }
+
+        bread_div.createChild(element)
+        el = bread_div.last()
+        el.addListener('click',
+                        () ->
+                            me.showAreaSelection()
+        )
+
+        if bread_crumbs
+            bread_div.createChild({
+                tag: 'div',
+                html: ' - '
+            })
+            for crumb in bread_crumbs
+                if crumb.link
+                    element = {
+                        tag: 'div',
+                        cls: 'link',
+                        html: crumb.name
+                    }
+
+                    bread_div.createChild(element)
+                    el = bread_div.last()
+                    el.addListener('click'
+                                   (evt, obj, crumb_l) ->
+                                        me.linkTo({portalTemplate: crumb_l.link})
+                                   @,
+                                   crumb)
+                    bread_div.createChild({
+                        tag: 'div',
+                        html: ' - '
+                    })
+                else
+                    bread_div.createChild({
+                        tag: 'div',
+                        html: crumb.name
+                    })
 
     linkTo:(options, save_state=true) ->
         @setContext(options, save_state)
@@ -46,6 +94,7 @@ Ext.define 'Lizard.window.Dashboard',
             #switch to tab
             container.setActiveTab(tab)
             tab.setContext(params)
+            @setBreadCrumb tab.breadcrumbs
         else
             #load portal and put in tab
             container.setLoading true
@@ -63,6 +112,8 @@ Ext.define 'Lizard.window.Dashboard',
                     tab = container.add newComponent
                     container.setActiveTab(tab)
                     container.setLoading false
+                    @setBreadCrumb newComponent.breadcrumbs
+
 
                 failure: =>
                     Ext.Msg.alert "portal creation failed", "Server communication failure"
@@ -84,7 +135,7 @@ Ext.define 'Lizard.window.Dashboard',
             id: 'portalWindow',
             layout:
                 type: 'border'
-                padding: 5
+                #padding: 5
             defaults:
                 collapsible: true
                 floatable: true
@@ -99,9 +150,9 @@ Ext.define 'Lizard.window.Dashboard',
                 border:false
                 items:
                     id:'header'
-                    height: 60
+                    height: 55
                     html: ""
-                height: 60}
+                }
                 {
                     region: 'west'
                     id: 'areaNavigation'
@@ -120,14 +171,17 @@ Ext.define 'Lizard.window.Dashboard',
                         text: 'Selecteer op kaart -->'
                         border: 1
                         handler: ->
-                            Ext.getCmp('portalWindow').showAreaSelection()
+                            me.showAreaSelection()
                         ]
                 }
 
                 {region: 'center'
                 collapsible: false
                 floatable: false
+                tabPosition: 'bottom'
+                plain:true
                 split: false
+                #layout:'card'
                 xtype: 'tabpanel'
                 id: 'app-portal'}]
                 

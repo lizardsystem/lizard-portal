@@ -1,3 +1,20 @@
+
+.l-box-inner-scroll {
+   overflow:  auto;
+}
+
+#breadcrumbs {
+    margin-top: 15px;
+}
+#breadcrumbs div {
+    color: black;
+    display: inline;
+    margin-top: 15px;
+    font-size: smaller;
+}
+.link {
+    text-decoration: underline;
+}
 #app-header {
     color: #596F8F;
     font-size: 22px;

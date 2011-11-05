@@ -8,11 +8,7 @@
 {
     itemId: 'homepage',
     title: 'Watersysteemkaart',
-    breadcrumb: [
-        {
-            name: 'aan-afvoergebied',
-            link: 'javascript:Ext.getCmp("portalWindow").linkTo({template:"aan_afvoergeboed_selectie"})'
-        },
+    breadcrumbs: [
         {
             name: 'watersysteemkaart'
         }
@@ -105,28 +101,6 @@
                 ).show();
 
 
-
-                /*Ext.Ajax.request({
-                    url: '/portal/getFeatureInfo/',
-                    method: 'GET',
-                    params: {
-                        request: Ext.JSON.encode(url)
-                    },
-                    success: function(xhr) {
-                        var response = xhr.responseText;
-                        console.log(response)
-                        //me.map.zoomToExtent(new OpenLayers.Bounds.fromArray(area_data.extent));
-
-                        //return me.setLoading(false);
-                    },
-                    failure: function() {
-                        Ext.Msg.alert("portal creation failed", "Server communication failure");
-                        //return container.setLoading(false);
-                    }
-                });
-                //OpenLayers.loadURL(url, '', this, function(response) {console.log(response);});
-
-                Event.stop(event);*/
             },
             applyParams: function(params) {
                 var me = this;
@@ -149,26 +123,21 @@
                         return container.setLoading(false);
                     }
                 });
-
-
-
-
-                console.log('gelukt');
             }
-
-
 		}]
 	},{
-		width: 250,
+		width: 200,
 		items: [{
             title: 'Links van dit gebied',
             layout: {
                 type: 'table',
                 columns:1
             },
+            height: 150,
             defaults:{
                 width:150,
-                xtype:'button'
+                xtype:'button',
+                margin: 2
             },
             items:[{
                     text: 'Ecologische sleutelfactoren',

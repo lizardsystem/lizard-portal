@@ -34,6 +34,7 @@ Ext.application
         'Ext.tree.*'
         'Ext.button.*'
         'Lizard.ux.CheckColumn'
+        'Lizard.ux.VBoxScroll'
         'GeoExt.panel.Map'
         'GeoExt.data.LayerStore'
         'GeoExt.data.LayerModel'

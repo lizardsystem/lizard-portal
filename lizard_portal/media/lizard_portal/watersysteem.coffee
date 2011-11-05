@@ -25,11 +25,14 @@ Ext.application
         'Ext.grid.*'
         'Ext.grid.plugin.*'
         'Ext.data.Model'
+
         'Ext.data.*'
         'Ext.tree.*'
         'Ext.button.*'
         'Lizard.ux.CheckColumn'
         'Lizard.ux.CheckColumnTree'
+        'Lizard.ux.VBoxScroll'
+        'Lizard.ux.ImageResize'
         'GeoExt.panel.Map'
         'GeoExt.data.LayerStore'
         'GeoExt.data.LayerModel'
@@ -39,6 +42,7 @@ Ext.application
         'Lizard.portlet.PortalPanel'
         'Lizard.portlet.PortalColumn'
         'Lizard.portlet.GridPortlet'
+        'Lizard.portlet.MultiGraph'
         'Vss.grid.Esf'
     ]
 

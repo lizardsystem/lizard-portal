@@ -16,6 +16,8 @@
             flex:1,
             items: {
                 xtype: 'grid',
+                stripeRows: true,
+                columnLines: true,
                 listeners: {
                     itemclick: {
                         fn: function(grid, record) {

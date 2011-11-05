@@ -9,6 +9,15 @@
     itemId: 'esf-overzicht',
     title: 'ESF overzicht',
     xtype: 'portalpanel',
+    breadcrumbs: [
+        {
+            name: 'watersysteemkaart',
+            link: 'homepage'
+        },
+        {
+            name: 'ESF overzicht'
+        }
+    ],
 	items: [{
 		width:800,
 		items: [{

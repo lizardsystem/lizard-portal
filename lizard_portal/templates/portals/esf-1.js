@@ -2,6 +2,19 @@
     itemId: 'esf-1',
     title: 'ESF details',
     xtype: 'portalpanel',
+    breadcrumbs: [
+        {
+            name: 'watersysteemkaart',
+            link: 'homepage'
+        },
+        {
+            name: 'ESF overzicht',
+            link: 'esf-overzicht'
+        },
+        {
+            name: 'ESF 1: Belasting'
+        }
+    ],
 	items: [{
 		width:500,
 		items: [{
@@ -17,29 +30,9 @@
         flex:1,
         items: {
             title: 'Grafieken',
+            id: 'bbbb',
             flex: 1,
-            tbar: [{
-                xtype: 'splitbutton',
-                text: 'Fosfaat belasting',
-                enableToggle: true,
-                pressed: true,
-                iconCls: 'chart',
-                menu: {
-                    defaults: {
-                        //checked: true,
-                        group: 'period',
-                        handler: function(menuItem, checked) {
-                            alert('Selected ' + menuItem.text + ' set to ' + checked);
-                        }
-                    },
-                    items: [
-                        { text: 'dag'},
-                        { text: 'maand', checked: true},
-                        { text: 'kwartaal'},
-                        { text: 'jaar'}
-                    ]
-                }
-            }]
-        }
+            xtype: 'multigraph'
+         }
 	}]
 }

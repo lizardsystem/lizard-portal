@@ -14,6 +14,57 @@
         base_url: 'portal/watersysteem'
       }
     },
+    setBreadCrumb: function(bread_crumbs) {
+      var a, bread_div, crumb, el, element, me, _i, _len, _results;
+      me = this;
+      bread_div = Ext.get('breadcrumbs');
+      a = bread_div.down('div');
+      while (a) {
+        a.remove();
+        a = bread_div.down('div');
+      }
+      a = bread_div.down('a');
+      while (a) {
+        a.remove();
+        a = bread_div.down('a');
+      }
+      element = {
+        tag: 'div',
+        cls: 'link',
+        html: 'aan-afvoergebied'
+      };
+      bread_div.createChild(element);
+      el = bread_div.last();
+      el.addListener('click', function() {
+        return me.showAreaSelection();
+      });
+      if (bread_crumbs) {
+        bread_div.createChild({
+          tag: 'div',
+          html: ' - '
+        });
+        _results = [];
+        for (_i = 0, _len = bread_crumbs.length; _i < _len; _i++) {
+          crumb = bread_crumbs[_i];
+          _results.push(crumb.link ? (element = {
+            tag: 'div',
+            cls: 'link',
+            html: crumb.name
+          }, bread_div.createChild(element), el = bread_div.last(), el.addListener('click', function(evt, obj, crumb_l) {
+            return me.linkTo({
+              portalTemplate: crumb_l.link
+            });
+          }, this, crumb), bread_div.createChild({
+            tag: 'div',
+            html: ' - '
+          })) : bread_div.createChild({
+            tag: 'div',
+            html: crumb.name
+          }));
+        }
+        return _results;
+      }
+    },
     linkTo: function(options, save_state) {
       if (save_state == null) {
         save_state = true;
@@ -45,7 +96,8 @@
       tab = container.child("#" + params.portalTemplate);
       if (tab) {
         container.setActiveTab(tab);
-        return tab.setContext(params);
+        tab.setContext(params);
+        return this.setBreadCrumb(tab.breadcrumbs);
       } else {
         container.setLoading(true);
         return Ext.Ajax.request({
@@ -61,7 +113,8 @@
             }
             tab = container.add(newComponent);
             container.setActiveTab(tab);
-            return container.setLoading(false);
+            container.setLoading(false);
+            return this.setBreadCrumb(newComponent.breadcrumbs);
           }, this),
           failure: __bind(function() {
             Ext.Msg.alert("portal creation failed", "Server communication failure");
@@ -86,8 +139,7 @@
       Ext.apply(this, {
         id: 'portalWindow',
         layout: {
-          type: 'border',
-          padding: 5
+          type: 'border'
         },
         defaults: {
           collapsible: true,
@@ -105,10 +157,9 @@
             border: false,
             items: {
               id: 'header',
-              height: 60,
+              height: 55,
               html: ""
-            },
-            height: 60
+            }
           }, {
             region: 'west',
             id: 'areaNavigation',
@@ -133,7 +184,7 @@
                 text: 'Selecteer op kaart -->',
                 border: 1,
                 handler: function() {
-                  return Ext.getCmp('portalWindow').showAreaSelection();
+                  return me.showAreaSelection();
                 }
               }
             ]
@@ -141,6 +192,8 @@
             region: 'center',
             collapsible: false,
             floatable: false,
+            tabPosition: 'bottom',
+            plain: true,
             split: false,
             xtype: 'tabpanel',
             id: 'app-portal'
