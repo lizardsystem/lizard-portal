@@ -86,6 +86,8 @@ Ext.define 'Lizard.window.Dashboard',
         console.log "portalTemplate:" + params.portalTemplate
         console.log params
 
+        me = @
+
         container = Ext.getCmp 'app-portal'
 
         tab = container.child("##{params.portalTemplate}")
@@ -94,25 +96,31 @@ Ext.define 'Lizard.window.Dashboard',
             #switch to tab
             container.setActiveTab(tab)
             tab.setContext(params)
+            console.log('check')
             @setBreadCrumb tab.breadcrumbs
+            console.log('check')
         else
             #load portal and put in tab
             container.setLoading true
             #container.removeAll(true)
-
+            console.log('check')
             Ext.Ajax.request
                 url: '/portal/configuration/',
                 params: params
                 method: 'GET'
                 success: (xhr) =>
                     newComponent = eval 'eval( ' + xhr.responseText + ')'
+                    console.log('check')
+                    newComponent.params = Ext.merge({}, newComponent.params, me.getLizard_context())
                     if area_selection_collapse
                         navigation = Ext.getCmp 'areaNavigation'
                         navigation.collapse()
                     tab = container.add newComponent
                     container.setActiveTab(tab)
                     container.setLoading false
-                    @setBreadCrumb newComponent.breadcrumbs
+                    console.log('check')
+                    me.setBreadCrumb newComponent.breadcrumbs
+                    console.log('check')
 
 
                 failure: =>
@@ -125,9 +133,7 @@ Ext.define 'Lizard.window.Dashboard',
 
     constructor: (config) ->
         @initConfig(config)
-
-        Lizard.window.Dashboard.superclass.constructor.apply @
-
+        @callParent(arguments)
     initComponent: (arguments) ->
         me = @
 
@@ -185,12 +191,10 @@ Ext.define 'Lizard.window.Dashboard',
                 xtype: 'tabpanel'
                 id: 'app-portal'}]
                 
-
-
-        Lizard.window.Dashboard.superclass.initComponent.apply @, arguments
+        @callParent(arguments)
         return @
     afterRender: ->
-        Lizard.window.Dashboard.superclass.afterRender.apply @, arguments
+        @callParent(arguments)
         Ext.get('header').load
             url: '/portalheader/'
             scripts: true

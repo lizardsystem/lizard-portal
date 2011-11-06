@@ -1,25 +1,8 @@
-/*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation and appearing in the file LICENSE included in the packaging of this file.  Please review the following information to ensure the GNU General Public License version 3.0 requirements will be met: http://www.gnu.org/copyleft/gpl.html.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
 /**
  * @class Ext.app.PortalPanel
  * @extends Ext.Panel
  * A {@link Ext.Panel Panel} class used for providing drag-drop-enabled portal layouts.
  */
-
-
-
 
 Ext.define('Lizard.portlet.PortalPanel', {
     extend: 'Ext.panel.Panel',
@@ -27,7 +10,6 @@ Ext.define('Lizard.portlet.PortalPanel', {
     requires: [
         'Ext.layout.component.Body'
     ],
-
     cls: 'x-portal',
     bodyCls: 'x-portal-body',
     defaultType: 'portalcolumn',
@@ -35,8 +17,10 @@ Ext.define('Lizard.portlet.PortalPanel', {
     autoScroll: true,
     height:'100%',
 
-    params: {
+    config: {
+        params: {
 
+        }
     },
     setContext: function(params) {
         this.params = Ext.merge({}, this.params, params);
@@ -46,6 +30,13 @@ Ext.define('Lizard.portlet.PortalPanel', {
     contextChange: function() {
         console.log('context change portalpanel ' + this.id);
     },
+    constructor: function(config) {
+        console.log('check');
+        //this.initConfig(arguments);
+        console.log('check');
+        this.callParent(arguments);
+    },
+
     initComponent : function() {
         var me = this;
 
@@ -54,8 +45,9 @@ Ext.define('Lizard.portlet.PortalPanel', {
             type : 'hbox',
             align: 'stretch'
         };
+        console.log('check');
         this.callParent();
-
+        console.log('check');
         this.addEvents({
             contextchange: true,
             validatedrop: true,
@@ -71,6 +63,7 @@ Ext.define('Lizard.portlet.PortalPanel', {
         this.on('contextchange',
             this.contextChange,
             this);
+        console.log('check');
     },
 
     // Set columnWidth, and set first and last column classes to allow exact CSS targeting.
@@ -92,7 +85,7 @@ Ext.define('Lizard.portlet.PortalPanel', {
 
     // private
     initEvents : function(){
-        this.callParent();
+        this.callParent(arguments);
         this.dd = Ext.create('Lizard.portlet.PortalDropZone', this, this.dropConfig);
     },
 
@@ -101,7 +94,12 @@ Ext.define('Lizard.portlet.PortalPanel', {
         if (this.dd) {
             this.dd.unreg();
         }
-        Lizard.portlet.PortalPanel.superclass.beforeDestroy.call(this);
+        this.callParent(arguments);
+    },
+    afterRender: function() {
+        this.callParent(arguments);
+        console.log('afterRender');
+        this.fireEvent("contextchange", this.getParams());
     }
 });
 

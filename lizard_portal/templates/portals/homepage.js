@@ -51,6 +51,7 @@
             ],
             flex:1,
             xtype: "gx_mappanel",
+            initZoomOnRender: false,
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],
             layers: Ext.data.StoreManager.lookup('Layers'),
@@ -78,29 +79,66 @@
                     },
                             "http://maps.waterschapservices.nl/wms?");
 
-                Ext.create('Ext.window.Window', {
-                        title: 'object_info',
-                        width: 400,
-                        height: 300,
-                        //layout: 'fit',
-                        autoScroll: true,
-                        loader:{
-                            load_mask: true,
-
-                            autoLoad: true,
-                            url: '/portal/getFeatureInfo/',
-                            ajaxOptions: {
-                                method: 'GET'
-                            },
-                            params: {
-                                request: Ext.JSON.encode(url)
-                            },
-                            renderer: 'html'
-                        }
+                var windows = Ext.WindowManager.getBy(function(obj) {
+                    if (obj.mappopup == true && obj.pin == false) {
+                        return true;
+                    } else {
+                        return false;
                     }
-                ).show();
+                });
 
+                if (windows.length == 0) {
 
+                    Ext.create('Ext.window.Window', {
+                            title: 'object_info',
+                            width: 400,
+                            height: 300,
+                            collapsable: true,
+                            //TODO: move styling to CSS
+                            bodyStyle: {
+                                background: '#ffffff',
+                                padding: '10px'
+                            },
+                            mappopup: true,
+                            pin: false,
+                            //layout: 'fit',
+                            tools:[{
+                                type: 'unpin',
+                                handler: function(e, target, panelHeader, tool) {
+                                    var window = panelHeader.ownerCt;
+                                    if (tool.type == 'pin') {
+                                        tool.setType('unpin');
+                                        window.pin = false;
+
+                                    } else {
+                                        tool.setType('pin');
+                                        window.pin = true;
+                                    }
+                                }
+                            }],
+                            autoScroll: true,
+                            loader:{
+                                loadMask: true,
+                                autoLoad: true,
+                                url: '/portal/getFeatureInfo/',
+                                ajaxOptions: {
+                                    method: 'GET'
+                                },
+                                params: {
+                                    request: Ext.JSON.encode(url)
+                                },
+                                renderer: 'html'
+                            }
+                        }
+                    ).show();
+                } else {
+                    console.log('reuse window');
+                    windows[0].loader.params = {
+                                    request: Ext.JSON.encode(url)
+                                }
+                    windows[0].loader.load();
+                    Ext.WindowManager.bringToFront(windows[0]);
+                }
             },
             applyParams: function(params) {
                 var me = this;

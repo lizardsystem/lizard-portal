@@ -86,20 +86,24 @@
       }
     },
     loadPortal: function(params, area_selection_collapse) {
-      var container, tab;
+      var container, me, tab;
       if (area_selection_collapse == null) {
         area_selection_collapse = true;
       }
       console.log("portalTemplate:" + params.portalTemplate);
       console.log(params);
+      me = this;
       container = Ext.getCmp('app-portal');
       tab = container.child("#" + params.portalTemplate);
       if (tab) {
         container.setActiveTab(tab);
         tab.setContext(params);
-        return this.setBreadCrumb(tab.breadcrumbs);
+        console.log('check');
+        this.setBreadCrumb(tab.breadcrumbs);
+        return console.log('check');
       } else {
         container.setLoading(true);
+        console.log('check');
         return Ext.Ajax.request({
           url: '/portal/configuration/',
           params: params,
@@ -107,6 +111,8 @@
           success: __bind(function(xhr) {
             var navigation, newComponent;
             newComponent = eval('eval( ' + xhr.responseText + ')');
+            console.log('check');
+            newComponent.params = Ext.merge({}, newComponent.params, me.getLizard_context());
             if (area_selection_collapse) {
               navigation = Ext.getCmp('areaNavigation');
               navigation.collapse();
@@ -114,7 +120,9 @@
             tab = container.add(newComponent);
             container.setActiveTab(tab);
             container.setLoading(false);
-            return this.setBreadCrumb(newComponent.breadcrumbs);
+            console.log('check');
+            me.setBreadCrumb(newComponent.breadcrumbs);
+            return console.log('check');
           }, this),
           failure: __bind(function() {
             Ext.Msg.alert("portal creation failed", "Server communication failure");
@@ -131,7 +139,7 @@
     },
     constructor: function(config) {
       this.initConfig(config);
-      return Lizard.window.Dashboard.superclass.constructor.apply(this);
+      return this.callParent(arguments);
     },
     initComponent: function(arguments) {
       var me;
@@ -200,12 +208,12 @@
           }
         ]
       });
-      Lizard.window.Dashboard.superclass.initComponent.apply(this, arguments);
+      this.callParent(arguments);
       return this;
     },
     afterRender: function() {
       var hash, parts;
-      Lizard.window.Dashboard.superclass.afterRender.apply(this, arguments);
+      this.callParent(arguments);
       Ext.get('header').load({
         url: '/portalheader/',
         scripts: true

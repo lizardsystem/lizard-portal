@@ -123,10 +123,11 @@ Ext.define('GeoExt.panel.Map', {
 
     options: null,
 
+    initZoomOnRender: true,
+
     /** private: property[stateEvents]
 	 *  ``Array(String)`` Array of state events
 	 */
-
 
 	stateEvents : ["aftermapmove", "afterlayervisibilitychange", "afterlayeropacitychange"],
 
@@ -135,6 +136,11 @@ Ext.define('GeoExt.panel.Map', {
 	 *  none was provided in the config options passed to the
 	 *  constructor.
 	 */
+    constructor: function () {
+        this.callParent(arguments);
+    },
+
+
 	initComponent : function() {
 		var me = this;
 
@@ -186,7 +192,7 @@ Ext.define('GeoExt.panel.Map', {
             defaultHandlerOptions: {
                 'single': true,
                 'double': false,
-                'pixelTolerance': null,
+                'pixelTolerance': 1,
                 'stopSingle': false,
                 'stopDouble': false
             },
@@ -394,14 +400,16 @@ Ext.define('GeoExt.panel.Map', {
 		me.layers.bind(map);
 
 		if(map.layers.length > 0) {
-			if(me.center || me.zoom != null) {
-				// both do not have to be defined
-				map.setCenter(me.center, me.zoom);
-			} else if(me.extent) {
-				map.zoomToExtent(me.extent);
-			} else {
-				map.zoomToMaxExtent();
-			}
+            if (me.initZoomOnRender) {
+                if(me.center || me.zoom != null) {
+                    // both do not have to be defined
+                    map.setCenter(me.center, me.zoom);
+                } else if(me.extent) {
+                    map.zoomToExtent(me.extent);
+                } else {
+                    map.zoomToMaxExtent();
+                }
+            }
 		}
 	},
 	/** private: method[afterRender]

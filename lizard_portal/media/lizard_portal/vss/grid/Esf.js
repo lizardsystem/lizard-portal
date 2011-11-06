@@ -2,6 +2,8 @@ Ext.override(Ext.data.AbstractStore,{
     indexOf: Ext.emptyFn
 });
 
+//TODO: prevent initial load (saves one request)
+
 Ext.define('Vss.grid.Esf', {
 
     extend: 'Ext.tree.Panel',
@@ -31,8 +33,8 @@ Ext.define('Vss.grid.Esf', {
     },
 
     constructor: function(config) {
-        this.initConfig(config);
-        Vss.grid.Esf.superclass.constructor.apply(this);
+        this.initConfig(arguments);
+        this.callParent(arguments);
     },
 
     initComponent: function(arguments) {
@@ -134,6 +136,12 @@ Ext.define('Vss.grid.Esf', {
                         console.log(c);
                         console.log(d);
                     }
+                    /*
+                    listeners:
+                        itemclick:
+                            fn: (tree, node) =>
+                                @linkTo {object_id: node.data.id}
+                                */
                 }
             }],
             bbar: [{

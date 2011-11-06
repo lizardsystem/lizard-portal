@@ -94,7 +94,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
                 handler: function(e, target, panelHeader, tool){
                     var portlet = panelHeader.ownerCt;
 
-                    if (this.type == 'plus') {
+                    if (tool.type == 'plus') {
                         tool.setType('minus');
                         portlet.setGraphFit(false);
                     } else {

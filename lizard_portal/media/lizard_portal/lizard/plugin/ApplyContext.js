@@ -28,9 +28,7 @@ Ext.define('Lizard.plugin.ApplyContext', {
             }
         }
 
-
-
-        obj.on('afterrender', function(event){
+        obj.on('beforerender', function(event){
                success = me.register_event_parent(this, 'contextchange', this.applyParams);
                console.log('status event registration: '+ success);
 

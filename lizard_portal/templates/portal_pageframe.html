@@ -10,16 +10,19 @@
         src="{{ STATIC_URL }}extjs/ext-all.js"></script>
 {% endif %}
 <script>
+{# TO DO add production setting with  disableCaching: false' later on. Possibly also add script tags of known files and compress them #}
     Ext.Loader.setConfig({disableCaching: true, enabled: true});
 </script>
 <script type="text/javascript"
         src="{{ STATIC_URL }}{{ extjs_app }}"></script>
+{# TO DO for production, add custom made build of Openlayers #}
 <script id="openlayers-script"
     type="text/javascript"
     src="{{ STATIC_URL }}OpenLayers-2.11/OpenLayers.js"
     data-openlayers-url="{{ STATIC_URL }}openlayers/"></script>
-
 <script>
+{# OpenLayers.ImgPath = "http://js.mapbox.com/theme/dark/" #}
+OpenLayers.ImgPath = "/static_media/themes/dark/";
 try {
     window.onpopstate = function(event) {
         console.log(event.state);
@@ -39,7 +42,6 @@ catch (e) {
 {% compress css %}
 {% block css %}
 {# Customizations for Extjs. #}
-
 <link rel="stylesheet"
       href="{{ STATIC_URL }}extjs/resources/css/ext-all-gray.css"
       type="text/css"

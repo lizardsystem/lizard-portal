@@ -25,7 +25,6 @@ Ext.application
         'Ext.grid.*'
         'Ext.grid.plugin.*'
         'Ext.data.Model'
-
         'Ext.data.*'
         'Ext.tree.*'
         'Ext.button.*'
@@ -49,9 +48,7 @@ Ext.application
 
 
     launch: ->
-        # OpenLayers.ImgPath = "http://js.mapbox.com/theme/dark/";
-        OpenLayers.ImgPath = "/static_media/themes/dark/";
-
+        # for the time being on this location
         Ext.create(GeoExt.data.LayerStore,
             layers: [
                 new OpenLayers.Layer.OSM()
@@ -60,7 +57,7 @@ Ext.application
                         transparent: "true",
                         format: "image/png"
                     },{
-                        singleTile: true,
+                        singleTile: false,
                         displayOutsideMaxExtent: true,
                         projection: new OpenLayers.Projection("EPSG:900913")
 
@@ -71,15 +68,26 @@ Ext.application
                         transparent: "true",
                         format: "image/png"
                     },{
-                        singleTile: true,
+                        singleTile: false,
                         displayOutsideMaxExtent: true,
                         projection: new OpenLayers.Projection("EPSG:900913")
 
                     }
                 )
-                ],
+            ],
             storeId:'Layers'
         )
 
+        settings = {
+            area_selection_template: 'aan_afvoergebied_selectie',
+            area_store: 'Vss.store.CatchmentTree'
+            lizard_context:
+                period_start: '2000-01-01T00:00'
+                period_end: '2002-01-01T00:00'
+                object: 'aan_afvoergebied'
+                object_id: null
+                portalTemplate:'homepage'
+                base_url: 'portal/watersysteem'
+        }
 
-        Ext.create 'Lizard.window.Dashboard'
+        Ext.create('Lizard.window.Dashboard', settings)
