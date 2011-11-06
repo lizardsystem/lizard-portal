@@ -1,3 +1,31 @@
+.l-grid {
+    font-size: 11px;
+
+}
+
+.l-row-alt td {
+    background-color: #FAFAFA;;
+
+}
+
+.l-row td {
+    background-color: #ffffff;
+
+
+}
+
+.l-grid td {
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-left: 6px;
+    padding:-right: 6px;
+    border-bottom-color: #EDEDED;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+
+
+}
+
 
 .l-box-inner-scroll {
    overflow:  auto;

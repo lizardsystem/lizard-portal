@@ -48,7 +48,7 @@ Ext.define('GeoExt.data.reader.Layer', {
 			data[i] = {
 				layer:root[i],
 				name:root[i].name,
-                visibility: root[i].visibility || true
+                visibility: root[i].visibility || false
 			}
 		}
 		return this.callParent([data]);

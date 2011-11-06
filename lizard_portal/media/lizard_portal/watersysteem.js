@@ -11,7 +11,16 @@
       var settings;
       Ext.create(GeoExt.data.LayerStore, {
         layers: [
-          new OpenLayers.Layer.OSM(), new OpenLayers.Layer.WMS('Waterlopen', 'http://maps.waterschapservices.nl/wms?namespace=inspire', {
+          new OpenLayers.Layer.OSM('Openstreetmap'), new OpenLayers.Layer.WMS('BRT achtergrond', 'http://geodata.nationaalgeoregister.nl/wmsc', {
+            layers: ['brtachtergrondkaart'],
+            transparent: "true",
+            format: "image/png"
+          }, {
+            singleTile: false,
+            displayOutsideMaxExtent: true,
+            projection: new OpenLayers.Projection("EPSG:900913"),
+            visibility: false
+          }), new OpenLayers.Layer.WMS('Waterlopen', 'http://maps.waterschapservices.nl/wms?namespace=inspire', {
             layers: ['HY.PhysicalWaters.Waterbodies'],
             transparent: "true",
             format: "image/png"
@@ -19,14 +28,67 @@
             singleTile: false,
             displayOutsideMaxExtent: true,
             projection: new OpenLayers.Projection("EPSG:900913")
-          }), new OpenLayers.Layer.WMS('Kunstwerken', 'http://maps.waterschapservices.nl/wms?namespace=inspire', {
-            layers: ['HY.PhysicalWaters.ManMadeObject'],
+          }), new OpenLayers.Layer.WMS('Gemalen', 'http://maps.waterschapservices.nl/inspire/wms?namespace=inspire', {
+            layers: ['inspire:HY.PhysicalWaters.ManMadeObject.DamOrWeir.Gemaal'],
             transparent: "true",
             format: "image/png"
           }, {
             singleTile: false,
             displayOutsideMaxExtent: true,
             projection: new OpenLayers.Projection("EPSG:900913")
+          }), new OpenLayers.Layer.WMS('Stuwen', 'http://maps.waterschapservices.nl/inspire/wms?namespace=inspire', {
+            layers: ['inspire:HY.PhysicalWaters.ManMadeObject.DamOrWeir.Stuw'],
+            transparent: "true",
+            format: "image/png"
+          }, {
+            singleTile: false,
+            displayOutsideMaxExtent: true,
+            projection: new OpenLayers.Projection("EPSG:900913")
+          }), new OpenLayers.Layer.WMS('Duikers', 'http://maps.waterschapservices.nl/inspire/wms?namespace=inspire', {
+            layers: ['inspire:HY.PhysicalWaters.ManMadeObject.Crossing.Duiker'],
+            transparent: "true",
+            format: "image/png"
+          }, {
+            singleTile: false,
+            displayOutsideMaxExtent: true,
+            projection: new OpenLayers.Projection("EPSG:900913"),
+            visibility: false
+          }), new OpenLayers.Layer.WMS('Aan-afvoergebieden', 'http://maps.waterschapservices.nl/inspire/wms?namespace=inspire', {
+            layers: ['inspire:HY.PhysicalWaters.Catchments'],
+            transparent: "true",
+            format: "image/png"
+          }, {
+            singleTile: false,
+            displayOutsideMaxExtent: true,
+            projection: new OpenLayers.Projection("EPSG:900913"),
+            visibility: false
+          }), new OpenLayers.Layer.WMS('Peilgebieden', 'http://maps.waterschapservices.nl/wsh/wms?', {
+            layers: ['wsh:peilgebied'],
+            transparent: "true",
+            format: "image/png"
+          }, {
+            singleTile: false,
+            displayOutsideMaxExtent: true,
+            projection: new OpenLayers.Projection("EPSG:900913")
+          }), new OpenLayers.Layer.WMS('Bruggen', 'http://maps.waterschapservices.nl/inspire/wms?namespace=inspire', {
+            layers: ['HY.Bridge'],
+            transparent: "true",
+            format: "image/png"
+          }, {
+            singleTile: false,
+            displayOutsideMaxExtent: true,
+            projection: new OpenLayers.Projection("EPSG:900913"),
+            visibility: false
+          }), new OpenLayers.Layer.WMS('Waterschapsgrenzen', 'http://maps.waterschapservices.nl/inspire/wms?namespace=inspire', {
+            layers: ['inspire:AU.AdministrativeUnit'],
+            transparent: "true",
+            format: "image/png"
+          }, {
+            singleTile: false,
+            displayOutsideMaxExtent: true,
+            projection: new OpenLayers.Projection("EPSG:900913"),
+            visibility: false,
+            opacity: 0.5
           })
         ],
         storeId: 'Layers'

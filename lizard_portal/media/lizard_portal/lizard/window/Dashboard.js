@@ -65,12 +65,18 @@
         return _results;
       }
     },
-    linkTo: function(options, save_state) {
+    linkTo: function(options, save_state, area_selection_collapse, skip_animation) {
       if (save_state == null) {
         save_state = true;
       }
+      if (area_selection_collapse == null) {
+        area_selection_collapse = true;
+      }
+      if (skip_animation == null) {
+        skip_animation = false;
+      }
       this.setContext(options, save_state);
-      return this.loadPortal(this.lizard_context);
+      return this.loadPortal(this.lizard_context, area_selection_collapse, skip_animation);
     },
     setContext: function(options, save_state) {
       if (save_state == null) {
@@ -85,10 +91,13 @@
         }
       }
     },
-    loadPortal: function(params, area_selection_collapse) {
+    loadPortal: function(params, area_selection_collapse, skip_animation) {
       var container, me, tab;
       if (area_selection_collapse == null) {
         area_selection_collapse = true;
+      }
+      if (skip_animation == null) {
+        skip_animation = false;
       }
       console.log("portalTemplate:" + params.portalTemplate);
       console.log(params);
@@ -132,6 +141,9 @@
       }
     },
     showAreaSelection: function() {
+      var navigation;
+      navigation = Ext.getCmp('areaNavigation');
+      navigation.expand();
       arguments = Ext.Object.merge({}, this.lizard_context, {
         portalTemplate: this.area_selection_template
       });
@@ -177,6 +189,7 @@
             frame: false,
             width: 250,
             autoScroll: true,
+            collapsed: true,
             listeners: {
               itemclick: {
                 fn: __bind(function(tree, node) {
@@ -190,7 +203,6 @@
             bbar: [
               {
                 text: 'Selecteer op kaart -->',
-                border: 1,
                 handler: function() {
                   return me.showAreaSelection();
                 }
@@ -212,7 +224,7 @@
       return this;
     },
     afterRender: function() {
-      var hash, parts;
+      var anim_setting, hash, navigation, parts;
       this.callParent(arguments);
       Ext.get('header').load({
         url: '/portalheader/',
@@ -225,10 +237,15 @@
           portalTemplate: parts[0],
           object: parts[1],
           object_id: parts[2]
-        }, false);
+        }, false, true, false);
       }
       if (this.getLizard_context().object_id === null) {
-        return this.showAreaSelection();
+        navigation = Ext.getCmp('areaNavigation');
+        anim_setting = navigation.animCollapse;
+        navigation.animCollapse = false;
+        navigation.expand(false);
+        navigation.animCollapse = anim_setting;
+        return this.showAreaSelection(false);
       }
     }
   });

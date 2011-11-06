@@ -17,15 +17,75 @@
 	items: [{
 		width: 300,
 		items: [{
-			title: 'Overzichtskaart',
-            height:200,
-			items: {
-                xtype: "image",
-			    src: "http://test.krw-waternet.lizardsystem.nl/krw/summary/gaasterplas/tiny_map/"
-            }
-		},{
+			title: 'Gebiedsinformatie',
             flex:1,
+
+            plugins: [
+                'applycontext'
+            ],
+            autoScroll: true,
+            loader: {
+                ajaxOptions: {
+                    method: 'GET'
+                },
+                loadMask: true,
+                url: '/portal/configuration/',
+                autoLoad: false,
+                 baseParams: {
+                     _accept: 'text/html',
+                     portalTemplate: 'eigenschappen'
+                 }
+            },
+            //xtype: "image",
+            applyParams: function(params) {
+                 var me = this;
+                 me.getLoader().load({
+                     url: '/portal/configuration/',
+                     params: {
+                         object_id: params.object_id
+                     }
+                 });
+            }
+
+		},{
+			title: 'Communique',
+            flex:1,
+            collapsed: true,
+            plugins: [
+                'applycontext'
+            ],
+            autoScroll: true,
+            tools: [{
+                type: 'save'
+
+
+            }],
+            loader: {
+                ajaxOptions: {
+                    method: 'GET'
+                },
+                loadMask: true,
+                url: '/portal/configuration/',
+                autoLoad: false,
+                 baseParams: {
+                     _accept: 'text/html',
+                     portalTemplate: 'communique'
+                 }
+            },
+            applyParams: function(params) {
+                 var me = this;
+                 me.getLoader().load({
+                     url: '/portal/configuration/',
+                     params: {
+                         object_id: params.object_id
+                     }
+                 });
+            }
+
+		},{
+            flex:2,
 			title: 'Kaartlagen',
+            id: 'kaartlagen',
             xtype: 'grid',
             columns:[{
                     text: 'aan',
@@ -59,85 +119,99 @@
 
                 layerlist = "here,there,everywhere";
 
-                mouseLoc = this.map.getLonLatFromPixel(event.xy);
+                var mouseLoc = this.map.getLonLatFromPixel(event.xy);
+                var layer_switcher = Ext.getCmp('kaartlagen')
+                var selected_layers  = layer_switcher.getSelectionModel().selected
+                if (selected_layers.length != 0) {
+                    var layer = selected_layers.first().data.layer;
+                    console.log(layer);
 
-                var url = this.map.layers[2].getFullRequestString({
-                            namespace: 'inspire',
-                            REQUEST: "GetFeatureInfo",
-                            EXCEPTIONS: "application/vnd.ogc.se_xml",
-                            BBOX: this.map.getExtent().toBBOX(),
-                            X: event.xy.x,
-                            Y: event.xy.y,
-                            //X: mouseLoc.X,
-                            //Y: mouseLoc.Y,
-                            INFO_FORMAT: 'text/html',
-                            QUERY_LAYERS: 'HY.PhysicalWaters.ManMadeObject',
-                            LAYERS: 'HY.PhysicalWaters.ManMadeObject',
-                            FEATURE_COUNT: 1,
-                            WIDTH: this.map.size.w,
-                            HEIGHT: this.map.size.h
-                    },
-                            "http://maps.waterschapservices.nl/wms?");
+                    var url = layer.getFullRequestString({
+                                namespace: 'inspire',
+                                REQUEST: "GetFeatureInfo",
+                                EXCEPTIONS: "application/vnd.ogc.se_xml",
+                                BBOX: this.map.getExtent().toBBOX(),
+                                X: event.xy.x,
+                                Y: event.xy.y,
+                                //X: mouseLoc.X,
+                                //Y: mouseLoc.Y,
+                                INFO_FORMAT: 'text/html',
+                                QUERY_LAYERS: layer.params.LAYERS[0],
+                                LAYERS: layer.params.LAYERS[0],
+                                FEATURE_COUNT: 1,
+                                WIDTH: this.map.size.w,
+                                HEIGHT: this.map.size.h
+                        },
+                                layer.url);
 
-                var windows = Ext.WindowManager.getBy(function(obj) {
-                    if (obj.mappopup == true && obj.pin == false) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
+                    console.log(url);
 
-                if (windows.length == 0) {
-
-                    Ext.create('Ext.window.Window', {
-                            title: 'object_info',
-                            width: 400,
-                            height: 300,
-                            collapsable: true,
-                            //TODO: move styling to CSS
-                            bodyStyle: {
-                                background: '#ffffff',
-                                padding: '10px'
-                            },
-                            mappopup: true,
-                            pin: false,
-                            //layout: 'fit',
-                            tools:[{
-                                type: 'unpin',
-                                handler: function(e, target, panelHeader, tool) {
-                                    var window = panelHeader.ownerCt;
-                                    if (tool.type == 'pin') {
-                                        tool.setType('unpin');
-                                        window.pin = false;
-
-                                    } else {
-                                        tool.setType('pin');
-                                        window.pin = true;
-                                    }
-                                }
-                            }],
-                            autoScroll: true,
-                            loader:{
-                                loadMask: true,
-                                autoLoad: true,
-                                url: '/portal/getFeatureInfo/',
-                                ajaxOptions: {
-                                    method: 'GET'
-                                },
-                                params: {
-                                    request: Ext.JSON.encode(url)
-                                },
-                                renderer: 'html'
-                            }
+                    var windows = Ext.WindowManager.getBy(function(obj) {
+                        if (obj.mappopup == true && obj.pin == false) {
+                            return true;
+                        } else {
+                            return false;
                         }
-                    ).show();
-                } else {
-                    console.log('reuse window');
-                    windows[0].loader.params = {
-                                    request: Ext.JSON.encode(url)
+                    });
+
+                    if (windows.length == 0) {
+
+                        Ext.create('Ext.window.Window', {
+                                title: 'object_info',
+                                width: 400,
+                                height: 300,
+                                collapsable: true,
+                                //TODO: move styling to CSS
+                                bodyStyle: {
+                                    background: '#ffffff',
+                                    padding: '10px'
+                                },
+                                mappopup: true,
+                                pin: false,
+                                //layout: 'fit',
+                                tools:[{
+                                    type: 'unpin',
+                                    handler: function(e, target, panelHeader, tool) {
+                                        var window = panelHeader.ownerCt;
+                                        if (tool.type == 'pin') {
+                                            tool.setType('unpin');
+                                            window.pin = false;
+
+                                        } else {
+                                            tool.setType('pin');
+                                            window.pin = true;
+                                        }
+                                    }
+                                }],
+                                autoScroll: true,
+                                loader:{
+                                    loadMask: true,
+                                    autoLoad: true,
+                                    url: '/portal/getFeatureInfo/',
+                                    ajaxOptions: {
+                                        method: 'GET'
+                                    },
+                                    params: {
+                                        request: Ext.JSON.encode(url)
+                                    },
+                                    renderer: 'html'
                                 }
-                    windows[0].loader.load();
-                    Ext.WindowManager.bringToFront(windows[0]);
+                            }
+                        ).show();
+                    } else {
+                        console.log('reuse window');
+                        windows[0].loader.params = {
+                                        request: Ext.JSON.encode(url)
+                                    }
+                        windows[0].loader.load();
+                        Ext.WindowManager.bringToFront(windows[0]);
+                    }
+                } else {
+                    Ext.MessageBox.show({
+                        title: 'Feature info',
+                        msg: 'Selecteer links eerst een kaartlaag door op de naam te klikken',
+                        buttons: Ext.MessageBox.OK
+                    });
                 }
             },
             applyParams: function(params) {
@@ -158,7 +232,7 @@
                     },
                     failure: function() {
                         Ext.Msg.alert("portal creation failed", "Server communication failure");
-                        return container.setLoading(false);
+                        return me.setLoading(false);
                     }
                 });
             }
@@ -183,9 +257,6 @@
                 }, {
                    text: 'Waterbalansen',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans'}); }
-                }, {
-                   text: 'Communique',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'communique'}); }
                 }, {
                    text: 'Analyse interpretaties',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'analyse-interpretatie'}); }

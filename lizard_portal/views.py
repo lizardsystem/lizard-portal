@@ -39,6 +39,10 @@ def json_configuration(request):
         t = get_template('portals/aan_afvoergebied_selectie.js')
     elif portal_template == 'krw_selectie':
         t = get_template('portals/krw_selectie.js')
+    elif portal_template == 'krw-overzicht':
+        t = get_template('portals/krw-overzicht.js')
+    elif portal_template == 'eigenschappen':
+        t = get_template('portals/eigenschappen.html')
     else:
         pc = PortalConfiguration.objects.filter(slug=portal_template)[0]
         t = Template(pc.configuration)
@@ -53,9 +57,15 @@ def feature_info(request):
 
     import httplib
 
-    urls = url.rstrip('"').rstrip("'").split('/')
-    conn = httplib.HTTPConnection(urls[2])
-    conn.request('GET', '/%s'%urls[3])
+    print url
+
+    urls = url.strip('"').strip("'").strip('http://')
+
+    split = urls.find('/')
+
+
+    conn = httplib.HTTPConnection(urls[:split])
+    conn.request('GET', urls[split:])
     resp = conn.getresponse()
 
     print resp.status

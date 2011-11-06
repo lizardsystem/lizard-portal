@@ -15,6 +15,6 @@ Ext.define('Vss.model.Esf', {
             {name: 'manual_value', type: 'float', default_value: -1},
             {name: 'manual', type: 'int', default_value: -1},
             {name: 'auto_value', type: 'string', default_value: '-'},
-            {name: 'type', type: 'string'},
-            {name: 'qtip', mapping: 'last_comment', type: 'string'}]
+            {name: 'type', type: 'string'}/*,
+            {name: 'qtip', mapping: 'last_comment', type: 'string'}*/]
 });

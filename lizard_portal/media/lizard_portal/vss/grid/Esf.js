@@ -128,21 +128,21 @@ Ext.define('Vss.grid.Esf', {
                         return default_editor;
                     }
                 },
-                renderer: value_renderer,
-                listeners: {
+                renderer: value_renderer
+                /*listeners: {
                     'mouseover': function(a,b,c,d){
                         console.log(a);
                         console.log(b);
                         console.log(c);
                         console.log(d);
                     }
-                    /*
+
                     listeners:
                         itemclick:
                             fn: (tree, node) =>
                                 @linkTo {object_id: node.data.id}
-                                */
-                }
+
+                }*/
             }],
             bbar: [{
                 xtype: 'button',

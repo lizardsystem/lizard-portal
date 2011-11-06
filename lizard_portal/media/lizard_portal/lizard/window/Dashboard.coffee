@@ -69,9 +69,9 @@ Ext.define 'Lizard.window.Dashboard',
                         html: crumb.name
                     })
 
-    linkTo:(options, save_state=true) ->
+    linkTo:(options, save_state=true, area_selection_collapse=true, skip_animation=false) ->
         @setContext(options, save_state)
-        @loadPortal(@lizard_context)
+        @loadPortal(@lizard_context, area_selection_collapse, skip_animation)
 
     setContext:(options, save_state=true) ->
         @setLizard_context(Ext.merge(@.getLizard_context(), options))
@@ -82,7 +82,7 @@ Ext.define 'Lizard.window.Dashboard',
             catch error
                 console.log "not able to set pushState"
 
-    loadPortal:(params, area_selection_collapse=true) ->
+    loadPortal:(params, area_selection_collapse=true, skip_animation=false) ->
         console.log "portalTemplate:" + params.portalTemplate
         console.log params
 
@@ -127,7 +127,9 @@ Ext.define 'Lizard.window.Dashboard',
                     Ext.Msg.alert "portal creation failed", "Server communication failure"
                     container.setLoading false
 
-    showAreaSelection: ->
+    showAreaSelection: () ->
+        navigation = Ext.getCmp 'areaNavigation'
+        navigation.expand()
         arguments = Ext.Object.merge({}, @lizard_context, {portalTemplate: @area_selection_template})
         @loadPortal(arguments, false)
 
@@ -168,6 +170,7 @@ Ext.define 'Lizard.window.Dashboard',
                     frame: false
                     width: 250
                     autoScroll: true
+                    collapsed: true
                     listeners:
                         itemclick:
                             fn: (tree, node) =>
@@ -175,7 +178,6 @@ Ext.define 'Lizard.window.Dashboard',
                     store: me.area_store
                     bbar: [
                         text: 'Selecteer op kaart -->'
-                        border: 1
                         handler: ->
                             me.showAreaSelection()
                         ]
@@ -205,9 +207,16 @@ Ext.define 'Lizard.window.Dashboard',
                 portalTemplate: parts[0]
                 object: parts[1]
                 object_id: parts[2]
-            }, false)
+            }, false, true, false)
         
 
         if @getLizard_context().object_id == null
-            @showAreaSelection()
+            navigation = Ext.getCmp 'areaNavigation'
+            #false argument for animation doesn work in extjs 4.0.2, so set animCollapse setting before animation and
+            #reset to original value afterwards
+            anim_setting = navigation.animCollapse
+            navigation.animCollapse =  false
+            navigation.expand(false)
+            navigation.animCollapse =  anim_setting
+            @showAreaSelection(false)
 

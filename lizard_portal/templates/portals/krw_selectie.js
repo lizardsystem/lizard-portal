@@ -34,7 +34,7 @@
                         y: lonlat.lat,
                         radius: 0,
                         epsg: 900913,
-                        user_workspace_id: 1,
+                        stored_workspace_id: 3,
                         format: 'object'
                     },
                     method: 'GET',
@@ -50,12 +50,12 @@
 
                 });
             },
-            extent: new OpenLayers.Bounds(560169, 6814897, 616537, 6831609),
+            extent: new OpenLayers.Bounds(500043, 6824175, 600557, 6871566),
             //(4.7221503096837303, 52.097418937370598, 5.3054492200965404, 52.431493172200199)
             layers: [
                 new OpenLayers.Layer.OSM(),
-                new OpenLayers.Layer.WMS('gebieden', '/map/workspace/1/wms/',
-                    {layers:'basic'}, {singleTile: true, displayOutsideMaxExtent: true, projection: new OpenLayers.Projection("EPSG:900913")})
+                new OpenLayers.Layer.WMS('gebieden', '/map/workspace/3/wms/',
+                    {layers:'basic'}, {transitionEffect: 'resize', singleTile: true, displayOutsideMaxExtent: true, projection: new OpenLayers.Projection("EPSG:900913")})
             ]
 		}]
     }]

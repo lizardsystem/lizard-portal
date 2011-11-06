@@ -14,18 +14,7 @@
 		items: [{
 			title: 'Info',
             flex:1,
-			html: 'Hier komt het overzicht'
-		},{
-			title: 'Instellingen',
-            height: 150,
-            bbar: [{
-                    xtype: 'button',
-                    text: 'configuratie',
-                    iconCls: 'setting',
-                    handler: function(menuItem, checked) {
-                        Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans-configuratie'});
-                    }
-                }]
+			html: '{{ area.name }}'
 		}]
 	},{
 		flex: 1,
