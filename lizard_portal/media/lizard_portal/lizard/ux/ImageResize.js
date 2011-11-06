@@ -10,16 +10,28 @@ Ext.define('Lizard.ux.ImageResize', {
     extend: 'Ext.Img',
     alias: 'widget.imageResize',
     config: {
-        params: {}
+        orig_src: '',
+        params: {
+
+        }
     },
 
     applyParams: function(new_params) {
-        var url = this.orig_src
+        var url = this.orig_src + '?'
+        var paramString = function(key, value) {
+            return '&' + key + '=' + Ext.JSON.encode(value);
+        }
 
         var params = Ext.merge(this.params, new_params);
 
         for (key in params) {
-            url += '&' + key + '=' + Ext.JSON.encode(params[key]);
+            if (Ext.type(params[key]) == 'array') {
+                for (var i=0; i<params[key].length; i++) {
+                    url += paramString(key, params[key][i]);
+                }
+            } else {
+                url += paramString(key, params[key]);
+            }
         }
 
         this.setSrc(url);

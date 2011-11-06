@@ -4,20 +4,9 @@ Ext.define('Lizard.portlet.MultiGraph', {
     extend: 'Lizard.portlet.Portlet',
     alias: 'widget.multigraph',
     config: {
-        graph_service_url: 'bla',
-        adapter_layer_json: {module_id:null,parameter_id:"ALMR110","fews_norm_source_slug":""},
-        graphs: [{
-            title: 'Belasting',
-            timeseries:[{
-                parameter_id: "ALMR110",
-                module_id: "ImportLE",
-                ident: "53R0017"
-            }]
-        }, {
-           title: 'Verblijftijd'
-        }, {
-           title: 'P/N ratio'
-        }]
+        graph_service_url: '',
+        adapter_layer_json: {},
+        graphs: []
     },
 
     setGraphFit: function(fit) {
@@ -38,15 +27,17 @@ Ext.define('Lizard.portlet.MultiGraph', {
         }
     },
     initGraphs: function() {
+        var me = this;
         var getImageConfig = function (graph) {
             result = {}
-            result['orig_src'] = graph['graph_service_url'] || this.graph_service_url;
+            result['orig_src'] = graph['graph_service_url'] || me.getGraph_service_url();
             result['params'] = {}
-            result['params']['adapter_layer_json'] = graph['adapter_layer_json'] || this.graph_module_instance;
-            result['params']['ident'] = []
+            result['params']['adapter_layer_json'] = graph['adapter_layer_json'] || me.getAdapter_layer_json();
+            result['params']['identifier'] = []
             for (ts in graph.timeseries) {
-                result.params.ident.push(graph.timeseries[ts])
+                result.params.identifier.push(graph.timeseries[ts])
             }
+            console.log(result);
             return result
         }
 
@@ -96,7 +87,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
                 height: 250
             },
             autoScroll:true,
-            tbar: [],
+            tbar: ['Grafieken:'],
             items: [],
             tools: [{
                 type: 'plus',

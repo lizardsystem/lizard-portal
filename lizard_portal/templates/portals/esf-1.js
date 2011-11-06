@@ -32,7 +32,31 @@
             title: 'Grafieken',
             id: 'bbbb',
             flex: 1,
-            xtype: 'multigraph'
-         }
+            xtype: 'multigraph',
+            graph_service_url: '/map/adapter/adapter_fewsnorm/image/',
+            adapter_layer_json: {module_id:null,parameter_id:"ALMR110","fews_norm_source_slug":""},
+            graphs: [{
+                title: 'Belasting',
+                timeseries:[{
+                    parameter_id: "ALMR110",
+                    module_id: "ImportLE",
+                    ident: "53R0017"
+                }]
+            }, {
+                title: 'Verblijftijd',
+                timeseries:[{
+                    parameter_id: "ALMR110",
+                    module_id: "ImportLE",
+                    ident: "53R0017"
+                }]
+            }, {
+                title: 'P/N ratio',
+                timeseries:[{
+                    parameter_id: "ALMR110",
+                    module_id: "ImportLE",
+                    ident: "53R0017"
+                }]
+            }]
+        }
 	}]
 }
