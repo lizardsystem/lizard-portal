@@ -49,17 +49,15 @@
 
 		},{
 			title: 'Communique',
+            id: 'communique',
+            bodyCls: 'l-grid',
             flex:1,
+            layout:'card',
             collapsed: true,
+            autoScroll: true,
             plugins: [
                 'applycontext'
             ],
-            autoScroll: true,
-            tools: [{
-                type: 'save'
-
-
-            }],
             loader: {
                 ajaxOptions: {
                     method: 'GET'
@@ -67,21 +65,83 @@
                 loadMask: true,
                 url: '/portal/configuration/',
                 autoLoad: false,
-                 baseParams: {
-                     _accept: 'text/html',
-                     portalTemplate: 'communique'
-                 }
+                baseParams: {
+                    _accept: 'text/html',
+                    portalTemplate: 'communique'
+                }
             },
             applyParams: function(params) {
-                 var me = this;
-                 me.getLoader().load({
-                     url: '/portal/configuration/',
-                     params: {
-                         object_id: params.object_id
-                     }
-                 });
-            }
+                var me = this;
+                me.getLoader().load({
+                    url: '/portal/configuration/',
+                    params: {
+                        object_id: params.object_id
+                    }
+                });
 
+            },
+            tools: [{
+                type: 'save',
+                handler: function(e, target, panelHeader, tool){
+                       var portlet = panelHeader.ownerCt;
+                        var a = portlet.html;
+
+                            var form_window = Ext.create('Ext.window.Window', {
+                                title: 'Bewerk communique',
+                                width: 400,
+                                height: 300,
+                                items: {
+                                    xtype: 'form',
+                                    url: '/area/api/area_communique/',
+                                    layout: 'anchor',
+                                    height: '100%',
+                                    id: 'alal',
+                                    defaults: {
+                                        anchor: '100%'
+                                    },
+                                    items: [{
+                                        xtype: 'hiddenfield',
+                                        name: 'object_id',
+                                        value: Ext.getCmp('portalWindow').lizard_context.object_id
+                                    },{
+                                        xtype: 'textareafield',
+                                        //fieldLabel: 'First Name',
+                                        height: '100%',
+                                        name: 'communique',
+                                        value: portlet.html,
+                                        allowBlank: false
+                                    }],
+                                    buttons: [{
+                                            text: 'Reset',
+                                            handler: function(button, ev) {
+                                                console.log(arguments)
+                                                button.up('form').getForm().reset();
+                                            }
+                                        }, {
+                                            text: 'Submit',
+                                            formBind: true, //only enabled once the form is valid
+                                            //disabled: true,
+                                            handler: function() {
+                                                var form = this.up('form').getForm();
+                                                if (form.isValid()) {
+                                                    form.submit({
+                                                        success: function(form, action) {
+                                                            console.log('Opslaan gelukt');
+                                                            Ext.getCmp('communique').applyParams(Ext.getCmp('portalWindow').lizard_context);
+                                                            form.owner.up('window').close();
+
+                                                        },
+                                                        failure: function(form, action) {
+                                                            Ext.Msg.alert('Failed', 'Opslaan mislukt');
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }]
+                                }
+                           }).show()
+                    }
+             }]
 		},{
             flex:2,
 			title: 'Kaartlagen',

@@ -27,6 +27,7 @@ Ext.application
         'Ext.data.Model'
         'Ext.data.*'
         'Ext.tree.*'
+        'Ext.form.*'
         'Ext.button.*'
         'Lizard.ux.CheckColumn'
         'Lizard.ux.CheckColumnTree'
