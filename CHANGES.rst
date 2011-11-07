@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Removed hardcoded localhost reference. Made it relative to the root instead.
 
 
 0.2 (2011-11-07)

@@ -17,7 +17,7 @@ Ext.define('Vss.store.Esf', {
     },
     proxy: {
         type: 'ajax',
-        url: 'http://localhost:8000/esf/api/configuration/tree/',
+        url: '/esf/api/configuration/tree/',
         extraParams: {
         },
         writer: {
