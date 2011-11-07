@@ -12,9 +12,10 @@ def json_configuration(request):
     """
     Return JSON for request.
     """
-    area_id = request.GET.get('object_id', None)
+    object_id = request.GET.get('object_id', None)
+    object = request.GET.get('object', None)
 
-    if area_id:
+    if object == 'aan-afvoergebied' and object_id:
         c = Context({'bla': 'bla',
                     'area': Area.objects.get(ident=area_id)})
     else:
@@ -29,6 +30,8 @@ def json_configuration(request):
         t = get_template('portals/esf-overzicht.js')
     elif portal_template == 'communique':
         t = get_template('portals/communique.js')
+    elif portal_template == 'analyse-interpretatie-details':
+        t = get_template('portals/analyse-interpretatie-details.js')
     elif portal_template == 'analyse-interpretatie':
         t = get_template('portals/analyse-interpretatie.js')
     elif portal_template == 'waterbalans':

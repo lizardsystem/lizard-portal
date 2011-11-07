@@ -23,7 +23,8 @@
                         fn: function(grid, record) {
                             console.log(record);
                             Ext.getCmp('portalWindow').linkTo({
-                                area:record.data.id,
+                                object:'analyse-interpretatie',
+                                object_id:record.data.id,
                                 portalTemplate:'analyse-interpretatie-details'
                               }) ;
                         }
