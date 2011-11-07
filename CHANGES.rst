@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- First functioning areas homepage and esf screen.
 
 
 0.1 (2011-10-19)
