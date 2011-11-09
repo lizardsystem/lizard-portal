@@ -26,42 +26,45 @@
     items: [{
       title: 'Analyse interpretatie details',
       flex:1,
-//    plugins: [
-//      'applycontext'
-//    ],
       autoScroll: true,
-//    loader: {
-//      ajaxOptions: {
-//        method: 'GET'
-//      },
-//      loadMask: true,
-//      url: '/annotation/api/annotation/',
-//      autoLoad: false,
-//      baseParams: {
-//        _accept: 'text/html',
-//        portalTemplate: 'eigenschappen'
-//      }
-//    },
       xtype: "propertygrid",
       width: 300,
-//    renderTo: Ext.getBody(),
-      source: {
-       "(name)": "My Object",
-       "Created": Ext.Date.parse('10/15/2006', 'm/d/Y'),
-       "Available": false,
-       "Version": .01,
-       "Description": "A test object"
+      //source: {
+        //"(name)": "My Object",
+        //"Created": Ext.Date.parse('10/15/2006', 'm/d/Y'),
+        //"Available": false,
+        //"Version": .01,
+        //"Description": "A test object"
+      //},
+      columns: [],
+      store: {
+        xtype: 'store',
+        storeId: 'analyse_store2',
+        autoLoad: true,
+        model: Ext.define('newmodel2', {
+          extend: 'Ext.data.Model',
+          fields: [
+            {name: 'title', type: 'string'},
+            {name: 'category', type: 'string'},
+            {name: 'datetime_period_start', type: 'auto'},
+            {name: 'created_by', type: 'string'},
+            {name: 'status', type: 'string'},
+            {name: 'id', type: 'string'}
+          ]
+        }),
+        proxy: {
+          type: 'ajax',
+          url: '/annotation/api/grid/',
+          extraParams: {
+            _accept: 'application/json',
+            type: 'interpretatie'
+          },
+          reader: {
+            root: 'objects',
+            type: 'json'
+          }
+        }
       }
-//    applyParams: function(params) {
-//      var me = this;
-//      me.getLoader().load({
-//        url: '/annotation/api/annotation/' + params.object_id,
-//        params: {
-//          object_id: params.object_id,
-
-//        }
-//      });
-//    }
     }]
   }]
 }
