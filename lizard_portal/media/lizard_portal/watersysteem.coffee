@@ -9,6 +9,7 @@ Ext.application
         'Vss.model.Communique',
         'Vss.model.Esf'
         'Vss.model.ObjectTree'
+        'Vss.model.AnalyseInterpretatie'
 
     ]
     stores: [
@@ -16,6 +17,7 @@ Ext.application
         'Vss.store.Esf'
         'Vss.store.CatchmentTree'
         'Vss.store.KrwGebiedenTree'
+        'Vss.store.AnalyseInterpretatie'
     ]
 
     requires: [
