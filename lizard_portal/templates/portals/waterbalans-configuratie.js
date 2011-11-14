@@ -14,9 +14,10 @@
 		items: [{
 			title: 'Instellingen',
             flex:1,
+            width: '100%',
             layout:{
-                type: 'table',
-                columns:1
+                type: 'anchor',
+                columns:2
             },
             autoScroll:true,
             bbar: [{
@@ -36,53 +37,129 @@
                 }
             }],
             items:[{
-                title: 'Gebied eigenschappen',
-                //height:400,
-                width:500,
-                xtype: 'propertygrid',
-                sortableColumns: false,
-                source: {
-                    "1 Code": "SAP",
-                    "2 Naam": "Stichtsch Ankerveensche Polder",
-                    "3 Tijdserie Neerslag": "SAP-Neerslag",
-                    "4 Tijdserie Verdamping": "Schiphol- Verdamping",
-                    "5 Tijdserie Chloride meting 1": "Gemaal x - chloride",
-                    "6 Tijdserie Chloride meting 2": "-",
-                    "7 Tijdserie Gemeten waterpeil": "Gemaal x - waterpeil",
-                    "8 Maximale inlaat capaciteit peilhandhaving ": "-",
-                    "9 Maximale uitlaat capaciteit peilhandhaving ": "4000"
+                anchor: "100%",
+                height: 200,
+                layout:{
+                    type: 'hbox'
+
+                },
+                defaults: {
+                    padding: 5
+                },
+
+                items:[
+                    {
+                        title: 'Gebied eigenschappen',
+                        flex:1,
+                        //anchor:'50% 400',
+                        xtype: 'grid',
+                        height:200,
+                        sortableColumns: false,
+                        plugins: [
+                            Ext.create('Ext.grid.plugin.CellEditing', {
+                                clicksToEdit: 1
+                            }),
+                            'applycontext'
+                        ],
+                        applyParams: function(params) {
+                            var params = params|| {};
+                            console.log('apply params');
+                            console.log(params);
+
+                            if (this.store) {
+                                this.store.load({params: {object_id: params.object_id}});
+                            }
+                        },
+                        columns: [
+                                {
+                                    text: 'Eigenschap',
+                                    width:150,
+                                    sortable: true,
+                                    dataIndex: 'property',
+                                    field: {
+                                        allowBlank: false
+                                    }
+                                },
+                                {
+                                    text: 'Waarde',
+                                    width:150,
+                                    sortable: true,
+                                    dataIndex: 'value',
+                                    field: {
+                                        allowBlank: false
+                                    }
+                                }],
+                            store: Ext.create('Vss.store.WaterbalanceAreaConfig')
+
+                    },{
+                        title: 'Openwater',
+                        //height:400,
+                        flex:1,
+                        height:200,
+
+                        xtype: 'grid',
+                        sortableColumns: false,
+                        plugins: [
+                            Ext.create('Ext.grid.plugin.CellEditing', {
+                                clicksToEdit: 1
+                            }),
+                            'applycontext'
+                        ],
+                        applyParams: function(params) {
+                            var params = params|| {};
+                            console.log('apply params');
+                            console.log(params);
+
+                            if (this.store) {
+                                this.store.load({params: {object_id: params.object_id}});
+                            }
+                        },
+
+                        columns: [
+                            {
+                                text: 'Eigenschap',
+                                width:150,
+                                sortable: true,
+                                dataIndex: 'property',
+                                field: {
+                                    allowBlank: false
+                                }
+                            },
+                            {
+                                text: 'Waarde',
+                                width:150,
+                                sortable: true,
+                                dataIndex: 'value',
+                                field: {
+                                    allowBlank: false
+                                }
+                            }
+                        ],
+                        store: Ext.create('Vss.store.WaterbalanceWaterConfig')
+                    }]
+
                 }
-            },{
-                title: 'Openwater',
-                //height:400,
-                width:500,
-                xtype: 'propertygrid',
-                sortableColumns: false,
-                source: {
-                    "0 Oppervlak Openwater": "245600",
-                    "1 Volg Streefpeil": "Ja",
-                    "2 Streefpeil is tijdserie": "nee",
-                    "3 Tijdserie streefpeil": "-",
-                    "4 Winterpeil": -1.63,
-                    "5 Lentepeil": -1.63,
-                    "6 Zomerpeil": -1.63,
-                    "7 Herfstpeil": -1.63,
-                    "8 Marge boven": 0.01,
-                    "9 Marge onder": 0.01
-                }
-            },{
+                ,{
                 title: 'Bakjes',
-                height:400,
-                //xtype: 'grid',
-                sortableColumns: false
-            },{
-                title: 'Kunstwerken',
-                height:400,
+                //height:400,
+                anchor:'100%',
+                height: 200,
                 xtype: 'grid',
                 plugins: [
                     Ext.create('Ext.grid.plugin.CellEditing', {
-                            clicksToEdit: 1
-                 })],
+                        clicksToEdit: 1
+                    }),
+                    'applycontext'
+                ],
+                applyParams: function(params) {
+                    var params = params|| {};
+                    console.log('apply params');
+                    console.log(params);
+
+                    if (this.store) {
+                        this.store.load({params: {object_id: params.object_id}});
+                    }
+                },
                 columns: [
                     {
                         text: 'Code',
@@ -95,7 +172,79 @@
                     },{
                         text: 'Naam',
                         flex: 1,
-                        dataIndex: 'naam',
+                        dataIndex: 'name',
+                        sortable: true
+                    },{
+                        text: 'Type',
+                        flex: 1,
+                        dataIndex: 'opgedrukt',
+                        sortable: true
+                    },{
+                        text: '....',
+                        flex: 1,
+                        dataIndex: 'van',
+                        sortable: true
+                    },{
+                        text: '....',
+                        flex: 1,
+                        dataIndex: 'naar',
+                        sortable: true
+                    },{
+                        text: '......',
+                        flex: 1,
+                        dataIndex: 'naar',
+                        sortable: true
+                    },{
+                        text: 'Tijdserie debiet',
+                        flex: 1,
+                        dataIndex: 'ts_deb',
+                        sortable: true
+                    },{
+                        text: 'Zomer debiet',
+                        flex: 1,
+                        dataIndex: 'naar',
+                        sortable: true
+                    },{
+                        text: 'Winter debiet',
+                        flex: 1,
+                        dataIndex: 'naar',
+                        sortable: true
+                    }],
+                store: Ext.create("Vss.store.WaterbalanceBucket")
+
+            },{
+                title: 'Kunstwerken',
+                anchor:'100%',
+                height: 200,
+                xtype: 'grid',
+                plugins: [
+                    Ext.create('Ext.grid.plugin.CellEditing', {
+                        clicksToEdit: 1
+                    }),
+                    'applycontext'
+                ],
+                applyParams: function(params) {
+                    var params = params|| {};
+                    console.log('apply params');
+                    console.log(params);
+
+                    if (this.store) {
+                        this.store.load({params: {object_id: params.object_id}});
+                    }
+                },
+                columns: [
+                    {
+                        text: 'Code',
+                        width:150,
+                        sortable: true,
+                        dataIndex: 'code',
+                        field: {
+                            allowBlank: false
+                        }
+                    },{
+                        text: 'Naam',
+                        flex: 1,
+                        dataIndex: 'name',
                         sortable: true
                     },{
                         text: 'Opgedrukt',
@@ -133,43 +282,8 @@
                         dataIndex: 'naar',
                         sortable: true
                     }],
-                store: {
-                    xtype: 'store',
-                    storeId: 'analyse_store',
-                    autoLoad: true,
-                    model: Ext.define('Analyse_interpretatie', {
-                        extend: 'Ext.data.Model',
-                        fields: [
-                            {name: 'title', type: 'string'},
-                            {name: 'category', type: 'string'},
-                            {name: 'period_start', type: 'auto'},
-                            {name: 'user_creator', type: 'string'},
-                            {name: 'status', type: 'string'},
-                            {name: 'id', type: 'string'}
-                        ]
-                    }),
-                    proxy: {
-                        type: 'ajax',
-                        url: '/annotation/api/annotation/',
-                        extraParams: {
-                            _accept: 'application/json',
-                            type: 'interpretatie'
-                        },
-                        reader: {
-                            root: 'annotations',
-                            type: 'json'
-                        }
-                    }
-                }
+                store: Ext.create("Vss.store.WaterbalanceStructure")
             }]
-		}]
-	},{
-		width:250,
-		items: [{
-			title: 'Geschiedenis',
-            flex:1,
- 			html: '<div class="portlet-content">Hier komt de edit geschiedenis</div>',
-            extent: 2
 		}]
 	}]
 }

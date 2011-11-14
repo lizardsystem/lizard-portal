@@ -1,0 +1,11 @@
+[
+    {"property": "1 Code", "value": "SAP"},
+    {"property": "2 Naam", "value":  "Stichtsch Ankerveensche Polder"},
+    {"property": "3 Tijdserie Neerslag", "value":  "SAP-Neerslag"},
+    {"property": "4 Tijdserie Verdamping", "value": "Schiphol- Verdamping"},
+    {"property": "5 Tijdserie Chloride meting 1", "value": "Gemaal x - chloride"},
+    {"property": "6 Tijdserie Chloride meting 2", "value": "-"},
+    {"property": "7 Tijdserie Gemeten waterpeil", "value": "Gemaal x - waterpeil"},
+    {"property": "8 Maximale inlaat capaciteit peilhandhaving ", "value": "-"},
+    {"property": "9 Maximale uitlaat capaciteit peilhandhaving ", "value": "4000"}
+]

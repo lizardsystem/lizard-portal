@@ -1,6 +1,6 @@
-Ext.override(Ext.data.AbstractStore,{
+/*Ext.override(Ext.data.AbstractStore,{
     indexOf: Ext.emptyFn
-});
+});*/
 
 //TODO: prevent initial load (saves one request)
 

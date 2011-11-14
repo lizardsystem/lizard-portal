@@ -183,15 +183,35 @@ Ext.define 'Lizard.window.Dashboard',
                         ]
                 }
 
-                {region: 'center'
-                collapsible: false
-                floatable: false
-                tabPosition: 'bottom'
-                plain:true
-                split: false
-                #layout:'card'
-                xtype: 'tabpanel'
-                id: 'app-portal'}]
+                {
+                    region: 'center'
+                    collapsible: false
+                    floatable: false
+                    tabPosition: 'bottom'
+                    plain:true
+                    split: false
+                    #layout:'card'
+                    xtype: 'tabpanel'
+                    id: 'app-portal'
+                }
+                {
+                    region: 'east'
+                    width:200
+                    title: 'Analyse'
+                    collapsible: true
+                    floatable: false
+                    tabPosition: 'bottom'
+                    collapsed:true
+                    plain:true
+                    split: true
+                    #layout:'card'
+                    xtype: 'tabpanel'
+                    id: 'analyse'
+                    items:[
+                        {title:'WQ'}
+                        {title:'Eco'}]
+                }
+            ]
                 
         @callParent(arguments)
         return @

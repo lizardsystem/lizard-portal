@@ -9,6 +9,9 @@ Ext.application
         'Vss.model.Communique',
         'Vss.model.Esf'
         'Vss.model.ObjectTree'
+        'Vss.model.PropertyGrid'
+        'Vss.model.WaterbalanceBucket'
+        'Vss.model.WaterbalanceStructure'
         'Vss.model.AnalyseInterpretatie'
 
     ]
@@ -17,6 +20,10 @@ Ext.application
         'Vss.store.Esf'
         'Vss.store.CatchmentTree'
         'Vss.store.KrwGebiedenTree'
+        'Vss.store.WaterbalanceAreaConfig'
+        'Vss.store.WaterbalanceBucket'
+        'Vss.store.WaterbalanceStructure'
+        'Vss.store.WaterbalanceWaterConfig'
         'Vss.store.AnalyseInterpretatie'
     ]
 

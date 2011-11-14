@@ -51,3 +51,9 @@
         "leaf": true
     }]
 }
+
+
+for area in Area.objects.all():
+    for config in Configuration.objects.all():
+        ac, new = AreaConfiguration.objects.get_or_create(area=area, configuration=config, defaults={'manual_value':area.id})
+        ac.save()

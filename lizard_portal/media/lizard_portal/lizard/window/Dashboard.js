@@ -217,6 +217,25 @@
             split: false,
             xtype: 'tabpanel',
             id: 'app-portal'
+          }, {
+            region: 'east',
+            width: 200,
+            title: 'Analyse',
+            collapsible: true,
+            floatable: false,
+            tabPosition: 'bottom',
+            collapsed: true,
+            plain: true,
+            split: true,
+            xtype: 'tabpanel',
+            id: 'analyse',
+            items: [
+              {
+                title: 'WQ'
+              }, {
+                title: 'Eco'
+              }
+            ]
           }
         ]
       });
