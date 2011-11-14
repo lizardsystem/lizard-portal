@@ -38,7 +38,7 @@
             }],
             items:[{
                 anchor: "100%",
-                height: 200,
+                height: 300,
                 layout:{
                     type: 'hbox'
 
@@ -50,10 +50,10 @@
                 items:[
                     {
                         title: 'Gebied eigenschappen',
-                        flex:1,
+                        width: 400, //flex:1,
                         //anchor:'50% 400',
-                        xtype: 'grid',
-                        height:200,
+                        xtype: 'leditpropgrid',
+                        //height:330,
                         sortableColumns: false,
                         plugins: [
                             Ext.create('Ext.grid.plugin.CellEditing', {
@@ -70,34 +70,13 @@
                                 this.store.load({params: {object_id: params.object_id}});
                             }
                         },
-                        columns: [
-                                {
-                                    text: 'Eigenschap',
-                                    width:150,
-                                    sortable: true,
-                                    dataIndex: 'property',
-                                    field: {
-                                        allowBlank: false
-                                    }
-                                },
-                                {
-                                    text: 'Waarde',
-                                    width:150,
-                                    sortable: true,
-                                    dataIndex: 'value',
-                                    field: {
-                                        allowBlank: false
-                                    }
-                                }],
-                            store: Ext.create('Vss.store.WaterbalanceAreaConfig')
+                        store: Ext.create('Vss.store.WaterbalanceAreaConfig')
 
                     },{
                         title: 'Openwater',
-                        //height:400,
-                        flex:1,
-                        height:200,
-
-                        xtype: 'grid',
+                        width:400,
+                        //height:330,
+                        xtype: 'leditpropgrid',
                         sortableColumns: false,
                         plugins: [
                             Ext.create('Ext.grid.plugin.CellEditing', {
@@ -114,27 +93,6 @@
                                 this.store.load({params: {object_id: params.object_id}});
                             }
                         },
-
-                        columns: [
-                            {
-                                text: 'Eigenschap',
-                                width:150,
-                                sortable: true,
-                                dataIndex: 'property',
-                                field: {
-                                    allowBlank: false
-                                }
-                            },
-                            {
-                                text: 'Waarde',
-                                width:150,
-                                sortable: true,
-                                dataIndex: 'value',
-                                field: {
-                                    allowBlank: false
-                                }
-                            }
-                        ],
                         store: Ext.create('Vss.store.WaterbalanceWaterConfig')
                     }]
 

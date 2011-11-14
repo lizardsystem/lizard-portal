@@ -1,12 +1,12 @@
 [
-    {"property": "0 Oppervlak Openwater", "value":  "245600"},
-    {"property": "1 Volg Streefpeil", "value":  "Ja"},
-    {"property": "2 Streefpeil is tijdserie", "value":  "nee"},
-    {"property": "3 Tijdserie streefpeil", "value":  "-"},
-    {"property": "4 Winterpeil", "value":  -1.63},
-    {"property": "5 Lentepeil", "value":  -1.63},
-    {"property": "6 Zomerpeil", "value":  -1.63},
-    {"property": "7 Herfstpeil", "value":  -1.63},
-    {"property": "8 Marge boven", "value":  0.01},
-    {"property": "9 Marge onder", "value":  0.01}
+    {"property": "Oppervlak Openwater", "value":  "245600", "type":"int"},
+    {"property": "Volg Streefpeil", "value":  "Ja", "type":"boolean"},
+    {"property": "Streefpeil is tijdserie", "value":  "nee", "type":"boolean"},
+    {"property": "Tijdserie streefpeil", "value":  "-", "type":"timeserie"},
+    {"property": "Winterpeil", "value":  -1.63, "type":"float"},
+    {"property": "Lentepeil", "value":  -1.63, "type":"float"},
+    {"property": "Zomerpeil", "value":  -1.63, "type":"float"},
+    {"property": "Herfstpeil", "value":  -1.63, "type":"float"},
+    {"property": "Marge boven", "value":  0.01, "type":"float"},
+    {"property": "Marge onder", "value":  0.01, "type":"float"}
 ]

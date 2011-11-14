@@ -11,11 +11,16 @@ Ext.define('Vss.model.PropertyGrid', {
         },{
             name: 'value',
             mapping: 'value',
-            defaultValue: '-'
+            type: 'auto',
+            defaultValue: null
         },{
             name: 'type',
             mapping: 'type',
             defaultValue: 'text'
+        },{
+            name: 'editable',
+            mapping: 'editable',
+            defaultValue: true
         }
     ]
 });

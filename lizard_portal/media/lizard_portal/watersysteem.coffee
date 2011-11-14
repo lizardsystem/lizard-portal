@@ -13,6 +13,7 @@ Ext.application
         'Vss.model.WaterbalanceBucket'
         'Vss.model.WaterbalanceStructure'
         'Vss.model.AnalyseInterpretatie'
+        'Vss.model.TimeserieObject'
 
     ]
     stores: [
@@ -25,6 +26,7 @@ Ext.application
         'Vss.store.WaterbalanceStructure'
         'Vss.store.WaterbalanceWaterConfig'
         'Vss.store.AnalyseInterpretatie'
+        'Vss.store.TimeserieObject'
     ]
 
     requires: [
@@ -34,6 +36,7 @@ Ext.application
         'Ext.grid.*'
         'Ext.grid.plugin.*'
         'Ext.data.Model'
+        'Ext.data.StoreManager'
         'Ext.data.*'
         'Ext.tree.*'
         'Ext.form.*'
@@ -47,6 +50,7 @@ Ext.application
         'GeoExt.data.LayerModel'
         'GeoExt.data.reader.Layer'
         'Ext.MessageBox'
+        'Lizard.grid.EditablePropertyGrid'
         'Lizard.portlet.Portlet'
         'Lizard.portlet.PortalPanel'
         'Lizard.portlet.PortalColumn'
