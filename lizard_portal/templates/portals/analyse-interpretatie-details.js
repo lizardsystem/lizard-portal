@@ -1,3 +1,9 @@
+// jslint configuration
+/*jslint browser: true */
+/*global
+    Ext
+*/
+
 /**
 * Created by PyCharm.
 * User: bastiaanroos
@@ -21,7 +27,6 @@
         listeners: {
           itemclick: {
             fn: function(grid, record) {
-              console.log(record);
               Ext.getCmp('portalWindow').linkTo({
                 object:'analyse-interpretatie',
                 object_id:record.data.id,
@@ -31,7 +36,7 @@
           }      
         },
         plugins: [
-           Ext.create('Ext.grid.plugin.CellEditing', {clicksToEdit: 2}),
+          Ext.create('Ext.grid.plugin.CellEditing', {clicksToEdit: 2}),
           'applycontext'
         ],
         applyParams: function(params) {
@@ -45,37 +50,38 @@
           }
         },
         columns: [
-         {
-           text: 'Eigenschap',
-           width:150,
-           sortable: true,
-           dataIndex: 'property',
-           field: {
-             allowBlank: false
-           }
-         },{
-           text: 'Waarde',
-           flex: 1,
-           dataIndex: 'value',
-           sortable: true
-         }],
-         store: "Vss.store.AnalyseInterpretatie",
+          {
+            text: 'Eigenschap',
+            width:150,
+            sortable: true,
+            dataIndex: 'property',
+            field: {
+              allowBlank: false
+            }
+          },{
+            text: 'Waarde',
+            flex: 1,
+            dataIndex: 'value',
+            sortable: true
+          }],
+          store: "Vss.store.AnalyseInterpretatie",
 
-         bbar: [{
-           xtype: 'button',
-           text: 'cancel',
-           iconCls: 'cancel',
-           handler: function(menuItem, checked) {
-             Ext.data.StoreManager.lookup('analyse_store').rejectChanges();
-           }
-         },{
-           xtype: 'button',
-           text: 'Save',
-           iconCls: 'save',
-           handler: function(menuItem, checked) {
-             Ext.data.StoreManager.lookup('analyse_store').sync();
-           }
-         }]
+          bbar: [{
+            xtype: 'button',
+            text: 'cancel',
+            iconCls: 'cancel',
+            handler: function(menuItem, checked) {
+              Ext.data.StoreManager.lookup('analyse_store').rejectChanges();
+            }
+          },{
+            xtype: 'button',
+            text: 'Save',
+            iconCls: 'save',
+            handler: function(menuItem, checked) {
+              Ext.data.StoreManager.lookup('analyse_store').sync();
+            }
+          }
+          ]
       }
     },{
       height:100,
@@ -85,34 +91,32 @@
   {
     flex:1,
     items: {
-        id:'aaa',
-        title: 'Beschrijving',
-        //bodyCls: 'l-grid',
-        flex:1,
-        autoScroll: true,
-        html: 'aaaaaa',
-        plugins: [
-            'applycontext'
-        ],
-        applyParams: function(params) {
-            console.log('here come the params', params);
-            var me = this;
-            Ext.Ajax.request({
-                url: '/annotation/api/annotation/' + params.object_id,
-                params: {
-                    _accept: 'application/json'
-                    //_fields: 'description'
-                },
-                method: 'GET',
-                success: function(xhr) {
-                    var response = Ext.JSON.decode(xhr.responseText);
-                    //me.html = response.description;
-                    var el = me.getEl();
-                    el.dom.innerHtml = response.description;
-                }
-
-            });
-        }
+      id:'aaa',
+      title: 'Beschrijving',
+      //bodyCls: 'l-grid',
+      flex:1,
+      autoScroll: true,
+      html: 'aaaaaa',
+      plugins: [
+        'applycontext'
+      ],
+      applyParams: function(params) {
+        var me = this;
+        Ext.Ajax.request({
+          url: '/annotation/api/annotation/' + params.object_id,
+          params: {
+            _accept: 'application/json'
+            //_fields: 'description'
+          },
+          method: 'GET',
+          success: function(xhr) {
+            var response = Ext.JSON.decode(xhr.responseText);
+            //me.html = response.description;
+            var el = me.getEl();
+            el.dom.innerHtml = response.description;
+          }
+        });
+      }
     }
   }]
-}
+};
