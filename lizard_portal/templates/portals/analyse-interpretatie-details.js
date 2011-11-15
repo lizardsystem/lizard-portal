@@ -1,7 +1,7 @@
 // jslint configuration
 /*jslint browser: true */
 /*global
-    Ext
+    Ext, console
 */
 
 /**
@@ -27,11 +27,7 @@
         listeners: {
           itemclick: {
             fn: function(grid, record) {
-              Ext.getCmp('portalWindow').linkTo({
-                object:'analyse-interpretatie',
-                object_id:record.data.id,
-                portalTemplate:'analyse-interpretatie-details'
-              }) ;
+              console.log('Doing nothing.');
             }
           }      
         },
