@@ -35,13 +35,13 @@
           'applycontext'
         ],
         applyParams: function(params) {
-          var params = params|| {};
-          console.log('apply params');
-          console.log(params);
-
           if (this.store) {
+            // Add the object_id to the url before the load
+            var url = this.store.getProxy().url;
+            url = url + params.object_id + '/';
+            this.store.getProxy().url = url;
+
             this.store.load();
-                //applyParams({object_id: params.object_id});
           }
         },
         columns: [
@@ -84,7 +84,6 @@
   },
   {
     flex:1,
-
     items: {
         id:'aaa',
         title: 'Beschrijving',
@@ -95,19 +94,8 @@
         plugins: [
             'applycontext'
         ],
-        loader: {
-            ajaxOptions: {
-                method: 'GET'
-            },
-            loadMask: true,
-            url: '/annotation/api/annotation/',
-            autoLoad: false,
-            baseParams: {
-                _accept: 'text/html',
-                _fields: 'description'
-            }
-        },
         applyParams: function(params) {
+            console.log('here come the params', params);
             var me = this;
             Ext.Ajax.request({
                 url: '/annotation/api/annotation/' + params.object_id,

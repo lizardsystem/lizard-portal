@@ -19,7 +19,7 @@ Ext.define('Vss.model.AnalyseInterpretatie', {
         extraParams: {
             _accept: 'application/json',
             _format: 'property',
-            _fields: 'title,category,created_by,data_created,status'
+            _fields: 'title,category,created_by,datetime_created,status'
         }
     }
 });
