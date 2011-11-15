@@ -9,6 +9,19 @@
     itemId: 'waterbalans-configuratie',
     title: 'Waterbalans-configuratie',
 	xtype: 'portalpanel',
+    breadcrumbs: [
+        {
+            name: 'watersysteemkaart',
+            link: 'homepage'
+        },
+        {
+            name: 'Waterbalans',
+            link: 'waterbalans'
+        },
+        {
+            name: 'Waterbalans configuratie'
+        }
+    ],
 	items:[{
 		flex:1,
 		items: [{
