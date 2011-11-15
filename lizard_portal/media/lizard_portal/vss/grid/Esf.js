@@ -1,7 +1,3 @@
-/*Ext.override(Ext.data.AbstractStore,{
-    indexOf: Ext.emptyFn
-});*/
-
 //TODO: prevent initial load (saves one request)
 
 Ext.define('Vss.grid.Esf', {
