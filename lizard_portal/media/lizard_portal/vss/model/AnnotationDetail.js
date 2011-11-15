@@ -1,12 +1,4 @@
-/**
- * Created by PyCharm.
- * User: bastiaanroos
- * Date: 14-11-11
- * Time: 11:36
- * To change this template use File | Settings | File Templates.
- */
-
-Ext.define('Vss.model.AnalyseInterpretatie', {
+Ext.define('Vss.model.AnnotationDetail', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'property', type: 'string'},

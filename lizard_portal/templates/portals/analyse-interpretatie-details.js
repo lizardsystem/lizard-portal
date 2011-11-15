@@ -1,7 +1,7 @@
 // jslint configuration
 /*jslint browser: true */
 /*global
-    Ext, console
+Ext, console
 */
 
 /**
@@ -60,7 +60,7 @@
             dataIndex: 'value',
             sortable: true
           }],
-          store: "Vss.store.AnalyseInterpretatie",
+          store: "Vss.store.AnnotationDetail",
 
           bbar: [{
             xtype: 'button',
@@ -79,40 +79,28 @@
           }
           ]
       }
-    },{
-      height:100,
+    }, {
+      height: 100,
       title: 'Workspaces'
     }]
-  },
-  {
-    flex:1,
-    items: {
-      id:'aaa',
-      title: 'Beschrijving',
-      //bodyCls: 'l-grid',
+  }, {
+    title: 'Omschrijving',
+    flex: 1,
+    items: [{
+      id: 'rrr',
+      title: 'Details',
       flex:1,
-      autoScroll: true,
-      html: 'aaaaaa',
-      plugins: [
-        'applycontext'
-      ],
-      applyParams: function(params) {
-        var me = this;
-        Ext.Ajax.request({
-          url: '/annotation/api/annotation/' + params.object_id,
-          params: {
-            _accept: 'application/json'
-            //_fields: 'description'
-          },
-          method: 'GET',
-          success: function(xhr) {
-            var response = Ext.JSON.decode(xhr.responseText);
-            //me.html = response.description;
-            var el = me.getEl();
-            el.dom.innerHtml = response.description;
-          }
-        });
+      items: {
+        xtype: 'grid',
+        store: "Vss.store.AnnotationDetail",
+        hideHeaders: true,
+        columns: [
+          {
+            text: 'Omschrijving',
+            flex: 1,
+            dataIndex: 'value'
+          }]
       }
-    }
+    }]
   }]
 }

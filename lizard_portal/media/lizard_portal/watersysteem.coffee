@@ -12,7 +12,8 @@ Ext.application
         'Vss.model.PropertyGrid'
         'Vss.model.WaterbalanceBucket'
         'Vss.model.WaterbalanceStructure'
-        'Vss.model.AnalyseInterpretatie'
+        'Vss.model.AnnotationDetail'
+        'Vss.model.AnnotationDescription'
         'Vss.model.TimeserieObject'
 
     ]
@@ -25,7 +26,8 @@ Ext.application
         'Vss.store.WaterbalanceBucket'
         'Vss.store.WaterbalanceStructure'
         'Vss.store.WaterbalanceWaterConfig'
-        'Vss.store.AnalyseInterpretatie'
+        'Vss.store.AnnotationDetail'
+        'Vss.store.AnnotationDescription'
         'Vss.store.TimeserieObject'
     ]
 
