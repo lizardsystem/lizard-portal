@@ -12,6 +12,10 @@ Ext.define('Vss.model.AnnotationDetail', {
             _accept: 'application/json',
             _format: 'property',
             _fields: 'title,category,created_by,datetime_created,status'
+        },
+        reader: {
+          root: 'properties',
+          type: 'json'
         }
     }
 });
