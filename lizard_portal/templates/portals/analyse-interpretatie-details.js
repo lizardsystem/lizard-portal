@@ -21,6 +21,7 @@ Ext, console
       title: 'Details',
       flex:1,
       items: {
+        id: 'grid-panel',
         xtype: 'grid',
         stripeRows: true,
         columnLines: true,
@@ -36,14 +37,21 @@ Ext, console
           'applycontext'
         ],
         applyParams: function(params) {
-          if (this.store) {
-            // Add the object_id to the url before the load
-            var url = this.store.getProxy().url;
-            url = url + params.object_id + '/';
-            this.store.getProxy().url = url;
+          // Add the object_id to the url before the load
+          var url = this.store.getProxy().url;
+          url = url + params.object_id + '/';
+          this.store.getProxy().url = url;
 
-            this.store.load();
-          }
+          // Load the store
+          this.store.load(function(records, operation, success) {
+            // And set the description HTML on the description panel
+            var descriptionProperty = Ext.Array.filter(
+              records, 
+              function(el){return el.data.property === "description"}
+            )[0];
+            var descriptionHtml = descriptionProperty.data.value;
+            Ext.getCmp('description-panel').add({html: descriptionHtml});
+          });
         },
         columns: [
           {
@@ -84,23 +92,13 @@ Ext, console
       title: 'Workspaces'
     }]
   }, {
-    title: 'Omschrijving',
     flex: 1,
     items: [{
-      id: 'rrr',
-      title: 'Details',
-      flex:1,
-      items: {
-        xtype: 'grid',
-        store: "Vss.store.AnnotationDetail",
-        hideHeaders: true,
-        columns: [
-          {
-            text: 'Omschrijving',
-            flex: 1,
-            dataIndex: 'value'
-          }]
-      }
+      id: 'description-panel',
+      title: 'Omschrijving',
+      flex: 1,
+      padding: '10 5 10 5',
+      store: "Vss.store.AnnotationDetail",
     }]
   }]
 }

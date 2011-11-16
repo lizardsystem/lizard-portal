@@ -11,7 +11,7 @@ Ext.define('Vss.model.AnnotationDetail', {
         extraParams: {
             _accept: 'application/json',
             _format: 'property',
-            _fields: 'title,category,created_by,datetime_created,status'
+            _fields: 'title,category,created_by,datetime_created,status,description'
         },
         reader: {
           root: 'properties',
