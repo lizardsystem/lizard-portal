@@ -4,12 +4,12 @@ Ext.define('Vss.store.WaterbalanceAreaConfig', {
     model: 'Vss.model.PropertyGrid',
     proxy: {
         type: 'ajax',
-        url: '/portal/wbgebied.json',
+        url: '/wbconfiguration/api/area_configuration/',
         extraParams: {
             _accept: 'application/json'
         },
         reader: {
             type: 'json'
         }
-    }
+    },
 });

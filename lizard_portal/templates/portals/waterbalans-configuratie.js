@@ -33,7 +33,11 @@
                 iconCls: 'save',
                 handler: function(menuItem, checked) {
                     //Ext.data.StoreManager.lookup('analyse_store').sync();
-                    Ext.MessageBox.prompt('save', 'Commentaar bij veranderingen', function (btn, text){ Ext.MessageBox.alert('Opgeslagen')})
+                    Ext.MessageBox.prompt('save',
+                                          'Commentaar bij veranderingen',
+                                          function (btn, text){
+                                              Ext.MessageBox.alert('Opgeslagen')
+                                          });
                 }
             }],
             items:[{
@@ -41,7 +45,6 @@
                 height: 300,
                 layout:{
                     type: 'hbox'
-
                 },
                 defaults: {
                     padding: 5
@@ -55,6 +58,7 @@
                         xtype: 'leditpropgrid',
                         //height:330,
                         sortableColumns: false,
+                        //autoScroll: true,
                         plugins: [
                             Ext.create('Ext.grid.plugin.CellEditing', {
                                 clicksToEdit: 1
@@ -62,13 +66,13 @@
                             'applycontext'
                         ],
                         applyParams: function(params) {
-                            var params = params|| {};
+                            //var params = params|| {};
                             console.log('apply params');
-                            console.log(params);
-
-                            if (this.store) {
-                                this.store.load({params: {object_id: params.object_id}});
-                            }
+                            var url = this.store.getProxy().url;
+                            console.log(url);
+                            url = url + params.object_id + '/';
+                            this.store.getProxy().url = url;
+                            this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceAreaConfig')
 
