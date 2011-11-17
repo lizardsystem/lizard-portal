@@ -66,11 +66,10 @@
                             'applycontext'
                         ],
                         applyParams: function(params) {
-                            //var params = params|| {};
-                            console.log('apply params');
-                            var url = this.store.getProxy().url;
+                            console.log('apply params area');
                             console.log(url);
-                            url = url + params.object_id + '/';
+                            var url = '/wbconfiguration/api/area_configuration/';
+                            url = url + params.object_id + '/area/';
                             this.store.getProxy().url = url;
                             this.store.load();
                         },
@@ -89,15 +88,13 @@
                             'applycontext'
                         ],
                         applyParams: function(params) {
-                            var params = params|| {};
-                            console.log('apply params');
-                            console.log(params);
-
-                            if (this.store) {
-                                this.store.load({params: {object_id: params.object_id}});
-                            }
+                            console.log('apply params open water');
+                            var url = '/wbconfiguration/api/area_configuration/';
+                            url = url + params.object_id + '/water/';
+                            this.store.getProxy().url = url;
+                            this.store.load();
                         },
-                        store: Ext.create('Vss.store.WaterbalanceWaterConfig')
+                        store: Ext.create('Vss.store.WaterbalanceAreaConfig')
                     }]
 
                 }
