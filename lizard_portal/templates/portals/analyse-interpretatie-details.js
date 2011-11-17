@@ -1,3 +1,9 @@
+// jslint configuration
+/*jslint browser: true */
+/*global
+Ext, console
+*/
+
 /**
 * Created by PyCharm.
 * User: bastiaanroos
@@ -15,116 +21,84 @@
       title: 'Details',
       flex:1,
       items: {
+        id: 'grid-panel',
         xtype: 'grid',
         stripeRows: true,
         columnLines: true,
         listeners: {
           itemclick: {
             fn: function(grid, record) {
-              console.log(record);
-              Ext.getCmp('portalWindow').linkTo({
-                object:'analyse-interpretatie',
-                object_id:record.data.id,
-                portalTemplate:'analyse-interpretatie-details'
-              }) ;
+              console.log('Doing nothing.');
             }
           }      
         },
         plugins: [
-           Ext.create('Ext.grid.plugin.CellEditing', {clicksToEdit: 2}),
+          Ext.create('Ext.grid.plugin.CellEditing', {clicksToEdit: 2}),
           'applycontext'
         ],
         applyParams: function(params) {
-          var params = params|| {};
-          console.log('apply params');
-          console.log(params);
+          // Add the object_id to the url before the load
+          var url = this.store.getProxy().url;
+          url = url + params.object_id + '/';
+          this.store.getProxy().url = url;
 
-          if (this.store) {
-            this.store.load();
-                //applyParams({object_id: params.object_id});
-          }
+          // Load the store
+          this.store.load(function(records, operation, success) {
+            // And set the description HTML on the description panel
+            var descriptionProperty = Ext.Array.filter(
+              records, 
+              function(el){return el.data.property === "description"}
+            )[0];
+            var descriptionHtml = descriptionProperty.data.value;
+            Ext.getCmp('description-panel').add({html: descriptionHtml});
+          });
         },
         columns: [
-         {
-           text: 'Eigenschap',
-           width:150,
-           sortable: true,
-           dataIndex: 'property',
-           field: {
-             allowBlank: false
-           }
-         },{
-           text: 'Waarde',
-           flex: 1,
-           dataIndex: 'value',
-           sortable: true
-         }],
-         store: "Vss.store.AnalyseInterpretatie",
+          {
+            text: 'Eigenschap',
+            width:150,
+            sortable: true,
+            dataIndex: 'property',
+            field: {
+              allowBlank: false
+            }
+          },{
+            text: 'Waarde',
+            flex: 1,
+            dataIndex: 'value',
+            sortable: true
+          }],
+          store: "Vss.store.AnnotationDetail",
 
-         bbar: [{
-           xtype: 'button',
-           text: 'cancel',
-           iconCls: 'cancel',
-           handler: function(menuItem, checked) {
-             Ext.data.StoreManager.lookup('analyse_store').rejectChanges();
-           }
-         },{
-           xtype: 'button',
-           text: 'Save',
-           iconCls: 'save',
-           handler: function(menuItem, checked) {
-             Ext.data.StoreManager.lookup('analyse_store').sync();
-           }
-         }]
+          bbar: [{
+            xtype: 'button',
+            text: 'cancel',
+            iconCls: 'cancel',
+            handler: function(menuItem, checked) {
+              Ext.data.StoreManager.lookup('analyse_store').rejectChanges();
+            }
+          },{
+            xtype: 'button',
+            text: 'Save',
+            iconCls: 'save',
+            handler: function(menuItem, checked) {
+              Ext.data.StoreManager.lookup('analyse_store').sync();
+            }
+          }
+          ]
       }
-    },{
-      height:100,
+    }, {
+      height: 100,
       title: 'Workspaces'
     }]
-  },
-  {
-    flex:1,
-
-    items: {
-        id:'aaa',
-        title: 'Beschrijving',
-        //bodyCls: 'l-grid',
-        flex:1,
-        autoScroll: true,
-        html: 'aaaaaa',
-        plugins: [
-            'applycontext'
-        ],
-        loader: {
-            ajaxOptions: {
-                method: 'GET'
-            },
-            loadMask: true,
-            url: '/annotation/api/annotation/',
-            autoLoad: false,
-            baseParams: {
-                _accept: 'text/html',
-                _fields: 'description'
-            }
-        },
-        applyParams: function(params) {
-            var me = this;
-            Ext.Ajax.request({
-                url: '/annotation/api/annotation/' + params.object_id,
-                params: {
-                    _accept: 'application/json'
-                    //_fields: 'description'
-                },
-                method: 'GET',
-                success: function(xhr) {
-                    var response = Ext.JSON.decode(xhr.responseText);
-                    //me.html = response.description;
-                    var el = me.getEl();
-                    el.dom.innerHtml = response.description;
-                }
-
-            });
-        }
-    }
+  }, {
+    flex: 1,
+    items: [{
+      id: 'description-panel',
+      title: 'Omschrijving',
+      flex: 1,
+      padding: '10 5 10 5',
+      store: "Vss.store.AnnotationDetail",
+    }]
   }]
 }

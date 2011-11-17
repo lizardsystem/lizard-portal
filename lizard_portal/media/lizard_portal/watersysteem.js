@@ -4,8 +4,8 @@
   Ext.Loader.setPath('GeoExt', '/static_media/geoext4/src');
   Ext.application({
     name: 'lizardViewer',
-    models: ['Vss.model.Communique', 'Vss.model.Esf', 'Vss.model.ObjectTree', 'Vss.model.PropertyGrid', 'Vss.model.WaterbalanceBucket', 'Vss.model.WaterbalanceStructure', 'Vss.model.AnalyseInterpretatie', 'Vss.model.TimeserieObject'],
-    stores: ['Vss.store.Communique', 'Vss.store.Esf', 'Vss.store.CatchmentTree', 'Vss.store.KrwGebiedenTree', 'Vss.store.WaterbalanceAreaConfig', 'Vss.store.WaterbalanceBucket', 'Vss.store.WaterbalanceStructure', 'Vss.store.WaterbalanceWaterConfig', 'Vss.store.AnalyseInterpretatie', 'Vss.store.TimeserieObject'],
+    models: ['Vss.model.Communique', 'Vss.model.Esf', 'Vss.model.ObjectTree', 'Vss.model.PropertyGrid', 'Vss.model.WaterbalanceBucket', 'Vss.model.WaterbalanceStructure', 'Vss.model.AnnotationDetail', 'Vss.model.AnnotationDescription', 'Vss.model.TimeserieObject'],
+    stores: ['Vss.store.Communique', 'Vss.store.Esf', 'Vss.store.CatchmentTree', 'Vss.store.KrwGebiedenTree', 'Vss.store.WaterbalanceAreaConfig', 'Vss.store.WaterbalanceBucket', 'Vss.store.WaterbalanceStructure', 'Vss.store.WaterbalanceWaterConfig', 'Vss.store.AnnotationDetail', 'Vss.store.AnnotationDescription', 'Vss.store.TimeserieObject'],
     requires: ['Lizard.plugin.ApplyContext', 'Ext.Img', 'Ext.grid.*', 'Ext.grid.plugin.*', 'Ext.data.Model', 'Ext.data.StoreManager', 'Ext.data.*', 'Ext.tree.*', 'Ext.form.*', 'Ext.button.*', 'Lizard.ux.CheckColumn', 'Lizard.ux.CheckColumnTree', 'Lizard.ux.VBoxScroll', 'Lizard.ux.ImageResize', 'GeoExt.panel.Map', 'GeoExt.data.LayerStore', 'GeoExt.data.LayerModel', 'GeoExt.data.reader.Layer', 'Ext.MessageBox', 'Lizard.grid.EditablePropertyGrid', 'Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.MultiGraph', 'Vss.grid.Esf'],
     launch: function() {
       var settings;
