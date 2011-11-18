@@ -53,6 +53,7 @@ Ext.application
         'GeoExt.data.reader.Layer'
         'Ext.MessageBox'
         'Lizard.grid.EditablePropertyGrid'
+        'Lizard.grid.RemoteConfiguredGrid'
         'Lizard.portlet.Portlet'
         'Lizard.portlet.PortalPanel'
         'Lizard.portlet.PortalColumn'

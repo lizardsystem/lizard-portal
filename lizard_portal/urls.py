@@ -45,6 +45,11 @@ urlpatterns = patterns(
         {'template': 'example_portal1.json'},
         name='portal'),
 
+    url(r'^bucket_grid_config.json',
+        direct_to_template,
+        {'template': 'bucket_grid_config.json'},
+        name='portal'),
+
     url(r'^wbbuckets.json',
         direct_to_template,
         {'template': 'wbbuckets.json'},
