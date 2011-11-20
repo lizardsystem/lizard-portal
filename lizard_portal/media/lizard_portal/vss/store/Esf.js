@@ -10,6 +10,7 @@ Ext.define('Vss.store.Esf', {
     requires: 'Vss.model.Esf',
     model: 'Vss.model.Esf',
     autoLoad: false,
+    indexOf: Ext.emptyFn,
     config: {
         area_id: null,
         constructed: false,
