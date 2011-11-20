@@ -1,4 +1,4 @@
-Ext.define 'Lizard.window.Dashboard',
+Ext.define 'Lizard.window.Screen',
     extend:'Ext.container.Viewport'
     config:
         area_selection_template: 'aan_afvoergebied_selectie',
@@ -78,7 +78,7 @@ Ext.define 'Lizard.window.Dashboard',
 
         if save_state
             try
-                window.history.pushState(@lizard_context, "#{options}", "/#{@lizard_context.base_url}/##{@lizard_context.portalTemplate}/#{@lizard_context.object}/#{@lizard_context.object_id}")
+                window.history.pushState(@lizard_context, "#{options}", "#{@lizard_context.base_url}##{@lizard_context.portalTemplate}/#{@lizard_context.object}/#{@lizard_context.object_id}")
             catch error
                 console.log "not able to set pushState"
 
@@ -89,7 +89,7 @@ Ext.define 'Lizard.window.Dashboard',
         me = @
 
         container = Ext.getCmp 'app-portal'
-
+ 
         tab = container.child("##{params.portalTemplate}")
 
         if tab

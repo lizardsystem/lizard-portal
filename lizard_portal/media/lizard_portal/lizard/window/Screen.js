@@ -1,6 +1,6 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-  Ext.define('Lizard.window.Dashboard', {
+  Ext.define('Lizard.window.Screen', {
     extend: 'Ext.container.Viewport',
     config: {
       area_selection_template: 'aan_afvoergebied_selectie',
@@ -85,7 +85,7 @@
       this.setLizard_context(Ext.merge(this.getLizard_context(), options));
       if (save_state) {
         try {
-          return window.history.pushState(this.lizard_context, "" + options, "/" + this.lizard_context.base_url + "/#" + this.lizard_context.portalTemplate + "/" + this.lizard_context.object + "/" + this.lizard_context.object_id);
+          return window.history.pushState(this.lizard_context, "" + options, "" + this.lizard_context.base_url + "#" + this.lizard_context.portalTemplate + "/" + this.lizard_context.object + "/" + this.lizard_context.object_id);
         } catch (error) {
           return console.log("not able to set pushState");
         }
