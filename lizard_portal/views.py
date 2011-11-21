@@ -1,11 +1,42 @@
 # (c) Nelen & Schuurmans.  GPL licensed, see LICENSE.txt.
 from django.http import HttpResponse
-from django.template import Context
+from django.template import RequestContext
 from django.template import Template
 from django.template.loader import get_template
+from django.shortcuts import render_to_response
 
 from lizard_portal.models import PortalConfiguration
 from lizard_area.models import Area
+
+def site(request, application_name, active_tab_name):
+    """
+        returns html page which loads specified (ext-js) application
+    """
+
+    app_javascript_file = get_template('application/'+application_name+'.js')
+    #django.template.TemplateDoesNotExist
+    t = get_template('portal_pageframe.html')
+    c = RequestContext(request, {
+            'application': application_name,
+            'active_tab': active_tab_name
+        })
+
+    return HttpResponse(t.render(c),
+        mimetype='text/html')
+
+def application(request, application_name, active_tab_name):
+    """
+        returns html page which loads specified (ext-js) application
+    """
+
+    t = get_template('application/'+application_name+'.js')
+    c = RequestContext(request, {
+            'application': application_name,
+            'active_tab': active_tab_name
+        })
+
+    return HttpResponse(t.render(c),
+        mimetype='text/javascript')
 
 
 def json_configuration(request):
@@ -16,10 +47,10 @@ def json_configuration(request):
     object = request.GET.get('object', None)
 
     if object == 'aan-afvoergebied' and object_id:
-        c = Context({'bla': 'bla',
+        c = RequestContext(request, {'bla': 'bla',
                     'area': Area.objects.get(ident=area_id)})
     else:
-        c = Context()
+        c = RequestContext(request)
 
     portal_template = request.GET.get('portalTemplate', 'homepage')
     if portal_template == 'homepage':
@@ -60,8 +91,6 @@ def feature_info(request):
 
     import httplib
 
-    print url
-
     urls = url.strip('"').strip("'").strip('http://')
 
     split = urls.find('/')
@@ -71,7 +100,5 @@ def feature_info(request):
     conn.request('GET', urls[split:])
     resp = conn.getresponse()
 
-    print resp.status
     content =  resp.read()
-    print content
     return HttpResponse(content,  mimetype="text/plain")

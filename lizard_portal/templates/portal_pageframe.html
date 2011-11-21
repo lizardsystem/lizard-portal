@@ -14,7 +14,7 @@
     Ext.Loader.setConfig({disableCaching: true, enabled: true});
 </script>
 <script type="text/javascript"
-        src="{{ STATIC_URL }}{{ extjs_app }}"></script>
+        src="/portal/application/{{ application }}/{{ active_tab }}"></script>
 {# TO DO for production, add custom made build of Openlayers #}
 <script id="openlayers-script"
     type="text/javascript"
@@ -47,12 +47,14 @@ catch (e) {
       type="text/css"
       media="screen, projection" />
 <link rel="stylesheet"
-      href="{{ STATIC_URL }}lizard_portal/portal.css"
-      type="text/css"
-<link rel="stylesheet"
       href="{{ STATIC_URL }}lizard_portal/lizard.css"
       type="text/css"
       media="screen, projection" />
+<link rel="stylesheet"
+      href="{{ STATIC_URL }}lizard_portal/portal.css"
+      type="text/css"
+      media="screen, projection"  />
+
 {% endblock css %}
 {% endcompress %}
 

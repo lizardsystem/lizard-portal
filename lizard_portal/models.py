@@ -1,9 +1,11 @@
 # (c) Nelen & Schuurmans.  GPL licensed, see LICENSE.txt.
 from django.db import models
+
 import logging
 #from datetime import datetime
 
 logger = logging.getLogger(__name__)
+
 
 
 class PortalConfiguration(models.Model):
@@ -20,3 +22,7 @@ class PortalConfiguration(models.Model):
 
     def __unicode__(self):
         return str(self.name)
+
+
+
+

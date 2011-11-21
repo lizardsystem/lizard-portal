@@ -1,8 +1,14 @@
-Ext.define 'Lizard.window.Dashboard',
+Ext.define 'Lizard.window.Screen',
     extend:'Ext.container.Viewport'
     config:
         area_selection_template: 'aan_afvoergebied_selectie',
         area_store: 'Vss.store.CatchmentTree'
+
+        header:
+            src_logo: 'vss/stowa_logo.png'
+            url_homepage: '/'
+            tabs: []
+        user: ''
         lizard_context:
             period_start: '2000-01-01T00:00'
             period_end: '2002-01-01T00:00'
@@ -13,61 +19,9 @@ Ext.define 'Lizard.window.Dashboard',
 
 
     setBreadCrumb:(bread_crumbs) ->
-        me = this
-        bread_div = Ext.get('breadcrumbs')
 
-        a = bread_div.down('div')
-        while a
-            a.remove()
-            a = bread_div.down('div')
-
-        a = bread_div.down('a')
-        while a
-            a.remove()
-            a = bread_div.down('a')
-
-        element = {
-            tag: 'div',
-            cls: 'link',
-            html: 'aan-afvoergebied'
-        }
-
-        bread_div.createChild(element)
-        el = bread_div.last()
-        el.addListener('click',
-                        () ->
-                            me.showAreaSelection()
-        )
-
-        if bread_crumbs
-            bread_div.createChild({
-                tag: 'div',
-                html: ' - '
-            })
-            for crumb in bread_crumbs
-                if crumb.link
-                    element = {
-                        tag: 'div',
-                        cls: 'link',
-                        html: crumb.name
-                    }
-
-                    bread_div.createChild(element)
-                    el = bread_div.last()
-                    el.addListener('click'
-                                   (evt, obj, crumb_l) ->
-                                        me.linkTo({portalTemplate: crumb_l.link})
-                                   @,
-                                   crumb)
-                    bread_div.createChild({
-                        tag: 'div',
-                        html: ' - '
-                    })
-                else
-                    bread_div.createChild({
-                        tag: 'div',
-                        html: crumb.name
-                    })
+        header = Ext.getCmp('header')
+        header.setBreadCrumb(arguments)
 
     linkTo:(options, save_state=true, area_selection_collapse=true, skip_animation=false) ->
         @setContext(options, save_state)
@@ -78,7 +32,7 @@ Ext.define 'Lizard.window.Dashboard',
 
         if save_state
             try
-                window.history.pushState(@lizard_context, "#{options}", "/#{@lizard_context.base_url}/##{@lizard_context.portalTemplate}/#{@lizard_context.object}/#{@lizard_context.object_id}")
+                window.history.pushState(@lizard_context, "#{options}", "#{@lizard_context.base_url}##{@lizard_context.portalTemplate}/#{@lizard_context.object}/#{@lizard_context.object_id}")
             catch error
                 console.log "not able to set pushState"
 
@@ -89,7 +43,7 @@ Ext.define 'Lizard.window.Dashboard',
         me = @
 
         container = Ext.getCmp 'app-portal'
-
+ 
         tab = container.child("##{params.portalTemplate}")
 
         if tab
@@ -136,7 +90,7 @@ Ext.define 'Lizard.window.Dashboard',
     constructor: (config) ->
         @initConfig(config)
         @callParent(arguments)
-    initComponent: (arguments) ->
+    initComponent: () ->
         me = @
 
         Ext.apply @,
@@ -150,20 +104,24 @@ Ext.define 'Lizard.window.Dashboard',
                 split: true
                 frame: true
             items:[
-                {region: 'north'
-                collapsible: false
-                floatable: false
-                split: false
-                frame:false
-                border:false
-                items:
+                {
+                    region: 'north'
                     id:'header'
                     height: 55
-                    html: ""
+                    xtype: 'pageheader'
+                    tabs: me.getHeader().tabs
+                    user: me.getUser()
+
                 }
                 {
                     region: 'west'
                     id: 'areaNavigation'
+                    viewConfig: {
+                        plugins: {
+                            ptype: 'gridviewdragdrop'
+                            dragGroup: 'firstGridDDGroup'
+                        }
+                    }
                     animCollapse:500
                     xtype: 'treepanel'
                     title: 'Navigatie'
@@ -196,7 +154,7 @@ Ext.define 'Lizard.window.Dashboard',
                 }
                 {
                     region: 'east'
-                    width:200
+                    width:300
                     title: 'Analyse'
                     collapsible: true
                     floatable: false
@@ -208,8 +166,69 @@ Ext.define 'Lizard.window.Dashboard',
                     xtype: 'tabpanel'
                     id: 'analyse'
                     items:[
-                        {title:'WQ'}
-                        {title:'Eco'}]
+                        {title:'Eco'}
+                        {
+                            title:'WQ',
+                            id: 'analyse_form',
+                            layout: {
+                                type: 'vbox',
+                                align: 'stretch'
+                            },
+                            #xtype:'form',
+                            autoScroll: true,
+                            bbar:['save']
+
+
+                            items:[
+
+                                {
+                                    fieldLabel: 'titel'
+                                    xtype: 'textfield'
+                                }
+                                {
+                                    fieldLabel: 'label'
+                                    store: [1,2,3,4,5,6,7,8,9,10]
+                                    xtype: 'combo'
+                                    multiSelect: true
+                                    forceSelection: true
+                                }
+                                {
+                                    fieldLabel: 'label'
+                                    store: {
+                                        fields: [
+                                            {
+                                                name: 'id',
+
+                                            },{
+                                                name: 'text',
+
+                                            }
+                                        ]
+                                    }
+                                    xtype: 'gridpanel'
+                                    columns: [{
+                                        text: 'Gebieden',
+                                        dataIndex: 'text'
+                                        flex:1
+                                    }]
+                                    height: 100,
+                                    viewConfig: {
+                                        plugins: {
+                                            ptype: 'gridviewdragdrop',
+                                            dropGroup: 'firstGridDDGroup'
+                                        }
+                                    }
+
+                                }
+                                {
+                                    title:'text',
+                                    xtype: 'htmleditor'
+                                    height: 200
+                                    #resizable: true
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
                 
@@ -217,9 +236,6 @@ Ext.define 'Lizard.window.Dashboard',
         return @
     afterRender: ->
         @callParent(arguments)
-        Ext.get('header').load
-            url: '/portalheader/'
-            scripts: true
         if window.location.hash
             hash = window.location.hash
             parts = hash.replace('#', '').split('/');

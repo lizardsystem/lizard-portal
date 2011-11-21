@@ -9,6 +9,14 @@
     itemId: 'waterbalans',
     title: 'Waterbalans',
 	xtype: 'portalpanel',
+    breadcrumbs: [{
+            name: 'watersysteemkaart',
+            link: 'homepage'
+        },
+        {
+            name: 'Waterbalans'
+        }
+    ],
 	items:[{
 		width: 300,
 		items: [{
@@ -31,9 +39,46 @@
 		flex: 1,
 		items: [{
 			title: 'Grafieken',
-            flex:1,
- 			html: '<div class="portlet-content">Hier komen de grafieken</div>',
-            extent: 2
+            flex: 1,
+            xtype: 'multigraph',
+            graph_service_url: '/map/adapter/adapter_fewsnorm/image/',
+            adapter_layer_json: {module_id:null,parameter_id:"ALMR110","fews_norm_source_slug":""},
+            graphs: [{
+                title: 'Waterbalans met sluitfout',
+                timeseries:[{
+                    parameter_id: "ALMR110",
+                    module_id: "ImportLE",
+                    ident: "53R0017"
+                }]
+            },{
+                title: 'Fracties en choride concentratie',
+                timeseries:[{
+                    parameter_id: "ALMR110",
+                    module_id: "ImportLE",
+                    ident: "53R0017"
+                }]
+            },{
+                title: 'Waterstand met sluitfout',
+                timeseries:[{
+                    parameter_id: "ALMR110",
+                    module_id: "ImportLE",
+                    ident: "53R0017"
+                }]
+            }, {
+                title: 'Cumulatieve debieten',
+                timeseries:[{
+                    parameter_id: "ALMR110",
+                    module_id: "ImportLE",
+                    ident: "53R0017"
+                }]
+            }, {
+                title: 'Fosfaatbelasting',
+                timeseries:[{
+                    parameter_id: "ALMR110",
+                    module_id: "ImportLE",
+                    ident: "53R0017"
+                }]
+            }]
 		}]
 	}]
 }
