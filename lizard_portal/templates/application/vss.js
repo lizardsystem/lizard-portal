@@ -53,22 +53,60 @@ Ext.application({
         'GeoExt.data.reader.Layer',
         'Ext.MessageBox',
         'Lizard.grid.EditablePropertyGrid',
-        'Lizard.grid.RemoteConfiguredGrid',
+        'Lizard.grid.EditableGrid',
         'Lizard.portlet.Portlet',
         'Lizard.portlet.PortalPanel',
         'Lizard.portlet.PortalColumn',
         'Lizard.portlet.GridPortlet',
         'Lizard.portlet.MultiGraph',
+        'Lizard.window.Header',
         'Vss.grid.Esf'
     ],
     launch: function() {
-        //TO DO: for the time being on this location, a better location is the template of the watersystem portal
+        //TODO: for the time being on this location, a better location is the template of the watersystem portal
 
         {% get_portal_template watersysteem_layers %}
 
-        settings = {
+
+        var tabs = [{
+                title: 'Beleid',
+                name: 'beleid'
+            }, {
+                title: 'Watersysteem',
+                name: 'watersysteem'
+            }, {
+                title: 'Analyse',
+                name: 'analyse'
+            }, {
+                title: 'Analyse',
+                name: 'analyse'
+            }, {
+                title: 'Rapportage',
+                name: 'rapportage'
+            }, {
+                title: 'Beheer',
+                name: 'beheer'
+        }];
+
+
+
+
+
+
+        var settings = {
             area_selection_template: 'aan_afvoergebied_selectie',
             area_store: 'Vss.store.CatchmentTree',
+            header: {
+                tabs: tabs,
+                src_logo: 'vss/stowa_logo.png',
+                url_homepage: '/'
+            },
+
+            user: {
+                id: {{ user.id|default_if_none:"null" }},
+                name: '{{ user.get_full_name }}'
+            },
+            permission_description: 'viewer',//TODO
             lizard_context: {
                 period_start: '2000-01-01T00:00',
                 period_end: '2002-01-01T00:00',

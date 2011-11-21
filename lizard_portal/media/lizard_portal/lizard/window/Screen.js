@@ -5,6 +5,12 @@
     config: {
       area_selection_template: 'aan_afvoergebied_selectie',
       area_store: 'Vss.store.CatchmentTree',
+      header: {
+        src_logo: 'vss/stowa_logo.png',
+        url_homepage: '/',
+        tabs: []
+      },
+      user: '',
       lizard_context: {
         period_start: '2000-01-01T00:00',
         period_end: '2002-01-01T00:00',
@@ -15,55 +21,9 @@
       }
     },
     setBreadCrumb: function(bread_crumbs) {
-      var a, bread_div, crumb, el, element, me, _i, _len, _results;
-      me = this;
-      bread_div = Ext.get('breadcrumbs');
-      a = bread_div.down('div');
-      while (a) {
-        a.remove();
-        a = bread_div.down('div');
-      }
-      a = bread_div.down('a');
-      while (a) {
-        a.remove();
-        a = bread_div.down('a');
-      }
-      element = {
-        tag: 'div',
-        cls: 'link',
-        html: 'aan-afvoergebied'
-      };
-      bread_div.createChild(element);
-      el = bread_div.last();
-      el.addListener('click', function() {
-        return me.showAreaSelection();
-      });
-      if (bread_crumbs) {
-        bread_div.createChild({
-          tag: 'div',
-          html: ' - '
-        });
-        _results = [];
-        for (_i = 0, _len = bread_crumbs.length; _i < _len; _i++) {
-          crumb = bread_crumbs[_i];
-          _results.push(crumb.link ? (element = {
-            tag: 'div',
-            cls: 'link',
-            html: crumb.name
-          }, bread_div.createChild(element), el = bread_div.last(), el.addListener('click', function(evt, obj, crumb_l) {
-            return me.linkTo({
-              portalTemplate: crumb_l.link
-            });
-          }, this, crumb), bread_div.createChild({
-            tag: 'div',
-            html: ' - '
-          })) : bread_div.createChild({
-            tag: 'div',
-            html: crumb.name
-          }));
-        }
-        return _results;
-      }
+      var header;
+      header = Ext.getCmp('header');
+      return header.setBreadCrumb(arguments);
     },
     linkTo: function(options, save_state, area_selection_collapse, skip_animation) {
       if (save_state == null) {
@@ -153,7 +113,7 @@
       this.initConfig(config);
       return this.callParent(arguments);
     },
-    initComponent: function(arguments) {
+    initComponent: function() {
       var me;
       me = this;
       Ext.apply(this, {
@@ -170,16 +130,11 @@
         items: [
           {
             region: 'north',
-            collapsible: false,
-            floatable: false,
-            split: false,
-            frame: false,
-            border: false,
-            items: {
-              id: 'header',
-              height: 55,
-              html: ""
-            }
+            id: 'header',
+            height: 55,
+            xtype: 'pageheader',
+            tabs: me.getHeader().tabs,
+            user: me.getUser()
           }, {
             region: 'west',
             id: 'areaNavigation',
@@ -300,10 +255,6 @@
     afterRender: function() {
       var anim_setting, hash, navigation, parts;
       this.callParent(arguments);
-      Ext.get('header').load({
-        url: '/portalheader/',
-        scripts: true
-      });
       if (window.location.hash) {
         hash = window.location.hash;
         parts = hash.replace('#', '').split('/');

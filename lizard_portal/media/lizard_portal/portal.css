@@ -4,7 +4,7 @@
 }
 
 .l-row-alt td {
-    background-color: #FAFAFA;;
+    background-color: #FAFAFA;
 
 }
 
@@ -18,14 +18,15 @@
     padding-bottom: 3px;
     padding-top: 3px;
     padding-left: 6px;
-    padding:-right: 6px;
+    padding-right: 6px;
     border-bottom-color: #EDEDED;
     border-bottom-width: 1px;
     border-bottom-style: solid;
-
-
 }
 
+.x-border-layout-ct {
+    background-color: #E0E0E0;
+}
 
 .l-box-inner-scroll {
    overflow:  auto;
@@ -97,7 +98,7 @@
     font-size: 12px;
 }
 .settings {
-    background-image:url(../shared/icons/fam/folder_wrench.png);
+    background-image:url('images/settings.png');
 }
 .nav {
     background-image:url(../shared/icons/fam/folder_go.png);

@@ -3,6 +3,12 @@ Ext.define 'Lizard.window.Screen',
     config:
         area_selection_template: 'aan_afvoergebied_selectie',
         area_store: 'Vss.store.CatchmentTree'
+
+        header:
+            src_logo: 'vss/stowa_logo.png'
+            url_homepage: '/'
+            tabs: []
+        user: ''
         lizard_context:
             period_start: '2000-01-01T00:00'
             period_end: '2002-01-01T00:00'
@@ -13,61 +19,9 @@ Ext.define 'Lizard.window.Screen',
 
 
     setBreadCrumb:(bread_crumbs) ->
-        me = this
-        bread_div = Ext.get('breadcrumbs')
 
-        a = bread_div.down('div')
-        while a
-            a.remove()
-            a = bread_div.down('div')
-
-        a = bread_div.down('a')
-        while a
-            a.remove()
-            a = bread_div.down('a')
-
-        element = {
-            tag: 'div',
-            cls: 'link',
-            html: 'aan-afvoergebied'
-        }
-
-        bread_div.createChild(element)
-        el = bread_div.last()
-        el.addListener('click',
-                        () ->
-                            me.showAreaSelection()
-        )
-
-        if bread_crumbs
-            bread_div.createChild({
-                tag: 'div',
-                html: ' - '
-            })
-            for crumb in bread_crumbs
-                if crumb.link
-                    element = {
-                        tag: 'div',
-                        cls: 'link',
-                        html: crumb.name
-                    }
-
-                    bread_div.createChild(element)
-                    el = bread_div.last()
-                    el.addListener('click'
-                                   (evt, obj, crumb_l) ->
-                                        me.linkTo({portalTemplate: crumb_l.link})
-                                   @,
-                                   crumb)
-                    bread_div.createChild({
-                        tag: 'div',
-                        html: ' - '
-                    })
-                else
-                    bread_div.createChild({
-                        tag: 'div',
-                        html: crumb.name
-                    })
+        header = Ext.getCmp('header')
+        header.setBreadCrumb(arguments)
 
     linkTo:(options, save_state=true, area_selection_collapse=true, skip_animation=false) ->
         @setContext(options, save_state)
@@ -136,7 +90,7 @@ Ext.define 'Lizard.window.Screen',
     constructor: (config) ->
         @initConfig(config)
         @callParent(arguments)
-    initComponent: (arguments) ->
+    initComponent: () ->
         me = @
 
         Ext.apply @,
@@ -150,17 +104,14 @@ Ext.define 'Lizard.window.Screen',
                 split: true
                 frame: true
             items:[
-                {region: 'north'
-                collapsible: false
-                floatable: false
-                split: false
-                frame:false
-                border:false
-                items:
+                {
+                    region: 'north'
                     id:'header'
                     height: 55
-                    html: ""
-                    
+                    xtype: 'pageheader'
+                    tabs: me.getHeader().tabs
+                    user: me.getUser()
+
                 }
                 {
                     region: 'west'
@@ -285,9 +236,6 @@ Ext.define 'Lizard.window.Screen',
         return @
     afterRender: ->
         @callParent(arguments)
-        Ext.get('header').load
-            url: '/portalheader/'
-            scripts: true
         if window.location.hash
             hash = window.location.hash
             parts = hash.replace('#', '').split('/');

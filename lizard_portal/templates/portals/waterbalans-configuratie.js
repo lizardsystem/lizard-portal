@@ -1,10 +1,6 @@
-/**
- * Created by PyCharm.
- * User: bastiaanroos
- * Date: 19-10-11
- * Time: 17:52
- * To change this template use File | Settings | File Templates.
- */
+{% load get_grid %}
+
+
 {
     itemId: 'waterbalans-configuratie',
     title: 'Waterbalans-configuratie',
@@ -20,23 +16,7 @@
                 columns:2
             },
             autoScroll:true,
-            bbar: [{
-                xtype: 'button',
-                text: 'Cancel',
-                iconCls: 'cancel',
-                handler: function(menuItem, checked) {
-                    Ext.data.StoreManager.lookup('analyse_store').rejectChanges();
-                }
-            },{
-                xtype: 'button',
-                text: 'Save',
-                iconCls: 'save',
-                handler: function(menuItem, checked) {
-                    //Ext.data.StoreManager.lookup('analyse_store').sync();
-                    Ext.MessageBox.prompt('save', 'Commentaar bij veranderingen', function (btn, text){ Ext.MessageBox.alert('Opgeslagen')})
-                }
-            }],
-            items:[{
+            items:[/*{
                 anchor: "100%",
                 height: 300,
                 layout:{
@@ -96,13 +76,13 @@
                         store: Ext.create('Vss.store.WaterbalanceWaterConfig')
                     }]
 
-                }
-                ,{
+                },*/
+                {
                 title: 'Bakjes',
                 //height:400,
                 anchor:'100%',
                 height: 200,
-                xtype: 'grid',
+                xtype: 'leditgrid',
                 plugins: [
                     Ext.create('Ext.grid.plugin.CellEditing', {
                         clicksToEdit: 1
@@ -111,64 +91,19 @@
                 ],
                 applyParams: function(params) {
                     var params = params|| {};
-                    console.log('apply params');
-                    console.log(params);
 
                     if (this.store) {
                         this.store.load({params: {object_id: params.object_id}});
                     }
                 },
-                columns: [
-                    {
-                        text: 'Code',
-                        width:150,
-                        sortable: true,
-                        dataIndex: 'code',
-                        field: {
-                            allowBlank: false
-                        }
-                    },{
-                        text: 'Naam',
-                        flex: 1,
-                        dataIndex: 'name',
-                        sortable: true
-                    },{
-                        text: 'Type',
-                        flex: 1,
-                        dataIndex: 'opgedrukt',
-                        sortable: true
-                    },{
-                        text: '....',
-                        flex: 1,
-                        dataIndex: 'van',
-                        sortable: true
-                    },{
-                        text: '....',
-                        flex: 1,
-                        dataIndex: 'naar',
-                        sortable: true
-                    },{
-                        text: '......',
-                        flex: 1,
-                        dataIndex: 'naar',
-                        sortable: true
-                    },{
-                        text: 'Tijdserie debiet',
-                        flex: 1,
-                        dataIndex: 'ts_deb',
-                        sortable: true
-                    },{
-                        text: 'Zomer debiet',
-                        flex: 1,
-                        dataIndex: 'naar',
-                        sortable: true
-                    },{
-                        text: 'Winter debiet',
-                        flex: 1,
-                        dataIndex: 'naar',
-                        sortable: true
-                    }],
-                store: Ext.create("Vss.store.WaterbalanceBucket")
+                proxyUrl: '/portal/wbbuckets.json',
+                proxyParams: {},
+                dataConfig:[
+                    {name: 'id', title: 'id', mapping: 'id', editable: false, visible: true, width:100 },
+                    {name: 'a', title: 'A', mapping: 'a', editable: false, visible: true, width:100 },
+                    {name: 'c', title: 'C', mapping: 'c', editable: true, visible: false, width:100 },
+                    {name: 'd', title: 'D', mapping: 'd', editable: false, visible: false, width:100 }
+                ]
 
             },{
                 title: 'Kunstwerken',
