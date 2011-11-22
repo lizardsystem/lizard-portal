@@ -6,7 +6,8 @@ Ext.define('Lizard.grid.EditableGrid', {
         proxyParams: {}
         dataConfig: []
         useSaveBar: true
-        enterEditSummary:true
+        enterEditSummary: true
+        editable: true
     }
     constructor: () ->
         @initConfig(arguments)
@@ -30,12 +31,35 @@ Ext.define('Lizard.grid.EditableGrid', {
         return cols
 
 
-    save: () ->
+    saveEdits: () ->
         @store.sync()
 
-    cancel: () ->
+    cancelEdits: () ->
         @store.rejectChanges()
 
+    addRecord: () ->
+        rec = {
+            first: '',
+            last: '',
+            email: ''
+        }
+
+        @store.insert(0, {})
+
+        if @editing
+
+            edit = @editing
+            edit.cancelEdit()
+            edit.startEditByPosition({
+                row: 0,
+                column: 1
+            })
+
+    deleteSelectedRecord: () ->
+        selection = @getView().getSelectionModel().getSelection()[0]
+        if selection
+            @store.remove(selection)
+        
     
 
     getStoreConfig: () ->
@@ -49,6 +73,7 @@ Ext.define('Lizard.grid.EditableGrid', {
             })
 
         store = {
+            type: 'leditstore'
             fields: fields
             proxy: {
                 type: 'ajax'
@@ -78,6 +103,16 @@ Ext.define('Lizard.grid.EditableGrid', {
         me.store = @getStoreConfig()
 
 
+        if @getEditable
+            @editing = Ext.create('Ext.grid.plugin.CellEditing', {
+                        clicksToEdit: 1
+                    })
+            @plugins.push(@editing)
+
+
+
+
+
         if @getUseSaveBar
             me.bbar = [
                 {
@@ -85,12 +120,11 @@ Ext.define('Lizard.grid.EditableGrid', {
                     text: 'Cancel',
                     iconCls: 'cancel',
                     handler:(menuItem, checked) ->
-                        me.cancel()
+                        me.cancelEdits()
 
                 }
                 {
                     xtype: 'button',
-                    id: 'save_button',
                     text: 'Save',
                     iconCls: 'save',
                     handler: (menuItem) ->
@@ -104,12 +138,30 @@ Ext.define('Lizard.grid.EditableGrid', {
                                 buttons: Ext.MessageBox.OKCANCEL,
                                 fn: (btn, text)  ->
                                      if (btn=='ok')
-                                         me.save()
+                                         me.saveEdits()
                             })
                         else
-                            me.save()
+                            me.saveEdits()
 
                 }
+                '-'
+                {
+                    xtype: 'button',
+                    text: 'Toevoegen',
+                    iconCls: 'add',
+                    handler:(menuItem, checked) ->
+                        me.addRecord()
+
+                }
+                {
+                    xtype: 'button',
+                    text: 'Delete',
+                    iconCls: 'add',
+                    handler:(menuItem, checked) ->
+                        me.deleteSelectedRecord()
+
+                }
+
             ]
 
 

@@ -8,7 +8,7 @@
         id: null,
         name: ''
       },
-      activetab: 0
+      active_tab: ''
     },
     setBreadCrumb: function(bread_crumbs) {
       var a, bread_div, breadcrumb, crumb, el, element, me, _i, _len, _results;
@@ -62,12 +62,90 @@
         return _results;
       }
     },
+    logout: function() {
+      return Ext.MessageBox.confirm('Loguit', 'Weet u zeker dat u uit wil loggen?', function(button) {
+        if (button === 'yes') {
+          return location.replace('/user/logout_redirect/?url=' + location.href);
+        }
+      });
+    },
+    login: function() {
+      return Ext.create('Ext.window.Window', {
+        title: 'Login',
+        items: {
+          frame: true,
+          xtype: 'form',
+          url: '/user/login_redirect/',
+          bodyStyle: 'padding:5px 5px 0',
+          width: 350,
+          fieldDefaults: {
+            msgTarget: 'side',
+            labelWidth: 90
+          },
+          defaultType: 'textfield',
+          defaults: {
+            anchor: '100%'
+          },
+          items: [
+            {
+              fieldLabel: 'Gebruikernaam',
+              name: 'username'
+            }, {
+              fieldLabel: 'Password',
+              name: 'password',
+              inputType: 'password'
+            }, {
+              xtype: 'displayfield',
+              value: 'Wachtwoord <a href="' + url.auth_password_reset + '" target="_blank">vergeten</a> of <a href="' + url.auth_password_reset + '" target="_blank">wijzigen</a>?'
+            }
+          ],
+          buttons: [
+            {
+              text: 'Login',
+              formBind: true,
+              handler: function() {
+                var form;
+                form = this.up('form').getForm();
+                return form.submit({
+                  clientValidation: true,
+                  url: form.url,
+                  success: function(form, action) {
+                    var result;
+                    result = Ext.JSON.decode(action.response.responseText);
+                    if (result.success) {
+                      return location.reload();
+                    } else {
+                      return Ext.Msg.alert('Fout', result.msg);
+                    }
+                  },
+                  failure: function(form, action) {
+                    var result;
+                    result = Ext.JSON.decode(action.response.responseText);
+                    return Ext.Msg.alert('Fout', result.msg);
+                  }
+                });
+              }
+            }, {
+              text: 'Cancel',
+              handler: function() {
+                var window;
+                window = this.up('window');
+                return window.close();
+              }
+            }
+          ]
+        }
+      }).show();
+    },
+    getActiveTab: function() {
+      return Ext.getCmp('headertab_' + this.getActive_tab());
+    },
     constructor: function(config) {
       this.initConfig(arguments);
       return this.callParent(arguments);
     },
     initComponent: function() {
-      var header_items, me, tab, user, _i, _len, _ref;
+      var header_items, me, pressed, tab, user, _i, _len, _ref;
       me = this;
       header_items = [
         {
@@ -78,21 +156,33 @@
       _ref = this.tabs;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         tab = _ref[_i];
+        if (this.active_tab === tab.name) {
+          pressed = true;
+        } else {
+          pressed = false;
+        }
         header_items.push({
+          id: 'headertab_' + tab.name,
           text: tab.title,
+          pressed: pressed,
           xtype: 'button',
           cls: 'l-headertab',
-          toggleGroup: 'headertab'
+          toggleGroup: 'headertab',
+          navigation: tab.navigation,
+          handler: function() {
+            console.log(arguments);
+            return Ext.getCmp('areaNavigation').add(this.navigation);
+          }
         });
       }
       header_items.push('->');
       user = this.getUser();
       if (user.id === null) {
         header_items.push({
-          text: 'login',
+          text: 'Login',
           xtype: 'button',
           handler: function(button, event, eOpts) {
-            return Ext.MessageBox.alert('TO DO', 'TO DO');
+            return me.login();
           },
           componentCls: 'l-headertabs'
         });
@@ -108,9 +198,9 @@
                 return Ext.MessageBox.alert('release 2', 'release2');
               }
             }, '-', {
-              text: 'log uit',
+              text: 'Log uit',
               handler: function(button, event, eOpts) {
-                return Ext.MessageBox.alert('TO DO', 'TO DO');
+                return me.logout();
               }
             }
           ],
@@ -136,24 +226,32 @@
         bodyStyle: {
           background: 'transparent'
         },
+        layout: 'absolute',
+        layoutConfig: {
+          itemCls: 'l-headertab'
+        },
         items: [
           {
+            x: 0,
+            y: 0,
             xtype: 'toolbar',
             cls: 'l-header',
             items: header_items
           }, {
+            x: 250,
+            y: 30,
             id: 'breadcrumb',
             html: 'breadcrumb'
           }, {
+            x: 5,
+            y: 5,
+            width: 200,
+            height: 45,
             id: 'logo',
             html: 'logo'
           }
         ]
       });
-      this.callParent(arguments);
-      return this;
-    },
-    afterRender: function() {
       return this.callParent(arguments);
     }
   });

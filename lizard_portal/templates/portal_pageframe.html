@@ -35,6 +35,11 @@ catch (e) {
     console.warning('no window.onpopstate');
 }
 
+url = {
+   auth_password_reset: '{% url auth_password_reset %}'
+
+}
+
 </script>
 {{ block.super }}
 {% endblock head-extras %}

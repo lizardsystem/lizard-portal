@@ -52,8 +52,10 @@ Ext.application({
         'GeoExt.data.LayerModel',
         'GeoExt.data.reader.Layer',
         'Ext.MessageBox',
+        'Lizard.window.ContextManager',
         'Lizard.grid.EditablePropertyGrid',
         'Lizard.grid.EditableGrid',
+        'Lizard.store.EditGridStore',
         'Lizard.portlet.Portlet',
         'Lizard.portlet.PortalPanel',
         'Lizard.portlet.PortalColumn',
@@ -70,13 +72,56 @@ Ext.application({
 
         var tabs = [{
                 title: 'Beleid',
-                name: 'beleid'
+                name: 'beleid',
+                navigation: {
+                    viewConfig: {
+                        plugins: {
+                            ptype: 'gridviewdragdrop',
+                            dragGroup: 'firstGridDDGroup'
+                        }
+                    },
+                    xtype: 'treepanel',
+                    listeners: {
+                        itemclick: {
+                            fn: function (tree, node) {
+                                Ext.getCmp('portalWindow').linkTo({object_id: node.data.id});
+                            }
+                        }
+                    },
+                    store: 'Vss.store.KrwGebiedenTree',
+                    bbar: [{
+                        text: 'Selecteer op kaart -->',
+                        handler: function () {
+                            Ext.getCmp('portalWindow').showAreaSelection();
+                        }
+                    }]
+                }
             }, {
                 title: 'Watersysteem',
-                name: 'watersysteem'
-            }, {
-                title: 'Analyse',
-                name: 'analyse'
+                name: 'watersysteem',
+                navigation: {
+                    viewConfig: {
+                        plugins: {
+                            ptype: 'gridviewdragdrop',
+                            dragGroup: 'firstGridDDGroup'
+                        }
+                    },
+                    xtype: 'treepanel',
+                    listeners: {
+                        itemclick: {
+                            fn: function (tree, node) {
+                                Ext.getCmp('portalWindow').linkTo({object_id: node.data.id});
+                            }
+                        }
+                    },
+                    store: 'Vss.store.CatchmentTree',
+                    bbar: [{
+                        text: 'Selecteer op kaart -->',
+                        handler: function () {
+                            Ext.getCmp('portalWindow').showAreaSelection();
+                        }
+                    }]
+                }
             }, {
                 title: 'Analyse',
                 name: 'analyse'
@@ -88,24 +133,20 @@ Ext.application({
                 name: 'beheer'
         }];
 
-
-
-
-
-
         var settings = {
             area_selection_template: 'aan_afvoergebied_selectie',
             area_store: 'Vss.store.CatchmentTree',
             header: {
                 tabs: tabs,
+                active_tab: 'watersysteem',
                 src_logo: 'vss/stowa_logo.png',
                 url_homepage: '/'
             },
-
             user: {
                 id: {{ user.id|default_if_none:"null" }},
                 name: '{{ user.get_full_name }}'
             },
+
             permission_description: 'viewer',//TODO
             lizard_context: {
                 period_start: '2000-01-01T00:00',
