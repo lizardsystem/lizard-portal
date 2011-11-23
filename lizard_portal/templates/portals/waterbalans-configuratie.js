@@ -33,12 +33,12 @@
                         width: 400, //flex:1,
                         //anchor:'50% 400',
                         xtype: 'leditpropgrid',
-                        //height:330,
-                        sortableColumns: false,
+                        height:200,
+                        proxyUrl: '/wbconfiguration/api/area_configuration/',
+                        proxyParams: {
+                            _accept: 'application/json'
+                        },
                         plugins: [
-                            Ext.create('Ext.grid.plugin.CellEditing', {
-                                clicksToEdit: 1
-                            }),
                             'applycontext'
                         ],
                         applyParams: function(params) {
@@ -48,20 +48,19 @@
                             this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceAreaConfig')
-
                     },{
                         title: 'Openwater',
                         width:400,
                         id: 'openw',
-                        //height:330,
+                        height:200,
                         xtype: 'leditpropgrid',
-                        sortableColumns: false,
                         plugins: [
-                            Ext.create('Ext.grid.plugin.CellEditing', {
-                                clicksToEdit: 1
-                            }),
                             'applycontext'
                         ],
+                        proxyUrl: '/wbconfiguration/api/area_configuration/',
+                        proxyParams: {
+                            _accept: 'application/json'
+                        },
                         applyParams: function(params) {
                             var url = '/wbconfiguration/api/area_configuration/';
                             url = url + params.object_id + '/water/';
@@ -70,7 +69,6 @@
                         },
                         store: Ext.create('Vss.store.WaterbalanceWaterConfig')
                     }]
-
                 },
                 {
                 title: 'Bakjes',
@@ -79,9 +77,6 @@
                 height: 200,
                 xtype: 'leditgrid',
                 plugins: [
-                    Ext.create('Ext.grid.plugin.CellEditing', {
-                        clicksToEdit: 1
-                    }),
                     'applycontext'
                 ],
                 applyParams: function(params) {
@@ -105,11 +100,8 @@
                 title: 'Kunstwerken',
                 anchor:'100%',
                 height: 200,
-                xtype: 'grid',
+                xtype: 'leditgrid',
                 plugins: [
-                    Ext.create('Ext.grid.plugin.CellEditing', {
-                        clicksToEdit: 1
-                    }),
                     'applycontext'
                 ],
                 applyParams: function(params) {
@@ -121,57 +113,14 @@
                         this.store.load({params: {object_id: params.object_id}});
                     }
                 },
-                columns: [
-                    {
-                        text: 'Code',
-                        width:150,
-                        sortable: true,
-                        dataIndex: 'code',
-                        field: {
-                            allowBlank: false
-                        }
-                    },{
-                        text: 'Naam',
-                        flex: 1,
-                        dataIndex: 'name',
-                        sortable: true
-                    },{
-                        text: 'Opgedrukt',
-                        flex: 1,
-                        dataIndex: 'opgedrukt',
-                        sortable: true
-                    },{
-                        text: 'Van gebied',
-                        flex: 1,
-                        dataIndex: 'van',
-                        sortable: true
-                    },{
-                        text: 'Naar gebied',
-                        flex: 1,
-                        dataIndex: 'naar',
-                        sortable: true
-                    },{
-                        text: 'Is tijdserie',
-                        flex: 1,
-                        dataIndex: 'naar',
-                        sortable: true
-                    },{
-                        text: 'Tijdserie debiet',
-                        flex: 1,
-                        dataIndex: 'ts_deb',
-                        sortable: true
-                    },{
-                        text: 'Zomer debiet',
-                        flex: 1,
-                        dataIndex: 'naar',
-                        sortable: true
-                    },{
-                        text: 'Winter debiet',
-                        flex: 1,
-                        dataIndex: 'naar',
-                        sortable: true
-                    }],
-                store: Ext.create("Vss.store.WaterbalanceStructure")
+                proxyUrl: '/portal/wbstructures.json',
+                proxyParams: {},
+                dataConfig:[
+                    {name: 'id', title: 'id', mapping: 'id', editable: false, visible: true, width:100 },
+                    {name: 'name', title: 'name', mapping: 'name', editable: false, visible: true, width:100 },
+                    {name: 'c', title: 'F', mapping: 'c', editable: true, visible: false, width:100 },
+                    {name: 'd', title: 'G', mapping: 'd', editable: false, visible: false, width:100 }
+                ]
             }]
 		}]
 	}]

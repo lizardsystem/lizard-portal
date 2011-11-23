@@ -8,7 +8,8 @@
       header: {
         src_logo: 'vss/stowa_logo.png',
         url_homepage: '/',
-        tabs: []
+        tabs: [],
+        active_tab: ''
       },
       user: '',
       lizard_context: {
@@ -134,41 +135,18 @@
             height: 55,
             xtype: 'pageheader',
             tabs: me.getHeader().tabs,
-            user: me.getUser()
+            user: me.getUser(),
+            active_tab: me.getHeader().active_tab
           }, {
             region: 'west',
             id: 'areaNavigation',
-            viewConfig: {
-              plugins: {
-                ptype: 'gridviewdragdrop',
-                dragGroup: 'firstGridDDGroup'
-              }
-            },
-            animCollapse: 500,
-            xtype: 'treepanel',
             title: 'Navigatie',
-            frame: false,
+            animCollapse: 500,
             width: 250,
             autoScroll: true,
+            frame: false,
             collapsed: true,
-            listeners: {
-              itemclick: {
-                fn: __bind(function(tree, node) {
-                  return this.linkTo({
-                    object_id: node.data.id
-                  });
-                }, this)
-              }
-            },
-            store: me.area_store,
-            bbar: [
-              {
-                text: 'Selecteer op kaart -->',
-                handler: function() {
-                  return me.showAreaSelection();
-                }
-              }
-            ]
+            xtype: 'tabpanel'
           }, {
             region: 'center',
             collapsible: false,
@@ -253,8 +231,10 @@
       return this;
     },
     afterRender: function() {
-      var anim_setting, hash, navigation, parts;
+      var activeTab, anim_setting, hash, navigation, parts;
       this.callParent(arguments);
+      activeTab = Ext.getCmp('header').getActiveTab();
+      Ext.getCmp('areaNavigation').add(activeTab.navigation);
       if (window.location.hash) {
         hash = window.location.hash;
         parts = hash.replace('#', '').split('/');

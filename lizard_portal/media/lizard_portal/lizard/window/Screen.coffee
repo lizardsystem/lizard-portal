@@ -8,6 +8,7 @@ Ext.define 'Lizard.window.Screen',
             src_logo: 'vss/stowa_logo.png'
             url_homepage: '/'
             tabs: []
+            active_tab: ''
         user: ''
         lizard_context:
             period_start: '2000-01-01T00:00'
@@ -111,34 +112,19 @@ Ext.define 'Lizard.window.Screen',
                     xtype: 'pageheader'
                     tabs: me.getHeader().tabs
                     user: me.getUser()
-
+                    active_tab: me.getHeader().active_tab
                 }
                 {
                     region: 'west'
                     id: 'areaNavigation'
-                    viewConfig: {
-                        plugins: {
-                            ptype: 'gridviewdragdrop'
-                            dragGroup: 'firstGridDDGroup'
-                        }
-                    }
-                    animCollapse:500
-                    xtype: 'treepanel'
                     title: 'Navigatie'
-                    frame: false
+                    animCollapse:500
                     width: 250
                     autoScroll: true
+                    frame: false
                     collapsed: true
-                    listeners:
-                        itemclick:
-                            fn: (tree, node) =>
-                                @linkTo {object_id: node.data.id}
-                    store: me.area_store
-                    bbar: [
-                        text: 'Selecteer op kaart -->'
-                        handler: ->
-                            me.showAreaSelection()
-                        ]
+                    #layout:'card'
+                    xtype:'tabpanel'
                 }
 
                 {
@@ -236,6 +222,12 @@ Ext.define 'Lizard.window.Screen',
         return @
     afterRender: ->
         @callParent(arguments)
+
+        activeTab = Ext.getCmp('header').getActiveTab()
+        Ext.getCmp('areaNavigation').add(activeTab.navigation)
+
+
+
         if window.location.hash
             hash = window.location.hash
             parts = hash.replace('#', '').split('/');

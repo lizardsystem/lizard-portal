@@ -7,7 +7,8 @@
       proxyParams: {},
       dataConfig: [],
       useSaveBar: true,
-      enterEditSummary: true
+      enterEditSummary: true,
+      editable: true
     },
     constructor: function() {
       this.initConfig(arguments);
@@ -32,11 +33,35 @@
       }
       return cols;
     },
-    save: function() {
+    saveEdits: function() {
       return this.store.sync();
     },
-    cancel: function() {
+    cancelEdits: function() {
       return this.store.rejectChanges();
+    },
+    addRecord: function() {
+      var edit, rec;
+      rec = {
+        first: '',
+        last: '',
+        email: ''
+      };
+      this.store.insert(0, {});
+      if (this.editing) {
+        edit = this.editing;
+        edit.cancelEdit();
+        return edit.startEditByPosition({
+          row: 0,
+          column: 1
+        });
+      }
+    },
+    deleteSelectedRecord: function() {
+      var selection;
+      selection = this.getView().getSelectionModel().getSelection()[0];
+      if (selection) {
+        return this.store.remove(selection);
+      }
     },
     getStoreConfig: function() {
       var field, fields, store, _i, _len, _ref;
@@ -51,6 +76,7 @@
         });
       }
       store = {
+        type: 'leditstore',
         fields: fields,
         proxy: {
           type: 'ajax',
@@ -78,6 +104,12 @@
       me = this;
       me.columns = this.getColumnConfig();
       me.store = this.getStoreConfig();
+      if (this.getEditable) {
+        this.editing = Ext.create('Ext.grid.plugin.CellEditing', {
+          clicksToEdit: 1
+        });
+        this.plugins.push(this.editing);
+      }
       if (this.getUseSaveBar) {
         me.bbar = [
           {
@@ -85,11 +117,10 @@
             text: 'Cancel',
             iconCls: 'cancel',
             handler: function(menuItem, checked) {
-              return me.cancel();
+              return me.cancelEdits();
             }
           }, {
             xtype: 'button',
-            id: 'save_button',
             text: 'Save',
             iconCls: 'save',
             handler: function(menuItem) {
@@ -102,13 +133,27 @@
                   buttons: Ext.MessageBox.OKCANCEL,
                   fn: function(btn, text) {
                     if (btn === 'ok') {
-                      return me.save();
+                      return me.saveEdits();
                     }
                   }
                 });
               } else {
-                return me.save();
+                return me.saveEdits();
               }
+            }
+          }, '-', {
+            xtype: 'button',
+            text: 'Toevoegen',
+            iconCls: 'add',
+            handler: function(menuItem, checked) {
+              return me.addRecord();
+            }
+          }, {
+            xtype: 'button',
+            text: 'Delete',
+            iconCls: 'add',
+            handler: function(menuItem, checked) {
+              return me.deleteSelectedRecord();
             }
           }
         ];

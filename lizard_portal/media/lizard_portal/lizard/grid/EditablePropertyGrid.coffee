@@ -6,7 +6,12 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
     extend:'Ext.grid.Panel'
     alias: 'widget.leditpropgrid'
     config:
-        special: true
+        proxyUrl: ''
+        proxyParams: {}
+        useSaveBar: true
+        enterEditSummary: true
+        editable: true
+
     extraEditors: {
         timeserie: {
             field: {
@@ -100,6 +105,13 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
 
         return value
 
+
+    saveEdits: () ->
+        @store.sync()
+
+    cancelEdits: () ->
+        @store.rejectChanges()
+
     initComponent: () ->
         me = this
 
@@ -108,8 +120,51 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
         #    storeId: 'timeserieobject'
         #});
 
+        if @getEditable
+            @editing = Ext.create('Ext.grid.plugin.CellEditing', {
+                        clicksToEdit: 1
+                    })
+            @plugins.push(@editing)
+
+
+
+
+
+        if @getUseSaveBar
+            me.bbar = [
+                {
+                    xtype: 'button',
+                    text: 'Cancel',
+                    iconCls: 'cancel',
+                    handler:(menuItem, checked) ->
+                        me.cancelEdits()
+
+                }
+                {
+                    xtype: 'button',
+                    text: 'Save',
+                    iconCls: 'save',
+                    handler: (menuItem) ->
+
+                        if me.getEnterEditSummary()
+                            Ext.MessageBox.show({
+                                title: 'Wijzigingen opslaan',
+                                msg: 'Samenvatting',
+                                width: 300,
+                                multiline: true,
+                                buttons: Ext.MessageBox.OKCANCEL,
+                                fn: (btn, text)  ->
+                                     if (btn=='ok')
+                                         me.saveEdits()
+                            })
+                        else
+                            me.saveEdits()
+
+                }
+            ]
 
         Ext.apply( this, {
+            sortableColumns: false
             columns: [
                 {
                     text: 'Eigenschap'
@@ -125,14 +180,50 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
                     renderer: me.get_renderer
                     getEditor: (record, default_editor) ->
                         return me.get_editor(record, default_editor, me)
-                    field: {
+                    field:
                         allowBlank: false
-                    }
                 }
             ]
+            store:
+                type: 'leditstore'
+                fields: [
+                    {
+                        name: 'id',
+                        mapping: 'id'
+                    },{
+                        name: 'property',
+                        mapping: 'property'
+                    },{
+                        name: 'value',
+                        mapping: 'value',
+                        type: 'auto',
+                        defaultValue: null
+                    },{
+                        name: 'type',
+                        mapping: 'type',
+                        defaultValue: 'text'
+                    },{
+                        name: 'editable',
+                        mapping: 'editable',
+                        defaultValue: true
+                    }
+                ]
+                proxy:
+                    type: 'ajax'
+                    url: @getProxyUrl()
+                    extraParams:
+                       _accept: 'application/json'
+                    reader:
+                        type: 'json'
+                    writer:
+                        type: 'json',
+                        writeAllFields: false,
+                        root: 'data',
+                        encode: true,
+                        successProperty: 'success'
+
         })
 
         @callParent arguments
-        return this
 
 
