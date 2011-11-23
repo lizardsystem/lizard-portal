@@ -8,32 +8,25 @@
         id: null,
         name: ''
       },
-      active_tab: ''
+      active_tab: '',
+      logo_url: '/static_media/vss/stowa_logo.png'
     },
     setBreadCrumb: function(bread_crumbs) {
-      var a, bread_div, breadcrumb, crumb, el, element, me, _i, _len, _results;
+      var bread_div, crumb, el, element, me, portalWindow, _i, _len, _results;
+      bread_crumbs = bread_crumbs[0];
       me = this;
-      breadcrumb = Ext.getCmp('breadcrumb');
-      bread_div = breadcrumb.el;
-      a = bread_div.down('div');
-      while (a) {
-        a.remove();
-        a = bread_div.down('div');
-      }
-      a = bread_div.down('a');
-      while (a) {
-        a.remove();
-        a = bread_div.down('a');
-      }
+      bread_div = Ext.get('breadcrumb');
+      bread_div.dom.innerHTML = '';
+      portalWindow = Ext.getCmp('portalWindow');
       element = {
         tag: 'div',
         cls: 'link',
-        html: 'aan-afvoergebied'
+        html: '> ' + portalWindow.lizard_context.object
       };
       bread_div.createChild(element);
       el = bread_div.last();
       el.addListener('click', function() {
-        return me.showAreaSelection();
+        return portalWindow.showAreaSelection();
       });
       if (bread_crumbs) {
         bread_div.createChild({
@@ -48,7 +41,7 @@
             cls: 'link',
             html: crumb.name
           }, bread_div.createChild(element), el = bread_div.last(), el.addListener('click', function(evt, obj, crumb_l) {
-            return me.linkTo({
+            return portalWindow.linkTo({
               portalTemplate: crumb_l.link
             });
           }, this, crumb), bread_div.createChild({
@@ -239,16 +232,27 @@
             items: header_items
           }, {
             x: 250,
-            y: 30,
+            y: 20,
             id: 'breadcrumb',
-            html: 'breadcrumb'
+            cls: 'breadcrumb',
+            height: 15,
+            border: false,
+            bodyStyle: {
+              background: 'transparent',
+              display: 'inline'
+            },
+            html: ''
           }, {
             x: 5,
             y: 5,
             width: 200,
             height: 45,
+            border: false,
+            bodyStyle: {
+              background: 'transparent'
+            },
             id: 'logo',
-            html: 'logo'
+            html: '<img src="' + me.getLogo_url() + '"></img>'
           }
         ]
       });

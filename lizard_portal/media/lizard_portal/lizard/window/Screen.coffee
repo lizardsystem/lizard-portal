@@ -74,7 +74,7 @@ Ext.define 'Lizard.window.Screen',
                     container.setActiveTab(tab)
                     container.setLoading false
                     console.log('check')
-                    me.setBreadCrumb newComponent.breadcrumbs
+                    me.setBreadCrumb(newComponent.breadcrumbs)
                     console.log('check')
 
 

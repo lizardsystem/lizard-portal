@@ -14,7 +14,7 @@
             link: 'homepage'
         },
         {
-            name: 'Waterbalans'
+            name: 'waterbalans'
         }
     ],
 	items:[{

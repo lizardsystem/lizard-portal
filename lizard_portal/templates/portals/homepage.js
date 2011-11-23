@@ -305,7 +305,7 @@
                 type: 'table',
                 columns:1
             },
-            height: 150,
+            height: 250,
             defaults:{
                 width:150,
                 xtype:'button',
@@ -320,7 +320,17 @@
                 }, {
                    text: 'Analyse interpretaties',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'analyse-interpretatie'}); }
-                }]
+                }, {
+                   text: 'Advies',
+                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'advies'}); }
+                }, {
+                   text: 'Maatregelen',
+                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'maatregelen'}); }
+                }, {
+                   text: 'Toestand',
+                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'toestand-aan-afvoergebied'}); }
+                }
+            ]
  		},{
 			title: 'Gerelateerde deelgebieden',
             flex:1,

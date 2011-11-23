@@ -32,10 +32,10 @@
    overflow:  auto;
 }
 
-#breadcrumbs {
+#breadcrumb {
     margin-top: 15px;
 }
-#breadcrumbs div {
+#breadcrumb div {
     color: black;
     display: inline;
     margin-top: 15px;

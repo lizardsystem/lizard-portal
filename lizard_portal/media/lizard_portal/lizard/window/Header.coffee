@@ -7,33 +7,32 @@ Ext.define('Lizard.window.Header', {
             id: null
             name: ''
         active_tab: ''
+        logo_url: '/static_media/vss/stowa_logo.png'
+
 
     setBreadCrumb:(bread_crumbs) ->
-        me = @
-        breadcrumb = Ext.getCmp('breadcrumb')
-        bread_div = breadcrumb.el
-        a = bread_div.down('div')
-        while a
-            a.remove()
-            a = bread_div.down('div')
+        bread_crumbs = bread_crumbs[0]
 
-        a = bread_div.down('a')
-        while a
-            a.remove()
-            a = bread_div.down('a')
+        me = @
+        bread_div = Ext.get('breadcrumb')
+        bread_div.dom.innerHTML = ''
+
+
+        portalWindow = Ext.getCmp('portalWindow')
 
         element = {
             tag: 'div',
             cls: 'link',
-            html: 'aan-afvoergebied'
+            html: '> ' + portalWindow.lizard_context.object
         }
 
         bread_div.createChild(element)
         el = bread_div.last()
         el.addListener('click',
             () ->
-                me.showAreaSelection()
+               portalWindow.showAreaSelection()
         )
+
 
         if bread_crumbs
             bread_div.createChild({
@@ -52,7 +51,7 @@ Ext.define('Lizard.window.Header', {
                     el = bread_div.last()
                     el.addListener('click'
                         (evt, obj, crumb_l) ->
-                            me.linkTo({portalTemplate: crumb_l.link})
+                            portalWindow.linkTo({portalTemplate: crumb_l.link})
                         @,
                         crumb)
                     bread_div.createChild({
@@ -240,17 +239,27 @@ Ext.define('Lizard.window.Header', {
                 }
                 {
                     x: 250,
-                    y: 30,
+                    y: 20,
                     id: 'breadcrumb'
-                    html: 'breadcrumb'
+                    cls: 'breadcrumb'
+                    height:15
+                    border: false
+                    bodyStyle:
+                        background: 'transparent'
+                        display: 'inline'
+                        
+                    html: ''
                 }
                 {
                     x: 5,
                     y: 5,
                     width:200
                     height:45
+                    border: false
+                    bodyStyle:
+                        background: 'transparent'
                     id: 'logo'
-                    html: 'logo'
+                    html:'<img src="' + me.getLogo_url() + '"></img>'
                 }
             ]
                 
