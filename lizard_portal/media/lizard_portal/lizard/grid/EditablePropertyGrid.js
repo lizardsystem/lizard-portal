@@ -193,6 +193,7 @@
             }, {
               name: 'type',
               mapping: 'type',
+              type: 'text',
               defaultValue: 'text'
             }, {
               name: 'editable',

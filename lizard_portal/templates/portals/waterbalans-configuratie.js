@@ -5,6 +5,20 @@
     itemId: 'waterbalans-configuratie',
     title: 'Waterbalans-configuratie',
 	xtype: 'portalpanel',
+    breadcrumbs: [{
+            name: 'watersysteemkaart',
+            link: 'homepage'
+        },
+        {
+            name: 'waterbalans',
+            link: 'waterbalans'
+        },
+        {
+            name: 'waterbalans-configuratie'
+        }
+    ],
+
+
 	items:[{
 		flex:1,
 		items: [{
@@ -34,7 +48,7 @@
                         //anchor:'50% 400',
                         xtype: 'leditpropgrid',
                         height:200,
-                        proxyUrl: '/wbconfiguration/api/area_configuration/',
+                        proxyUrl: '/portal/wbgebied.json',
                         proxyParams: {
                             _accept: 'application/json'
                         },
@@ -47,7 +61,8 @@
                             console.log(params);
 
                             if (this.store) {
-                                this.store.load({params: {object_id: params.object_id}});
+                                this.store.applyParams({object_id: params.object_id});
+                                this.store.load();
                             }
                         }
 
