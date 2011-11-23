@@ -16,7 +16,7 @@
                 columns:2
             },
             autoScroll:true,
-            items:[/*{
+            items:[{
                 anchor: "100%",
                 height: 300,
                 layout:{
@@ -42,19 +42,17 @@
                             'applycontext'
                         ],
                         applyParams: function(params) {
-                            var params = params|| {};
-                            console.log('apply params');
-                            console.log(params);
-
-                            if (this.store) {
-                                this.store.load({params: {object_id: params.object_id}});
-                            }
+                            var url = '/wbconfiguration/api/area_configuration/';
+                            url = url + params.object_id + '/area/';
+                            this.store.getProxy().url = url;
+                            this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceAreaConfig')
 
                     },{
                         title: 'Openwater',
                         width:400,
+                        id: 'openw',
                         //height:330,
                         xtype: 'leditpropgrid',
                         sortableColumns: false,
@@ -65,18 +63,15 @@
                             'applycontext'
                         ],
                         applyParams: function(params) {
-                            var params = params|| {};
-                            console.log('apply params');
-                            console.log(params);
-
-                            if (this.store) {
-                                this.store.load({params: {object_id: params.object_id}});
-                            }
+                            var url = '/wbconfiguration/api/area_configuration/';
+                            url = url + params.object_id + '/water/';
+                            this.store.getProxy().url = url;
+                            this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceWaterConfig')
                     }]
 
-                },*/
+                },
                 {
                 title: 'Bakjes',
                 //height:400,
@@ -96,13 +91,14 @@
                         this.store.load({params: {object_id: params.object_id}});
                     }
                 },
-                proxyUrl: '/portal/wbbuckets.json',
-                proxyParams: {},
+                //proxyUrl: '/portal/wbbuckets.json',
+                proxyUrl: '/wbconfiguration/api/bucket_configuration/',
                 dataConfig:[
                     {name: 'id', title: 'id', mapping: 'id', editable: false, visible: true, width:100 },
-                    {name: 'a', title: 'A', mapping: 'a', editable: false, visible: true, width:100 },
-                    {name: 'c', title: 'C', mapping: 'c', editable: true, visible: false, width:100 },
-                    {name: 'd', title: 'D', mapping: 'd', editable: false, visible: false, width:100 }
+                    {name: 'name', title: 'Naam', mapping: 'name', editable: true, visible: true, width:100 },
+                    {name: 'area', title: 'Ident', mapping: 'area_id', editable: false, visible: true, width:100 },
+                    {name: 'surface', title: 'Oppervlakte', mapping: 'surface', editable: true, visible: false, width:100 },
+                    {name: 'kwelwegz_is_ts', title: 'Kwelwegz', mapping: 'kwelwegz_is_ts', editable: true, visible: false, width:100 }
                 ]
 
             },{
