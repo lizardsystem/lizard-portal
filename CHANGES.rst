@@ -5,6 +5,8 @@ Changelog of lizard-portal
 0.3 (unreleased)
 ----------------
 
+- Added columns for wbconfiguration tables.
+
 - Removed hardcoded localhost reference. Made it relative to the root instead.
 
 
