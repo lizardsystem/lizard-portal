@@ -93,7 +93,7 @@
                     {name: 'id', title: 'id', editable: true, visible: true, width: 100},
                     {name: 'name', title: 'name', editable: true, visible: true, width: 100},
                     {name: 'surface', title: 'surface', editable: true, visible: true, width: 100},
-                    {name: 'area_id', title: 'Gebied', editable: true, visible: true, width: 100},
+                    {name: 'area', title: 'Gebied', editable: true, visible: true, width: 100},
                     {name: 'bottom_crop_evaporation_factor', title: 'bottom_crop_evaporation_factor', editable: true, visible: true, width: 100},
                     {name: 'bottom_drainage_fraction', title: 'bottom_drainage_fraction', editable: true, visible: true, width: 100},
                     {name: 'bottom_indraft_fraction', title: 'bottom_indraft_fraction', editable: true, visible: true, width: 100},
@@ -102,7 +102,7 @@
                     {name: 'bottom_min_crop_evaporation_factor', title: 'bottom_min_crop_evaporation_factor', editable: true, visible: true, width: 100},
                     {name: 'bottom_min_water_level', title: 'bottom_min_water_level', editable: true, visible: true, width: 100},
                     {name: 'bottom_porosity', title: 'bottom_porosity', editable: true, visible: true, width: 100},
-                    {name: 'bucket_type_id', title: 'bucket_type', editable: true, visible: true, width: 100},
+                    {name: 'bucket_type', title: 'bucket_type', editable: true, visible: true, width: 100},
                     {name: 'code', title: 'code', editable: true, visible: true, width: 100},
                     {name: 'concentr_chloride_drainage_indraft', title: 'concentr_chloride_drainage_indraft', editable: true, visible: true, width: 100},
                     {name: 'concentr_chloride_flow_off', title: 'concentr_chloride_flow_off', editable: true, visible: true, width: 100},
@@ -128,10 +128,11 @@
                     {name: 'min_water_level', title: 'min_water_level', editable: true, visible: true, width: 100},
                     {name: 'porosity', title: 'porosity', editable: true, visible: true, width: 100},
                     {name: 'replace_impact_by_nutricalc', title: 'replace_impact_by_nutricalc', editable: true, visible: true, width: 100},
-                    {name: 'ts_drainageindraft_id', title: 'ts_drainageindraft', editable: true, visible: true, width: 100},
-                    {name: 'ts_flowoff_id', title: 'ts_flowoff', editable: true, visible: true, width: 100},
-                    {name: 'ts_kwelwegz_id', title: 'ts_kwelwegz', editable: true, visible: true, width: 100},
-                    {name: 'ts_referenceoverflow_id', title: 'ts_referenceoverflow', editable: true, visible: true, width: 100}
+                    {name: 'ts_drainageindraft', title: 'ts_drainageindraft', editable: true, visible: true, width: 100},
+                    {name: 'ts_flowoff', title: 'ts_flowoff', editable: true, visible: true, width: 100},
+                    {name: 'ts_kwelwegz', title: 'ts_kwelwegz', editable: true, visible: true, width: 100},
+                    {name: 'ts_referenceoverflow', title: 'ts_referenceoverflow', editable: true, visible: true, width: 100},
+                    {name: 'deleted', title: 'Deleted', editable: true, visible: true, width: 100}
                 ]
 
             },{
@@ -158,7 +159,7 @@
                     {name: 'name', title: 'name', editable: true, visible: true, width: 100},
                     {name: 'code', title: 'code', editable: true, visible: true, width: 100},
                     {name: 'in_out', title: 'in_out', editable: true, visible: true, width: 100},
-                    {name: 'area_id', title: 'area_id', editable: true, visible: true, width: 100},
+                    {name: 'area', title: 'area', editable: true, visible: true, width: 100},
                     {name: 'concentr_chloride', title: 'concentr_chloride', editable: true, visible: true, width: 100},
                     {name: 'deb_is_ts', title: 'deb_is_ts', editable: true, visible: true, width: 100},
                     {name: 'deb_wint', title: 'deb_wint', editable: true, visible: true, width: 100},
@@ -169,7 +170,8 @@
                     {name: 'is_computed', title: 'is_computed', editable: true, visible: true, width: 100},
                     {name: 'min_concentr_nitrogen', title: 'min_concentr_nitrogen', editable: true, visible: true, width: 100},
                     {name: 'min_concentr_phosphate', title: 'min_concentr_phosphate', editable: true, visible: true, width: 100},
-                    {name: 'ts_debiet_id', title: 'ts_debiet_id', editable: true, visible: true, width: 100}
+                    {name: 'ts_debiet', title: 'ts_debiet', editable: true, visible: true, width: 100},
+                    {name: 'deleted', title: 'Deleted', editable: true, visible: true, width: 100}
                 ]
             }]
 		}]
