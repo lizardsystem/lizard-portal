@@ -83,12 +83,13 @@
                     var params = params|| {};
 
                     if (this.store) {
-                        this.store.applyParams({object_id: params.object_id});
+                        this.store.applyParams({object_id: params.object_id,
+                                                area_object_type: 'Bucket'});
                         this.store.load();
                     }
                 },
                 //proxyUrl: '/portal/wbbuckets.json',
-                proxyUrl: '/wbconfiguration/api/bucket_configuration/',
+                proxyUrl: '/wbconfiguration/api/area_object_configuration/',
                 dataConfig:[
                     {name: 'id', title: 'id', editable: true, visible: true, width: 100},
                     {name: 'name', title: 'name', editable: true, visible: true, width: 100},
@@ -149,11 +150,12 @@
                     console.log(params);
 
                     if (this.store) {
-                        this.store.load({params: {object_id: params.object_id}});
+                        this.store.load({params: {object_id: params.object_id,
+                                                  area_object_type: 'Structure'}});
                     }
                 },
                 //proxyUrl: '/portal/wbstructures.json',
-                proxyUrl: '/wbconfiguration/api/structure_configuration/',
+                proxyUrl: '/wbconfiguration/api/area_object_configuration/',
                 proxyParams: {},
                 dataConfig:[
                     {name: 'name', title: 'name', editable: true, visible: true, width: 100},
