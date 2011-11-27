@@ -52,6 +52,7 @@ Ext.application({
         'GeoExt.data.LayerModel',
         'GeoExt.data.reader.Layer',
         'Ext.MessageBox',
+        'Lizard.window.HeaderTab',
         'Lizard.window.ContextManager',
         'Lizard.grid.EditablePropertyGrid',
         'Lizard.grid.EditableGrid',
@@ -70,10 +71,15 @@ Ext.application({
         {% get_portal_template watersysteem_layers %}
 
 
-        var tabs = [{
+        var headertabs = [
+            Ext.create('Lizard.window.HeaderTab', {
                 title: 'Beleid',
                 name: 'beleid',
+                navigation_portal_template: 'krw_selectie',
+                default_portal_template: 'krw-overzicht',
+                object_types: ['krw_waterlichaam'],
                 navigation: {
+                    id: 'select_krw_waterlichaam',
                     viewConfig: {
                         plugins: {
                             ptype: 'gridviewdragdrop',
@@ -84,7 +90,10 @@ Ext.application({
                     listeners: {
                         itemclick: {
                             fn: function (tree, node) {
-                                Ext.getCmp('portalWindow').linkTo({object_id: node.data.id});
+                                Ext.getCmp('portalWindow').linkTo({
+                                    object_type: 'krw_waterlichaam',
+                                    object_id: node.data.id,
+                                    object_name: node.data.text});
                             }
                         }
                     },
@@ -92,14 +101,19 @@ Ext.application({
                     bbar: [{
                         text: 'Selecteer op kaart -->',
                         handler: function () {
-                            Ext.getCmp('portalWindow').showAreaSelection();
+                            Ext.getCmp('portalWindow').showNavigationPortalTemplate();
                         }
                     }]
                 }
-            }, {
+            }),
+            Ext.create('Lizard.window.HeaderTab', {
                 title: 'Watersysteem',
                 name: 'watersysteem',
+                navigation_portal_template: 'aan_afvoergebied_selectie',
+                default_portal_template: 'homepage',
+                object_types: ['aan_afvoergebied'],
                 navigation: {
+                    id: 'select_aan_afvoergebied',
                     viewConfig: {
                         plugins: {
                             ptype: 'gridviewdragdrop',
@@ -110,7 +124,11 @@ Ext.application({
                     listeners: {
                         itemclick: {
                             fn: function (tree, node) {
-                                Ext.getCmp('portalWindow').linkTo({object_id: node.data.id});
+                                Ext.getCmp('portalWindow').linkTo({
+                                    object_type: 'aan_afvoergebied',
+                                    object_id: node.data.id,
+                                    object_name: node.data.text
+                                });
                             }
                         }
                     },
@@ -118,47 +136,59 @@ Ext.application({
                     bbar: [{
                         text: 'Selecteer op kaart -->',
                         handler: function () {
-                            Ext.getCmp('portalWindow').showAreaSelection();
+                            Ext.getCmp('portalWindow').showNavigationPortalTemplate();
                         }
                     }]
                 }
-            }, {
+            }),
+            Ext.create('Lizard.window.HeaderTab',{
                 title: 'Analyse',
-                name: 'analyse'
-            }, {
+                name: 'analyse',
+                object_types: ['aan_afvoergebied', 'krw_waterlichaam'],
+                default_portal_template: 'analyse',
+                navigation_portal_template: 'analyse'
+            }),
+            Ext.create('Lizard.window.HeaderTab',{
                 title: 'Rapportage',
-                name: 'rapportage'
-            }, {
+                name: 'rapportage',
+                default_portal_template: 'rapportage',
+                navigation_portal_template: 'rapportage'
+            }),
+            Ext.create('Lizard.window.HeaderTab',{
                 title: 'Beheer',
-                name: 'beheer'
-        }];
+                name: 'beheer',
+                default_portal_template: 'beheer',
+                navigation_portal_template: 'beheer'
+            })
 
-        var settings = {
-            area_selection_template: 'aan_afvoergebied_selectie',
-            area_store: 'Vss.store.CatchmentTree',
-            header: {
-                tabs: tabs,
-                active_tab: 'watersysteem',
-                src_logo: 'vss/stowa_logo.png',
-                url_homepage: '/'
-            },
+        ];
+
+        var context_manager = Ext.create('Lizard.window.ContextManager', {
             user: {
                 id: {{ user.id|default_if_none:"null" }},
                 name: '{{ user.get_full_name }}'
             },
-
-            permission_description: 'viewer',//TODO
-            lizard_context: {
+            period_time: {
                 period_start: '2000-01-01T00:00',
                 period_end: '2002-01-01T00:00',
-                object: 'aan_afvoergebied',
-                object_id: null,
-                portalTemplate:'homepage',
-                base_url: '{% url site "vss" "watersysteem" %}'
-            }
-        }
+                moment: '2001-01-01T00:00'
+            },
+            base_url: '{% url site "vss" "watersysteem" %}',
+            headertabs: headertabs
+        });
 
-        Ext.create('Lizard.window.Screen', settings);
+        //todo: do this dynamic
+        context_manager.setActiveHeadertab('watersysteem');
+
+
+        Ext.create('Lizard.window.Screen', {
+            context_manager: context_manager,
+            header: {
+                headertabs: headertabs,
+                src_logo: 'vss/stowa_logo.png',
+                url_homepage: '/'
+            }
+        });
     }
 
 });

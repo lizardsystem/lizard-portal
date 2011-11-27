@@ -25,6 +25,7 @@
 OpenLayers.ImgPath = "/static_media/themes/dark/";
 try {
     window.onpopstate = function(event) {
+        console.log('eventstate:');
         console.log(event.state);
         if (event.state != null) {
             Ext.getCmp('portalWindow').linkTo(event.state, false);

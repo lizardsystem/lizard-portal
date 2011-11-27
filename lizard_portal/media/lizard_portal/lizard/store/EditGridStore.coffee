@@ -50,6 +50,16 @@ Ext.define 'Lizard.store.EditGridStore',
         me = @
 
 
+        Ext.apply @
+            idProperty: 'id'
+            api:
+                create: '#{me.proxy.url}action=create' # Called when saving new records
+                read: me.proxy.url # Called when reading existing records
+                update: '#{me.proxy.url}action=update' # Called when updating existing records
+                destroy: '#{me.proxy.url}action=delete' # Called when deleting existing records
+            
+
+
 
 
         @callParent(arguments)

@@ -2,35 +2,31 @@ Ext.define('Lizard.window.Header', {
     extend:'Ext.panel.Panel'
     alias: 'widget.pageheader'
     config:
-        tabs: []
-        user:
-            id: null
-            name: ''
-        active_tab: ''
+        headertabs: []
+        context_manager: {}
         logo_url: '/static_media/vss/stowa_logo.png'
-
+        portalWindow: null
 
     setBreadCrumb:(bread_crumbs) ->
-        bread_crumbs = bread_crumbs[0]
+        #bread_crumbs = bread_crumbs[0]
 
         me = @
-        bread_div = Ext.get('breadcrumb')
+        bread_div = @breadcrumb.el
         bread_div.dom.innerHTML = ''
 
-
-        portalWindow = Ext.getCmp('portalWindow')
+        portalWindow = @portalWindow
 
         element = {
             tag: 'div',
             cls: 'link',
-            html: '> ' + portalWindow.lizard_context.object
+            html: '> ' + portalWindow.context_manager.getContext().object
         }
 
         bread_div.createChild(element)
         el = bread_div.last()
         el.addListener('click',
             () ->
-               portalWindow.showAreaSelection()
+               portalWindow.showNavigationPortalTemplate()
         )
 
 
@@ -63,6 +59,21 @@ Ext.define('Lizard.window.Header', {
                         tag: 'div',
                         html: crumb.name
                     })
+
+
+    updateContextHeader: () ->
+        context = @context_manager.getContext()
+
+        html = ''
+        if context.object_type
+            html += context.object_type + '<br>'
+
+        if context.object_name
+            html += context.object_name
+
+        @contextheader.body.dom.innerHTML = html
+
+
     logout: () ->
         Ext.MessageBox.confirm(
             'Loguit',
@@ -135,26 +146,41 @@ Ext.define('Lizard.window.Header', {
                 }]
         }).show()
 
-    getActiveTab: () ->
-        return Ext.getCmp('headertab_' + @getActive_tab())
-
-
     constructor: (config) ->
-        @initConfig(arguments)
+        @initConfig(config)
         @callParent(arguments)
+
     initComponent: () ->
         me = @
 
+        print_object = (obj) ->
+            output = ""
+            Ext.Object.each(obj,(key, value) ->
+                if typeof(value) == 'object'
+                    output += key + ":<br>"
+                    Ext.Object.each(value,(key2, value2) ->
+                        output += '....' + key2 + ": " + value2 + "<br>"
+                    )
+                else
+                    output += key + ": " + value + "<br>"
+            )
+            return output
 
         header_items = [
             { xtype: 'tbspacer', width: 200 },
             '->'
         ]
-        for tab in @tabs
-            if @active_tab == tab.name
+        tabs = @getHeadertabs()
+        active_tab = @context_manager.getActive_headertab()
+        console.log('headers:')
+        for tab in tabs
+            if active_tab == tab
                 pressed = true
             else
                 pressed = false
+
+            console.log(tab)
+
             header_items.push({
                 id: 'headertab_' + tab.name
                 text: tab.title
@@ -163,17 +189,23 @@ Ext.define('Lizard.window.Header', {
                 cls: 'l-headertab'
                 toggleGroup: 'headertab'
                 navigation: tab.navigation
+                tab: tab
                 handler: () ->
                     console.log arguments
-                    Ext.getCmp('areaNavigation').add(@navigation)
+                    me.portalWindow.navigation.setNavigation(@navigation)
+                    me.context_manager.setActiveHeadertab(@tab)
+                    context = me.context_manager.getContext()
+
+                    if context.object_id
+                        #show selected or default template
+                        me.portalWindow.linkTo({})
+                    else
+                        me.portalWindow.showNavigationPortalTemplate()
             })
-
-
-        
 
         header_items.push('->')
 
-        user = @getUser()
+        user = @context_manager.getUser()
 
         if user.id == null
             header_items.push({
@@ -186,13 +218,18 @@ Ext.define('Lizard.window.Header', {
         else
             header_items.push(
                 {
-                    text: @getUser().name
+                    text: user.name
                     xtype: 'button'
                     componentCls: 'l-headertabs'
                     menu: [{
                             text: 'Instellingen'
                             handler: (button, event, eOpts) ->
                                 Ext.MessageBox.alert('release 2', 'release2')
+                        },
+                        {
+                            text: 'Toon huidige context'
+                            handler: (button, event, eOpts) ->
+                                Ext.MessageBox.alert('release 2', print_object(me.context_manager.getContext()))
                         }
                         '-'
                         {
@@ -226,8 +263,7 @@ Ext.define('Lizard.window.Header', {
             layout:'absolute',
             layoutConfig:
                 #layout-specific configs go here
-                itemCls: 'l-headertab',
-
+                itemCls: 'l-headertab'
             items: [
                 {
                     x: 0,
@@ -247,7 +283,6 @@ Ext.define('Lizard.window.Header', {
                     bodyStyle:
                         background: 'transparent'
                         display: 'inline'
-                        
                     html: ''
                 }
                 {
@@ -261,7 +296,28 @@ Ext.define('Lizard.window.Header', {
                     id: 'logo'
                     html:'<img src="' + me.getLogo_url() + '"></img>'
                 }
+                {
+                    x: 20,
+                    y: 30,
+                    height:25
+                    border: false
+                    id: 'contextheader'
+                    bodyStyle:
+                        'padding-right':'10px'
+                        background: 'transparent'
+                        'text-align':'right'
+                        'font-size': '9px'
+                        color: '#555'
+                    html:'watersysteem<br>polderX'
+                }
             ]
-                
+
         @callParent(arguments)
+
+        @breadcrumb = Ext.getCmp('breadcrumb')
+        @contextheader = Ext.getCmp('contextheader')
+
+        return @
+
+
 })

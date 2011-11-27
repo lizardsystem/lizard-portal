@@ -1,98 +1,91 @@
 Ext.define 'Lizard.window.Screen',
     extend:'Ext.container.Viewport'
     config:
-        area_selection_template: 'aan_afvoergebied_selectie',
-        area_store: 'Vss.store.CatchmentTree'
-
         header:
             src_logo: 'vss/stowa_logo.png'
             url_homepage: '/'
-            tabs: []
-            active_tab: ''
-        user: ''
-        lizard_context:
-            period_start: '2000-01-01T00:00'
-            period_end: '2002-01-01T00:00'
-            object: 'aan_afvoergebied'
-            object_id: null
-            portalTemplate:'homepage'
-            base_url: 'portal/watersysteem'
-
+            headertabs: []
+        context_manager: null
 
     setBreadCrumb:(bread_crumbs) ->
+        @header.setBreadCrumb(bread_crumbs)
 
-        header = Ext.getCmp('header')
-        header.setBreadCrumb(arguments)
-
-    linkTo:(options, save_state=true, area_selection_collapse=true, skip_animation=false) ->
-        @setContext(options, save_state)
-        @loadPortal(@lizard_context, area_selection_collapse, skip_animation)
-
-    setContext:(options, save_state=true) ->
-        @setLizard_context(Ext.merge(@.getLizard_context(), options))
-
-        if save_state
-            try
-                window.history.pushState(@lizard_context, "#{options}", "#{@lizard_context.base_url}##{@lizard_context.portalTemplate}/#{@lizard_context.object}/#{@lizard_context.object_id}")
-            catch error
-                console.log "not able to set pushState"
+    linkTo:(params, save_state=true, area_selection_collapse=true, skip_animation=false) ->
+        console.log('linkTo, with params:')
+        console.log(params)
+        @context_manager.setContext(params, save_state)
+        console.log('linkTo, after setContext context is:')
+        console.log(@context_manager.getContext())
+        console.log  @header
+        @header.updateContextHeader()
+        @loadPortal(@context_manager.getContext(), area_selection_collapse, skip_animation)
 
     loadPortal:(params, area_selection_collapse=true, skip_animation=false) ->
-        console.log "portalTemplate:" + params.portalTemplate
+        console.log "load portal with portalTemplate '#{params.portalTemplate}' and params:"
         console.log params
 
         me = @
 
-        container = Ext.getCmp 'app-portal'
+        container = @portalContainer
  
-        tab = container.child("##{params.portalTemplate}")
+        tab = @portalContainer.child("##{params.portalTemplate}")
 
         if tab
             #switch to tab
-            container.setActiveTab(tab)
-            tab.setContext(params)
-            console.log('check')
+            @portalContainer.setActiveTab(tab)
+            tab.setContext(params) #todo: error
             @setBreadCrumb tab.breadcrumbs
-            console.log('check')
         else
             #load portal and put in tab
             container.setLoading true
-            #container.removeAll(true)
-            console.log('check')
+
+            #todo: change method in window.load()
             Ext.Ajax.request
                 url: '/portal/configuration/',
                 params: params
                 method: 'GET'
                 success: (xhr) =>
                     newComponent = eval 'eval( ' + xhr.responseText + ')'
-                    console.log('check')
-                    newComponent.params = Ext.merge({}, newComponent.params, me.getLizard_context())
+                    newComponent.params = Ext.merge({}, newComponent.params, me.context_manager.getContext())
+                    console.log('params of new component are:')
+                    console.log newComponent.params
                     if area_selection_collapse
-                        navigation = Ext.getCmp 'areaNavigation'
-                        navigation.collapse()
-                    tab = container.add newComponent
-                    container.setActiveTab(tab)
-                    container.setLoading false
-                    console.log('check')
+                        me.navigation.collapse()
+                    tab = me.portalContainer.add newComponent
+                    me.portalContainer.setActiveTab(tab)
+                    me.portalContainer.setLoading false
                     me.setBreadCrumb(newComponent.breadcrumbs)
-                    console.log('check')
-
 
                 failure: =>
                     Ext.Msg.alert "portal creation failed", "Server communication failure"
-                    container.setLoading false
+                    me.portalContainer.setLoading false
 
-    showAreaSelection: () ->
-        navigation = Ext.getCmp 'areaNavigation'
-        navigation.expand()
-        arguments = Ext.Object.merge({}, @lizard_context, {portalTemplate: @area_selection_template})
-        @loadPortal(arguments, false)
+    showNavigationPortalTemplate: (animate_navigation_expand) ->
+        #animate does not work in version
+        @navigation.expand(animate_navigation_expand)
+        args = Ext.Object.merge({}, @context_manager.getContext(), {portalTemplate: @context_manager.active_headertab.navigation_portal_template})
+        @loadPortal(args, false)
 
     constructor: (config) ->
         @initConfig(config)
         @callParent(arguments)
+
     initComponent: () ->
         me = @
+
+        @header = Ext.create('Lizard.window.Header'
+            region: 'north'
+            id:'header'
+            height: 55
+            xtype: 'pageheader'
+            context_manager: @getContext_manager()
+            header_tabs: @header.headertabs
+            src_logo: @header.src_logo
+            url_homepage: @header.url_homepage
+            headertabs: @header.headertabs
+            #todo: potential memory leak, becase of cross references
+            portalWindow: @
+        )
 
         Ext.apply @,
             id: 'portalWindow',
@@ -101,150 +94,91 @@ Ext.define 'Lizard.window.Screen',
                 #padding: 5
             defaults:
                 collapsible: true
-                floatable: true
+                floatable: false
                 split: true
-                frame: true
+                frame: false
             items:[
-                {
-                    region: 'north'
-                    id:'header'
-                    height: 55
-                    xtype: 'pageheader'
-                    tabs: me.getHeader().tabs
-                    user: me.getUser()
-                    active_tab: me.getHeader().active_tab
-                }
+                @header
                 {
                     region: 'west'
                     id: 'areaNavigation'
                     title: 'Navigatie'
                     animCollapse:500
                     width: 250
-                    autoScroll: true
-                    frame: false
                     collapsed: true
                     #layout:'card'
                     xtype:'tabpanel'
+                    tabPosition: 'bottom'
+                    autoScroll: true
+                    layout: 'fit'
+                    setNavigation: (navigation)->
+                        tab = @child("##{navigation.id}")
+                        if not tab
+                            tab = @add navigation
+                        @setActiveTab(tab)
                 }
-
                 {
                     region: 'center'
+                    id: 'portalContainer'
                     collapsible: false
-                    floatable: false
-                    tabPosition: 'bottom'
                     plain:true
                     split: false
+                    frame: false
                     #layout:'card'
                     xtype: 'tabpanel'
-                    id: 'app-portal'
-                }
-                {
-                    region: 'east'
-                    width:300
-                    title: 'Analyse'
-                    collapsible: true
-                    floatable: false
                     tabPosition: 'bottom'
-                    collapsed:true
-                    plain:true
-                    split: true
-                    #layout:'card'
-                    xtype: 'tabpanel'
-                    id: 'analyse'
-                    items:[
-                        {title:'Eco'}
-                        {
-                            title:'WQ',
-                            id: 'analyse_form',
-                            layout: {
-                                type: 'vbox',
-                                align: 'stretch'
-                            },
-                            #xtype:'form',
-                            autoScroll: true,
-                            bbar:['save']
 
-
-                            items:[
-
-                                {
-                                    fieldLabel: 'titel'
-                                    xtype: 'textfield'
-                                }
-                                {
-                                    fieldLabel: 'label'
-                                    store: [1,2,3,4,5,6,7,8,9,10]
-                                    xtype: 'combo'
-                                    multiSelect: true
-                                    forceSelection: true
-                                }
-                                {
-                                    fieldLabel: 'label'
-                                    store: {
-                                        fields: [
-                                            {
-                                                name: 'id',
-
-                                            },{
-                                                name: 'text',
-
-                                            }
-                                        ]
-                                    }
-                                    xtype: 'gridpanel'
-                                    columns: [{
-                                        text: 'Gebieden',
-                                        dataIndex: 'text'
-                                        flex:1
-                                    }]
-                                    height: 100,
-                                    viewConfig: {
-                                        plugins: {
-                                            ptype: 'gridviewdragdrop',
-                                            dropGroup: 'firstGridDDGroup'
-                                        }
-                                    }
-
-                                }
-                                {
-                                    title:'text',
-                                    xtype: 'htmleditor'
-                                    height: 200
-                                    #resizable: true
-                                }
-                            ]
-                        }
-                    ]
                 }
+#                {
+#                    region: 'east'
+#                    id: 'analyse'
+#                    title: 'Analyse'
+#                    width:300
+#                    floatable: true
+#                    collapsed:true
+#                    #layout:'card'
+#                    xtype: 'tabpanel'
+#                    tabPosition: 'bottom'
+#                }
             ]
-                
+
         @callParent(arguments)
+
+        #set references after creation
+        @navigation = Ext.getCmp('areaNavigation')
+        @portalContainer = Ext.getCmp('portalContainer')
+
         return @
+
     afterRender: ->
         @callParent(arguments)
 
-        activeTab = Ext.getCmp('header').getActiveTab()
-        Ext.getCmp('areaNavigation').add(activeTab.navigation)
+        #set navigation of active tab
+        activeTab = @context_manager.getActive_headertab()
+        if activeTab
+            tab = @navigation.add activeTab.navigation
+            @navigation.setActiveTab tab
 
 
-
+        #when url has some kind of status information, set context
         if window.location.hash
             hash = window.location.hash
             parts = hash.replace('#', '').split('/');
-            Ext.getCmp('portalWindow').linkTo({
+            @linkTo({
                 portalTemplate: parts[0]
                 object: parts[1]
                 object_id: parts[2]
             }, false, true, false)
         
 
-        if @getLizard_context().object_id == null
-            navigation = Ext.getCmp 'areaNavigation'
+        if not @context_manager.getContext().object_id
+            console.log('no object selected, show selection')
+            #show navigation and selection
             #false argument for animation doesn work in extjs 4.0.2, so set animCollapse setting before animation and
             #reset to original value afterwards
-            anim_setting = navigation.animCollapse
-            navigation.animCollapse =  false
-            navigation.expand(false)
-            navigation.animCollapse =  anim_setting
-            @showAreaSelection(false)
+            anim_setting = @navigation.animCollapse
+            @navigation.animCollapse =  false
+            @navigation.expand(false)
+            @navigation.animCollapse =  anim_setting
+            @showNavigationPortalTemplate(false)
 

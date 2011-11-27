@@ -3,30 +3,17 @@
   Ext.define('Lizard.window.Screen', {
     extend: 'Ext.container.Viewport',
     config: {
-      area_selection_template: 'aan_afvoergebied_selectie',
-      area_store: 'Vss.store.CatchmentTree',
       header: {
         src_logo: 'vss/stowa_logo.png',
         url_homepage: '/',
-        tabs: [],
-        active_tab: ''
+        headertabs: []
       },
-      user: '',
-      lizard_context: {
-        period_start: '2000-01-01T00:00',
-        period_end: '2002-01-01T00:00',
-        object: 'aan_afvoergebied',
-        object_id: null,
-        portalTemplate: 'homepage',
-        base_url: 'portal/watersysteem'
-      }
+      context_manager: null
     },
     setBreadCrumb: function(bread_crumbs) {
-      var header;
-      header = Ext.getCmp('header');
-      return header.setBreadCrumb(arguments);
+      return this.header.setBreadCrumb(bread_crumbs);
     },
-    linkTo: function(options, save_state, area_selection_collapse, skip_animation) {
+    linkTo: function(params, save_state, area_selection_collapse, skip_animation) {
       if (save_state == null) {
         save_state = true;
       }
@@ -36,21 +23,14 @@
       if (skip_animation == null) {
         skip_animation = false;
       }
-      this.setContext(options, save_state);
-      return this.loadPortal(this.lizard_context, area_selection_collapse, skip_animation);
-    },
-    setContext: function(options, save_state) {
-      if (save_state == null) {
-        save_state = true;
-      }
-      this.setLizard_context(Ext.merge(this.getLizard_context(), options));
-      if (save_state) {
-        try {
-          return window.history.pushState(this.lizard_context, "" + options, "" + this.lizard_context.base_url + "#" + this.lizard_context.portalTemplate + "/" + this.lizard_context.object + "/" + this.lizard_context.object_id);
-        } catch (error) {
-          return console.log("not able to set pushState");
-        }
-      }
+      console.log('linkTo, with params:');
+      console.log(params);
+      this.context_manager.setContext(params, save_state);
+      console.log('linkTo, after setContext context is:');
+      console.log(this.context_manager.getContext());
+      console.log(this.header);
+      this.header.updateContextHeader();
+      return this.loadPortal(this.context_manager.getContext(), area_selection_collapse, skip_animation);
     },
     loadPortal: function(params, area_selection_collapse, skip_animation) {
       var container, me, tab;
@@ -60,55 +40,49 @@
       if (skip_animation == null) {
         skip_animation = false;
       }
-      console.log("portalTemplate:" + params.portalTemplate);
+      console.log("load portal with portalTemplate '" + params.portalTemplate + "' and params:");
       console.log(params);
       me = this;
-      container = Ext.getCmp('app-portal');
-      tab = container.child("#" + params.portalTemplate);
+      container = this.portalContainer;
+      tab = this.portalContainer.child("#" + params.portalTemplate);
       if (tab) {
-        container.setActiveTab(tab);
+        this.portalContainer.setActiveTab(tab);
         tab.setContext(params);
-        console.log('check');
-        this.setBreadCrumb(tab.breadcrumbs);
-        return console.log('check');
+        return this.setBreadCrumb(tab.breadcrumbs);
       } else {
         container.setLoading(true);
-        console.log('check');
         return Ext.Ajax.request({
           url: '/portal/configuration/',
           params: params,
           method: 'GET',
           success: __bind(function(xhr) {
-            var navigation, newComponent;
+            var newComponent;
             newComponent = eval('eval( ' + xhr.responseText + ')');
-            console.log('check');
-            newComponent.params = Ext.merge({}, newComponent.params, me.getLizard_context());
+            newComponent.params = Ext.merge({}, newComponent.params, me.context_manager.getContext());
+            console.log('params of new component are:');
+            console.log(newComponent.params);
             if (area_selection_collapse) {
-              navigation = Ext.getCmp('areaNavigation');
-              navigation.collapse();
+              me.navigation.collapse();
             }
-            tab = container.add(newComponent);
-            container.setActiveTab(tab);
-            container.setLoading(false);
-            console.log('check');
-            me.setBreadCrumb(newComponent.breadcrumbs);
-            return console.log('check');
+            tab = me.portalContainer.add(newComponent);
+            me.portalContainer.setActiveTab(tab);
+            me.portalContainer.setLoading(false);
+            return me.setBreadCrumb(newComponent.breadcrumbs);
           }, this),
           failure: __bind(function() {
             Ext.Msg.alert("portal creation failed", "Server communication failure");
-            return container.setLoading(false);
+            return me.portalContainer.setLoading(false);
           }, this)
         });
       }
     },
-    showAreaSelection: function() {
-      var navigation;
-      navigation = Ext.getCmp('areaNavigation');
-      navigation.expand();
-      arguments = Ext.Object.merge({}, this.lizard_context, {
-        portalTemplate: this.area_selection_template
+    showNavigationPortalTemplate: function(animate_navigation_expand) {
+      var args;
+      this.navigation.expand(animate_navigation_expand);
+      args = Ext.Object.merge({}, this.context_manager.getContext(), {
+        portalTemplate: this.context_manager.active_headertab.navigation_portal_template
       });
-      return this.loadPortal(arguments, false);
+      return this.loadPortal(args, false);
     },
     constructor: function(config) {
       this.initConfig(config);
@@ -117,6 +91,18 @@
     initComponent: function() {
       var me;
       me = this;
+      this.header = Ext.create('Lizard.window.Header', {
+        region: 'north',
+        id: 'header',
+        height: 55,
+        xtype: 'pageheader',
+        context_manager: this.getContext_manager(),
+        header_tabs: this.header.headertabs,
+        src_logo: this.header.src_logo,
+        url_homepage: this.header.url_homepage,
+        headertabs: this.header.headertabs,
+        portalWindow: this
+      });
       Ext.apply(this, {
         id: 'portalWindow',
         layout: {
@@ -124,133 +110,71 @@
         },
         defaults: {
           collapsible: true,
-          floatable: true,
+          floatable: false,
           split: true,
-          frame: true
+          frame: false
         },
         items: [
-          {
-            region: 'north',
-            id: 'header',
-            height: 55,
-            xtype: 'pageheader',
-            tabs: me.getHeader().tabs,
-            user: me.getUser(),
-            active_tab: me.getHeader().active_tab
-          }, {
+          this.header, {
             region: 'west',
             id: 'areaNavigation',
             title: 'Navigatie',
             animCollapse: 500,
             width: 250,
-            autoScroll: true,
-            frame: false,
             collapsed: true,
-            xtype: 'tabpanel'
+            xtype: 'tabpanel',
+            tabPosition: 'bottom',
+            autoScroll: true,
+            layout: 'fit',
+            setNavigation: function(navigation) {
+              var tab;
+              tab = this.child("#" + navigation.id);
+              if (!tab) {
+                tab = this.add(navigation);
+              }
+              return this.setActiveTab(tab);
+            }
           }, {
             region: 'center',
+            id: 'portalContainer',
             collapsible: false,
-            floatable: false,
-            tabPosition: 'bottom',
             plain: true,
             split: false,
+            frame: false,
             xtype: 'tabpanel',
-            id: 'app-portal'
-          }, {
-            region: 'east',
-            width: 300,
-            title: 'Analyse',
-            collapsible: true,
-            floatable: false,
-            tabPosition: 'bottom',
-            collapsed: true,
-            plain: true,
-            split: true,
-            xtype: 'tabpanel',
-            id: 'analyse',
-            items: [
-              {
-                title: 'Eco'
-              }, {
-                title: 'WQ',
-                id: 'analyse_form',
-                layout: {
-                  type: 'vbox',
-                  align: 'stretch'
-                },
-                autoScroll: true,
-                bbar: ['save'],
-                items: [
-                  {
-                    fieldLabel: 'titel',
-                    xtype: 'textfield'
-                  }, {
-                    fieldLabel: 'label',
-                    store: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                    xtype: 'combo',
-                    multiSelect: true,
-                    forceSelection: true
-                  }, {
-                    fieldLabel: 'label',
-                    store: {
-                      fields: [
-                        {
-                          name: 'id'
-                        }, {
-                          name: 'text'
-                        }
-                      ]
-                    },
-                    xtype: 'gridpanel',
-                    columns: [
-                      {
-                        text: 'Gebieden',
-                        dataIndex: 'text',
-                        flex: 1
-                      }
-                    ],
-                    height: 100,
-                    viewConfig: {
-                      plugins: {
-                        ptype: 'gridviewdragdrop',
-                        dropGroup: 'firstGridDDGroup'
-                      }
-                    }
-                  }, {
-                    title: 'text',
-                    xtype: 'htmleditor',
-                    height: 200
-                  }
-                ]
-              }
-            ]
+            tabPosition: 'bottom'
           }
         ]
       });
       this.callParent(arguments);
+      this.navigation = Ext.getCmp('areaNavigation');
+      this.portalContainer = Ext.getCmp('portalContainer');
       return this;
     },
     afterRender: function() {
-      var activeTab, anim_setting, hash, navigation, parts;
+      var activeTab, anim_setting, hash, parts, tab;
       this.callParent(arguments);
-      activeTab = Ext.getCmp('header').getActiveTab();
-      Ext.getCmp('areaNavigation').add(activeTab.navigation);
+      activeTab = this.context_manager.getActive_headertab();
+      if (activeTab) {
+        tab = this.navigation.add(activeTab.navigation);
+        this.navigation.setActiveTab(tab);
+      }
       if (window.location.hash) {
         hash = window.location.hash;
         parts = hash.replace('#', '').split('/');
-        Ext.getCmp('portalWindow').linkTo({
+        this.linkTo({
           portalTemplate: parts[0],
           object: parts[1],
           object_id: parts[2]
         }, false, true, false);
       }
-      if (this.getLizard_context().object_id === null) {
-        navigation = Ext.getCmp('areaNavigation');
-        anim_setting = navigation.animCollapse;
-        navigation.animCollapse = false;
-        navigation.expand(false);
-        navigation.animCollapse = anim_setting;
-        return this.showAreaSelection(false);
+      if (!this.context_manager.getContext().object_id) {
+        console.log('no object selected, show selection');
+        anim_setting = this.navigation.animCollapse;
+        this.navigation.animCollapse = false;
+        this.navigation.expand(false);
+        this.navigation.animCollapse = anim_setting;
+        return this.showNavigationPortalTemplate(false);
       }
     }
   });

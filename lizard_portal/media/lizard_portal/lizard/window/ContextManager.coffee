@@ -7,11 +7,11 @@ Ext.define 'Lizard.window.ContextManager',
                 object_id: null
                 object_name: ''
                 object_type: 'krw_waterlichaam'
-            aan_afvoergebied
+            aan_afvoergebied:
                 object_id: null
                 object_name: ''
                 object_type: 'aan_afvoergebied'
-            analyse_interpretatie
+            analyse_interpretatie:
                 object_id: null
                 object_name: ''
                 object_type: 'analyse_interpretatie'
@@ -20,24 +20,9 @@ Ext.define 'Lizard.window.ContextManager',
             object_id: null
             object_name: null
 
-        headertabs:
-            beleid:
-                tab: {}
-                portalTemplate: null
-            watersysteem:
-                tab: {}
-                portalTemplate: null
-            analyse:
-                tab: {}
-                portalTemplate: null
-            rapportage:
-                tab: {}
-                portalTemplate: null
-            beheer:
-                tab: {}
-                portalTemplate: null
+        headertabs: []
 
-        active_headertab: {}
+        active_headertab: null
 
         user:
             id: ''
@@ -52,40 +37,55 @@ Ext.define 'Lizard.window.ContextManager',
         base_url: 'portal/site/vss/'
 
 
-    setHeadertab: (tab) ->
-        if tyoeof(tab) == 'string'
-            @active_headertab = @tabs[tab]
+    setActiveHeadertab: (tab) ->
+        if typeof(tab) == 'string'
+            tab = Ext.Array.filter(@headertabs, (element) ->
+                if element.name == tab
+                    return element
+            )
+            if tab.length > 0
+                tab = tab[0]
+
+        if tab
+            @active_headertab = tab
         else
-            @active_headertab = @tabs[tab.id]
+            console.log('headertab not found')
+        return tab
 
         #todo: Events
 
-    setContext:(params, headertab=@active_headertab, save_state=true) ->
+    setContext:(params, save_state=true, headertab=@active_headertab) ->
+        console.log('new context params are:')
+        console.log(params)
 
-        if not typeof(params.protalTemplate) == 'undefined'
-            if not headertab.portalTemplate == params.protalTemplate
-                headertab.portalTemplate = params.protalTemplate
+        if typeof(params.portalTemplate) != 'undefined'
+            if headertab.portalTemplate != params.portalTemplate
+                headertab.portalTemplate = params.portalTemplate
                 template_change = true
+                console.log('new portal template')
 
-        if not typeof(params.object_type) == 'undefined'
-            if not @last_selected_object.object_type == params.object_type
-                if not typeof(@objects[params.object_type]) == 'undefined'
+        if typeof(params.object_type) != 'undefined'
+            if @last_selected_object.object_type != params.object_type
+                if typeof(@objects[params.object_type]) == 'undefined'
                     #create object
                     @objects[params.object_type] = {object_type: params.object_type}
                 @last_selected_object = @objects[params.object_type]
                 object_type_change = true
                 object = @last_selected_object
+                console.log('new object type')
         else:
              object = @last_selected_object
 
 
-        if not typeof(params.object_id) == 'undefined'
-            if not object.object_id == params.object_id
+        if typeof(params.object_id) != 'undefined'
+            if object.object_id != params.object_id
+                console.log('new object id')
                 object.object_id = params.object_id
                 object_change = true
 
-        if not typeof(params.object_name) == 'undefined'
-            if not object.object_name == params.object_name
+        if typeof(params.object_name) != 'undefined'
+            if object.object_name != params.object_name
+                console.log('new object name')
                 object.object_name = params.object_name
 
         #todo: user and period
@@ -94,23 +94,63 @@ Ext.define 'Lizard.window.ContextManager',
 
         if save_state
             try
-                window.history.pushState(@getContext(), "#{options}", "#{@base_url}##{@active_headertab.id}/#{@active_headertab.portalTemplate}/#{@last_selected_object.object_type}/#{@last_selected_object.object_id}")
+                context = @context_manager.getContext()
+                window.history.pushState(context, "#{params}", "#{@base_url}##{@context.active_headertab.id}/#{@context.portalTemplate}/#{@context.object_type}/#{@context.object_id}")
             catch error
                 console.log "not able to set pushState"
 
 
     getContext: (headertab=@active_headertab) ->
+        me = @
+
+        if headertab == null
+            headertab = {}
         output = {}
 
         output.active_headertab = headertab
 
-        output.period = @period
+        output.period = @period_time
 
-        output.object_type = @last_selected_object.object_type
-        output.object_id = @last_selected_object.object_id
-        output.object_name = @last_selected_object.object_name
 
-        output.portalTemplate = headertab.portalTemplate
+        #check relevant objecttype
+        check = (el) ->
+            if el == me.last_selected_object.object_type
+                return true
+
+
+        object = @last_selected_object
+
+        #todo:  dit deel werkt nog niet lekker
+        if headertab
+            console.log('supported objecttypes are:')
+            console.log(headertab.object_types)
+            if Ext.Array.some(headertab.object_types, check)
+                object = @last_selected_object
+                console.log('last selected object supported in context')
+            else
+                object = {}
+                console.log('find last selected objects of supported types. Object cache is:')
+                console.log(me.objects)
+                for obj_type in headertab.object_types
+                   console.log(obj_type)
+                   if me.objects[obj_type]
+                      if me.objects[obj_type].object_id
+                          console.log('found:')
+
+                          object = me.objects[obj_type]
+                          console.log(object)
+                          #@last_selected_object = object
+                          break
+
+                #todo: kijken naar een relevante object voor huidige header
+
+        output.object_type = object.object_type
+        output.object_id = object.object_id
+        output.object_name = object.object_name
+
+        output.portalTemplate = headertab.portalTemplate || headertab.default_portal_template
+
+        return output
 
         #todo: user and period
 
@@ -119,7 +159,7 @@ Ext.define 'Lizard.window.ContextManager',
 
 
     constructor: (config) ->
-        @initConfig(arguments)
+        @initConfig(config)
         @callParent(arguments)
 
     initComponent: () ->

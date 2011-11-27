@@ -3,30 +3,26 @@
     extend: 'Ext.panel.Panel',
     alias: 'widget.pageheader',
     config: {
-      tabs: [],
-      user: {
-        id: null,
-        name: ''
-      },
-      active_tab: '',
-      logo_url: '/static_media/vss/stowa_logo.png'
+      headertabs: [],
+      context_manager: {},
+      logo_url: '/static_media/vss/stowa_logo.png',
+      portalWindow: null
     },
     setBreadCrumb: function(bread_crumbs) {
       var bread_div, crumb, el, element, me, portalWindow, _i, _len, _results;
-      bread_crumbs = bread_crumbs[0];
       me = this;
-      bread_div = Ext.get('breadcrumb');
+      bread_div = this.breadcrumb.el;
       bread_div.dom.innerHTML = '';
-      portalWindow = Ext.getCmp('portalWindow');
+      portalWindow = this.portalWindow;
       element = {
         tag: 'div',
         cls: 'link',
-        html: '> ' + portalWindow.lizard_context.object
+        html: '> ' + portalWindow.context_manager.getContext().object
       };
       bread_div.createChild(element);
       el = bread_div.last();
       el.addListener('click', function() {
-        return portalWindow.showAreaSelection();
+        return portalWindow.showNavigationPortalTemplate();
       });
       if (bread_crumbs) {
         bread_div.createChild({
@@ -54,6 +50,18 @@
         }
         return _results;
       }
+    },
+    updateContextHeader: function() {
+      var context, html;
+      context = this.context_manager.getContext();
+      html = '';
+      if (context.object_type) {
+        html += context.object_type + '<br>';
+      }
+      if (context.object_name) {
+        html += context.object_name;
+      }
+      return this.contextheader.body.dom.innerHTML = html;
     },
     logout: function() {
       return Ext.MessageBox.confirm('Loguit', 'Weet u zeker dat u uit wil loggen?', function(button) {
@@ -130,30 +138,45 @@
         }
       }).show();
     },
-    getActiveTab: function() {
-      return Ext.getCmp('headertab_' + this.getActive_tab());
-    },
     constructor: function(config) {
-      this.initConfig(arguments);
+      this.initConfig(config);
       return this.callParent(arguments);
     },
     initComponent: function() {
-      var header_items, me, pressed, tab, user, _i, _len, _ref;
+      var active_tab, header_items, me, pressed, print_object, tab, tabs, user, _i, _len;
       me = this;
+      print_object = function(obj) {
+        var output;
+        output = "";
+        Ext.Object.each(obj, function(key, value) {
+          if (typeof value === 'object') {
+            output += key + ":<br>";
+            return Ext.Object.each(value, function(key2, value2) {
+              return output += '....' + key2 + ": " + value2 + "<br>";
+            });
+          } else {
+            return output += key + ": " + value + "<br>";
+          }
+        });
+        return output;
+      };
       header_items = [
         {
           xtype: 'tbspacer',
           width: 200
         }, '->'
       ];
-      _ref = this.tabs;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        tab = _ref[_i];
-        if (this.active_tab === tab.name) {
+      tabs = this.getHeadertabs();
+      active_tab = this.context_manager.getActive_headertab();
+      console.log('headers:');
+      for (_i = 0, _len = tabs.length; _i < _len; _i++) {
+        tab = tabs[_i];
+        if (active_tab === tab) {
           pressed = true;
         } else {
           pressed = false;
         }
+        console.log(tab);
         header_items.push({
           id: 'headertab_' + tab.name,
           text: tab.title,
@@ -162,14 +185,23 @@
           cls: 'l-headertab',
           toggleGroup: 'headertab',
           navigation: tab.navigation,
+          tab: tab,
           handler: function() {
+            var context;
             console.log(arguments);
-            return Ext.getCmp('areaNavigation').add(this.navigation);
+            me.portalWindow.navigation.setNavigation(this.navigation);
+            me.context_manager.setActiveHeadertab(this.tab);
+            context = me.context_manager.getContext();
+            if (context.object_id) {
+              return me.portalWindow.linkTo({});
+            } else {
+              return me.portalWindow.showNavigationPortalTemplate();
+            }
           }
         });
       }
       header_items.push('->');
-      user = this.getUser();
+      user = this.context_manager.getUser();
       if (user.id === null) {
         header_items.push({
           text: 'Login',
@@ -181,7 +213,7 @@
         });
       } else {
         header_items.push({
-          text: this.getUser().name,
+          text: user.name,
           xtype: 'button',
           componentCls: 'l-headertabs',
           menu: [
@@ -189,6 +221,11 @@
               text: 'Instellingen',
               handler: function(button, event, eOpts) {
                 return Ext.MessageBox.alert('release 2', 'release2');
+              }
+            }, {
+              text: 'Toon huidige context',
+              handler: function(button, event, eOpts) {
+                return Ext.MessageBox.alert('release 2', print_object(me.context_manager.getContext()));
               }
             }, '-', {
               text: 'Log uit',
@@ -253,10 +290,27 @@
             },
             id: 'logo',
             html: '<img src="' + me.getLogo_url() + '"></img>'
+          }, {
+            x: 20,
+            y: 30,
+            height: 25,
+            border: false,
+            id: 'contextheader',
+            bodyStyle: {
+              'padding-right': '10px',
+              background: 'transparent',
+              'text-align': 'right',
+              'font-size': '9px',
+              color: '#555'
+            },
+            html: 'watersysteem<br>polderX'
           }
         ]
       });
-      return this.callParent(arguments);
+      this.callParent(arguments);
+      this.breadcrumb = Ext.getCmp('breadcrumb');
+      this.contextheader = Ext.getCmp('contextheader');
+      return this;
     }
   });
 }).call(this);

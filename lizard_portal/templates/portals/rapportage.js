@@ -1,11 +1,11 @@
 {
-    itemId: 'advies',
-    title: 'Advies',
+    itemId: 'rapportage',
+    title: 'Rapportage',
 	xtype: 'portalpanel',
 	items:[{
 		flex: 1,
 		items: [{
-			title: 'Advies',
+			title: 'Rapport',
             flex:1
 		}]
 	}]
