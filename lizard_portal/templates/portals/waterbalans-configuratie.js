@@ -17,8 +17,6 @@
             name: 'waterbalans-configuratie'
         }
     ],
-
-
 	items:[{
 		flex:1,
 		items: [{
