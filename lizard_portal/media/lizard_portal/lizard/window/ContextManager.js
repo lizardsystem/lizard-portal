@@ -103,25 +103,31 @@
         }
       }
       if (save_state) {
-        try {
-          context = this.context_manager.getContext();
-          return window.history.pushState(context, "" + params, "" + this.base_url + "#" + this.context.active_headertab.id + "/" + this.context.portalTemplate + "/" + this.context.object_type + "/" + this.context.object_id);
-        } catch (error) {
-          return console.log("not able to set pushState");
-        }
+        context = this.getContext(null, true);
+        return window.history.pushState(context, "" + params, "" + this.base_url + "#" + context.active_headertab.name + "/" + context.portalTemplate + "/" + context.object_type + "/" + context.object_id);
       }
     },
-    getContext: function(headertab) {
+    getContext: function(headertab, no_references) {
       var check, me, obj_type, object, output, _i, _len, _ref;
       if (headertab == null) {
         headertab = this.active_headertab;
+      }
+      if (no_references == null) {
+        no_references = false;
       }
       me = this;
       if (headertab === null) {
         headertab = {};
       }
       output = {};
-      output.active_headertab = headertab;
+      if (no_references) {
+        output.active_headertab = {
+          name: headertab.name,
+          active_portal_template: headertab.active_portal_template
+        };
+      } else {
+        output.active_headertab = headertab;
+      }
       output.period = this.period_time;
       check = function(el) {
         if (el === me.last_selected_object.object_type) {

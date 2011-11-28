@@ -10,26 +10,123 @@
       enterEditSummary: true,
       editable: true
     },
+    extraEditors: {
+      timeserie: {
+        field: {
+          xtype: 'combo',
+          store: 'timeserieobject',
+          queryMode: 'remote',
+          displayField: 'name',
+          valueField: 'name',
+          forceSelection: true,
+          typeAhead: true,
+          minChars: 0,
+          triggerAction: 'all',
+          selectOnTab: true
+        }
+      }
+    },
+    editors: {
+      text: {
+        field: {
+          xtype: 'textfield'
+        }
+      },
+      oordeel: {
+        field: Ext.create('Ext.form.field.ComboBox', {
+          editable: false,
+          store: [[1, 'OK'], [0, 'Kritisch']]
+        })
+      },
+      boolean: {
+        field: {
+          xtype: 'checkbox',
+          step: 1
+        }
+      },
+      float: {
+        field: {
+          xtype: 'numberfield',
+          step: 1
+        }
+      },
+      int: {
+        field: {
+          xtype: 'numberfield',
+          step: 1
+        }
+      },
+      date: {
+        field: {
+          xtype: 'datefield',
+          format: 'm d Y',
+          altFormats: 'd,m,Y|d.m.Y'
+        }
+      }
+    },
+    get_editor: function(col) {
+      var editor, me, type;
+      me = this;
+      console.log(col);
+      if (typeof col.editable === 'undefined') {
+        col.editable = true;
+      }
+      if (!col.editable) {
+        console.log;
+        return false;
+      }
+      type = col.type || 'text';
+      if (type) {
+        if (me.extraEditors[type]) {
+          editor = me.extraEditors[type];
+        } else if (this.editors[type]) {
+          editor = me.editors[type];
+        }
+      }
+      if (Ext.type(editor) === 'object') {
+        return Ext.create('Ext.grid.CellEditor', editor);
+      } else {
+        return editor;
+      }
+    },
+    get_renderer: function(value, metaData, record) {
+      if (value === null) {
+        value = '-';
+      }
+      if (record.data.type === 'boolean') {
+        if (value === true) {
+          value = 'ja';
+        } else if (value === false) {
+          value = 'nee';
+        }
+      }
+      if (!record.data.editable) {
+        value = "<i>" + value + "</i>";
+      }
+      return value;
+    },
     constructor: function() {
       this.initConfig(arguments);
       return this.callParent(arguments);
     },
     getColumnConfig: function() {
-      var col, cols, _i, _len, _ref;
+      var col, col_config, cols, _i, _len, _ref;
       cols = [];
       _ref = this.dataConfig;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         col = _ref[_i];
-        cols.push({
+        col_config = {
           text: col.title,
           width: col.width || 100,
           sortable: true,
           visible: col.visible,
-          dataIndex: col.name,
-          field: {
-            allowBlank: false
-          }
-        });
+          dataIndex: col.name
+        };
+        if (this.get_editor(col)) {
+          col_config.field = this.get_editor(col);
+        }
+        console.log(col_config);
+        cols.push(col_config);
       }
       return cols;
     },
@@ -64,7 +161,7 @@
       }
     },
     getStoreConfig: function() {
-      var field, fields, store, _i, _len, _ref;
+      var field, fields, store, url, _i, _len, _ref;
       fields = [];
       _ref = this.dataConfig;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -75,12 +172,18 @@
           mapping: field.mapping || field.name
         });
       }
+      url = this.getProxyUrl();
       store = {
         type: 'leditstore',
         fields: fields,
         proxy: {
           type: 'ajax',
-          url: this.getProxyUrl(),
+          api: {
+            create: "" + url + "?action=create",
+            read: url,
+            update: "" + url + "?action=update",
+            destroy: "" + url + "?action=delete"
+          },
           extraParams: {
             _accept: 'application/json'
           },

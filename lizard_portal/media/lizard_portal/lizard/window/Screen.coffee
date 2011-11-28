@@ -165,9 +165,9 @@ Ext.define 'Lizard.window.Screen',
             hash = window.location.hash
             parts = hash.replace('#', '').split('/');
             @linkTo({
-                portalTemplate: parts[0]
-                object: parts[1]
-                object_id: parts[2]
+                portalTemplate: parts[1]
+                object_type: parts[2]
+                object_id: parts[3]
             }, false, true, false)
         
 

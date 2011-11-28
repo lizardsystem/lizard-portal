@@ -43,13 +43,7 @@
       var me;
       me = this;
       Ext.apply(this({
-        idProperty: 'id',
-        api: {
-          create: '#{me.proxy.url}action=create',
-          read: me.proxy.url,
-          update: '#{me.proxy.url}action=update',
-          destroy: '#{me.proxy.url}action=delete'
-        }
+        idProperty: 'id'
       }));
       this.callParent(arguments);
       return this;

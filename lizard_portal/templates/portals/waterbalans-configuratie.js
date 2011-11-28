@@ -46,7 +46,7 @@
                         //anchor:'50% 400',
                         xtype: 'leditpropgrid',
                         height:200,
-                        proxyUrl: '/wbconfiguration/api/area_configuration/',
+                        proxyUrl: '/portal/wbgebied.json',
                         proxyParams: {
                             _accept: 'application/json'
                         },
@@ -54,7 +54,6 @@
                             'applycontext'
                         ],
                         applyParams: function(params) {
-                            this.store.getProxy().url = '/wbconfiguration/api/area_configuration/'
                             this.store.applyParams({object_id: params.object_id,
                                                     grid_name: 'area'});
                             this.store.load();

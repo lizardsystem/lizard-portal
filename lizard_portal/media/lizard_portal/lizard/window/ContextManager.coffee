@@ -93,21 +93,30 @@ Ext.define 'Lizard.window.ContextManager',
         #todo: Events
 
         if save_state
-            try
-                context = @context_manager.getContext()
-                window.history.pushState(context, "#{params}", "#{@base_url}##{@context.active_headertab.id}/#{@context.portalTemplate}/#{@context.object_type}/#{@context.object_id}")
-            catch error
-                console.log "not able to set pushState"
+            #try
+            context = @getContext(null, true)
 
 
-    getContext: (headertab=@active_headertab) ->
+            window.history.pushState(context, "#{params}", "#{@base_url}##{context.active_headertab.name}/#{context.portalTemplate}/#{context.object_type}/#{context.object_id}")
+            #catch error
+            #   console.log "not able to set pushState"
+
+
+    getContext: (headertab=@active_headertab, no_references=false) ->
         me = @
 
         if headertab == null
             headertab = {}
         output = {}
 
-        output.active_headertab = headertab
+
+        if no_references
+            output.active_headertab = {
+                name: headertab.name
+                active_portal_template: headertab.active_portal_template
+            }
+        else
+            output.active_headertab = headertab
 
         output.period = @period_time
 

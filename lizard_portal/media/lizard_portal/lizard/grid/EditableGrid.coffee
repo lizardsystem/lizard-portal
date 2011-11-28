@@ -9,6 +9,101 @@ Ext.define('Lizard.grid.EditableGrid', {
         enterEditSummary: true
         editable: true
     }
+    extraEditors: {
+        timeserie: {
+            field: {
+                xtype: 'combo'
+                store: 'timeserieobject'
+                queryMode: 'remote'
+                displayField: 'name'
+                valueField: 'name'
+                forceSelection: true
+                typeAhead: true,
+                minChars:0,
+                triggerAction: 'all',
+                selectOnTab: true
+            }
+        }
+    }
+    editors: {
+        text: {
+            field: {
+                xtype:'textfield'
+            }
+        }
+        oordeel: {
+            field: Ext.create('Ext.form.field.ComboBox', {
+                editable: false,
+                store: [[ 1, 'OK' ], [0, 'Kritisch' ]]
+            })
+        }
+        boolean: {
+            field: {
+                xtype:'checkbox',
+                step:1
+            }
+        },
+        float: {
+            field: {
+                xtype:'numberfield',
+                step:1
+            }
+        },
+        int: {
+            field: {
+                xtype:'numberfield',
+                step:1
+            }
+        },
+        date: {
+            field: {
+                xtype:'datefield',
+                format: 'm d Y',
+                altFormats: 'd,m,Y|d.m.Y',
+            }
+        }
+    }
+    get_editor: (col) ->
+        me = @
+        console.log(col)
+
+        if typeof(col.editable) == 'undefined'
+            col.editable = true
+            
+        if !col.editable
+            console.log
+            return false
+
+        type = col.type || 'text'
+
+        if type
+            if me.extraEditors[type]
+                editor = me.extraEditors[type]
+            else if @editors[type]
+                editor = me.editors[type]
+
+        if Ext.type(editor) == 'object'
+            return Ext.create('Ext.grid.CellEditor', editor)
+        else
+            return editor
+
+    get_renderer: (value, metaData, record) ->
+        #record.data.manual
+        if value == null
+            value = '-'
+        if record.data.type == 'boolean'
+            if value == true
+                value = 'ja'
+            else if value == false
+                value = 'nee'
+
+
+        if !record.data.editable
+            value = "<i>#{value}</i>"
+
+        return value
+
+
     constructor: () ->
         @initConfig(arguments)
         @callParent(arguments)
@@ -17,16 +112,19 @@ Ext.define('Lizard.grid.EditableGrid', {
         cols = []
         for col in @dataConfig
 
-            cols.push({
+            col_config = {
                 text: col.title
                 width: col.width || 100
                 sortable: true
                 visible: col.visible
                 dataIndex: col.name
-                field: {
-                    allowBlank: false
-                }
-            })
+            }
+            if @get_editor(col)
+                #todo: change field to editor after upgrade to Ext 4.07
+                col_config.field = @get_editor(col)
+
+            console.log(col_config)
+            cols.push(col_config)
 
         return cols
 
@@ -72,12 +170,18 @@ Ext.define('Lizard.grid.EditableGrid', {
                 mapping: field.mapping || field.name
             })
 
+        url = @getProxyUrl()
+
         store = {
             type: 'leditstore'
             fields: fields
             proxy: {
                 type: 'ajax'
-                url: @getProxyUrl()
+                api:
+                    create: "#{url}?action=create" # Called when saving new records
+                    read: url # Called when reading existing records
+                    update: "#{url}?action=update" # Called when updating existing records
+                    destroy: "#{url}?action=delete" # Called when deleting existing records
                 extraParams: {
                    _accept: 'application/json'
                 }
