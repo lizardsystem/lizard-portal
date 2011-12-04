@@ -102,7 +102,7 @@
                                     items: [{
                                         xtype: 'hiddenfield',
                                         name: 'object_id',
-                                        value: Ext.getCmp('portalWindow').lizard_context.object_id
+                                        value: Ext.getCmp('portalWindow').context_manager.getContext().object_id
                                     },{
                                         xtype: 'textareafield',
                                         //fieldLabel: 'First Name',
@@ -127,7 +127,9 @@
                                                     form.submit({
                                                         success: function(form, action) {
                                                             console.log('Opslaan gelukt');
-                                                            Ext.getCmp('communique').applyParams(Ext.getCmp('portalWindow').lizard_context);
+                                                            Ext.getCmp('communique').applyParams({
+                                                                   object_id: Ext.getCmp('portalWindow').context_manager.getContext().object_id
+                                                            });
                                                             form.owner.up('window').close();
 
                                                         },
@@ -329,6 +331,47 @@
                 }, {
                    text: 'Toestand',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'toestand-aan-afvoergebied'}); }
+                }, {
+                   text: 'Toevoegen analyse interpretatie',
+                   handler: function() {
+                       Ext.create('Ext.window.Window', {
+                            title: 'Analyse interpretatie',
+                            width: 800,
+                            height: '60%',
+                            analyseinterpretatiepopup: true,
+                            //autoScroll: true,
+                            loader:{
+                                loadMask: true,
+                                autoLoad: true,
+                                url: '/portal/configuration/',
+                                ajaxOptions: {
+                                    method: 'GET'
+                                },
+                                params: {
+                                    portalTemplate: 'analyse_interpretatie_form'
+                                },
+                                renderer: 'component'
+                            }
+                        }).show();
+                   }
+
+
+                }, {
+                    text: 'Toon Multiselect',
+                    handler: function() {
+                        Ext.create('Ext.window.Window', {
+                            title: 'Analyse interpretatie',
+                            width: 800,
+                            height: 300,
+                            layout: 'fit',
+                            items: [{
+                                xtype: 'combomultiselect'
+                            }]
+
+                           //autoScroll: true,
+
+                       }).show();
+                   }
                 }
             ]
  		},{

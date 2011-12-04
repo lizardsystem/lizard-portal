@@ -91,8 +91,8 @@
                 type: 'ajax',
                 url: '/annotation/api/grid/',
                 extraParams: {
-                  _accept: 'application/json',
-                  type: 'interpretatie'
+                  _accept: 'application/json'/* ,
+                  type: 'analyse_interpretatie'*/
                 },
                 reader: {
                   root: 'annotations',

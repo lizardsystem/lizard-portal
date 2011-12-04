@@ -55,6 +55,7 @@ Ext.application({
         'Lizard.window.HeaderTab',
         'Lizard.window.ContextManager',
         'Lizard.grid.EditablePropertyGrid',
+        'Lizard.form.ComboMultiSelect',
         'Lizard.grid.EditableGrid',
         'Lizard.store.EditGridStore',
         'Lizard.portlet.Portlet',

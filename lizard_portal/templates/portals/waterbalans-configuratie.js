@@ -139,7 +139,7 @@
                     {name: 'min_crop_evaporation_factor', title: 'min_crop_evaporation_factor', editable: true, visible: true, width: 100, type: 'number'},
                     {name: 'min_water_level', title: 'min_water_level', editable: true, visible: true, width: 100, type: 'number'},
                     {name: 'porosity', title: 'porosity', editable: true, visible: true, width: 100, type: 'number'},
-                    {name: 'replace_impact_by_nutricalc', title: 'replace_impact_by_nutricalc', editable: true, visible: true, width: 100, type: 'number'},
+                    {name: 'replace_impact_by_nutricalc', title: 'replace_impact_by_nutricalc', editable: true, visible: true, width: 100, type: 'boolean'},
                     {name: 'ts_drainageindraft', title: 'ts_drainageindraft', editable: true, visible: true, width: 100, type: 'timeserie'},
                     {name: 'ts_flowoff', title: 'ts_flowoff', editable: true, visible: true, width: 100, type: 'timeserie'},
                     {name: 'ts_kwelwegz', title: 'ts_kwelwegz', editable: true, visible: true, width: 100, type: 'timeserie'},

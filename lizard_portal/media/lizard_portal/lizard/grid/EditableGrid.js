@@ -50,7 +50,7 @@
           step: 1
         }
       },
-      int: {
+      number: {
         field: {
           xtype: 'numberfield',
           step: 1
