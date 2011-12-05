@@ -14,10 +14,10 @@ urlpatterns = patterns(
     '',
     (r'^admin/', include(admin.site.urls)),
     url(r'^$',
-        redirect_to,
-        {'url': 'watersysteem/'},
+         'lizard_portal.views.site',
+        {'application_name': 'vss',
+         'active_tab_name': 'watersysteem/'},
         name="portalpage"),
-
 
     url(r'^site/(?P<application_name>.*)/(?P<active_tab_name>.*)/$',
         'lizard_portal.views.site',
