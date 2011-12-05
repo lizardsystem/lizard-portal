@@ -13,7 +13,9 @@ Ext.define('Lizard.grid.EditableGrid', {
         timeserie: {
             field: {
                 xtype: 'combo'
-                store: 'timeserieobject'
+                store: Ext.create('Vss.store.TimeserieObject',{
+                    fixedParameter: ''
+                }),
                 queryMode: 'remote'
                 displayField: 'name'
                 valueField: 'name'
@@ -21,7 +23,10 @@ Ext.define('Lizard.grid.EditableGrid', {
                 typeAhead: true,
                 minChars:0,
                 triggerAction: 'all',
-                selectOnTab: true
+                selectOnTab: true,
+                pageSize: 15,
+                width:150,
+                size: 150
             }
         }
     }
@@ -38,6 +43,12 @@ Ext.define('Lizard.grid.EditableGrid', {
             })
         }
         boolean: {
+            field: {
+                xtype:'checkbox',
+                step:1
+            }
+        },
+        checkbox: {
             field: {
                 xtype:'checkbox',
                 step:1
@@ -65,13 +76,11 @@ Ext.define('Lizard.grid.EditableGrid', {
     }
     get_editor: (col) ->
         me = @
-        console.log(col)
 
         if typeof(col.editable) == 'undefined'
             col.editable = true
             
         if !col.editable
-            console.log
             return false
 
         type = col.type || 'text'
@@ -81,25 +90,52 @@ Ext.define('Lizard.grid.EditableGrid', {
                 editor = me.extraEditors[type]
             else if @editors[type]
                 editor = me.editors[type]
+            else if type == 'combo'
+                editor = {
+                    field: {
+                        xtype: 'combo'
+                        store: col.choices
+                        queryMode: 'local'
+                        forceSelection: true
+                        triggerAction: 'all',
+                        selectOnTab: true,
+                    }
+
+                }
+
+
+
 
         if Ext.type(editor) == 'object'
-            return Ext.create('Ext.grid.CellEditor', editor)
+            editor = Ext.create('Ext.grid.CellEditor', editor)
+
+            if type == 'timeserie' and col.ts_parameter
+                editor.field.store = Ext.create('Vss.store.TimeserieObject',{
+                    fixedParameter: col.ts_parameter
+                })
+
+            return editor
         else
             return editor
 
-    get_renderer: (value, metaData, record) ->
-        #record.data.manual
+    get_renderer: (value, style, record, rownr, colnr, store, gridpanel, col) ->
+
         if value == null
             value = '-'
-        if record.data.type == 'boolean'
+
+        if col.type == 'boolean'
             if value == true
                 value = 'ja'
             else if value == false
                 value = 'nee'
 
-
-        if !record.data.editable
+        if !col.editable
             value = "<i>#{value}</i>"
+
+        if col.editIf
+            if !Ext.Array.contains(col.editIf.value_in, record.data[col.editIf.prop])
+                console.log('grijs')
+                value = "<span style='color:#888;'>#{value}</span>"
 
         return value
 
@@ -109,22 +145,45 @@ Ext.define('Lizard.grid.EditableGrid', {
         @callParent(arguments)
 
     getColumnConfig: () ->
-        cols = []
-        for col in @dataConfig
+        me = @
 
+        getColconfig = (col) ->
             col_config = {
                 text: col.title
                 width: col.width || 100
                 sortable: true
                 hidden: !col.visible
                 dataIndex: col.name
+                type: col.type
+                editable: col.editable || false
+                renderer: Ext.Function.bind(me.get_renderer, me, [col], true)
             }
-            if @get_editor(col)
-                #todo: change field to editor after upgrade to Ext 4.07
-                col_config.field = @get_editor(col)
+            if col.editable
+                col_config.getEditor = Ext.Function.bind(
+                    (record, col) ->
+                        return me.get_editor(col)
+                    me
+                    [col]
+                    true
+                )
 
-            console.log(col_config)
-            cols.push(col_config)
+            if col.editIf
+                col_config.editIf = col.editIf
+
+            return col_config
+
+        cols = []
+        for col in @dataConfig
+            if !col.columns
+                cols.push(getColconfig(col))
+            else
+                cols_with_header = {text: col.title, columns: []}
+                for col_sub in col['columns']
+                    cols_with_header['columns'].push(getColconfig(col_sub))
+
+                cols.push(cols_with_header)
+
+        console.log(cols)
 
         return cols
 
@@ -136,11 +195,6 @@ Ext.define('Lizard.grid.EditableGrid', {
         @store.rejectChanges()
 
     addRecord: () ->
-        rec = {
-            first: '',
-            last: '',
-            email: ''
-        }
 
         @store.insert(0, {})
 
@@ -164,11 +218,22 @@ Ext.define('Lizard.grid.EditableGrid', {
         fields = []
         for field in @dataConfig
 
-            fields.push({
-                name: field.name
-                type: field.type || 'auto'
-                mapping: field.mapping || field.name
-            })
+            if field.columns
+                for subfield in field.columns
+                    fields.push({
+                        name: subfield.name
+                        type: subfield.type || 'auto'
+                        mapping: subfield.mapping || subfield.name
+                    })
+
+            else
+
+
+                fields.push({
+                    name: field.name
+                    type: field.type || 'auto'
+                    mapping: field.mapping || field.name
+                })
 
         url = @getProxyUrl()
 

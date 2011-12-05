@@ -17,7 +17,9 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
         timeserie: {
             field: {
                 xtype: 'combo'
-                store: 'timeserieobject'
+                store: Ext.create('Vss.store.TimeserieObject',{
+                    fixedParameter: ''
+                })
                 queryMode: 'remote'
                 displayField: 'name'
                 valueField: 'name'
@@ -25,7 +27,8 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
                 typeAhead: true,
                 minChars:0,
                 triggerAction: 'all',
-                selectOnTab: true
+                selectOnTab: true,
+                pageSize: 15
             }
         }
     }
@@ -86,7 +89,13 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
                 editor = me.editors[type]
 
         if Ext.type(editor) == 'object'
-            return Ext.create('Ext.grid.CellEditor', editor)
+            editor = Ext.create('Ext.grid.CellEditor', editor)
+            console.log(record.data)
+            if type == 'timeserie' and record.data.ts_parameter
+                editor.field.store = Ext.create('Vss.store.TimeserieObject',{
+                    fixedParameter: record.data.ts_parameter
+                })
+            return editor
         else
             return editor
 
@@ -213,6 +222,9 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
                         name: 'editable',
                         mapping: 'editable',
                         defaultValue: true
+                    },{
+                        name: 'ts_parameter',
+                        mapping: 'ts_parameter'
                     }
                 ]
                 proxy:
@@ -223,6 +235,7 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
                     reader:
                         type: 'json'
                         root: 'data',
+                        
                     writer:
                         type: 'json',
                         writeAllFields: false,

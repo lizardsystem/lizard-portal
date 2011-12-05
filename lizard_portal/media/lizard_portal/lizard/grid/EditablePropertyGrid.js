@@ -14,7 +14,9 @@
       timeserie: {
         field: {
           xtype: 'combo',
-          store: 'timeserieobject',
+          store: Ext.create('Vss.store.TimeserieObject', {
+            fixedParameter: ''
+          }),
           queryMode: 'remote',
           displayField: 'name',
           valueField: 'name',
@@ -22,7 +24,8 @@
           typeAhead: true,
           minChars: 0,
           triggerAction: 'all',
-          selectOnTab: true
+          selectOnTab: true,
+          pageSize: 15
         }
       }
     },
@@ -84,7 +87,14 @@
         }
       }
       if (Ext.type(editor) === 'object') {
-        return Ext.create('Ext.grid.CellEditor', editor);
+        editor = Ext.create('Ext.grid.CellEditor', editor);
+        console.log(record.data);
+        if (type === 'timeserie' && record.data.ts_parameter) {
+          editor.field.store = Ext.create('Vss.store.TimeserieObject', {
+            fixedParameter: record.data.ts_parameter
+          });
+        }
+        return editor;
       } else {
         return editor;
       }
@@ -204,6 +214,9 @@
               name: 'editable',
               mapping: 'editable',
               defaultValue: true
+            }, {
+              name: 'ts_parameter',
+              mapping: 'ts_parameter'
             }
           ],
           proxy: {
