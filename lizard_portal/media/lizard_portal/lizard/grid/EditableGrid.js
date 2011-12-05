@@ -208,15 +208,32 @@
       me = this;
       me.columns = this.getColumnConfig();
       me.store = this.getStoreConfig();
-      if (this.getEditable) {
+      if (this.getEditable()) {
         this.editing = Ext.create('Ext.grid.plugin.CellEditing', {
           clicksToEdit: 1
         });
         this.plugins.push(this.editing);
-      }
-      if (this.getUseSaveBar) {
         me.bbar = [
           {
+            xtype: 'button',
+            text: 'Toevoegen',
+            iconCls: 'add',
+            handler: function(menuItem, checked) {
+              return me.addRecord();
+            }
+          }, {
+            xtype: 'button',
+            text: 'Delete',
+            iconCls: 'add',
+            handler: function(menuItem, checked) {
+              return me.deleteSelectedRecord();
+            }
+          }
+        ];
+      }
+      if (this.getUseSaveBar()) {
+        me.bbar.concat([
+          '-', {
             xtype: 'button',
             text: 'Cancel',
             iconCls: 'cancel',
@@ -245,22 +262,8 @@
                 return me.saveEdits();
               }
             }
-          }, '-', {
-            xtype: 'button',
-            text: 'Toevoegen',
-            iconCls: 'add',
-            handler: function(menuItem, checked) {
-              return me.addRecord();
-            }
-          }, {
-            xtype: 'button',
-            text: 'Delete',
-            iconCls: 'add',
-            handler: function(menuItem, checked) {
-              return me.deleteSelectedRecord();
-            }
           }
-        ];
+        ]);
       }
       return this.callParent(arguments);
     }

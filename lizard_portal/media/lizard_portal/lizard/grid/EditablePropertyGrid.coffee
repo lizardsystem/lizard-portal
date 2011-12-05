@@ -12,6 +12,7 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
         enterEditSummary: true
         editable: true
 
+
     extraEditors: {
         timeserie: {
             field: {
@@ -112,15 +113,19 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
     cancelEdits: () ->
         @store.rejectChanges()
 
+    constructor: () ->
+        @initConfig(arguments)
+        @callParent(arguments)
+
     initComponent: () ->
-        me = this
+        me = @
 
         #if !Ext.data.StoreManager.lookup('timeserieobject')
         #Ext.create('Vss.store.TimeserieObject', {,
         #    storeId: 'timeserieobject'
         #});
 
-        if @getEditable
+        if @getEditable()
             @editing = Ext.create('Ext.grid.plugin.CellEditing', {
                         clicksToEdit: 1
                     })
@@ -130,7 +135,7 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
 
 
 
-        if @getUseSaveBar
+        if @getUseSaveBar()
             me.bbar = [
                 {
                     xtype: 'button',
@@ -165,6 +170,7 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
 
         Ext.apply( this, {
             sortableColumns: false
+            hideHeaders: true
             columns: [
                 {
                     text: 'Eigenschap'

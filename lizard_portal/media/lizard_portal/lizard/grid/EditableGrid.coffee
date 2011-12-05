@@ -208,18 +208,39 @@ Ext.define('Lizard.grid.EditableGrid', {
         me.store = @getStoreConfig()
 
 
-        if @getEditable
+        if @getEditable()
             @editing = Ext.create('Ext.grid.plugin.CellEditing', {
                         clicksToEdit: 1
                     })
             @plugins.push(@editing)
 
-
-
-
-
-        if @getUseSaveBar
             me.bbar = [
+                {
+                    xtype: 'button',
+                    text: 'Toevoegen',
+                    iconCls: 'add',
+                    handler:(menuItem, checked) ->
+                        me.addRecord()
+
+                }
+                {
+                    xtype: 'button',
+                    text: 'Delete',
+                    iconCls: 'add',
+                    handler:(menuItem, checked) ->
+                        me.deleteSelectedRecord()
+
+                }
+            ]
+
+
+
+
+
+
+        if @getUseSaveBar()
+            me.bbar.concat([
+                '-'
                 {
                     xtype: 'button',
                     text: 'Cancel',
@@ -249,25 +270,9 @@ Ext.define('Lizard.grid.EditableGrid', {
                             me.saveEdits()
 
                 }
-                '-'
-                {
-                    xtype: 'button',
-                    text: 'Toevoegen',
-                    iconCls: 'add',
-                    handler:(menuItem, checked) ->
-                        me.addRecord()
+            ])
 
-                }
-                {
-                    xtype: 'button',
-                    text: 'Delete',
-                    iconCls: 'add',
-                    handler:(menuItem, checked) ->
-                        me.deleteSelectedRecord()
 
-                }
-
-            ]
 
 
 

@@ -111,16 +111,20 @@
     cancelEdits: function() {
       return this.store.rejectChanges();
     },
+    constructor: function() {
+      this.initConfig(arguments);
+      return this.callParent(arguments);
+    },
     initComponent: function() {
       var me;
       me = this;
-      if (this.getEditable) {
+      if (this.getEditable()) {
         this.editing = Ext.create('Ext.grid.plugin.CellEditing', {
           clicksToEdit: 1
         });
         this.plugins.push(this.editing);
       }
-      if (this.getUseSaveBar) {
+      if (this.getUseSaveBar()) {
         me.bbar = [
           {
             xtype: 'button',
@@ -156,6 +160,7 @@
       }
       Ext.apply(this, {
         sortableColumns: false,
+        hideHeaders: true,
         columns: [
           {
             text: 'Eigenschap',

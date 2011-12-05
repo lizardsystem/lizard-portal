@@ -21,19 +21,63 @@
 		flex:1,
 		items: [{
 			title: 'Instellingen',
+            id: 'xxx',
             flex:1,
             width: '100%',
             layout:{
                 type: 'anchor',
                 columns:2
             },
+            defaults: {
+                margin: 15
+            },
             autoScroll:true,
+            bbar: [
+                {
+                    xtype: 'button',
+                    text: 'Cancel',
+                    iconCls: 'cancel',
+                    handler: function (menuItem, checked) {
+                        var panel = menuItem.up('panel');
+                        var grids = panel.query('grid');
+                        for (var i = 0; i < grids.length; i++) {
+                            grids[i].cancelEdits()
+                        }
+                        
+                    }
+                },
+                {
+                    xtype: 'button',
+                    text: 'Save',
+                    iconCls: 'save',
+                    handler: function (menuItem) {
+                        var panel = menuItem.up('panel');
+                        var grids = panel.query('grid');
+
+                        Ext.MessageBox.show({
+                            title: 'Wijzigingen opslaan',
+                            msg: 'Samenvatting',
+                            width: 300,
+                            multiline: true,
+                            buttons: Ext.MessageBox.OKCANCEL,
+                            fn: function(btn, text)  {
+                                if (btn=='ok') {
+                                    for (var i = 0; i < grids.length; i++) {
+                                        grids[i].saveEdits()
+                                    }
+                                }
+                            }
+                        });
+
+                    }
+                }
+            ],
             items:[{
                 anchor: "100%",
                 autoHeight: true,
+                border: false,
                 layout:{
                     type: 'hbox'
-
                 },
                 defaults: {
                     padding: 5
@@ -44,6 +88,7 @@
                         title: 'Gebied eigenschappen',
                         width: 400, //flex:1,
                         //anchor:'50% 400',
+                        useSaveBar: false,
                         xtype: 'leditpropgrid',
                         autoHeight: true,
                         proxyUrl: '/wbconfiguration/api/area_configuration/',
@@ -63,6 +108,7 @@
                         title: 'Openwater',
                         width:400,
                         id: 'openw',
+                        useSaveBar: false,
                         autoHeight: true,
                         xtype: 'leditpropgrid',
                         plugins: [
