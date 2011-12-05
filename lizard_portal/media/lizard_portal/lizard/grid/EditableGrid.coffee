@@ -116,7 +116,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                 text: col.title
                 width: col.width || 100
                 sortable: true
-                visible: col.visible
+                hidden: !col.visible
                 dataIndex: col.name
             }
             if @get_editor(col)
@@ -187,6 +187,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                 }
                 reader: {
                     type: 'json'
+                    root: 'data'
                 }
                 writer: {
                     type: 'json',

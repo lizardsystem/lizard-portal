@@ -30,7 +30,7 @@
             autoScroll:true,
             items:[{
                 anchor: "100%",
-                height: 300,
+                autoHeight: true,
                 layout:{
                     type: 'hbox'
 
@@ -45,17 +45,17 @@
                         width: 400, //flex:1,
                         //anchor:'50% 400',
                         xtype: 'leditpropgrid',
-                        height:200,
-                        proxyUrl: '/portal/wbgebied.json',
+                        autoHeight: true,
+                        proxyUrl: '/wbconfiguration/api/area_configuration/',
                         proxyParams: {
-                            _accept: 'application/json'
+                            _accept: 'application/json',
+                            grid_name: 'area'
                         },
                         plugins: [
                             'applycontext'
                         ],
                         applyParams: function(params) {
-                            this.store.applyParams({object_id: params.object_id,
-                                                    grid_name: 'area'});
+                            this.store.applyParams({object_id: params.object_id, grid_name: 'area'});
                             this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceAreaConfig')
@@ -63,19 +63,18 @@
                         title: 'Openwater',
                         width:400,
                         id: 'openw',
-                        height:200,
+                        autoHeight: true,
                         xtype: 'leditpropgrid',
                         plugins: [
                             'applycontext'
                         ],
                         proxyUrl: '/wbconfiguration/api/area_configuration/',
                         proxyParams: {
-                            _accept: 'application/json'
+                            _accept: 'application/json',
+                            grid_name: 'water'
                         },
                         applyParams: function(params) {
-                            this.store.getProxy().url = '/wbconfiguration/api/area_configuration/'
-                            this.store.applyParams({object_id: params.object_id,
-                                                    grid_name: 'water'});
+                            this.store.applyParams({object_id: params.object_id, grid_name: 'water'});
                             this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceWaterConfig')
@@ -83,9 +82,10 @@
                 },
                 {
                 title: 'Bakjes',
+                id: 'zzz',
                 //height:400,
                 anchor:'100%',
-                height: 200,
+                autoHeight: true,
                 xtype: 'leditgrid',
                 plugins: [
                     'applycontext'
@@ -102,10 +102,12 @@
                 //proxyUrl: '/portal/wbbuckets.json',
                 proxyUrl: '/wbconfiguration/api/area_object_configuration/',
                 dataConfig:[
-                    {name: 'id', title: 'id', editable: true, visible: true, width: 100, type: 'text'},
+                    {name: 'id', title: 'id', editable: false, visible: false, width: 100, type: 'text'},//automatisch
+                    {name: 'area', title: 'Gebied', editable: false, visible: false, width: 100, type: 'text'},//default invullen
+                    {name: 'code', title: 'code', editable: true, visible: true, width: 100, type: 'text'},//kan deze weg?
                     {name: 'name', title: 'name', editable: true, visible: true, width: 100, type: 'text'},
+                    {name: 'bucket_type', title: 'bucket_type', editable: true, visible: true, width: 100, type: 'text'},
                     {name: 'surface', title: 'surface', editable: true, visible: true, width: 100, type: 'number'},
-                    {name: 'area', title: 'Gebied', editable: true, visible: true, width: 100, type: 'text'},
                     {name: 'bottom_crop_evaporation_factor', title: 'bottom_crop_evaporation_factor', editable: true, visible: true, width: 100, type: 'number'},
                     {name: 'bottom_drainage_fraction', title: 'bottom_drainage_fraction', editable: true, visible: true, width: 100, type: 'number'},
                     {name: 'bottom_indraft_fraction', title: 'bottom_indraft_fraction', editable: true, visible: true, width: 100, type: 'number'},
@@ -114,8 +116,6 @@
                     {name: 'bottom_min_crop_evaporation_factor', title: 'bottom_min_crop_evaporation_factor', editable: true, visible: true, width: 100, type: 'number'},
                     {name: 'bottom_min_water_level', title: 'bottom_min_water_level', editable: true, visible: true, width: 100, type: 'number'},
                     {name: 'bottom_porosity', title: 'bottom_porosity', editable: true, visible: true, width: 100, type: 'number'},
-                    {name: 'bucket_type', title: 'bucket_type', editable: true, visible: true, width: 100, type: 'text'},
-                    {name: 'code', title: 'code', editable: true, visible: true, width: 100, type: 'text'},
                     {name: 'concentr_chloride_drainage_indraft', title: 'concentr_chloride_drainage_indraft', editable: true, visible: true, width: 100, type: 'number'},
                     {name: 'concentr_chloride_flow_off', title: 'concentr_chloride_flow_off', editable: true, visible: true, width: 100, type: 'number'},
                     {name: 'crop_evaporation_factor', title: 'crop_evaporation_factor', editable: true, visible: true, width: 100, type: 'number'},
@@ -143,14 +143,13 @@
                     {name: 'ts_drainageindraft', title: 'ts_drainageindraft', editable: true, visible: true, width: 100, type: 'timeserie'},
                     {name: 'ts_flowoff', title: 'ts_flowoff', editable: true, visible: true, width: 100, type: 'timeserie'},
                     {name: 'ts_kwelwegz', title: 'ts_kwelwegz', editable: true, visible: true, width: 100, type: 'timeserie'},
-                    {name: 'ts_referenceoverflow', title: 'ts_referenceoverflow', editable: true, visible: true, width: 100, type: 'timeserie'},
-                    {name: 'deleted', title: 'Deleted', editable: true, visible: true, width: 100, type: 'boolean'}
+                    {name: 'ts_referenceoverflow', title: 'ts_referenceoverflow', editable: true, visible: true, width: 100, type: 'timeserie'}
                 ]
 
             },{
                 title: 'Kunstwerken',
                 anchor:'100%',
-                height: 200,
+                autoHeight: true,
                 xtype: 'leditgrid',
                 plugins: [
                     'applycontext'
@@ -183,8 +182,7 @@
                     {name: 'is_computed', title: 'is_computed', editable: true, visible: true, width: 100, type: 'boolean'},
                     {name: 'min_concentr_nitrogen', title: 'min_concentr_nitrogen', editable: true, visible: true, width: 100, type: 'number'},
                     {name: 'min_concentr_phosphate', title: 'min_concentr_phosphate', editable: true, visible: true, width: 100, type: 'number'},
-                    {name: 'ts_debiet', title: 'ts_debiet', editable: true, visible: true, width: 100, type: 'timeserie'},
-                    {name: 'deleted', title: 'Deleted', editable: true, visible: true, width: 100, type: 'boolean'}
+                    {name: 'ts_debiet', title: 'ts_debiet', editable: true, visible: true, width: 100, type: 'timeserie'}
                 ]
             }]
 		}]

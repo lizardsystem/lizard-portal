@@ -118,7 +118,7 @@ Ext.define 'Lizard.window.ContextManager',
         else
             output.active_headertab = headertab
 
-        output.period = @period_time
+        #output.period = @period_time
 
 
         #check relevant objecttype
@@ -127,7 +127,7 @@ Ext.define 'Lizard.window.ContextManager',
                 return true
 
 
-        object = @last_selected_object
+        #object = @last_selected_object
 
         #todo:  dit deel werkt nog niet lekker
         if headertab

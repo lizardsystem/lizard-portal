@@ -128,13 +128,11 @@
       } else {
         output.active_headertab = headertab;
       }
-      output.period = this.period_time;
       check = function(el) {
         if (el === me.last_selected_object.object_type) {
           return true;
         }
       };
-      object = this.last_selected_object;
       if (headertab) {
         console.log('supported objecttypes are:');
         console.log(headertab.object_types);

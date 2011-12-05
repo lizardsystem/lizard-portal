@@ -119,7 +119,7 @@
           text: col.title,
           width: col.width || 100,
           sortable: true,
-          visible: col.visible,
+          hidden: !col.visible,
           dataIndex: col.name
         };
         if (this.get_editor(col)) {
@@ -188,7 +188,8 @@
             _accept: 'application/json'
           },
           reader: {
-            type: 'json'
+            type: 'json',
+            root: 'data'
           },
           writer: {
             type: 'json',

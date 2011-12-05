@@ -266,6 +266,21 @@ Ext.define('Lizard.window.Header', {
                 itemCls: 'l-headertab'
             items: [
                 {
+                    x: 20,
+                    y: 30,
+                    height:25
+                    border: false
+                    id: 'contextheader'
+                    bodyStyle:
+                        'padding-right':'10px'
+                        background: 'transparent'
+                        'text-align':'right'
+                        'font-size': '9px'
+                        color: '#555'
+                    html:'watersysteem<br>polderX'
+                }
+
+                {
                     x: 0,
                     y: 0,
 
@@ -296,20 +311,7 @@ Ext.define('Lizard.window.Header', {
                     id: 'logo'
                     html:'<img src="' + me.getLogo_url() + '"></img>'
                 }
-                {
-                    x: 20,
-                    y: 30,
-                    height:25
-                    border: false
-                    id: 'contextheader'
-                    bodyStyle:
-                        'padding-right':'10px'
-                        background: 'transparent'
-                        'text-align':'right'
-                        'font-size': '9px'
-                        color: '#555'
-                    html:'watersysteem<br>polderX'
-                }
+
             ]
 
         @callParent(arguments)

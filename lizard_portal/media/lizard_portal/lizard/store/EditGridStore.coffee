@@ -60,11 +60,13 @@ Ext.define 'Lizard.store.EditGridStore',
         return @
 
     listeners:
-        write: (store, record, operation) ->
-            store.getUpdatedRecords().forEach((rec) ->
-                if rec.dirty == true
-                    rec.commit()
-            )
+        write: (store, action, operation) ->
+            console.log('write:')
+            console.log(arguments)
+            #action.records.forEach((rec) ->
+            #    if rec.dirty == true
+            #        rec.commit()
+            #)
             Ext.MessageBox.alert('Opslaan gelukt');
 
 

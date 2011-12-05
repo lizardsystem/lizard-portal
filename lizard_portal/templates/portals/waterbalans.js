@@ -39,7 +39,8 @@
 		flex: 1,
 		items: [{
 			title: 'Grafieken',
-            flex: 1,
+            flex: 1
+            /*,
             xtype: 'multigraph',
             graph_service_url: '/map/adapter/adapter_fewsnorm/image/',
             adapter_layer_json: {module_id:null,parameter_id:"ALMR110","fews_norm_source_slug":""},
@@ -78,7 +79,7 @@
                     module_id: "ImportLE",
                     ident: "53R0017"
                 }]
-            }]
+            }]*/
 		}]
 	}]
 }

@@ -216,6 +216,7 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
                        _accept: 'application/json'
                     reader:
                         type: 'json'
+                        root: 'data',
                     writer:
                         type: 'json',
                         writeAllFields: false,

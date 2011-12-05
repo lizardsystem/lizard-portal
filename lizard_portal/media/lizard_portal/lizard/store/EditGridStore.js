@@ -49,12 +49,9 @@
       return this;
     },
     listeners: {
-      write: function(store, record, operation) {
-        store.getUpdatedRecords().forEach(function(rec) {
-          if (rec.dirty === true) {
-            return rec.commit();
-          }
-        });
+      write: function(store, action, operation) {
+        console.log('write:');
+        console.log(arguments);
         return Ext.MessageBox.alert('Opslaan gelukt');
       }
     }

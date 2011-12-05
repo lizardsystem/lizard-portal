@@ -208,7 +208,8 @@
               _accept: 'application/json'
             },
             reader: {
-              type: 'json'
+              type: 'json',
+              root: 'data'
             },
             writer: {
               type: 'json',
