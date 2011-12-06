@@ -39,6 +39,7 @@
       base_url: 'portal/site/vss/'
     },
     setActiveHeadertab: function(tab) {
+      var context, pw;
       if (typeof tab === 'string') {
         tab = Ext.Array.filter(this.headertabs, function(element) {
           if (element.name === tab) {
@@ -51,13 +52,22 @@
       }
       if (tab) {
         this.active_headertab = tab;
+        context = this.getContext();
+        pw = Ext.getCmp('portalWindow');
+        if (pw) {
+          if (context.object_id) {
+            pw.linkTo({});
+          } else {
+            pw.showNavigationPortalTemplate();
+          }
+        }
       } else {
         console.log('headertab not found');
       }
       return tab;
     },
     setContext: function(params, save_state, headertab) {
-      var context, object, object_change, object_type_change, template_change;
+      var context, headertab_change, object, object_change, object_type_change, tab, template_change;
       if (save_state == null) {
         save_state = true;
       }
@@ -66,6 +76,19 @@
       }
       console.log('new context params are:');
       console.log(params);
+      if (typeof params.headerTab !== 'undefined') {
+        if (headertab.name !== params.headerTab) {
+          tab = Ext.getCmp('headertab_' + params.headerTab);
+          if (!tab.pressed) {
+            tab.toggle();
+          } else {
+            this.setActiveHeadertab(params.headerTab);
+          }
+          headertab_change = true;
+          console.log('new headertab');
+          headertab = this.active_headertab;
+        }
+      }
       if (typeof params.portalTemplate !== 'undefined') {
         if (headertab.portalTemplate !== params.portalTemplate) {
           headertab.portalTemplate = params.portalTemplate;

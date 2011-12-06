@@ -296,7 +296,7 @@
           }
         ];
       }
-      if (this.getUseSaveBar()) {
+      if (this.getEditable() && this.getUseSaveBar()) {
         me.bbar.concat([
           '-', {
             xtype: 'button',

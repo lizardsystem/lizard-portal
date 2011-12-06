@@ -16,10 +16,15 @@ Ext.define('Lizard.window.Header', {
 
         portalWindow = @portalWindow
 
+
+        context = portalWindow.context_manager.getContext()
+        area_name = context.object_name || context.object_id
+        area_name = area_name || '_'
+
         element = {
             tag: 'div',
             cls: 'link',
-            html: '> ' + portalWindow.context_manager.getContext().object
+            html: '> ' + area_name
         }
 
         bread_div.createChild(element)
@@ -65,11 +70,9 @@ Ext.define('Lizard.window.Header', {
         context = @context_manager.getContext()
 
         html = ''
-        if context.object_type
-            html += context.object_type + '<br>'
 
         if context.object_name
-            html += context.object_name
+            html += context.object_name + ' (' + context.object_id +  ')'
 
         @contextheader.body.dom.innerHTML = html
 
@@ -146,6 +149,71 @@ Ext.define('Lizard.window.Header', {
                 }]
         }).show()
 
+
+    periodSelection: () ->
+        Ext.create('Ext.window.Window', {
+
+            title: 'Periode selectie'
+            items:
+                frame: true
+                xtype: 'form'
+                bodyStyle: 'padding:5px 5px 0',
+                width: 350,
+                fieldDefaults:
+                    msgTarget: 'side',
+                    labelWidth: 90
+                defaultType: 'textfield',
+                defaults:
+                    anchor: '100%'
+
+                items: [
+                    {
+                        xtype: 'radiogroup',
+                        fieldLabel: 'Periode',
+                        columns: 3,
+                        vertical: false,
+                        items: [
+                            { boxLabel: 'dg', name: 'rb', inputValue: '1' },
+                            { boxLabel: '2dg', name: 'rb', inputValue: '2', checked: true},
+                            { boxLabel: 'wk', name: 'rb', inputValue: '3' },
+                            { boxLabel: 'mnd', name: 'rb', inputValue: '4' },
+                            { boxLabel: 'jr', name: 'rb', inputValue: '5' },
+                            { boxLabel: '5jr', name: 'rb', inputValue: '6' },
+                            { boxLabel: 'anders', name: 'rb', inputValue: '7' }
+                        ]
+                    }
+                    {
+                        xtype: 'datefield',
+                        fieldLabel: 'van'
+                        name: 'start_period'
+                    }
+                    {
+                        xtype: 'datefield',
+                        fieldLabel: 't/m'
+                        name: 'end_period'
+                    }
+                ]
+
+                buttons: [{
+                    text: 'Ok'
+                    formBind: true,
+                    handler: () ->
+                        form = @up('form').getForm()
+                        #todo
+                        window = @up('window')
+                        window.close()
+
+                },{
+                    text: 'Cancel'
+                    handler: () ->
+                        window = @up('window')
+                        window.close()
+                }]
+        }).show()
+
+
+
+
     constructor: (config) ->
         @initConfig(config)
         @callParent(arguments)
@@ -172,14 +240,11 @@ Ext.define('Lizard.window.Header', {
         ]
         tabs = @getHeadertabs()
         active_tab = @context_manager.getActive_headertab()
-        console.log('headers:')
         for tab in tabs
             if active_tab == tab
                 pressed = true
             else
                 pressed = false
-
-            console.log(tab)
 
             header_items.push({
                 id: 'headertab_' + tab.name
@@ -195,12 +260,6 @@ Ext.define('Lizard.window.Header', {
                     me.portalWindow.navigation.setNavigation(@navigation)
                     me.context_manager.setActiveHeadertab(@tab)
                     context = me.context_manager.getContext()
-
-                    if context.object_id
-                        #show selected or default template
-                        me.portalWindow.linkTo({})
-                    else
-                        me.portalWindow.showNavigationPortalTemplate()
             })
 
         header_items.push('->')
@@ -249,6 +308,8 @@ Ext.define('Lizard.window.Header', {
                     iconCls: 'settings'
                     xtype: 'button'
                     bodyCls: 'l-headertab'
+                    handler: () ->
+                        me.periodSelection()
                 }
             )
 

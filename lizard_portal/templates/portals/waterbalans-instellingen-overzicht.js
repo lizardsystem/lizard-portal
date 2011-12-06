@@ -2,8 +2,8 @@
 
 
 {
-    itemId: 'waterbalans-configuratie',
-    title: 'Waterbalans-configuratie',
+    itemId: 'waterbalans-instellingen-overzicht',
+    title: 'Waterbalans-instellingen-overzicht',
 	xtype: 'portalpanel',
     breadcrumbs: [{
             name: 'watersysteemkaart',
@@ -14,14 +14,13 @@
             link: 'waterbalans'
         },
         {
-            name: 'waterbalans-configuratie'
+            name: 'waterbalans-instellingen'
         }
     ],
 	items:[{
 		flex:1,
 		items: [{
 			title: 'Instellingen',
-            id: 'xxx',
             flex:1,
             width: '100%',
             layout:{
@@ -32,45 +31,6 @@
                 margin: 15
             },
             autoScroll:true,
-            bbar: [
-                {
-                    xtype: 'button',
-                    text: 'Cancel',
-                    iconCls: 'cancel',
-                    handler: function (menuItem, checked) {
-                        var panel = menuItem.up('panel');
-                        var grids = panel.query('grid');
-                        for (var i = 0; i < grids.length; i++) {
-                            grids[i].cancelEdits()
-                        }
-                    }
-                },
-                {
-                    xtype: 'button',
-                    text: 'Save',
-                    iconCls: 'save',
-                    handler: function (menuItem) {
-                        var panel = menuItem.up('panel');
-                        var grids = panel.query('grid');
-
-                        Ext.MessageBox.show({
-                            title: 'Wijzigingen opslaan',
-                            msg: 'Samenvatting',
-                            width: 300,
-                            multiline: true,
-                            buttons: Ext.MessageBox.OKCANCEL,
-                            fn: function(btn, text)  {
-                                if (btn=='ok') {
-                                    for (var i = 0; i < grids.length; i++) {
-                                        grids[i].saveEdits()
-                                    }
-                                }
-                            }
-                        });
-
-                    }
-                }
-            ],
             items:[{
                 anchor: "100%",
                 autoHeight: true,
@@ -87,6 +47,7 @@
                         title: 'Gebied eigenschappen',
                         width: 400,
                         useSaveBar: false,
+                        editable: false,
                         xtype: 'leditpropgrid',
                         autoHeight: true,
                         proxyUrl: '/wbconfiguration/api/area_configuration/',
@@ -106,6 +67,7 @@
                         title: 'Openwater',
                         width:400,
                         useSaveBar: false,
+                        editable: false,
                         autoHeight: true,
                         xtype: 'leditpropgrid',
                         plugins: [
@@ -121,29 +83,13 @@
                             this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceWaterConfig')
-                    },{
-                        title: 'Acties',
-                        width:400,
-                        //autoHeight: true,
-                        xtype: 'panel',
-                        plugins: [
-                            'applycontext'
-                        ],
-                         applyParams: function(params) {
-                            //todo
-                        },
-                        items: [
-                            {html: 'Status: gevalideerd'},
-                            {html: 'Valideer'},
-                            {html: 'Exporteer configuratie'},
-                            {html: 'Importeer configu'}
-                        ]
                     }]
                 },
                 {
                 title: 'Bakjes',
                 anchor:'100%',
                 autoHeight: true,
+                editable: false,
                 xtype: 'leditgrid',
                 plugins: [
                     'applycontext'
@@ -232,11 +178,12 @@
 
                     {name: 'label_drainaige_indraft', title: 'label_drainaige_indraft', editable: true, visible: false, width: 100, type: 'number'},
                     {name: 'label_flow_off', title: 'label_flow_off', editable: true, visible: false, width: 100, type: 'number'}
-                 ]
+                ]
 
             },{
                 title: 'Kunstwerken',
                 anchor:'100%',
+                editable: false,
                 autoHeight: true,
                 xtype: 'leditgrid',
                 plugins: [

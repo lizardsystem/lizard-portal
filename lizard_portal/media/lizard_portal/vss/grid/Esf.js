@@ -151,7 +151,7 @@ Ext.define('Vss.grid.Esf', {
                 xtype: 'button',
                 id: 'save_button',
                 text: 'Save',
-                iconCls: 'save',
+                iconCls: 'l-icon-disk',
                 handler: function(menuItem) {
 
                     Ext.MessageBox.show({

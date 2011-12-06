@@ -79,6 +79,8 @@
     showNavigationPortalTemplate: function(animate_navigation_expand) {
       var args;
       this.navigation.expand(animate_navigation_expand);
+      console.log('------------------------------------------');
+      console.log(this.context_manager.active_headertab);
       args = Ext.Object.merge({}, this.context_manager.getContext(), {
         portalTemplate: this.context_manager.active_headertab.navigation_portal_template
       });
@@ -154,19 +156,20 @@
     afterRender: function() {
       var activeTab, anim_setting, hash, parts, tab;
       this.callParent(arguments);
-      activeTab = this.context_manager.getActive_headertab();
-      if (activeTab) {
-        tab = this.navigation.add(activeTab.navigation);
-        this.navigation.setActiveTab(tab);
-      }
       if (window.location.hash) {
         hash = window.location.hash;
         parts = hash.replace('#', '').split('/');
         this.linkTo({
+          headerTab: parts[0],
           portalTemplate: parts[1],
           object_type: parts[2],
           object_id: parts[3]
         }, false, true, false);
+      }
+      activeTab = this.context_manager.getActive_headertab();
+      if (activeTab) {
+        tab = this.navigation.add(activeTab.navigation);
+        this.navigation.setActiveTab(tab);
       }
       if (!this.context_manager.getContext().object_id) {
         console.log('no object selected, show selection');

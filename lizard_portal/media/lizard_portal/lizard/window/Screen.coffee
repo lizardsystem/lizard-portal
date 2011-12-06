@@ -63,6 +63,8 @@ Ext.define 'Lizard.window.Screen',
     showNavigationPortalTemplate: (animate_navigation_expand) ->
         #animate does not work in version
         @navigation.expand(animate_navigation_expand)
+        console.log('------------------------------------------')
+        console.log(@context_manager.active_headertab)
         args = Ext.Object.merge({}, @context_manager.getContext(), {portalTemplate: @context_manager.active_headertab.navigation_portal_template})
         @loadPortal(args, false)
 
@@ -153,6 +155,19 @@ Ext.define 'Lizard.window.Screen',
     afterRender: ->
         @callParent(arguments)
 
+
+        #when url has some kind of status information, set context
+        if window.location.hash
+            hash = window.location.hash
+            parts = hash.replace('#', '').split('/');
+            @linkTo({
+                headerTab: parts[0]
+                portalTemplate: parts[1]
+                object_type: parts[2]
+                object_id: parts[3]
+            }, false, true, false)
+
+
         #set navigation of active tab
         activeTab = @context_manager.getActive_headertab()
         if activeTab
@@ -160,16 +175,7 @@ Ext.define 'Lizard.window.Screen',
             @navigation.setActiveTab tab
 
 
-        #when url has some kind of status information, set context
-        if window.location.hash
-            hash = window.location.hash
-            parts = hash.replace('#', '').split('/');
-            @linkTo({
-                portalTemplate: parts[1]
-                object_type: parts[2]
-                object_id: parts[3]
-            }, false, true, false)
-        
+
 
         if not @context_manager.getContext().object_id
             console.log('no object selected, show selection')
