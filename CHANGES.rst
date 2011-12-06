@@ -4,6 +4,7 @@ Changelog of lizard-portal
 
 0.3 (unreleased)
 ----------------
+- Added drop down list in_out to structures grid.
 
 - Added columns for wbconfiguration tables.
 
