@@ -164,6 +164,22 @@ Ext.application({
 
         ];
 
+        var headerTab = 'watersysteem';
+        var portalTemplate = null;
+        var object_type = null;
+        var object_id = null;
+
+        if (window.location.hash) {
+            var hash = window.location.hash;
+            var parts = hash.replace('#', '').split('/');
+
+            headerTab = parts[0];
+            portalTemplate = parts[1];
+            object_type = parts[2];
+            object_id = parts[3];
+        }
+
+
         var context_manager = Ext.create('Lizard.window.ContextManager', {
             user: {
                 id: {{ user.id|default_if_none:"null" }},
@@ -174,12 +190,17 @@ Ext.application({
                 period_end: '2002-01-01T00:00',
                 moment: '2001-01-01T00:00'
             },
-            base_url: '{% url site "vss" "watersysteem" %}',
-            headertabs: headertabs
+            base_url: '{% url portalpage %}',
+            headertabs: headertabs,
+            portalTemplate: portalTemplate,
+            object_type: object_type,
+            object_id: object_id,
+            object_name: '-'
         });
 
         //todo: do this dynamic
-        context_manager.setActiveHeadertab('watersysteem');
+
+        context_manager.setActiveHeadertab(headerTab);
 
 
         Ext.create('Lizard.window.Screen', {
@@ -191,5 +212,4 @@ Ext.application({
             }
         });
     }
-
 });

@@ -22,9 +22,9 @@ Ext.define('Lizard.portlet.MultiGraph', {
         }
         this.doLayout();
 
-        for (nr in items) {
+        /*for (nr in items) {
             items[nr].doLayout();
-        }
+        }*/
     },
     initGraphs: function() {
         var me = this;
@@ -37,7 +37,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
             for (ts in graph.timeseries) {
                 result.params.identifier.push(graph.timeseries[ts])
             }
-            console.log(result);
+
             return result
         }
 
@@ -51,13 +51,13 @@ Ext.define('Lizard.portlet.MultiGraph', {
 
             this.items.push(graph);
 
-            toolbar = this.getDockedItems('toolbar')[0]
+            var toolbar = this.getDockedItems('toolbar')[0];
 
             this.tbar.push({
                 text: graph_config.title,
                 pressed: true,
                 enableToggle: true,
-                iconCls: 'x-grid-checkheader-checked',
+                iconCls: 'l-icon-chartbar',
                 graph: graph,
                 handler: function(button) {
                     if (button.pressed) {
@@ -70,7 +70,6 @@ Ext.define('Lizard.portlet.MultiGraph', {
         }
     },
     constructor: function(config) {
-        console.log('init')
         this.initConfig(arguments);
         this.callParent(arguments);
     },
@@ -79,7 +78,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
         Ext.apply(this,{
 
             layout: {
-                type: 'vboxscroll',
+                type: 'vbox',
                 align: 'stretch'
             },
             defaults: {

@@ -48,6 +48,15 @@ Ext.define 'Lizard.window.ContextManager',
 
         if tab
             @active_headertab = tab
+            context = @getContext()
+            pw = Ext.getCmp('portalWindow')
+            if pw
+                if context.object_id
+                    #show selected or default template
+                    pw.linkTo({})
+                else
+                    pw.showNavigationPortalTemplate()
+                
         else
             console.log('headertab not found')
         return tab
@@ -57,6 +66,17 @@ Ext.define 'Lizard.window.ContextManager',
     setContext:(params, save_state=true, headertab=@active_headertab) ->
         console.log('new context params are:')
         console.log(params)
+
+        if typeof(params.headerTab) != 'undefined'
+            if headertab.name != params.headerTab
+                tab = Ext.getCmp('headertab_' + params.headerTab)
+                if !tab.pressed
+                    tab.toggle()
+                else
+                    @setActiveHeadertab(params.headerTab)
+                headertab_change = true
+                console.log('new headertab')
+                headertab=@active_headertab
 
         if typeof(params.portalTemplate) != 'undefined'
             if headertab.portalTemplate != params.portalTemplate

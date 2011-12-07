@@ -49,10 +49,9 @@
 
 		},{
 			title: 'Communique',
-            id: 'communique',
             bodyCls: 'l-grid',
-            flex:1,
-            layout:'card',
+            height: 150,
+            //flex:1,
             collapsed: true,
             autoScroll: true,
             plugins: [
@@ -95,7 +94,6 @@
                                     url: '/area/api/area_communique/',
                                     layout: 'anchor',
                                     height: '100%',
-                                    id: 'alal',
                                     defaults: {
                                         anchor: '100%'
                                     },
@@ -353,24 +351,6 @@
                                 renderer: 'component'
                             }
                         }).show();
-                   }
-
-
-                }, {
-                    text: 'Toon Multiselect',
-                    handler: function() {
-                        Ext.create('Ext.window.Window', {
-                            title: 'Analyse interpretatie',
-                            width: 800,
-                            height: 300,
-                            layout: 'fit',
-                            items: [{
-                                xtype: 'combomultiselect'
-                            }]
-
-                           //autoScroll: true,
-
-                       }).show();
                    }
                 }
             ]

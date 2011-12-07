@@ -114,10 +114,14 @@
 }
 
 .x-grid-checkheader-unchecked {
-    background-image: url('images/unchecked.png')
+    background-image: url('images/unchecked.gif')
 }
 
 .x-grid-checkheader-checked {
+    background-image: url('images/checked.gif');
+}
+
+.x-grid-checkheader-hand {
     background-image: url('images/hand.png');
 }
 
@@ -127,4 +131,35 @@
 
 .x-grid-checkheader-editor .x-form-cb-wrap {
     text-align: center;
+}
+
+.l-icon {
+    height: 12px;
+    background-position: 50% -2px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+.l-icon-disk{
+    background-image: url('images/disk.png');
+}
+
+.l-icon-chartline{
+    background-image: url('images/chart_line.png');
+}
+
+.l-icon-delete{
+    background-image: url('images/delete.png');
+}
+
+.l-icon-add{
+    background-image: url('images/add.png');
+}
+
+.l-icon-chartbar{
+    background-image: url('images/chart_bar.png');
+}
+
+.l-icon-setting{
+    background-image: url('images/settingtable.png');
 }

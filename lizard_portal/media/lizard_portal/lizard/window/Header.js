@@ -9,15 +9,18 @@
       portalWindow: null
     },
     setBreadCrumb: function(bread_crumbs) {
-      var bread_div, crumb, el, element, me, portalWindow, _i, _len, _results;
+      var area_name, bread_div, context, crumb, el, element, me, portalWindow, _i, _len, _results;
       me = this;
       bread_div = this.breadcrumb.el;
       bread_div.dom.innerHTML = '';
       portalWindow = this.portalWindow;
+      context = portalWindow.context_manager.getContext();
+      area_name = context.object_name || context.object_id;
+      area_name = area_name || '_';
       element = {
         tag: 'div',
         cls: 'link',
-        html: '> ' + portalWindow.context_manager.getContext().object
+        html: '> ' + area_name
       };
       bread_div.createChild(element);
       el = bread_div.last();
@@ -55,11 +58,8 @@
       var context, html;
       context = this.context_manager.getContext();
       html = '';
-      if (context.object_type) {
-        html += context.object_type + '<br>';
-      }
       if (context.object_name) {
-        html += context.object_name;
+        html += context.object_name + ' (' + context.object_id + ')';
       }
       return this.contextheader.body.dom.innerHTML = html;
     },
@@ -138,6 +138,92 @@
         }
       }).show();
     },
+    periodSelection: function() {
+      return Ext.create('Ext.window.Window', {
+        title: 'Periode selectie',
+        items: {
+          frame: true,
+          xtype: 'form',
+          bodyStyle: 'padding:5px 5px 0',
+          width: 350,
+          fieldDefaults: {
+            msgTarget: 'side',
+            labelWidth: 90
+          },
+          defaultType: 'textfield',
+          defaults: {
+            anchor: '100%'
+          },
+          items: [
+            {
+              xtype: 'radiogroup',
+              fieldLabel: 'Periode',
+              columns: 3,
+              vertical: false,
+              items: [
+                {
+                  boxLabel: 'dg',
+                  name: 'rb',
+                  inputValue: '1'
+                }, {
+                  boxLabel: '2dg',
+                  name: 'rb',
+                  inputValue: '2',
+                  checked: true
+                }, {
+                  boxLabel: 'wk',
+                  name: 'rb',
+                  inputValue: '3'
+                }, {
+                  boxLabel: 'mnd',
+                  name: 'rb',
+                  inputValue: '4'
+                }, {
+                  boxLabel: 'jr',
+                  name: 'rb',
+                  inputValue: '5'
+                }, {
+                  boxLabel: '5jr',
+                  name: 'rb',
+                  inputValue: '6'
+                }, {
+                  boxLabel: 'anders',
+                  name: 'rb',
+                  inputValue: '7'
+                }
+              ]
+            }, {
+              xtype: 'datefield',
+              fieldLabel: 'van',
+              name: 'start_period'
+            }, {
+              xtype: 'datefield',
+              fieldLabel: 't/m',
+              name: 'end_period'
+            }
+          ],
+          buttons: [
+            {
+              text: 'Ok',
+              formBind: true,
+              handler: function() {
+                var form, window;
+                form = this.up('form').getForm();
+                window = this.up('window');
+                return window.close();
+              }
+            }, {
+              text: 'Cancel',
+              handler: function() {
+                var window;
+                window = this.up('window');
+                return window.close();
+              }
+            }
+          ]
+        }
+      }).show();
+    },
     constructor: function(config) {
       this.initConfig(config);
       return this.callParent(arguments);
@@ -168,7 +254,6 @@
       ];
       tabs = this.getHeadertabs();
       active_tab = this.context_manager.getActive_headertab();
-      console.log('headers:');
       for (_i = 0, _len = tabs.length; _i < _len; _i++) {
         tab = tabs[_i];
         if (active_tab === tab) {
@@ -176,7 +261,6 @@
         } else {
           pressed = false;
         }
-        console.log(tab);
         header_items.push({
           id: 'headertab_' + tab.name,
           text: tab.title,
@@ -191,12 +275,7 @@
             console.log(arguments);
             me.portalWindow.navigation.setNavigation(this.navigation);
             me.context_manager.setActiveHeadertab(this.tab);
-            context = me.context_manager.getContext();
-            if (context.object_id) {
-              return me.portalWindow.linkTo({});
-            } else {
-              return me.portalWindow.showNavigationPortalTemplate();
-            }
+            return context = me.context_manager.getContext();
           }
         });
       }
@@ -244,7 +323,10 @@
         }, '-', {
           iconCls: 'settings',
           xtype: 'button',
-          bodyCls: 'l-headertab'
+          bodyCls: 'l-headertab',
+          handler: function() {
+            return me.periodSelection();
+          }
         });
       }
       Ext.apply(this, {

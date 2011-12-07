@@ -303,7 +303,7 @@ Ext.define('Lizard.grid.EditableGrid', {
 
 
 
-        if @getUseSaveBar()
+        if @getEditable() and @getUseSaveBar()
             me.bbar.concat([
                 '-'
                 {

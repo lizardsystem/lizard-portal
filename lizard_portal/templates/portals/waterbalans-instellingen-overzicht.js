@@ -2,8 +2,8 @@
 
 
 {
-    itemId: 'waterbalans-configuratie',
-    title: 'Waterbalans-configuratie',
+    itemId: 'waterbalans-instellingen-overzicht',
+    title: 'Waterbalans-instellingen-overzicht',
 	xtype: 'portalpanel',
     breadcrumbs: [{
             name: 'watersysteemkaart',
@@ -14,14 +14,13 @@
             link: 'waterbalans'
         },
         {
-            name: 'waterbalans-configuratie'
+            name: 'waterbalans-instellingen'
         }
     ],
 	items:[{
 		flex:1,
 		items: [{
 			title: 'Instellingen',
-            id: 'xxx',
             flex:1,
             width: '100%',
             layout:{
@@ -32,45 +31,6 @@
                 margin: 15
             },
             autoScroll:true,
-            bbar: [
-                {
-                    xtype: 'button',
-                    text: 'Cancel',
-                    iconCls: 'cancel',
-                    handler: function (menuItem, checked) {
-                        var panel = menuItem.up('panel');
-                        var grids = panel.query('grid');
-                        for (var i = 0; i < grids.length; i++) {
-                            grids[i].cancelEdits()
-                        }
-                    }
-                },
-                {
-                    xtype: 'button',
-                    text: 'Save',
-                    iconCls: 'save',
-                    handler: function (menuItem) {
-                        var panel = menuItem.up('panel');
-                        var grids = panel.query('grid');
-
-                        Ext.MessageBox.show({
-                            title: 'Wijzigingen opslaan',
-                            msg: 'Samenvatting',
-                            width: 300,
-                            multiline: true,
-                            buttons: Ext.MessageBox.OKCANCEL,
-                            fn: function(btn, text)  {
-                                if (btn=='ok') {
-                                    for (var i = 0; i < grids.length; i++) {
-                                        grids[i].saveEdits()
-                                    }
-                                }
-                            }
-                        });
-
-                    }
-                }
-            ],
             items:[{
                 anchor: "100%",
                 autoHeight: true,
@@ -87,6 +47,7 @@
                         title: 'Gebied eigenschappen',
                         width: 400,
                         useSaveBar: false,
+                        editable: false,
                         xtype: 'leditpropgrid',
                         autoHeight: true,
                         proxyUrl: '/wbconfiguration/api/area_configuration/',
@@ -106,6 +67,7 @@
                         title: 'Openwater',
                         width:400,
                         useSaveBar: false,
+                        editable: false,
                         autoHeight: true,
                         xtype: 'leditpropgrid',
                         plugins: [
@@ -121,29 +83,13 @@
                             this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceWaterConfig')
-                    },{
-                        title: 'Acties',
-                        width:400,
-                        //autoHeight: true,
-                        xtype: 'panel',
-                        plugins: [
-                            'applycontext'
-                        ],
-                         applyParams: function(params) {
-                            //todo
-                        },
-                        items: [
-                            {html: 'Status: gevalideerd'},
-                            {html: 'Valideer'},
-                            {html: 'Exporteer configuratie'},
-                            {html: 'Importeer configu'}
-                        ]
                     }]
                 },
                 {
                 title: 'Bakjes',
                 anchor:'100%',
                 autoHeight: true,
+                editable: false,
                 xtype: 'leditgrid',
                 plugins: [
                     'applycontext'
@@ -232,11 +178,12 @@
 
                     {name: 'label_drainaige_indraft', title: 'label_drainaige_indraft', editable: true, visible: false, width: 100, type: 'number'},
                     {name: 'label_flow_off', title: 'label_flow_off', editable: true, visible: false, width: 100, type: 'number'}
-                 ]
+                ]
 
             },{
                 title: 'Kunstwerken',
                 anchor:'100%',
+                editable: false,
                 autoHeight: true,
                 xtype: 'leditgrid',
                 plugins: [
@@ -248,9 +195,8 @@
                     console.log(params);
 
                     if (this.store) {
-                        this.store.applyParams({object_id: params.object_id,
-                                                area_object_type: 'Structure'});
-                        this.store.load();
+                        this.store.load({params: {object_id: params.object_id,
+                                                  area_object_type: 'Structure'}});
                     }
                 },
                 //proxyUrl: '/portal/wbstructures.json',
@@ -262,8 +208,8 @@
                     {name: 'code', title: 'code', editable: false, visible: false, width: 100, type: 'text'},//automatisch aanmaken
                     {name: 'area', title: 'area', editable: false, visible: false, width: 100, type: 'text'},
                     {name: 'name', title: 'Naam', editable: true, visible: true, width: 170, type: 'text'},
-                    {name: 'is_computed', title: 'Berekend', editable: false, visible: true, width: 75, type: 'boolean'},
-                    {name: 'in_out', title: 'In of Uit', editable: true, visible: true, width: 75, type: 'combo', choices: ['in', 'uit']},
+                    {name: 'is_computed', title: 'Berekend', editable: true, visible: false, width: 75, type: 'boolean'},
+                    {name: 'in_out', title: 'In of Uit', editable: true, visible: true, width: 75, type: 'boolean'},
                     //debiet
                     {name: 'deb_is_ts', title: 'Debiet is tijdserie?', editable: true, visible: true, width: 100, type: 'boolean'},
                     {name: 'deb_wint', title: 'Debiet winter', editable: true, visible: true, width: 75, type: 'number', editIf: {prop: 'deb_is_ts', value_in: [false]}},
