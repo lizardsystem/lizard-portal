@@ -2,8 +2,17 @@ Changelog of lizard-portal
 ===================================================
 
 
-0.3 (unreleased)
+0.4 (unreleased)
 ----------------
+
+- Nothing changed yet.
+
+
+0.3 (2011-12-07)
+----------------
+
+- Some merges.
+
 - Added drop down list in_out to structures grid.
 
 - Added columns for wbconfiguration tables.
