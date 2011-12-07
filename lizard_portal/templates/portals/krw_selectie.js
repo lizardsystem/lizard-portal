@@ -41,7 +41,10 @@
                     success: function(xhr, request) {
                         var areas = Ext.JSON.decode(xhr.responseText);
                         console.log(areas);;
-                        Ext.getCmp('portalWindow').linkTo({object_id:areas[0].id.ident});
+                        Ext.getCmp('portalWindow').linkTo({
+                            object_id: areas[0].id.ident,
+                            object_name: areas[0].name,
+                            object_type: 'krw_waterlichaam'});
                     },
                     failure: function(xhr) {
                         alert('failure');

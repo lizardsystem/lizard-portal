@@ -14,7 +14,7 @@
             link: 'homepage'
         },
         {
-            name: 'Waterbalans'
+            name: 'waterbalans'
         }
     ],
 	items:[{
@@ -27,13 +27,20 @@
 			title: 'Instellingen',
             height: 150,
             bbar: [{
-                    xtype: 'button',
-                    text: 'configuratie',
-                    iconCls: 'setting',
-                    handler: function(menuItem, checked) {
-                        Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans-configuratie'});
-                    }
-                }]
+                xtype: 'button',
+                text: 'Overzicht instellingen',
+                iconCls: 'l-icon-setting',
+                handler: function(menuItem, checked) {
+                    Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans-instellingen-overzicht'});
+                }
+            }, {
+                xtype: 'button',
+                text: 'Configureren',
+                iconCls: 'l-icon-setting',
+                handler: function(menuItem, checked) {
+                    Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans-configuratie'});
+                }
+            }]
 		}]
 	},{
 		flex: 1,

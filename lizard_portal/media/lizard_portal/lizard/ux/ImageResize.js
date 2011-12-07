@@ -51,12 +51,13 @@ Ext.define('Lizard.ux.ImageResize', {
             resize: function(Component, adjWidth, adjHeight, eOpts) {
                 Component.applyParams({width: adjWidth, height: adjHeight});
             }
-        })
+        });
 
         this.callParent(arguments);
     },
     afterRender: function() {
-        this.applyParams({width: this.getWidth(), height: this.getHeight()});
+        //this.applyParams({width: this.getWidth(), height: this.getHeight()});
+        this.callParent(arguments);
     }
 
 

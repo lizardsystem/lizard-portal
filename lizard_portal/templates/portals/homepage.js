@@ -49,10 +49,9 @@
 
 		},{
 			title: 'Communique',
-            id: 'communique',
             bodyCls: 'l-grid',
-            flex:1,
-            layout:'card',
+            height: 150,
+            //flex:1,
             collapsed: true,
             autoScroll: true,
             plugins: [
@@ -95,14 +94,13 @@
                                     url: '/area/api/area_communique/',
                                     layout: 'anchor',
                                     height: '100%',
-                                    id: 'alal',
                                     defaults: {
                                         anchor: '100%'
                                     },
                                     items: [{
                                         xtype: 'hiddenfield',
                                         name: 'object_id',
-                                        value: Ext.getCmp('portalWindow').lizard_context.object_id
+                                        value: Ext.getCmp('portalWindow').context_manager.getContext().object_id
                                     },{
                                         xtype: 'textareafield',
                                         //fieldLabel: 'First Name',
@@ -127,7 +125,9 @@
                                                     form.submit({
                                                         success: function(form, action) {
                                                             console.log('Opslaan gelukt');
-                                                            Ext.getCmp('communique').applyParams(Ext.getCmp('portalWindow').lizard_context);
+                                                            Ext.getCmp('communique').applyParams({
+                                                                   object_id: Ext.getCmp('portalWindow').context_manager.getContext().object_id
+                                                            });
                                                             form.owner.up('window').close();
 
                                                         },
@@ -305,7 +305,7 @@
                 type: 'table',
                 columns:1
             },
-            height: 150,
+            height: 250,
             defaults:{
                 width:150,
                 xtype:'button',
@@ -320,7 +320,40 @@
                 }, {
                    text: 'Analyse interpretaties',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'analyse-interpretatie'}); }
-                }]
+                }, {
+                   text: 'Advies',
+                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'advies'}); }
+                }, {
+                   text: 'Maatregelen',
+                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'maatregelen'}); }
+                }, {
+                   text: 'Toestand',
+                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'toestand-aan-afvoergebied'}); }
+                }, {
+                   text: 'Toevoegen analyse interpretatie',
+                   handler: function() {
+                       Ext.create('Ext.window.Window', {
+                            title: 'Analyse interpretatie',
+                            width: 800,
+                            height: '60%',
+                            analyseinterpretatiepopup: true,
+                            //autoScroll: true,
+                            loader:{
+                                loadMask: true,
+                                autoLoad: true,
+                                url: '/portal/configuration/',
+                                ajaxOptions: {
+                                    method: 'GET'
+                                },
+                                params: {
+                                    portalTemplate: 'analyse_interpretatie_form'
+                                },
+                                renderer: 'component'
+                            }
+                        }).show();
+                   }
+                }
+            ]
  		},{
 			title: 'Gerelateerde deelgebieden',
             flex:1,
