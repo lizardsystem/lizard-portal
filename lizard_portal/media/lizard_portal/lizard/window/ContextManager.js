@@ -31,10 +31,10 @@
         permission_description: 'viewer',
         permissions: []
       },
-      period_time: {
-        period_start: '2000-01-01T00:00',
-        period_end: '2002-01-01T00:00',
-        moment: '2001-01-01T00:00'
+      period_start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5),
+      period_end: new Date(),
+      period: {
+        selection: 5
       },
       base_url: 'portal/site/vss/'
     },
@@ -125,6 +125,9 @@
           object.object_name = params.object_name;
         }
       }
+      if (typeof params.period !== 'undefined') {
+        this.period = params.period;
+      }
       if (save_state) {
         context = this.getContext(null, true);
         return window.history.pushState(context, "" + params, "" + this.base_url + "#" + context.active_headertab.name + "/" + context.portalTemplate + "/" + context.object_type + "/" + context.object_id);
@@ -185,6 +188,9 @@
       output.object_id = object.object_id;
       output.object_name = object.object_name;
       output.portalTemplate = headertab.portalTemplate || headertab.default_portal_template;
+      output.period = this.getPeriod();
+      output.period_start = this.getPeriod_start();
+      output.period_end = this.getPeriod_end();
       return output;
     },
     constructor: function(config) {

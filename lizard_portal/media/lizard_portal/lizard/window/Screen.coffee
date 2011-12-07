@@ -187,4 +187,3 @@ Ext.define 'Lizard.window.Screen',
             @navigation.expand(false)
             @navigation.animCollapse =  anim_setting
             @showNavigationPortalTemplate(false)
-

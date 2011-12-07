@@ -185,12 +185,13 @@ Ext.application({
                 id: {{ user.id|default_if_none:"null" }},
                 name: '{{ user.get_full_name }}'
             },
-            period_time: {
-                period_start: '2000-01-01T00:00',
-                period_end: '2002-01-01T00:00',
-                moment: '2001-01-01T00:00'
+            period: {
+
+                selection: 6
             },
             base_url: '{% url portalpage %}',
+            period_start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5),
+            period_end: new Date(),
             headertabs: headertabs,
             portalTemplate: portalTemplate,
             object_type: object_type,

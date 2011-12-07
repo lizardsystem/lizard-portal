@@ -29,10 +29,11 @@ Ext.define 'Lizard.window.ContextManager',
             name: ''
             permission_description: 'viewer'
             permissions: []
-        period_time:
-            period_start: '2000-01-01T00:00'
-            period_end: '2002-01-01T00:00'
-            moment: '2001-01-01T00:00'
+
+        period_start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5)
+        period_end: new Date()
+        period:
+            selection: 5
 
         base_url: 'portal/site/vss/'
 
@@ -108,6 +109,11 @@ Ext.define 'Lizard.window.ContextManager',
                 console.log('new object name')
                 object.object_name = params.object_name
 
+
+        if typeof(params.period) != 'undefined'
+            @period = params.period
+
+
         #todo: user and period
 
         #todo: Events
@@ -178,6 +184,10 @@ Ext.define 'Lizard.window.ContextManager',
         output.object_name = object.object_name
 
         output.portalTemplate = headertab.portalTemplate || headertab.default_portal_template
+
+        output.period = @getPeriod()
+        output.period_start =  @getPeriod_start()
+        output.period_end =  @getPeriod_end()
 
         return output
 

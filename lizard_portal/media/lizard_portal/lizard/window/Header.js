@@ -59,8 +59,11 @@
       context = this.context_manager.getContext();
       html = '';
       if (context.object_name) {
-        html += context.object_name + ' (' + context.object_id + ')';
+        html += context.object_name + ' (' + context.object_id + ')<br>';
+      } else if (context.object_id) {
+        html += ' (' + context.object_id + ')<br>';
       }
+      html += Ext.Date.format(context.period_start, 'd-m-Y') + ' t/m ' + Ext.Date.format(context.period_end, 'd-m-Y');
       return this.contextheader.body.dom.innerHTML = html;
     },
     logout: function() {
@@ -97,7 +100,7 @@
               inputType: 'password'
             }, {
               xtype: 'displayfield',
-              value: 'Wachtwoord <a href="' + url.auth_password_reset + '" target="_blank">vergeten</a> of <a href="' + url.auth_password_reset + '" target="_blank">wijzigen</a>?'
+              value: 'Wachtwoord <a href="' + url.auth_password_reset + '" target="_blank">vergeten</a>?'
             }
           ],
           buttons: [
@@ -157,49 +160,70 @@
           items: [
             {
               xtype: 'radiogroup',
+              name: 'period_selection',
+              id: 'ps',
               fieldLabel: 'Periode',
               columns: 3,
               vertical: false,
               items: [
                 {
                   boxLabel: 'dg',
-                  name: 'rb',
-                  inputValue: '1'
+                  name: 'period',
+                  inputValue: 0,
+                  dt: [Ext.Date.DAY, -1]
                 }, {
                   boxLabel: '2dg',
-                  name: 'rb',
-                  inputValue: '2',
-                  checked: true
+                  name: 'period',
+                  inputValue: 1,
+                  dt: [Ext.Date.DAY, -2]
                 }, {
                   boxLabel: 'wk',
-                  name: 'rb',
-                  inputValue: '3'
+                  name: 'period',
+                  inputValue: 2,
+                  dt: [Ext.Date.WEEK, -1]
                 }, {
                   boxLabel: 'mnd',
-                  name: 'rb',
-                  inputValue: '4'
+                  name: 'period',
+                  inputValue: 3,
+                  dt: [Ext.Date.MONTH, -1]
                 }, {
                   boxLabel: 'jr',
-                  name: 'rb',
-                  inputValue: '5'
+                  name: 'period',
+                  inputValue: 4,
+                  dt: [Ext.Date.YEAR, -1]
                 }, {
                   boxLabel: '5jr',
-                  name: 'rb',
-                  inputValue: '6'
+                  name: 'period',
+                  inputValue: 5,
+                  dt: [Ext.Date.YEAR, -5]
                 }, {
                   boxLabel: 'anders',
-                  name: 'rb',
-                  inputValue: '7'
+                  name: 'period',
+                  inputValue: 6,
+                  checked: true
                 }
-              ]
+              ],
+              listeners: {
+                change: function(field, new_value, old_value, optional) {
+                  var form, selected;
+                  selected = field.getChecked()[0];
+                  form = field.up(form).getForm();
+                  if (new_value !== 6) {
+                    form.findField('period_start').setValue(Ext.Date.add(new Date(), selected.dt[0], selected.dt[1]));
+                    return form.findField('period_end').setValue(new Date());
+                  }
+                }
+              }
             }, {
               xtype: 'datefield',
               fieldLabel: 'van',
-              name: 'start_period'
+              name: 'period_start',
+              format: 'd-m-Y'
             }, {
               xtype: 'datefield',
               fieldLabel: 't/m',
-              name: 'end_period'
+              name: 'period_end',
+              format: 'd-m-Y'
             }
           ],
           buttons: [
@@ -207,10 +231,22 @@
               text: 'Ok',
               formBind: true,
               handler: function() {
-                var form, window;
+                var form, values, window;
                 form = this.up('form').getForm();
-                window = this.up('window');
-                return window.close();
+                console.log('form:');
+                if (form.isValid()) {
+                  values = form.getValues();
+                  console.log(values);
+                  Ext.getCmp('portalWindow').context_manager.setContext({
+                    period_start: values.period_start,
+                    period_end: values.period_end,
+                    period: {
+                      selection: values.period
+                    }
+                  });
+                  window = this.up('window');
+                  return window.close();
+                }
               }
             }, {
               text: 'Cancel',
@@ -220,7 +256,18 @@
                 return window.close();
               }
             }
-          ]
+          ],
+          afterRender: function() {
+            var context, form, ps;
+            form = this.getForm();
+            ps = form.findField('period_selection');
+            context = Ext.getCmp('portalWindow').context_manager.getContext();
+            form.findField('period_start').setValue(context.period_start);
+            form.findField('period_end').setValue(context.period_end);
+            return ps.setValue({
+              period: context.period.selection
+            });
+          }
         }
       }).show();
     },
@@ -356,7 +403,7 @@
               'font-size': '9px',
               color: '#555'
             },
-            html: 'watersysteem<br>polderX'
+            html: ''
           }, {
             x: 0,
             y: 0,
