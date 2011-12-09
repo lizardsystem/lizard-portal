@@ -72,8 +72,11 @@ Ext.define('Lizard.window.Header', {
         html = ''
 
         if context.object_name
-            html += context.object_name + ' (' + context.object_id +  ')'
+            html += context.object_name + ' (' + context.object_id +  ')<br>'
+        else if context.object_id
+            html += ' (' + context.object_id +  ')<br>'
 
+        html += Ext.Date.format(context.period_start, 'd-m-Y') + ' t/m ' + Ext.Date.format(context.period_end, 'd-m-Y')
         @contextheader.body.dom.innerHTML = html
 
 
@@ -115,7 +118,7 @@ Ext.define('Lizard.window.Header', {
                     }
                     {
                         xtype: 'displayfield',
-                        value: 'Wachtwoord <a href="' + url.auth_password_reset + '" target="_blank">vergeten</a> of <a href="' + url.auth_password_reset + '" target="_blank">wijzigen</a>?'
+                        value: 'Wachtwoord <a href="' + url.auth_password_reset + '" target="_blank">vergeten</a>?'#of <a href="' + url.auth_password_reset + '" target="_blank">wijzigen</a>
                     }
                 ]
 
@@ -169,28 +172,40 @@ Ext.define('Lizard.window.Header', {
                 items: [
                     {
                         xtype: 'radiogroup',
+                        name: 'period_selection',
+                        id: 'ps'
                         fieldLabel: 'Periode',
                         columns: 3,
                         vertical: false,
                         items: [
-                            { boxLabel: 'dg', name: 'rb', inputValue: '1' },
-                            { boxLabel: '2dg', name: 'rb', inputValue: '2', checked: true},
-                            { boxLabel: 'wk', name: 'rb', inputValue: '3' },
-                            { boxLabel: 'mnd', name: 'rb', inputValue: '4' },
-                            { boxLabel: 'jr', name: 'rb', inputValue: '5' },
-                            { boxLabel: '5jr', name: 'rb', inputValue: '6' },
-                            { boxLabel: 'anders', name: 'rb', inputValue: '7' }
+                            { boxLabel: 'dg', name: 'period', inputValue: 0, dt: [Ext.Date.DAY,-1]},
+                            { boxLabel: '2dg', name: 'period', inputValue: 1, dt: [Ext.Date.DAY,-2] },
+                            { boxLabel: 'wk', name: 'period', inputValue: 2, dt: [Ext.Date.WEEK,-1] },
+                            { boxLabel: 'mnd', name: 'period', inputValue: 3, dt: [Ext.Date.MONTH,-1] },
+                            { boxLabel: 'jr', name: 'period', inputValue: 4, dt: [Ext.Date.YEAR,-1] },
+                            { boxLabel: '5jr', name: 'period', inputValue: 5, dt: [Ext.Date.YEAR,-5] },
+                            { boxLabel: 'anders', name: 'period', inputValue: 6, checked: true }
                         ]
+                        listeners:
+                            change: (field, new_value, old_value, optional) ->
+                                selected = field.getChecked()[0]
+                                form = field.up(form).getForm()
+                                if new_value != 6
+                                    form.findField('period_start').setValue(Ext.Date.add(new Date(), selected.dt[0], selected.dt[1]))
+                                    form.findField('period_end').setValue(new Date())
+
                     }
                     {
                         xtype: 'datefield',
                         fieldLabel: 'van'
-                        name: 'start_period'
+                        name: 'period_start'
+                        format: 'd-m-Y',
                     }
                     {
                         xtype: 'datefield',
                         fieldLabel: 't/m'
-                        name: 'end_period'
+                        name: 'period_end'
+                        format: 'd-m-Y',
                     }
                 ]
 
@@ -200,8 +215,19 @@ Ext.define('Lizard.window.Header', {
                     handler: () ->
                         form = @up('form').getForm()
                         #todo
-                        window = @up('window')
-                        window.close()
+                        console.log('form:')
+                        if form.isValid()
+                            values = form.getValues()
+                            console.log(values)
+                            Ext.getCmp('portalWindow').context_manager.setContext({
+                                period_start: values.period_start
+                                period_end: values.period_end
+                                period: {
+                                    selection: values.period
+                                }
+                            })
+                            window = @up('window')
+                            window.close()
 
                 },{
                     text: 'Cancel'
@@ -209,6 +235,13 @@ Ext.define('Lizard.window.Header', {
                         window = @up('window')
                         window.close()
                 }]
+                afterRender: () ->
+                     form = @getForm()
+                     ps = form.findField('period_selection')
+                     context = Ext.getCmp('portalWindow').context_manager.getContext()
+                     form.findField('period_start').setValue(context.period_start)
+                     form.findField('period_end').setValue(context.period_end)
+                     ps.setValue({period:context.period.selection})
         }).show()
 
 
@@ -338,7 +371,7 @@ Ext.define('Lizard.window.Header', {
                         'text-align':'right'
                         'font-size': '9px'
                         color: '#555'
-                    html:'watersysteem<br>polderX'
+                    html:''
                 }
 
                 {
