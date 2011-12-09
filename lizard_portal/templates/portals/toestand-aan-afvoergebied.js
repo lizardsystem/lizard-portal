@@ -1,124 +1,35 @@
+{% load get_portal_template %}
 {
     itemId: 'toestand-aan-afvoergebied',
     title: 'Toestand',
     breadcrumbs: [
         {
             name: 'watersysteemkaart'
-
         },
         {
             name: 'Toestand'
-
         }
     ],
 	xtype: 'portalpanel',
 	items: [{
-		width: 300,
-		items: [{
-			title: 'Gebiedsinformatie',
-            flex:1,
-            plugins: [
-                'applycontext'
-            ],
-            autoScroll: true,
-            loader: {
-                ajaxOptions: {
-                    method: 'GET'
-                },
-                loadMask: true,
-                url: '/portal/configuration/',
-                autoLoad: false,
-                 baseParams: {
-                     _accept: 'text/html',
-                     portalTemplate: 'eigenschappen'
-                 }
-            },
-            applyParams: function(params) {
-                 var me = this;
-                 me.getLoader().load({
-                     url: '/portal/configuration/',
-                     params: {
-                         object_id: params.object_id
-                     }
-                 });
-            }
-
-		},{
-			title: 'Communique',
-            bodyCls: 'l-grid',
-            flex:1,
-            layout:'card',
-            collapsed: true,
-            autoScroll: true,
-            plugins: [
-                'applycontext'
-            ],
-            loader: {
-                ajaxOptions: {
-                    method: 'GET'
-                },
-                loadMask: true,
-                url: '/portal/configuration/',
-                autoLoad: false,
-                baseParams: {
-                    _accept: 'text/html',
-                    portalTemplate: 'communique'
-                }
-            },
-            applyParams: function(params) {
-                var me = this;
-                me.getLoader().load({
-                    url: '/portal/configuration/',
-                    params: {
-                        object_id: params.object_id
-                    }
-                });
-
-            }
-        },
+    	width: 200,
+		items: [
+            {% get_portal_template gebiedseigenschappen %},
+            {% get_portal_template communique %},
         {
             title: 'ESF-scores',
             html: 'esf scores (GS300)',
             flex:1
         }]
-
     },{
 		flex: 1,
 		items: [{
 			title: 'Grafieken',
             flex: 1,
             xtype: 'multigraph',
-            graph_service_url: '/map/adapter/adapter_fewsnorm/image/',
-            adapter_layer_json: {module_id:null,parameter_id:"ALMR110","fews_norm_source_slug":""},
-            graphs: [{
-                title: 'Stuurparameter 1',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
-            },{
-                title: 'Stuurparameter 2',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
-            },{
-                title: 'Stuurparameter 3',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
-            }, {
-                title: 'Maatregelen',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
-            }]
+            graph_service_url: '/graph/',
+            context_manager: Ext.getCmp('portalWindow').context_manager,
+            graphs: {% get_portal_template graphs-krw-overzicht %}
 		}]
 
     },
@@ -160,19 +71,6 @@
                 xtype:'button'
             },
             items:[
-                {% if area.parent %}
-                {
-                    text: '{{area.parent.name}}',
-                    handler: function() { Ext.getCmp('portalWindow').linkTo({area:"{{ area.parent.ident }}" }); }
-                },
-                {% endif %}
-
-                {% for a in area.get_children %}
-                {
-                    text: '{{a.name}}',
-                    handler: function() { Ext.getCmp('portalWindow').linkTo({area:"{{ a.ident }}" }); }
-                },
-                {% endfor %}
             ]
 		}]
     }]

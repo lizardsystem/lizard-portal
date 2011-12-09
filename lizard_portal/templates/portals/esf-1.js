@@ -1,3 +1,5 @@
+{% load get_portal_template %}
+
 {
     itemId: 'esf-1',
     title: 'ESF details',
@@ -8,11 +10,7 @@
             link: 'homepage'
         },
         {
-            name: 'ESF overzicht',
-            link: 'esf-overzicht'
-        },
-        {
-            name: 'ESF 1: Belasting'
+            name: 'ESF details'
         }
     ],
 	items: [{
@@ -23,40 +21,23 @@
             closable: false,
             items: {
                 flex: 1,
-                xtype: 'esf_grid'
+                xtype: 'esf_grid',
+            {% if perms.is_analyst %}
+                editable:true
+            {% else %}
+                editable:false
+            {% endif %}
             }
         }]
 	},{
         flex:1,
         items: {
             title: 'Grafieken',
-            id: 'bbbb',
             flex: 1,
             xtype: 'multigraph',
-            graph_service_url: '/map/adapter/adapter_fewsnorm/image/',
-            adapter_layer_json: {module_id:null,parameter_id:"ALMR110","fews_norm_source_slug":""},
-            graphs: [{
-                title: 'Belasting',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
-            }, {
-                title: 'Verblijftijd',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
-            }, {
-                title: 'P/N ratio',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
-            }]
+            graph_service_url: '/graph/',
+            context_manager: Ext.getCmp('portalWindow').context_manager,
+            graphs: {% get_portal_template graphs-esf %}
         }
 	}]
 }

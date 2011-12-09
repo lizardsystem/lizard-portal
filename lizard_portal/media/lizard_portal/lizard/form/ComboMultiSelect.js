@@ -20,10 +20,6 @@
         value = '';
       }
       me.store.removeAll();
-      me.store.add({
-        id: 33,
-        name: 'todo'
-      });
       return this;
     },
     getValue: function() {

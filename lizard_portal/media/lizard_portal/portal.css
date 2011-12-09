@@ -125,6 +125,14 @@
     background-image: url('images/hand.png');
 }
 
+.x-grid-checkheader-unhand {
+    background-image: url('images/unchecked.png');
+}
+
+.x-grid-checkheader-setting {
+    background-image: url('images/settings.png');
+}
+
 .x-grid-checkheader-null{
     background-image: url('images/null.png');
 }

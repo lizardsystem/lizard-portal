@@ -5,7 +5,6 @@
     layout: 'anchor',
     autoScroll: true,
     height: '100%',
-    url: '/annotation/api/annotation/',
     defaults: {
         anchor: '95%',
         margin: '10px'
@@ -14,7 +13,8 @@
         {
             fieldLabel: 'Titel',
             name: 'title',
-            xtype: 'textfield'
+            xtype: 'textfield',
+            allowBlank: false
         },
         {
             fieldLabel: 'Categorie',
@@ -22,14 +22,16 @@
             store: ['waterkwaliteit', 'ecologie', 'kwantiteit', 'grondwater', 'algemeen'],
             xtype: 'combo',
             multiSelect: true,
-            forceSelection: true
+            forceSelection: true,
+            allowBlank: false
         },
         {
             fieldLabel: 'Status',
             name: 'status',
             store: ['in bewerking', 'concept', 'definitief'],
             xtype: 'combo',
-            forceSelection: true
+            forceSelection: true,
+            allowBlank: false
         },
         {
             xtype: 'fieldcontainer',
@@ -79,12 +81,12 @@
         {
             name: 'created_by',
             xtype: 'hiddenfield',
-            value: 'bastiaan'
+            value: Ext.getCmp('portalWindow').context_manager.getContext().user.name
         },
         {
             xtype:'fieldset',
             checkboxToggle:true,
-            title: 'Link naar aan/afvoergeboed',
+            title: 'Link naar aan/afvoergebied en/of KRW-waterlichaam',
             collapsed: false,
             layout: 'anchor',
             defaults: {
@@ -104,7 +106,27 @@
                     ],
                     proxy: {
                         type: 'ajax',
-                        url: '/area/api/catchment-areas/?node=root&_accept=application%2Fjson',
+                        url: '/area/api/catchment-areas/?node=root&_accept=application%2Fjson&id=id',
+                        reader: {
+                            type: 'json',
+                            root: 'areas'
+                        }
+                    }
+                }
+            }, {
+                xtype: 'combomultiselect',
+                fieldLabel: 'KRW waterlichamen',
+                name: 'krw_waterlichaam',
+                field_name: 'KRW waterlichamen',
+                read_at_once: false,
+                combo_store: {
+                    fields: [
+                        {name: 'id', mapping: 'id' },
+                        {name: 'name', mapping: 'name' }
+                    ],
+                    proxy: {
+                        type: 'ajax',
+                        url: '/area/api/krw-areas/?node=root&_accept=application%2Fjson&id=id',
                         reader: {
                             type: 'json',
                             root: 'areas'
@@ -112,6 +134,26 @@
                     }
                 }
             }]
+
+        },
+        {
+            xtype: 'fieldcontainer',
+            layout: 'hbox',
+            defaults: {
+                flex: 1
+            },
+            items: [
+                {
+                    fieldLabel: 'x',
+                    name: 'x',
+                    xtype: 'numberfield'
+                },
+                {
+                    fieldLabel: 'y',
+                    name: 'y',
+                    xtype: 'numberfield'
+                }
+            ]
         }
 /*
         {
@@ -177,16 +219,7 @@
                 }
             }]
         },
-        {
-            fieldLabel: 'x',
-            name: 'x',
-            xtype: 'numberfield'
-        },
-        {
-            fieldLabel: 'y',
-            name: 'y',
-            xtype: 'numberfield'
-        },
+
         {
             fieldLabel: 'kunstwerken (nog geen koppeling)',
             name: 'kunstwerken',
@@ -208,13 +241,6 @@
             xtype: 'textfield'
         }*/
     ],
-    listeners: {
-        beforeaction: function(form, actions, opt ) {
-
-
-        }
-
-    },
     buttons: [
     {
         text: 'Annuleren',
@@ -235,15 +261,60 @@
             var form = this.up('form').getForm();
             var form_window = this.up('window')
             if (form.isValid()) {
-                form.submit({
-                    success: function(form, action) {
-                       Ext.Msg.alert('Success', 'opslaan gelukt');
-                       //form_window.close();
+                /* todo: de waarden zelf gaan rangschikken en verzenden */
+                var values = form.getValues()
+                console.log(values);
+
+                var ref_objecs = {}
+                var gebieden = Ext.JSON.decode(values.aan_afvoergebied)
+
+                for (var nr in gebieden) {
+                   ref_objecs[nr] = {
+                        reference_id: ""+gebieden[nr].id,
+                        reference_model: 'lizard_area.models.Area'
+
+                    }
+                }
+
+                var gebieden = Ext.JSON.decode(values.krw_waterlichaam)
+
+                for (var nr in gebieden) {
+
+                    ref_objecs[nr] = {
+                         reference_id: ""+gebieden[nr].id,
+                         reference_model: 'lizard_area.models.Area'
+
+                     }
+                }
+
+                var post = {
+                    annotation_type: "analyse_interpretatie",
+                    status: values.status,
+                    category: values.category,
+                    created_by: values.created_by,
+                    date_period_end: values.date_period_end,
+                    date_period_start: values.date_period_start,
+                    description: values.description,
+                    time_period_end: values.time_period_end,
+                    time_period_start: values.time_period_start,
+                    title: values.title,
+                    reference_objects: Ext.JSON.encode(ref_objecs),
+                    _method: 'post'
+
+                }
+
+
+                 Ext.Ajax.request({
+                    url: '/annotation/api/annotation/',
+                    params: post,
+                    method: 'POST',
+                    success: function(xhr) {
                     },
-                    failure: function(form, action) {
-                        Ext.Msg.alert('Failed', 'opslaan mislukt');
+                    failure: function(xhr) {
+                        Ext.Msg.alert("portal creation failed", "Server communication failure");
                     }
                 });
+
             }
         }
     }]

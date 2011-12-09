@@ -19,7 +19,7 @@ Ext.define('Lizard.form.ComboMultiSelect', {
         if (value == null || value == undefined)
             value = ''
         me.store.removeAll()
-        me.store.add({id:33, name:'todo'})
+        #me.store.add({id:33, name:'todo'})
 
         return @
 

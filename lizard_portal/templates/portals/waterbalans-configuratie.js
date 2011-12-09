@@ -1,5 +1,7 @@
 {% load get_grid %}
+{% load get_portal_template %}
 
+{% if perms.is_analyst%}
 
 {
     itemId: 'waterbalans-configuratie',
@@ -280,3 +282,6 @@
 		}]
 	}]
 }
+{% else %}
+    {% get_portal_template geen_toegang %}
+{% endif %}

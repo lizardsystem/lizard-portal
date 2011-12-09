@@ -364,7 +364,9 @@ Ext.define('GeoExt.panel.Map', {
 
 		// record location and zoom level
 		var center = me.map.getCenter();
-		state = {
+        console.log('center:')
+        console.log(center)        
+        state = {
 			x : center.lon,
 			y : center.lat,
 			zoom : me.map.getZoom()

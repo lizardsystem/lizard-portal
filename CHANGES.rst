@@ -5,7 +5,15 @@ Changelog of lizard-portal
 0.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- a lot of other things, see dif
+
+- first draft version of analyse window
+
+- homepage link under logo
+
+Bugfixes:
+- Other method for portal loading, which is also supported by other browsers
+- Period Picker
 
 
 0.3 (2011-12-07)

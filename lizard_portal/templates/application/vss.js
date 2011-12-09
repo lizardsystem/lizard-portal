@@ -69,8 +69,21 @@ Ext.application({
     launch: function() {
         //TODO: for the time being on this location, a better location is the template of the watersystem portal
 
+        Ext.require(["Ext.util.Cookies", "Ext.Ajax"], function(){
+            // Add csrf token to every ajax request
+            var token = Ext.util.Cookies.get('csrftoken');
+            if(!token){
+                Ext.Error.raise("Missing csrftoken cookie");
+            } else {
+                Ext.Ajax.defaultHeaders = Ext.apply(Ext.Ajax.defaultHeaders || {}, {
+                    'X-CSRFToken': token
+                });
+            }
+        });
+
         {% get_portal_template watersysteem_layers %}
 
+        {% get_portal_template workspace_layers %}
 
         var headertabs = [
             Ext.create('Lizard.window.HeaderTab', {
@@ -154,13 +167,16 @@ Ext.application({
                 name: 'rapportage',
                 default_portal_template: 'rapportage',
                 navigation_portal_template: 'rapportage'
-            }),
+            })
+            {% if perms.is_analyst %}
+            ,
             Ext.create('Lizard.window.HeaderTab',{
                 title: 'Beheer',
                 name: 'beheer',
                 default_portal_template: 'beheer',
                 navigation_portal_template: 'beheer'
             })
+            {% endif %}
 
         ];
 
@@ -183,10 +199,11 @@ Ext.application({
         var context_manager = Ext.create('Lizard.window.ContextManager', {
             user: {
                 id: {{ user.id|default_if_none:"null" }},
-                name: '{{ user.get_full_name }}'
+                name: '{{ user.get_full_name }}',
+                permission: [{% if perms.is_analyst %}'analyst',{% endif %}
+{% if perms.is_veldmedewerker %}'veldmedewerker',{% endif %}{% if perms.is_beleidmaker %}'beleidmakker',{% endif %}'']
             },
             period: {
-
                 selection: 6
             },
             base_url: '{% url portalpage %}',

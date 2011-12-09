@@ -1,5 +1,6 @@
 (function() {
   Ext.define('Lizard.window.ContextManager', {
+    extend: 'Ext.util.Observable',
     config: {
       objects: {
         krw_waterlichaam: {
@@ -28,8 +29,7 @@
       user: {
         id: '',
         name: '',
-        permission_description: 'viewer',
-        permissions: []
+        usergroups: ''
       },
       period_start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5),
       period_end: new Date(),
@@ -67,7 +67,7 @@
       return tab;
     },
     setContext: function(params, save_state, headertab) {
-      var context, headertab_change, object, object_change, object_type_change, tab, template_change;
+      var context, headertab_change, object, object_change, object_type_change, period_change, tab, template_change;
       if (save_state == null) {
         save_state = true;
       }
@@ -76,6 +76,11 @@
       }
       console.log('new context params are:');
       console.log(params);
+      headertab_change = false;
+      template_change = false;
+      object_type_change = false;
+      object_change = false;
+      period_change = false;
       if (typeof params.headerTab !== 'undefined') {
         if (headertab.name !== params.headerTab) {
           tab = Ext.getCmp('headertab_' + params.headerTab);
@@ -85,7 +90,6 @@
             this.setActiveHeadertab(params.headerTab);
           }
           headertab_change = true;
-          console.log('new headertab');
           headertab = this.active_headertab;
         }
       }
@@ -93,7 +97,6 @@
         if (headertab.portalTemplate !== params.portalTemplate) {
           headertab.portalTemplate = params.portalTemplate;
           template_change = true;
-          console.log('new portal template');
         }
       }
       if (typeof params.object_type !== 'undefined') {
@@ -106,7 +109,6 @@
           this.last_selected_object = this.objects[params.object_type];
           object_type_change = true;
           object = this.last_selected_object;
-          console.log('new object type');
         }
       }
       ({
@@ -114,19 +116,45 @@
       });
       if (typeof params.object_id !== 'undefined') {
         if (object.object_id !== params.object_id) {
-          console.log('new object id');
           object.object_id = params.object_id;
           object_change = true;
         }
       }
       if (typeof params.object_name !== 'undefined') {
         if (object.object_name !== params.object_name) {
-          console.log('new object name');
           object.object_name = params.object_name;
         }
       }
       if (typeof params.period !== 'undefined') {
         this.period = params.period;
+      }
+      if (typeof params.period_start !== 'undefined') {
+        if (Ext.typeOf(params.period_start) !== 'date') {
+          params.period_start = Ext.Date.parse(params.period_start, 'd-m-Y');
+        }
+        if (this.period_start !== params.period_start) {
+          this.period_start = params.period_start;
+          period_change = true;
+        }
+      }
+      if (typeof params.period_end !== 'undefined') {
+        if (Ext.typeOf(params.period_end) !== 'date') {
+          params.period_end = Ext.Date.parse(params.period_end, 'd-m-Y');
+        }
+        if (this.period_end !== params.period_end) {
+          this.period_end = params.period_end;
+          period_change = true;
+        }
+      }
+      if (headertab_change || template_change || object_type_change || object_change || period_change) {
+        console.log('contextchange');
+        this.fireEvent('contextchange', {
+          headertab: headertab_change,
+          template: template_change,
+          object_type: object_type_change,
+          object: object_change,
+          period: period_change
+        }, this.getContext(), this);
       }
       if (save_state) {
         context = this.getContext(null, true);
@@ -191,6 +219,7 @@
       output.period = this.getPeriod();
       output.period_start = this.getPeriod_start();
       output.period_end = this.getPeriod_end();
+      output.user = this.getUser();
       return output;
     },
     constructor: function(config) {
@@ -200,6 +229,7 @@
     initComponent: function() {
       var me;
       me = this;
+      this.addEvents(['contextchange']);
       Ext.apply(this, {
         id: 'context_manager'
       });

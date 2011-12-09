@@ -403,15 +403,23 @@ Ext.define('Lizard.window.Header', {
                     bodyStyle:
                         background: 'transparent'
                     id: 'logo'
-                    html:'<img src="' + me.getLogo_url() + '"></img>'
+                    html:'<a href="/"><img src="' + me.getLogo_url() + '"></img></a>'
                 }
 
             ]
+
+        @portalWindow.context_manager.on('contextchange', (change, context, context_m) ->
+            me.updateContextHeader()
+        )
 
         @callParent(arguments)
 
         @breadcrumb = Ext.getCmp('breadcrumb')
         @contextheader = Ext.getCmp('contextheader')
+
+
+        if @portalWindow.context_manager.getContext().user.id == null
+            @login()
 
         return @
 

@@ -1,5 +1,5 @@
 Ext.define 'Lizard.window.ContextManager',
-    #extend:'Ext.data.Store'
+    extend: 'Ext.util.Observable'
 
     config:
         objects: 
@@ -27,8 +27,7 @@ Ext.define 'Lizard.window.ContextManager',
         user:
             id: ''
             name: ''
-            permission_description: 'viewer'
-            permissions: []
+            usergroups: ''
 
         period_start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5)
         period_end: new Date()
@@ -68,6 +67,12 @@ Ext.define 'Lizard.window.ContextManager',
         console.log('new context params are:')
         console.log(params)
 
+        headertab_change = false
+        template_change = false
+        object_type_change = false
+        object_change = false
+        period_change = false
+
         if typeof(params.headerTab) != 'undefined'
             if headertab.name != params.headerTab
                 tab = Ext.getCmp('headertab_' + params.headerTab)
@@ -76,14 +81,12 @@ Ext.define 'Lizard.window.ContextManager',
                 else
                     @setActiveHeadertab(params.headerTab)
                 headertab_change = true
-                console.log('new headertab')
                 headertab=@active_headertab
 
         if typeof(params.portalTemplate) != 'undefined'
             if headertab.portalTemplate != params.portalTemplate
                 headertab.portalTemplate = params.portalTemplate
                 template_change = true
-                console.log('new portal template')
 
         if typeof(params.object_type) != 'undefined'
             if @last_selected_object.object_type != params.object_type
@@ -93,30 +96,49 @@ Ext.define 'Lizard.window.ContextManager',
                 @last_selected_object = @objects[params.object_type]
                 object_type_change = true
                 object = @last_selected_object
-                console.log('new object type')
         else:
              object = @last_selected_object
 
 
         if typeof(params.object_id) != 'undefined'
             if object.object_id != params.object_id
-                console.log('new object id')
                 object.object_id = params.object_id
                 object_change = true
 
         if typeof(params.object_name) != 'undefined'
             if object.object_name != params.object_name
-                console.log('new object name')
                 object.object_name = params.object_name
 
 
         if typeof(params.period) != 'undefined'
             @period = params.period
 
+        if typeof(params.period_start) != 'undefined'
+            if Ext.typeOf(params.period_start) != 'date'
+                params.period_start = Ext.Date.parse(params.period_start, 'd-m-Y')
+            if @period_start != params.period_start
+                @period_start = params.period_start
+                period_change = true
 
-        #todo: user and period
+        if typeof(params.period_end) != 'undefined'
+            if Ext.typeOf(params.period_end) != 'date'
+                params.period_end = Ext.Date.parse(params.period_end, 'd-m-Y')
+            if @period_end != params.period_end
+                @period_end = params.period_end
+                period_change = true
 
-        #todo: Events
+        if headertab_change || template_change || object_type_change || object_change || period_change
+            console.log('contextchange')
+            @fireEvent('contextchange', {
+                    headertab: headertab_change,
+                    template: template_change,
+                    object_type: object_type_change,
+                    object: object_change,
+                    period: period_change
+                }
+                @getContext()
+                @
+            )
 
         if save_state
             #try
@@ -189,6 +211,8 @@ Ext.define 'Lizard.window.ContextManager',
         output.period_start =  @getPeriod_start()
         output.period_end =  @getPeriod_end()
 
+        output.user =  @getUser()
+
         return output
 
         #todo: user and period
@@ -203,6 +227,8 @@ Ext.define 'Lizard.window.ContextManager',
 
     initComponent: () ->
         me = @
+
+        @addEvents(['contextchange'])
 
         Ext.apply @,
             id: 'context_manager'

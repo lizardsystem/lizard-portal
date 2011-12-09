@@ -64,7 +64,7 @@ Ext.define('Lizard.ux.CheckColumnTree', {
             cls.push(cssPrefix + 'grid-checkheader-hand');
         } else if (value==0) {
             cls.push(cssPrefix + 'grid-checkheader-unchecked');
-        } else if (value==-1){
+        } else {
             cls.push(cssPrefix + 'grid-checkheader-null');
         }
 
