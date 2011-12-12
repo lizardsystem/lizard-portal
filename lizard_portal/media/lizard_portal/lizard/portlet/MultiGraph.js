@@ -56,11 +56,12 @@
       for (_i = 0, _len = graph_configs.length; _i < _len; _i++) {
         graph_config = graph_configs[_i];
         graph = Ext.create('Lizard.ux.ImageResize', Ext.merge({
-          dt_start: Ext.Date.format(context.period_start, 'Y-m-d H:i:s'),
-          dt_end: Ext.Date.format(context.period_end, 'Y-m-d H:i:s'),
-          location: context.object_id
+          params: {
+            dt_start: Ext.Date.format(context.period_start, 'Y-m-d H:i:s'),
+            dt_end: Ext.Date.format(context.period_end, 'Y-m-d H:i:s'),
+            location: context.object_id
+          }
         }, getImageConfig(graph_config)));
-        graph.applyParams();
         this.items.push(graph);
         this.graphs.push(graph);
         _results.push(this.tbar.push({

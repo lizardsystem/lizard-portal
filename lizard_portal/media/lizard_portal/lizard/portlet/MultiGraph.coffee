@@ -47,12 +47,13 @@ Ext.define('Lizard.portlet.MultiGraph', {
                 
         for graph_config in graph_configs
             graph = Ext.create('Lizard.ux.ImageResize', Ext.merge({
-                dt_start: Ext.Date.format(context.period_start,'Y-m-d H:i:s'),
-                dt_end: Ext.Date.format(context.period_end,'Y-m-d H:i:s'),
-                location: context.object_id
+                params:
+                    dt_start: Ext.Date.format(context.period_start,'Y-m-d H:i:s'),
+                    dt_end: Ext.Date.format(context.period_end,'Y-m-d H:i:s'),
+                    location: context.object_id
             },getImageConfig(graph_config)))
 
-            graph.applyParams()
+            #graph.applyParams()
 
             @items.push(graph)
             @graphs.push(graph)
