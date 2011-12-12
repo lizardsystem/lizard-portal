@@ -167,17 +167,13 @@ Ext.application({
                 name: 'rapportage',
                 default_portal_template: 'rapportage',
                 navigation_portal_template: 'rapportage'
-            })
-            {% if perms.is_analyst %}
-            ,
+            }),
             Ext.create('Lizard.window.HeaderTab',{
                 title: 'Beheer',
                 name: 'beheer',
                 default_portal_template: 'beheer',
                 navigation_portal_template: 'beheer'
             })
-            {% endif %}
-
         ];
 
         var headerTab = 'watersysteem';

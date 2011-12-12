@@ -17,7 +17,7 @@
 		width:500,
 		items: [{
             flex:2,
-            title: 'Opbouw ESF 1',
+            title: "Opbouw ESF'en",
             closable: false,
             items: {
                 flex: 1,

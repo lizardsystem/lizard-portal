@@ -7,7 +7,6 @@ from django.template.loader import get_template
 
 from lizard_portal.models import PortalConfiguration
 
-
 def site(request, application_name, active_tab_name):
     """
         returns html page which loads specified (ext-js) application
@@ -23,6 +22,7 @@ def site(request, application_name, active_tab_name):
 
     return HttpResponse(t.render(c),
         mimetype='text/html')
+
 
 def application(request, application_name, active_tab_name):
     """
