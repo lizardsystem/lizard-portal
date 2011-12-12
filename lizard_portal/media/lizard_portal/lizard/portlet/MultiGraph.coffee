@@ -15,9 +15,10 @@ Ext.define('Lizard.portlet.MultiGraph', {
                 item.flex = 1
         else
             for item in items
-                delete item.flex;
+                delete item.flex
 
-        @doLayout();
+        @doLayout()
+
 
     updateGraphs: (changes, new_context, context_manager, me) ->
         console.log('update graphs')
@@ -78,7 +79,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
         me = @
         Ext.apply(@, {
             layout:
-                type: 'vbox',
+                type: 'vboxscroll'
                 align: 'stretch'
 
             defaults:

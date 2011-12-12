@@ -90,7 +90,7 @@
       me = this;
       Ext.apply(this, {
         layout: {
-          type: 'vbox',
+          type: 'vboxscroll',
           align: 'stretch'
         },
         defaults: {
