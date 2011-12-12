@@ -6,7 +6,8 @@
       headertabs: [],
       context_manager: {},
       logo_url: '/static_media/vss/stowa_logo.png',
-      portalWindow: null
+      portalWindow: null,
+      close_on_logout: false
     },
     setBreadCrumb: function(bread_crumbs) {
       var area_name, bread_div, context, crumb, el, element, me, portalWindow, _i, _len, _results;
@@ -67,9 +68,15 @@
       return this.contextheader.body.dom.innerHTML = html;
     },
     logout: function() {
+      var me;
+      me = this;
       return Ext.MessageBox.confirm('Loguit', 'Weet u zeker dat u uit wil loggen?', function(button) {
         if (button === 'yes') {
-          return location.replace('/user/logout_redirect/?url=' + location.href);
+          if (me.close_on_logout) {
+            return location.replace('/user/logout_redirect/?url=' + location.href);
+          } else {
+            return location.replace('/user/logout_redirect/?url=/closewindow/' + location.href);
+          }
         }
       });
     },
@@ -368,7 +375,7 @@
             }
           }
         }, '-', {
-          iconCls: 'settings',
+          iconCls: 'l-icon-clock',
           xtype: 'button',
           bodyCls: 'l-headertab',
           handler: function() {

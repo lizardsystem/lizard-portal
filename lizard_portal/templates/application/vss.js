@@ -197,7 +197,7 @@ Ext.application({
                 id: {{ user.id|default_if_none:"null" }},
                 name: '{{ user.get_full_name }}',
                 permission: [{% if perms.is_analyst %}'analyst',{% endif %}
-{% if perms.is_veldmedewerker %}'veldmedewerker',{% endif %}{% if perms.is_beleidmaker %}'beleidmakker',{% endif %}'']
+{% if perms.is_veldmedewerker %}'veldmedewerker',{% endif %}{% if perms.is_beleidmaker %}'beleidmaker',{% endif %}'']
             },
             period: {
                 selection: 6
@@ -222,7 +222,8 @@ Ext.application({
             header: {
                 headertabs: headertabs,
                 src_logo: 'vss/stowa_logo.png',
-                url_homepage: '/'
+                url_homepage: '/',
+                close_on_logout: true
             }
         });
     }
