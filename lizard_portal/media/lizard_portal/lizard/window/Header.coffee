@@ -32,6 +32,7 @@ Ext.define('Lizard.window.Header', {
         el = bread_div.last()
         el.addListener('click',
             () ->
+               me.context_manager.setContext({portalTemplate:null})
                portalWindow.showNavigationPortalTemplate()
         )
 

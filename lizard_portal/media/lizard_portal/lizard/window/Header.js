@@ -26,6 +26,9 @@
       bread_div.createChild(element);
       el = bread_div.last();
       el.addListener('click', function() {
+        me.context_manager.setContext({
+          portalTemplate: null
+        });
         return portalWindow.showNavigationPortalTemplate();
       });
       if (bread_crumbs) {
