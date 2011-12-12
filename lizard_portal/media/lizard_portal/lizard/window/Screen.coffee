@@ -42,10 +42,10 @@ Ext.define 'Lizard.window.Screen',
             #todo: change method in window.load()
             Ext.Ajax.request
                 url: '/portal/configuration/',
-                params: params
+                params: {portalTemplate: params.portalTemplate}
                 method: 'GET'
                 success: (xhr) =>
-                    newComponent = eval 'eval( ' + xhr.responseText + ')'
+                    newComponent = Ext.decode(xhr.responseText)
                     newComponent.params = Ext.merge({}, newComponent.params, me.context_manager.getContext())
                     console.log('params of new component are:')
                     console.log newComponent.params

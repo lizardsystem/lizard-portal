@@ -432,13 +432,19 @@
               background: 'transparent'
             },
             id: 'logo',
-            html: '<img src="' + me.getLogo_url() + '"></img>'
+            html: '<a href="/"><img src="' + me.getLogo_url() + '"></img></a>'
           }
         ]
+      });
+      this.portalWindow.context_manager.on('contextchange', function(change, context, context_m) {
+        return me.updateContextHeader();
       });
       this.callParent(arguments);
       this.breadcrumb = Ext.getCmp('breadcrumb');
       this.contextheader = Ext.getCmp('contextheader');
+      if (this.portalWindow.context_manager.getContext().user.id === null) {
+        this.login();
+      }
       return this;
     }
   });

@@ -53,11 +53,13 @@
         container.setLoading(true);
         return Ext.Ajax.request({
           url: '/portal/configuration/',
-          params: params,
+          params: {
+            portalTemplate: params.portalTemplate
+          },
           method: 'GET',
           success: __bind(function(xhr) {
             var newComponent;
-            newComponent = eval('eval( ' + xhr.responseText + ')');
+            newComponent = Ext.decode(xhr.responseText);
             newComponent.params = Ext.merge({}, newComponent.params, me.context_manager.getContext());
             console.log('params of new component are:');
             console.log(newComponent.params);

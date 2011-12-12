@@ -15,30 +15,36 @@ Ext, console
   itemId: 'analyse-interpretatie-details',
   title: 'Analyse interpretaties details',
   xtype: 'portalpanel',
+  breadcrumbs: [
+    {
+        name: 'watersysteemkaart',
+        link: 'homepage'
+    },
+    {
+        name: 'Overzicht analyse interpretaties',
+        link: 'analyse-interpretatie'
+    },
+    {
+        name: 'Analyse interpretaties details'
+    }
+  ],
   items: [{
     width: 250,
     items: [{
       title: 'Details',
-      flex:1,
+      height: 200,
       items: {
         id: 'grid-panel',
         xtype: 'grid',
+        hideHeaders: true,
         stripeRows: true,
         columnLines: true,
-        listeners: {
-          itemclick: {
-            fn: function(grid, record) {
-              console.log('Doing nothing.');
-            }
-          }      
-        },
         plugins: [
-          Ext.create('Ext.grid.plugin.CellEditing', {clicksToEdit: 2}),
           'applycontext'
         ],
         applyParams: function(params) {
           // Add the object_id to the url before the load
-          var url = this.store.getProxy().url;
+          var url = '/annotation/api/annotation/';
           url = url + params.object_id + '/';
           this.store.getProxy().url = url;
 
@@ -56,40 +62,20 @@ Ext, console
         columns: [
           {
             text: 'Eigenschap',
-            width:150,
+            width:100,
             sortable: true,
-            dataIndex: 'property',
-            field: {
-              allowBlank: false
-            }
+            dataIndex: 'property'
           },{
             text: 'Waarde',
             flex: 1,
             dataIndex: 'value',
             sortable: true
           }],
-          store: "Vss.store.AnnotationDetail",
-
-          bbar: [{
-            xtype: 'button',
-            text: 'cancel',
-            iconCls: 'cancel',
-            handler: function(menuItem, checked) {
-              Ext.data.StoreManager.lookup('analyse_store').rejectChanges();
-            }
-          },{
-            xtype: 'button',
-            text: 'Save',
-            iconCls: 'save',
-            handler: function(menuItem, checked) {
-              Ext.data.StoreManager.lookup('analyse_store').sync();
-            }
-          }
-          ]
+          store: "Vss.store.AnnotationDetail"  
       }
     }, {
-      height: 100,
-      title: 'Workspaces'
+      flex:1,
+      title: 'Referenties'
     }]
   }, {
     flex: 1,
@@ -98,7 +84,7 @@ Ext, console
       title: 'Omschrijving',
       flex: 1,
       padding: '10 5 10 5',
-      store: "Vss.store.AnnotationDetail",
+      store: "Vss.store.AnnotationDetail"
     }]
   }]
 }

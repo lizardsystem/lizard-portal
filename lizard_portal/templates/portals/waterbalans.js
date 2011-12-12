@@ -5,6 +5,7 @@
  * Time: 17:52
  * To change this template use File | Settings | File Templates.
  */
+{% load get_portal_template %}
 {
     itemId: 'waterbalans',
     title: 'Waterbalans',
@@ -33,14 +34,14 @@
                 handler: function(menuItem, checked) {
                     Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans-instellingen-overzicht'});
                 }
-            }, {
+            } {% if perms.is_analyst %},{
                 xtype: 'button',
                 text: 'Configureren',
                 iconCls: 'l-icon-setting',
                 handler: function(menuItem, checked) {
                     Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans-configuratie'});
                 }
-            }]
+            }{% endif%}]
 		}]
 	},{
 		flex: 1,
@@ -48,22 +49,42 @@
 			title: 'Grafieken',
             flex: 1,
             xtype: 'multigraph',
-            graph_service_url: '/map/adapter/adapter_fewsnorm/image/',
-            adapter_layer_json: {module_id:null,parameter_id:"ALMR110","fews_norm_source_slug":""},
+            graph_service_url: '/graph/',
+            context_manager: Ext.getCmp('portalWindow').context_manager,
             graphs: [{
                 title: 'Waterbalans met sluitfout',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
+                params: {
+                    item:[{
+                        parameter: "N.belasting.kritisch",
+                        //module: "ImportLE",
+                        location: "SAP",
+                        type: 'line',
+                        layout: {color: 'red'}
+                    },{
+                        parameter: "P.belasting.kritisch",
+                        //module: "ImportLE",
+                        location: "SAP",
+                        type: 'line',
+                        layout: {color: 'blue'}
+                    }]
+                }
             },{
                 title: 'Fracties en choride concentratie',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
+                params: {
+                    item:[{
+                        parameter: "N.belasting.kritisch",
+                        //module: "ImportLE",
+                        location: "SAP",
+                        type: 'line',
+                        layout: {color: 'red'}
+                    },{
+                        parameter: "P.belasting.kritisch",
+                        //module: "ImportLE",
+                        location: "SAP",
+                        type: 'line',
+                        layout: {color: 'blue'}
+                    }]
+                }
             },{
                 title: 'Waterstand met sluitfout',
                 timeseries:[{
@@ -73,18 +94,38 @@
                 }]
             }, {
                 title: 'Cumulatieve debieten',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
+                params: {
+                    item:[{
+                        parameter: "N.belasting.kritisch",
+                        //module: "ImportLE",
+                        location: "SAP",
+                        type: 'line',
+                        layout: {color: 'red'}
+                    },{
+                        parameter: "P.belasting.kritisch",
+                        //module: "ImportLE",
+                        location: "SAP",
+                        type: 'line',
+                        layout: {color: 'blue'}
+                    }]
+                }
             }, {
                 title: 'Fosfaatbelasting',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
+                params: {
+                    item:[{
+                        parameter: "N.belasting.kritisch",
+                        //module: "ImportLE",
+                        location: "SAP",
+                        type: 'line',
+                        layout: {color: 'red'}
+                    },{
+                        parameter: "P.belasting.kritisch",
+                        //module: "ImportLE",
+                        location: "SAP",
+                        type: 'line',
+                        layout: {color: 'blue'}
+                    }]
+                }
             }]
 		}]
 	}]

@@ -1,5 +1,7 @@
 {% load get_grid %}
+{% load get_portal_template %}
 
+{% if perms.is_analyst%}
 
 {
     itemId: 'waterbalans-configuratie',
@@ -200,8 +202,7 @@
                     //kwel
                     {title: 'Kwel/ wegzijging', columns: [
                         {name: 'kwelwegz_is_ts', title: 'Is tijdserie?', editable: true, visible: true, width: 65, type: 'boolean'},
-                        {name: 'kwelwegz', title: 'Waarde', editable: true, visible: true, width: 65, type: 'number', editIf: {prop: 'kwelwegz_is_ts', value_in: [true]}},
-                        {name: 'ts_kwelwegz', title: 'Tijdserie', editable: true, visible: true, width: 170, type: 'timeserie', editIf: {prop: 'kwelwegz_is_ts', value_in: [false]}}
+                        {name: 'ts_kwelwegz', title: 'Tijdserie', editable: true, visible: true, width: 170, type: 'timeserie', ts_parameter: 'KWEL', editIf: {prop: 'kwelwegz_is_ts', value_in: [false]}}
                     ]},
                 //als niet berekend
                     {title: 'Opgedrukt', columns: [
@@ -268,7 +269,7 @@
                     {name: 'deb_is_ts', title: 'Debiet is tijdserie?', editable: true, visible: true, width: 100, type: 'boolean'},
                     {name: 'deb_wint', title: 'Debiet winter', editable: true, visible: true, width: 75, type: 'number', editIf: {prop: 'deb_is_ts', value_in: [false]}},
                     {name: 'deb_zomer', title: 'Debiet zomer', editable: true, visible: true, width: 75, type: 'number', editIf: {prop: 'deb_is_ts', value_in: [false]}},
-                    {name: 'ts_debiet', title: 'Tijdserie debiet', editable: true, visible: true, width: 170, type: 'timeserie', editIf: {prop: 'deb_is_ts', value_in: [true]}},
+                    {name: 'ts_debiet', title: 'Tijdserie debiet', editable: true, visible: true, width: 170, type: 'timeserie', ts_parameter: 'Q.meting', editIf: {prop: 'deb_is_ts', value_in: [true]}},
                     //concentraties
                     {name: 'concentr_chloride', title: 'Cl', editable: true, visible: true, width: 75, type: 'number'},
                     {name: 'min_concentr_phosphate', title: 'Min P', editable: true, visible: true, width: 75, type: 'number'},
@@ -281,3 +282,6 @@
 		}]
 	}]
 }
+{% else %}
+    {% get_portal_template geen_toegang %}
+{% endif %}

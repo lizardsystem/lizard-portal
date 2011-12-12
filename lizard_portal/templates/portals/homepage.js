@@ -5,6 +5,8 @@
  * Time: 15:33
  * To change this template use File | Settings | File Templates.
  */
+{% load get_portal_template %}
+
 {
     itemId: 'homepage',
     title: 'Watersysteemkaart',
@@ -16,133 +18,10 @@
 	xtype: 'portalpanel',
 	items: [{
 		width: 300,
-		items: [{
-			title: 'Gebiedsinformatie',
-            flex:1,
-
-            plugins: [
-                'applycontext'
-            ],
-            autoScroll: true,
-            loader: {
-                ajaxOptions: {
-                    method: 'GET'
-                },
-                loadMask: true,
-                url: '/portal/configuration/',
-                autoLoad: false,
-                 baseParams: {
-                     _accept: 'text/html',
-                     portalTemplate: 'eigenschappen'
-                 }
-            },
-            //xtype: "image",
-            applyParams: function(params) {
-                 var me = this;
-                 me.getLoader().load({
-                     url: '/portal/configuration/',
-                     params: {
-                         object_id: params.object_id
-                     }
-                 });
-            }
-
-		},{
-			title: 'Communique',
-            bodyCls: 'l-grid',
-            height: 150,
-            //flex:1,
-            collapsed: true,
-            autoScroll: true,
-            plugins: [
-                'applycontext'
-            ],
-            loader: {
-                ajaxOptions: {
-                    method: 'GET'
-                },
-                loadMask: true,
-                url: '/portal/configuration/',
-                autoLoad: false,
-                baseParams: {
-                    _accept: 'text/html',
-                    portalTemplate: 'communique'
-                }
-            },
-            applyParams: function(params) {
-                var me = this;
-                me.getLoader().load({
-                    url: '/portal/configuration/',
-                    params: {
-                        object_id: params.object_id
-                    }
-                });
-
-            },
-            tools: [{
-                type: 'save',
-                handler: function(e, target, panelHeader, tool){
-                       var portlet = panelHeader.ownerCt;
-                        var a = portlet.html;
-
-                            var form_window = Ext.create('Ext.window.Window', {
-                                title: 'Bewerk communique',
-                                width: 400,
-                                height: 300,
-                                items: {
-                                    xtype: 'form',
-                                    url: '/area/api/area_communique/',
-                                    layout: 'anchor',
-                                    height: '100%',
-                                    defaults: {
-                                        anchor: '100%'
-                                    },
-                                    items: [{
-                                        xtype: 'hiddenfield',
-                                        name: 'object_id',
-                                        value: Ext.getCmp('portalWindow').context_manager.getContext().object_id
-                                    },{
-                                        xtype: 'textareafield',
-                                        //fieldLabel: 'First Name',
-                                        height: '100%',
-                                        name: 'communique',
-                                        value: portlet.html,
-                                        allowBlank: false
-                                    }],
-                                    buttons: [{
-                                            text: 'Reset',
-                                            handler: function(button, ev) {
-                                                console.log(arguments)
-                                                button.up('form').getForm().reset();
-                                            }
-                                        }, {
-                                            text: 'Submit',
-                                            formBind: true, //only enabled once the form is valid
-                                            //disabled: true,
-                                            handler: function() {
-                                                var form = this.up('form').getForm();
-                                                if (form.isValid()) {
-                                                    form.submit({
-                                                        success: function(form, action) {
-                                                            console.log('Opslaan gelukt');
-                                                            Ext.getCmp('communique').applyParams({
-                                                                   object_id: Ext.getCmp('portalWindow').context_manager.getContext().object_id
-                                                            });
-                                                            form.owner.up('window').close();
-
-                                                        },
-                                                        failure: function(form, action) {
-                                                            Ext.Msg.alert('Failed', 'Opslaan mislukt');
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        }]
-                                }
-                           }).show()
-                    }
-             }]
-		},{
+		items: [
+            {% get_portal_template gebiedseigenschappen %},
+            {% get_portal_template communique %},
+        {
             flex:2,
 			title: 'Kaartlagen',
             id: 'kaartlagen',
@@ -307,13 +186,16 @@
             },
             height: 250,
             defaults:{
-                width:150,
+                width:180,
                 xtype:'button',
-                margin: 2
+                margin: 3
             },
             items:[{
-                    text: 'Ecologische sleutelfactoren',
+                    text: 'Overzicht Ecologische sleutelfactoren',
                     handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'esf-overzicht'}); }
+                }, {
+                    text: 'Ecologische sleutelfactoren',
+                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'esf-1'}); }
                 }, {
                    text: 'Waterbalansen',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans'}); }
@@ -329,7 +211,9 @@
                 }, {
                    text: 'Toestand',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'toestand-aan-afvoergebied'}); }
-                }, {
+                }
+                {% if perms.is_analyst %}
+                , {
                    text: 'Toevoegen analyse interpretatie',
                    handler: function() {
                        Ext.create('Ext.window.Window', {
@@ -353,6 +237,7 @@
                         }).show();
                    }
                 }
+                {% endif %}
             ]
  		},{
 			title: 'Gerelateerde deelgebieden',

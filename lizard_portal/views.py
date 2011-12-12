@@ -6,7 +6,6 @@ from django.template import Template
 from django.template.loader import get_template
 
 from lizard_portal.models import PortalConfiguration
-from lizard_area.models import Area
 
 
 def site(request, application_name, active_tab_name):
@@ -44,22 +43,19 @@ def json_configuration(request):
     """
     Return JSON for request.
     """
-    object_id = request.GET.get('object_id', None)
-    object = request.GET.get('object', None)
-
-    if object == 'aan-afvoergebied' and object_id:
-        c = RequestContext(request, {'bla': 'bla',
-                    'area': Area.objects.get(ident=area_id)})
-    else:
-        c = RequestContext(request)
+    c = RequestContext(request)
 
     portal_template = request.GET.get('portalTemplate', 'homepage')
 
-    try:
-        t = get_template('portals/'+portal_template+'.js')
-    except TemplateDoesNotExist, e:
-        pc = PortalConfiguration.objects.filter(slug=portal_template)[0]
-        t = Template(pc.configuration)
+    if request.user.is_authenticated():
+        try:
+            t = get_template('portals/'+portal_template+'.js')
+        except TemplateDoesNotExist, e:
+            pc = PortalConfiguration.objects.filter(slug=portal_template)[0]
+            t = Template(pc.configuration)
+    else:
+        t = get_template('portals/geen_toegang.js')
+
     return HttpResponse(t.render(c),  mimetype="text/plain")
 
 
