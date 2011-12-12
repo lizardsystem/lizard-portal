@@ -104,10 +104,15 @@ Ext.application({
                     listeners: {
                         itemclick: {
                             fn: function (tree, node) {
-                                Ext.getCmp('portalWindow').linkTo({
-                                    object_type: 'krw_waterlichaam',
-                                    object_id: node.data.id,
-                                    object_name: node.data.text});
+                                //if not root
+                                if (node.raw) {
+                                    Ext.getCmp('portalWindow').linkTo({
+                                        object_type: 'krw_waterlichaam',
+                                        object_id: node.data.id,
+                                        object_name: node.data.text});
+                                } else {
+                                    node.expand();
+                                }
                             }
                         }
                     },
@@ -138,11 +143,16 @@ Ext.application({
                     listeners: {
                         itemclick: {
                             fn: function (tree, node) {
-                                Ext.getCmp('portalWindow').linkTo({
-                                    object_type: 'aan_afvoergebied',
-                                    object_id: node.data.id,
-                                    object_name: node.data.text
-                                });
+                                //if not root
+                                if (node.raw) {
+                                    Ext.getCmp('portalWindow').linkTo({
+                                        object_type: 'aan_afvoergebied',
+                                        object_id: node.data.id,
+                                        object_name: node.data.text
+                                    });
+                                } else {
+                                    node.expand();
+                                }
                             }
                         }
                     },

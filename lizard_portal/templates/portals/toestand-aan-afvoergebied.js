@@ -4,7 +4,8 @@
     title: 'Toestand',
     breadcrumbs: [
         {
-            name: 'watersysteemkaart'
+            name: 'watersysteemkaart',
+            link: 'watersysteemkaart'
         },
         {
             name: 'Toestand'
