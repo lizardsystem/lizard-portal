@@ -33,3 +33,6 @@ src
 
 # Ignore generated apache config files
 etc/*.apache.conf
+
+#ext files
+ext-4.0.7-gpl

@@ -4,13 +4,19 @@
     extend: 'Ext.grid.Panel',
     alias: 'widget.leditpropgrid',
     config: {
-      special: true
+      proxyUrl: '',
+      proxyParams: {},
+      useSaveBar: true,
+      enterEditSummary: true,
+      editable: true
     },
     extraEditors: {
       timeserie: {
         field: {
           xtype: 'combo',
-          store: 'timeserieobject',
+          store: Ext.create('Vss.store.TimeserieObject', {
+            fixedParameter: ''
+          }),
           queryMode: 'remote',
           displayField: 'name',
           valueField: 'name',
@@ -18,7 +24,8 @@
           typeAhead: true,
           minChars: 0,
           triggerAction: 'all',
-          selectOnTab: true
+          selectOnTab: true,
+          pageSize: 15
         }
       }
     },
@@ -80,7 +87,14 @@
         }
       }
       if (Ext.type(editor) === 'object') {
-        return Ext.create('Ext.grid.CellEditor', editor);
+        editor = Ext.create('Ext.grid.CellEditor', editor);
+        console.log(record.data);
+        if (type === 'timeserie' && record.data.ts_parameter) {
+          editor.field.store = Ext.create('Vss.store.TimeserieObject', {
+            fixedParameter: record.data.ts_parameter
+          });
+        }
+        return editor;
       } else {
         return editor;
       }
@@ -101,10 +115,62 @@
       }
       return value;
     },
+    saveEdits: function() {
+      return this.store.sync();
+    },
+    cancelEdits: function() {
+      return this.store.rejectChanges();
+    },
+    constructor: function() {
+      this.initConfig(arguments);
+      return this.callParent(arguments);
+    },
     initComponent: function() {
       var me;
       me = this;
+      if (this.getEditable()) {
+        this.editing = Ext.create('Ext.grid.plugin.CellEditing', {
+          clicksToEdit: 1
+        });
+        this.plugins.push(this.editing);
+      }
+      if (this.getUseSaveBar()) {
+        me.bbar = [
+          {
+            xtype: 'button',
+            text: 'Cancel',
+            iconCls: 'cancel',
+            handler: function(menuItem, checked) {
+              return me.cancelEdits();
+            }
+          }, {
+            xtype: 'button',
+            text: 'Save',
+            iconCls: 'save',
+            handler: function(menuItem) {
+              if (me.getEnterEditSummary()) {
+                return Ext.MessageBox.show({
+                  title: 'Wijzigingen opslaan',
+                  msg: 'Samenvatting',
+                  width: 300,
+                  multiline: true,
+                  buttons: Ext.MessageBox.OKCANCEL,
+                  fn: function(btn, text) {
+                    if (btn === 'ok') {
+                      return me.saveEdits();
+                    }
+                  }
+                });
+              } else {
+                return me.saveEdits();
+              }
+            }
+          }
+        ];
+      }
       Ext.apply(this, {
+        sortableColumns: false,
+        hideHeaders: true,
         columns: [
           {
             text: 'Eigenschap',
@@ -124,10 +190,56 @@
               allowBlank: false
             }
           }
-        ]
+        ],
+        store: {
+          type: 'leditstore',
+          fields: [
+            {
+              name: 'id',
+              mapping: 'id'
+            }, {
+              name: 'property',
+              mapping: 'property'
+            }, {
+              name: 'value',
+              mapping: 'value',
+              type: 'auto',
+              defaultValue: null
+            }, {
+              name: 'type',
+              mapping: 'type',
+              type: 'text',
+              defaultValue: 'text'
+            }, {
+              name: 'editable',
+              mapping: 'editable',
+              defaultValue: true
+            }, {
+              name: 'ts_parameter',
+              mapping: 'ts_parameter'
+            }
+          ],
+          proxy: {
+            type: 'ajax',
+            url: this.getProxyUrl(),
+            extraParams: {
+              _accept: 'application/json'
+            },
+            reader: {
+              type: 'json',
+              root: 'data'
+            },
+            writer: {
+              type: 'json',
+              writeAllFields: false,
+              root: 'data',
+              encode: true,
+              successProperty: 'success'
+            }
+          }
+        }
       });
-      this.callParent(arguments);
-      return this;
+      return this.callParent(arguments);
     }
   });
 }).call(this);

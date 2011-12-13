@@ -4,7 +4,7 @@
 }
 
 .l-row-alt td {
-    background-color: #FAFAFA;;
+    background-color: #FAFAFA;
 
 }
 
@@ -18,23 +18,24 @@
     padding-bottom: 3px;
     padding-top: 3px;
     padding-left: 6px;
-    padding:-right: 6px;
+    padding-right: 6px;
     border-bottom-color: #EDEDED;
     border-bottom-width: 1px;
     border-bottom-style: solid;
-
-
 }
 
+.x-border-layout-ct {
+    background-color: #E0E0E0;
+}
 
 .l-box-inner-scroll {
    overflow:  auto;
 }
 
-#breadcrumbs {
+#breadcrumb {
     margin-top: 15px;
 }
-#breadcrumbs div {
+#breadcrumb div {
     color: black;
     display: inline;
     margin-top: 15px;
@@ -97,7 +98,7 @@
     font-size: 12px;
 }
 .settings {
-    background-image:url(../shared/icons/fam/folder_wrench.png);
+    background-image:url('images/settings.png');
 }
 .nav {
     background-image:url(../shared/icons/fam/folder_go.png);
@@ -113,11 +114,23 @@
 }
 
 .x-grid-checkheader-unchecked {
-    background-image: url('images/unchecked.png')
+    background-image: url('images/unchecked.gif')
 }
 
 .x-grid-checkheader-checked {
+    background-image: url('images/checked.gif');
+}
+
+.x-grid-checkheader-hand {
     background-image: url('images/hand.png');
+}
+
+.x-grid-checkheader-unhand {
+    background-image: url('images/unchecked.png');
+}
+
+.x-grid-checkheader-setting {
+    background-image: url('images/settings.png');
 }
 
 .x-grid-checkheader-null{
@@ -126,4 +139,39 @@
 
 .x-grid-checkheader-editor .x-form-cb-wrap {
     text-align: center;
+}
+
+.l-icon {
+    height: 12px;
+    background-position: 50% -2px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+.l-icon-disk{
+    background-image: url('images/disk.png');
+}
+
+.l-icon-chartline{
+    background-image: url('images/chart_line.png');
+}
+
+.l-icon-delete{
+    background-image: url('images/delete.png');
+}
+
+.l-icon-add{
+    background-image: url('images/add.png');
+}
+
+.l-icon-chartbar{
+    background-image: url('images/chart_bar.png');
+}
+
+.l-icon-setting{
+    background-image: url('images/settingtable.png');
+}
+
+.l-icon-clock{
+    background-image: url('images/clock-light.png');
 }

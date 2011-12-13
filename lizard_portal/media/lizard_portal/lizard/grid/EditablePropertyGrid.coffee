@@ -6,12 +6,20 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
     extend:'Ext.grid.Panel'
     alias: 'widget.leditpropgrid'
     config:
-        special: true
+        proxyUrl: ''
+        proxyParams: {}
+        useSaveBar: true
+        enterEditSummary: true
+        editable: true
+
+
     extraEditors: {
         timeserie: {
             field: {
                 xtype: 'combo'
-                store: 'timeserieobject'
+                store: Ext.create('Vss.store.TimeserieObject',{
+                    fixedParameter: ''
+                })
                 queryMode: 'remote'
                 displayField: 'name'
                 valueField: 'name'
@@ -19,7 +27,8 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
                 typeAhead: true,
                 minChars:0,
                 triggerAction: 'all',
-                selectOnTab: true
+                selectOnTab: true,
+                pageSize: 15
             }
         }
     }
@@ -80,7 +89,13 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
                 editor = me.editors[type]
 
         if Ext.type(editor) == 'object'
-            return Ext.create('Ext.grid.CellEditor', editor)
+            editor = Ext.create('Ext.grid.CellEditor', editor)
+            console.log(record.data)
+            if type == 'timeserie' and record.data.ts_parameter
+                editor.field.store = Ext.create('Vss.store.TimeserieObject',{
+                    fixedParameter: record.data.ts_parameter
+                })
+            return editor
         else
             return editor
 
@@ -100,16 +115,71 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
 
         return value
 
+
+    saveEdits: () ->
+        @store.sync()
+
+    cancelEdits: () ->
+        @store.rejectChanges()
+
+    constructor: () ->
+        @initConfig(arguments)
+        @callParent(arguments)
+
     initComponent: () ->
-        me = this
+        me = @
 
         #if !Ext.data.StoreManager.lookup('timeserieobject')
         #Ext.create('Vss.store.TimeserieObject', {,
         #    storeId: 'timeserieobject'
         #});
 
+        if @getEditable()
+            @editing = Ext.create('Ext.grid.plugin.CellEditing', {
+                        clicksToEdit: 1
+                    })
+            @plugins.push(@editing)
+
+
+
+
+
+        if @getUseSaveBar()
+            me.bbar = [
+                {
+                    xtype: 'button',
+                    text: 'Cancel',
+                    iconCls: 'cancel',
+                    handler:(menuItem, checked) ->
+                        me.cancelEdits()
+
+                }
+                {
+                    xtype: 'button',
+                    text: 'Save',
+                    iconCls: 'save',
+                    handler: (menuItem) ->
+
+                        if me.getEnterEditSummary()
+                            Ext.MessageBox.show({
+                                title: 'Wijzigingen opslaan',
+                                msg: 'Samenvatting',
+                                width: 300,
+                                multiline: true,
+                                buttons: Ext.MessageBox.OKCANCEL,
+                                fn: (btn, text)  ->
+                                     if (btn=='ok')
+                                         me.saveEdits()
+                            })
+                        else
+                            me.saveEdits()
+
+                }
+            ]
 
         Ext.apply( this, {
+            sortableColumns: false
+            hideHeaders: true
             columns: [
                 {
                     text: 'Eigenschap'
@@ -125,14 +195,56 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
                     renderer: me.get_renderer
                     getEditor: (record, default_editor) ->
                         return me.get_editor(record, default_editor, me)
-                    field: {
+                    field:
                         allowBlank: false
-                    }
                 }
             ]
+            store:
+                type: 'leditstore'
+                fields: [
+                    {
+                        name: 'id',
+                        mapping: 'id'
+                    },{
+                        name: 'property',
+                        mapping: 'property'
+                    },{
+                        name: 'value',
+                        mapping: 'value',
+                        type: 'auto',
+                        defaultValue: null
+                    },{
+                        name: 'type',
+                        mapping: 'type',
+                        type: 'text',
+                        defaultValue: 'text'
+                    },{
+                        name: 'editable',
+                        mapping: 'editable',
+                        defaultValue: true
+                    },{
+                        name: 'ts_parameter',
+                        mapping: 'ts_parameter'
+                    }
+                ]
+                proxy:
+                    type: 'ajax'
+                    url: @getProxyUrl()
+                    extraParams:
+                       _accept: 'application/json'
+                    reader:
+                        type: 'json'
+                        root: 'data',
+                        
+                    writer:
+                        type: 'json',
+                        writeAllFields: false,
+                        root: 'data',
+                        encode: true,
+                        successProperty: 'success'
+
         })
 
         @callParent arguments
-        return this
 
 

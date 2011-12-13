@@ -5,24 +5,34 @@
  * Time: 17:52
  * To change this template use File | Settings | File Templates.
  */
+{% load get_portal_template %}
+
 {
     itemId: 'krw-overzicht',
     title: 'KRW overzicht',
 	xtype: 'portalpanel',
+    breadcrumbs: [
+    {
+        name: 'KRW-overzicht'
+    }],
 	items:[{
 		width: 300,
-		items: [{
-			title: 'Info',
-            flex:1,
-			html: '{{ area.name }}'
+		items: [
+            {% get_portal_template gebiedseigenschappen %},
+            {% get_portal_template communique %},
+        {
+			title: 'Extra info?',
+            flex:1
 		}]
 	},{
 		flex: 1,
 		items: [{
-			title: 'Grafieken',
-            flex:1,
- 			html: '<div class="portlet-content">Hier komen de grafieken</div>',
-            extent: 2
+            title: 'Grafieken',
+            flex: 1,
+            xtype: 'multigraph',
+            graph_service_url: '/graph/',
+            context_manager: Ext.getCmp('portalWindow').context_manager,
+            graphs: {% get_portal_template graphs-krw-overzicht %}
 		}]
 	}]
 }

@@ -4,7 +4,6 @@ Ext.define('Vss.store.WaterbalanceAreaConfig', {
     model: 'Vss.model.PropertyGrid',
     proxy: {
         type: 'ajax',
-        url: '/wbconfiguration/api/area_configuration/',
         extraParams: {
             _accept: 'application/json'
         },

@@ -12,7 +12,7 @@ Ext.define('Vss.grid.Esf', {
     selType: 'cellmodel',
 
     config: {
-        
+        editable: true
     },
     viewConfig:{
         toggleOnDblClick:false
@@ -42,29 +42,103 @@ Ext.define('Vss.grid.Esf', {
                 store: [[ 1, 'OK' ], [0, 'Kritisch' ]]
             })
         });
+        var number_editor = Ext.create('Ext.grid.CellEditor', {
+             field: {
+                xtype: 'numberfield',
+                allowBlank: false
+            }
+        });
 
         var value_renderer = function(value, metaData, record) {
             console.log(record)
-
-            if (record.data.manual < 1) {
-                value = record.data.auto_value;
-            }
-
-            if (record.data.type == 'oordeel') {
-                if (value > 0.1) {
-                    return '<span style="color:green;">OK</span>';
+            var format = function(value, record) {
+                if (record.data.type == 'oordeel') {
+                    if (value == null){
+                        return '-'
+                    }
+                    else if (value > 0.1) {
+                        return '<span style="color:green;">OK</span>';
+                    } else {
+                        return '<span style="color:red;">Kritisch</span>';
+                    }
+                } else if (value == null){
+                    return '-'
                 } else {
-                    return '<span style="color:red;">Kritisch</span>';
+                    return value;
                 }
-            } else if (value < -998){
-                return '-'
-            } else {
-                return value;
+            }
+            if (record.data.manual > 0.1 && record.data.is_manual) {
+                return format(value, record) + ' (' + format(record.data.auto_value, record) + ')'
+            } else if (record.data.config_type == 'parameter') {
+                return format(value, record)
+            } else { //rekenresultaat
+                return format(record.data.auto_value, record)
             }
         }
 
+        if (this.editable) {
+
+            var manual_editor = function(record) {
+                if (record.data.is_manual) {
+
+                    return {
+                        xtype: 'combobox',
+                        editable: false,
+                        width: 150,
+                        store: [
+                            [0,'auto'],
+                            [1,'hand']
+                        ],
+                        lazyRender: true,
+                        listClass: 'x-combo-list-small'
+                    }
+                } else {
+                    return false;
+                }
+            }
+
+            var value_editor = function(record) {
+
+                if ((record.data.is_manual && record.data.manual == 1) || (record.data.config_type == 'parameter')) {
+                    if (record.data.type == 'oordeel') {
+                        return oordeel_editor;
+                    } else {
+                        return number_editor;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            var manual_editor = function() { return false; }
+            var value_editor = function() { return false; }
+
+
+        }
+
+        var manual_renderer = function(value, metaData, record) {
+
+            var cssPrefix = Ext.baseCSSPrefix;
+            var cls = [cssPrefix + 'grid-checkheader'];
+            if (record.data.config_type == 'parameter') {
+                cls.push(cssPrefix + 'grid-checkheader-setting');
+                return '<div class="' + cls.join(' ') + '">&#160;</div>';
+            }
+            else if (record.data.is_manual) {
+                if (value==1) {
+                    cls.push(cssPrefix + 'grid-checkheader-hand');
+                } else if (value==0) {
+                    cls.push(cssPrefix + 'grid-checkheader-unhand');
+                }
+                else {
+                    cls.push(cssPrefix + 'grid-checkheader-null');
+                }
+                return '<div class="' + cls.join(' ') + '">&#160;</div>';
+            }
+        }
+
+
         Ext.apply(this, {
-            id: 'rrrr',
             frame: false,
             border:false,
             collapsible: false,
@@ -85,45 +159,18 @@ Ext.define('Vss.grid.Esf', {
                 dataIndex: 'source_name',
                 sortable: true
             },{
-                text: 'Auto. waarde',
-                flex: 1,
-                dataIndex: 'auto_value',
-                sortable: true,
-                renderer: value_renderer
-            },{
-                text: 'Handmatig',
-                flex: 1,
+                text: 'Handm.',
+                width: 50,
                 dataIndex: 'manual',
-                xtype: 'checkcolumntree',
-                sortable: true,
-                field: {
-                    xtype: 'combobox',
-                    editable: false,
-                    width: 150,
-                    store: [
-                        [0,'auto'],
-                        [1,'hand']
-                    ],
-                    lazyRender: true,
-                    listClass: 'x-combo-list-small'
-                }
+                renderer: manual_renderer,
+                getEditor: manual_editor,
+                sortable: true
             },{
                 text: 'Waarde',
                 flex: 1,
                 dataIndex: 'manual_value',
                 sortable: true,
-                field: {
-                    xtype: 'numberfield',
-                    allowBlank: false
-                },
-                getEditor: function(record, default_editor) {
-                    console.log(record);
-                    if (record.data.type == 'oordeel') {
-                        return oordeel_editor;
-                    } else {
-                        return default_editor;
-                    }
-                },
+                getEditor: value_editor,
                 renderer: value_renderer
                 /*listeners: {
                     'mouseover': function(a,b,c,d){
@@ -139,37 +186,43 @@ Ext.define('Vss.grid.Esf', {
                                 @linkTo {object_id: node.data.id}
 
                 }*/
-            }],
-            bbar: [{
-                xtype: 'button',
-                text: 'Cancel',
-                iconCls: 'cancel',
-                handler: function(menuItem, checked) {
-                   me.store.rejectChanges();
-                }
-            },{
-                xtype: 'button',
-                id: 'save_button',
-                text: 'Save',
-                iconCls: 'save',
-                handler: function(menuItem) {
-
-                    Ext.MessageBox.show({
-                        title: 'Wijzigingen opslaan',
-                        msg: 'Opmerking',
-                        width: 300,
-                        multiline: true,
-                        buttons: Ext.MessageBox.OKCANCEL,
-                        fn: function (btn, text) {
-                             if (btn=='ok') {
-                                 me.store.sync();
-                             }
-                        }
-
-                    });
-                 }
             }]
+
         });
+
+        if (this.editable) {
+            Ext.apply(this, {
+                bbar: [{
+                    xtype: 'button',
+                    text: 'Cancel',
+                    iconCls: 'cancel',
+                    handler: function(menuItem, checked) {
+                        me.store.rejectChanges();
+                    }
+                },{
+                    xtype: 'button',
+                    id: 'save_button',
+                    text: 'Save',
+                    iconCls: 'l-icon-disk',
+                    handler: function(menuItem) {
+
+                        Ext.MessageBox.show({
+                            title: 'Wijzigingen opslaan',
+                            msg: 'Opmerking',
+                            width: 300,
+                            multiline: true,
+                            buttons: Ext.MessageBox.OKCANCEL,
+                            fn: function (btn, text) {
+                                 if (btn=='ok') {
+                                     me.store.sync();
+                                 }
+                            }
+
+                        });
+                     }
+                }]
+            });
+        }
 
         this.callParent(arguments);
 
