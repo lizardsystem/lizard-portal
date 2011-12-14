@@ -51,82 +51,8 @@
             xtype: 'multigraph',
             graph_service_url: '/graph/',
             context_manager: Ext.getCmp('portalWindow').context_manager,
-            graphs: [{
-                title: 'Waterbalans met sluitfout',
-                params: {
-                    item:[{
-                        parameter: "N.belasting.kritisch",
-                        //module: "ImportLE",
-                        location: "SAP",
-                        type: 'line',
-                        layout: {color: 'red'}
-                    },{
-                        parameter: "P.belasting.kritisch",
-                        //module: "ImportLE",
-                        location: "SAP",
-                        type: 'line',
-                        layout: {color: 'blue'}
-                    }]
-                }
-            },{
-                title: 'Fracties en choride concentratie',
-                params: {
-                    item:[{
-                        parameter: "N.belasting.kritisch",
-                        //module: "ImportLE",
-                        location: "SAP",
-                        type: 'line',
-                        layout: {color: 'red'}
-                    },{
-                        parameter: "P.belasting.kritisch",
-                        //module: "ImportLE",
-                        location: "SAP",
-                        type: 'line',
-                        layout: {color: 'blue'}
-                    }]
-                }
-            },{
-                title: 'Waterstand met sluitfout',
-                timeseries:[{
-                    parameter_id: "ALMR110",
-                    module_id: "ImportLE",
-                    ident: "53R0017"
-                }]
-            }, {
-                title: 'Cumulatieve debieten',
-                params: {
-                    item:[{
-                        parameter: "N.belasting.kritisch",
-                        //module: "ImportLE",
-                        location: "SAP",
-                        type: 'line',
-                        layout: {color: 'red'}
-                    },{
-                        parameter: "P.belasting.kritisch",
-                        //module: "ImportLE",
-                        location: "SAP",
-                        type: 'line',
-                        layout: {color: 'blue'}
-                    }]
-                }
-            }, {
-                title: 'Fosfaatbelasting',
-                params: {
-                    item:[{
-                        parameter: "N.belasting.kritisch",
-                        //module: "ImportLE",
-                        location: "SAP",
-                        type: 'line',
-                        layout: {color: 'red'}
-                    },{
-                        parameter: "P.belasting.kritisch",
-                        //module: "ImportLE",
-                        location: "SAP",
-                        type: 'line',
-                        layout: {color: 'blue'}
-                    }]
-                }
-            }]
+            graphs: {% get_portal_template graphs-krw-overzicht %}
+            
 		}]
 	}]
 }

@@ -15,9 +15,10 @@ Ext.define('Lizard.portlet.MultiGraph', {
                 item.flex = 1
         else
             for item in items
-                delete item.flex;
+                delete item.flex
 
-        @doLayout();
+        @doLayout()
+
 
     updateGraphs: (changes, new_context, context_manager, me) ->
         console.log('update graphs')
@@ -46,12 +47,13 @@ Ext.define('Lizard.portlet.MultiGraph', {
                 
         for graph_config in graph_configs
             graph = Ext.create('Lizard.ux.ImageResize', Ext.merge({
-                dt_start: Ext.Date.format(context.period_start,'Y-m-d H:i:s'),
-                dt_end: Ext.Date.format(context.period_end,'Y-m-d H:i:s'),
-                location: context.object_id
+                params:
+                    dt_start: Ext.Date.format(context.period_start,'Y-m-d H:i:s'),
+                    dt_end: Ext.Date.format(context.period_end,'Y-m-d H:i:s'),
+                    location: context.object_id
             },getImageConfig(graph_config)))
 
-            graph.applyParams()
+            #graph.applyParams()
 
             @items.push(graph)
             @graphs.push(graph)
@@ -78,7 +80,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
         me = @
         Ext.apply(@, {
             layout:
-                type: 'vbox',
+                type: 'vboxscroll'
                 align: 'stretch'
 
             defaults:

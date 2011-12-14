@@ -104,10 +104,15 @@ Ext.application({
                     listeners: {
                         itemclick: {
                             fn: function (tree, node) {
-                                Ext.getCmp('portalWindow').linkTo({
-                                    object_type: 'krw_waterlichaam',
-                                    object_id: node.data.id,
-                                    object_name: node.data.text});
+                                //if not root
+                                if (node.raw) {
+                                    Ext.getCmp('portalWindow').linkTo({
+                                        object_type: 'krw_waterlichaam',
+                                        object_id: node.data.id,
+                                        object_name: node.data.text});
+                                } else {
+                                    node.expand();
+                                }
                             }
                         }
                     },
@@ -138,11 +143,16 @@ Ext.application({
                     listeners: {
                         itemclick: {
                             fn: function (tree, node) {
-                                Ext.getCmp('portalWindow').linkTo({
-                                    object_type: 'aan_afvoergebied',
-                                    object_id: node.data.id,
-                                    object_name: node.data.text
-                                });
+                                //if not root
+                                if (node.raw) {
+                                    Ext.getCmp('portalWindow').linkTo({
+                                        object_type: 'aan_afvoergebied',
+                                        object_id: node.data.id,
+                                        object_name: node.data.text
+                                    });
+                                } else {
+                                    node.expand();
+                                }
                             }
                         }
                     },
@@ -167,17 +177,13 @@ Ext.application({
                 name: 'rapportage',
                 default_portal_template: 'rapportage',
                 navigation_portal_template: 'rapportage'
-            })
-            {% if perms.is_analyst %}
-            ,
+            }),
             Ext.create('Lizard.window.HeaderTab',{
                 title: 'Beheer',
                 name: 'beheer',
                 default_portal_template: 'beheer',
                 navigation_portal_template: 'beheer'
             })
-            {% endif %}
-
         ];
 
         var headerTab = 'watersysteem';
@@ -201,7 +207,7 @@ Ext.application({
                 id: {{ user.id|default_if_none:"null" }},
                 name: '{{ user.get_full_name }}',
                 permission: [{% if perms.is_analyst %}'analyst',{% endif %}
-{% if perms.is_veldmedewerker %}'veldmedewerker',{% endif %}{% if perms.is_beleidmaker %}'beleidmakker',{% endif %}'']
+{% if perms.is_veldmedewerker %}'veldmedewerker',{% endif %}{% if perms.is_beleidmaker %}'beleidmaker',{% endif %}'']
             },
             period: {
                 selection: 6
@@ -226,7 +232,8 @@ Ext.application({
             header: {
                 headertabs: headertabs,
                 src_logo: 'vss/stowa_logo.png',
-                url_homepage: '/'
+                url_homepage: '/',
+                close_on_logout: true
             }
         });
     }

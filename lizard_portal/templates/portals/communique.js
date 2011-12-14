@@ -1,9 +1,7 @@
 {
 			title: 'Communique',
-            id: 'communique',
             bodyCls: 'l-grid',
             height: 150,
-            //flex:1,
             collapsed: true,
             autoScroll: true,
             plugins: [
@@ -81,7 +79,7 @@
                                         form.submit({
                                             success: function(form, action) {
                                                 console.log('Opslaan gelukt');
-                                                Ext.getCmp('communique').applyParams({
+                                                portlet.applyParams({
                                                        object_id: Ext.getCmp('portalWindow').context_manager.getContext().object_id
                                                 });
                                                 form.owner.up('window').close();
@@ -93,9 +91,9 @@
                                         });
                                     }
                                 }
-                            }]{% endif %}
+                            }]
                          }
                     }).show();
                 }
-             }]
+             }]{% endif %}
 		}

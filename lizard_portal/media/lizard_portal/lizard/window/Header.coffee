@@ -6,6 +6,7 @@ Ext.define('Lizard.window.Header', {
         context_manager: {}
         logo_url: '/static_media/vss/stowa_logo.png'
         portalWindow: null
+        close_on_logout:false
 
     setBreadCrumb:(bread_crumbs) ->
         #bread_crumbs = bread_crumbs[0]
@@ -31,6 +32,7 @@ Ext.define('Lizard.window.Header', {
         el = bread_div.last()
         el.addListener('click',
             () ->
+               me.context_manager.setContext({portalTemplate:null})
                portalWindow.showNavigationPortalTemplate()
         )
 
@@ -81,12 +83,17 @@ Ext.define('Lizard.window.Header', {
 
 
     logout: () ->
+        me = @
         Ext.MessageBox.confirm(
             'Loguit',
             'Weet u zeker dat u uit wil loggen?',
             (button) ->
                 if button == 'yes'
-                    location.replace('/user/logout_redirect/?url='+location.href)
+                    if me.close_on_logout
+                        location.replace('/user/logout_redirect/?url='+location.href)
+                    else
+                        location.replace('/user/logout_redirect/?url=/closewindow/'+location.href)
+                    
         )
 
     login: () ->
@@ -338,7 +345,7 @@ Ext.define('Lizard.window.Header', {
                 }
                 '-'
                 {
-                    iconCls: 'settings'
+                    iconCls: 'l-icon-clock'
                     xtype: 'button'
                     bodyCls: 'l-headertab'
                     handler: () ->

@@ -8,7 +8,7 @@
 
 Ext.define('Lizard.ux.ImageResize', {
     extend: 'Ext.Img',
-    alias: 'widget.imageResize',
+    alias: 'widget.imageresize',
     config: {
         orig_src: '',
         params: {
@@ -55,13 +55,14 @@ Ext.define('Lizard.ux.ImageResize', {
     initComponent: function() {
         var me = this;
 
-        Ext.apply(this,{
-            //orig_src: '/map/adapter/adapter_fewsnorm/image/?adapter_layer_json={%22module_id%22:%20null,%20%22parameter_id%22:%20%22ALMR110%22,%20%22fews_norm_source_slug%22:%20%22%22}&identifier={%22parameter_id%22:%20%22ALMR110%22,%20%22module_id%22:%20%22ImportLE%22,%20%22ident%22:%20%2253R0017%22}'
-        });
+        //this.init_src = this.src;
+        this.setSrc('data:img/gif');
 
         this.on({
             resize: function(Component, adjWidth, adjHeight, eOpts) {
-                Component.applyParams({width: adjWidth, height: adjHeight});
+                if (adjWidth && adjHeight) {
+                    Component.applyParams({width: adjWidth, height: adjHeight});
+                }
             }
         });
 
@@ -80,7 +81,6 @@ Ext.define('Lizard.ux.ImageResize', {
         this.callParent(arguments);
     },
     afterRender: function() {
-        //this.applyParams({width: this.getWidth(), height: this.getHeight()});
         this.callParent(arguments);
     }
 
