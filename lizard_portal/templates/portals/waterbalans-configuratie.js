@@ -1,7 +1,7 @@
 {% load get_grid %}
 {% load get_portal_template %}
 
-{% if perms.is_analyst%}
+{% if perms.auth.is_analyst %}
 
 {
     itemId: 'waterbalans-configuratie',

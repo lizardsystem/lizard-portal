@@ -34,7 +34,7 @@
                 handler: function(menuItem, checked) {
                     Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans-instellingen-overzicht'});
                 }
-            } {% if perms.is_analyst %},{
+            } {% if perms.auth.is_analyst %},{
                 xtype: 'button',
                 text: 'Configureren',
                 iconCls: 'l-icon-setting',
@@ -52,7 +52,7 @@
             graph_service_url: '/graph/',
             context_manager: Ext.getCmp('portalWindow').context_manager,
             graphs: {% get_portal_template graphs-krw-overzicht %}
-            
+
 		}]
 	}]
 }

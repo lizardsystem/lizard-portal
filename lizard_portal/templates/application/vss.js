@@ -206,8 +206,10 @@ Ext.application({
             user: {
                 id: {{ user.id|default_if_none:"null" }},
                 name: '{{ user.get_full_name }}',
-                permission: [{% if perms.is_analyst %}'analyst',{% endif %}
-{% if perms.is_veldmedewerker %}'veldmedewerker',{% endif %}{% if perms.is_beleidmaker %}'beleidmaker',{% endif %}'']
+                permission: [
+                    {% if perms.auth.is_analyst %}'analyst',{% endif %}
+                    {% if perms.auth.is_veldmedewerker %}'veldmedewerker',{% endif %}
+                    {% if perms.auth.is_beleidmaker %}'beleidmaker',{% endif %}'']
             },
             period: {
                 selection: 6
