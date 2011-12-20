@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - Fixed permissions check in template.
 
+- Field is_computed renamed to is_specified.
+
 
 0.5 (2011-12-13)
 ----------------

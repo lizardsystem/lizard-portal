@@ -263,7 +263,7 @@
                     {name: 'code', title: 'code', editable: false, visible: false, width: 100, type: 'text'},//automatisch aanmaken
                     {name: 'area', title: 'area', editable: false, visible: false, width: 100, type: 'text'},
                     {name: 'name', title: 'Naam', editable: true, visible: true, width: 170, type: 'text'},
-                    {name: 'is_computed', title: 'Berekend', editable: false, visible: true, width: 75, type: 'boolean'},
+                    {name: 'is_specified', title: 'Berekend', editable: false, visible: true, width: 75, type: 'boolean'},
                     {name: 'in_out', title: 'In of Uit', editable: true, visible: true, width: 75, type: 'combo', choices: ['in', 'uit']},
                     //debiet
                     {name: 'deb_is_ts', title: 'Debiet is tijdserie?', editable: true, visible: true, width: 100, type: 'boolean'},
