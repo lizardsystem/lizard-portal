@@ -2,7 +2,13 @@ Changelog of lizard-portal
 ===================================================
 
 
-0.5 (unreleased)
+0.6 (unreleased)
+----------------
+
+- Fixed permissions check in template.
+
+
+0.5 (2011-12-13)
 ----------------
 
 - Nothing changed yet.

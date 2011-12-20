@@ -212,7 +212,7 @@
                    text: 'Toestand',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'toestand-aan-afvoergebied'}); }
                 }
-                {% if perms.is_analyst %}
+                {% if perms.auth.is_analyst %}
                 , {
                    text: 'Toevoegen analyse interpretatie',
                    handler: function() {
