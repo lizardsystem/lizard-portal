@@ -29,7 +29,8 @@ Ext.application({
         'Vss.store.WaterbalanceWaterConfig',
         'Vss.store.AnnotationDetail',
         'Vss.store.AnnotationDescription',
-        'Vss.store.TimeserieObject'
+        'Vss.store.TimeserieObject',
+
     ],
     requires: [
         'Lizard.plugin.ApplyContext',
@@ -64,7 +65,12 @@ Ext.application({
         'Lizard.portlet.GridPortlet',
         'Lizard.portlet.MultiGraph',
         'Lizard.window.Header',
-        'Vss.grid.Esf'
+        'Vss.grid.Esf',
+        'Lizard.form.FormAutoload',
+        'Lizard.grid.GridComboBox',
+        'Lizard.grid.ComboDict',
+        'Lizard.grid.CellEditing',
+        'Lizard.form.TableField'
     ],
     launch: function() {
         //TODO: for the time being on this location, a better location is the template of the watersystem portal
@@ -84,6 +90,42 @@ Ext.application({
         {% get_portal_template watersysteem_layers %}
 
         {% get_portal_template workspace_layers %}
+
+        var aan_afvoergebied_selection =
+        {
+            id: 'select_aan_afvoergebied',
+            viewConfig: {
+                plugins: {
+                    ptype: 'gridviewdragdrop',
+                    dragGroup: 'firstGridDDGroup'
+                }
+            },
+            xtype: 'treepanel',
+            listeners: {
+                itemclick: {
+                    fn: function (tree, node) {
+                        //if not root
+                        if (node.raw) {
+                            Ext.getCmp('portalWindow').linkTo({
+                                object_type: 'aan_afvoergebied',
+                                object_id: node.data.id,
+                                object_name: node.data.text
+                            });
+                        } else {
+                            node.expand();
+                        }
+                    }
+                }
+            },
+            store: 'Vss.store.CatchmentTree',
+            bbar: [{
+                text: 'Selecteer op kaart -->',
+                handler: function () {
+                    Ext.getCmp('portalWindow').showNavigationPortalTemplate();
+                }
+            }]
+        }
+
 
         var headertabs = [
             Ext.create('Lizard.window.HeaderTab', {
@@ -131,46 +173,15 @@ Ext.application({
                 navigation_portal_template: 'aan_afvoergebied_selectie',
                 default_portal_template: 'homepage',
                 object_types: ['aan_afvoergebied'],
-                navigation: {
-                    id: 'select_aan_afvoergebied',
-                    viewConfig: {
-                        plugins: {
-                            ptype: 'gridviewdragdrop',
-                            dragGroup: 'firstGridDDGroup'
-                        }
-                    },
-                    xtype: 'treepanel',
-                    listeners: {
-                        itemclick: {
-                            fn: function (tree, node) {
-                                //if not root
-                                if (node.raw) {
-                                    Ext.getCmp('portalWindow').linkTo({
-                                        object_type: 'aan_afvoergebied',
-                                        object_id: node.data.id,
-                                        object_name: node.data.text
-                                    });
-                                } else {
-                                    node.expand();
-                                }
-                            }
-                        }
-                    },
-                    store: 'Vss.store.CatchmentTree',
-                    bbar: [{
-                        text: 'Selecteer op kaart -->',
-                        handler: function () {
-                            Ext.getCmp('portalWindow').showNavigationPortalTemplate();
-                        }
-                    }]
-                }
+                navigation: aan_afvoergebied_selection
             }),
             Ext.create('Lizard.window.HeaderTab',{
                 title: 'Analyse',
                 name: 'analyse',
-                object_types: ['aan_afvoergebied', 'krw_waterlichaam'],
+                object_types: ['aan_afvoergebied'],
                 default_portal_template: 'analyse',
-                navigation_portal_template: 'analyse'
+                navigation_portal_template: 'aan_afvoergebied_selectie',
+                navigation: aan_afvoergebied_selection
             }),
             Ext.create('Lizard.window.HeaderTab',{
                 title: 'Rapportage',
@@ -183,6 +194,7 @@ Ext.application({
                 name: 'beheer',
                 default_portal_template: 'beheer',
                 navigation_portal_template: 'beheer'
+
             })
         ];
 

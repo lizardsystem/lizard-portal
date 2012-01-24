@@ -5,7 +5,16 @@
     config: {
       something: false
     },
+    setTempWriteParams: function(params) {
+      this.notTmpParams = Ext.merge({}, this.proxy.extraParams);
+      return this.proxy.extraParams = Ext.merge(this.proxy.extraParams, params);
+    },
     applyParams: function(params) {
+      if (!this.notTmpParams) {
+        this.notTmpParams = Ext.merge({}, this.proxy.extraParams, params);
+      } else {
+        this.notTmpParams = Ext.merge(this.notTmpParams, params);
+      }
       this.proxy.extraParams = Ext.merge(this.proxy.extraParams, params);
       return this.load();
     },
@@ -52,6 +61,7 @@
       write: function(store, action, operation) {
         console.log('write:');
         console.log(arguments);
+        store.proxy.extraParam = Ext.merge({}, store.notTmpParams);
         return Ext.MessageBox.alert('Opslaan gelukt');
       }
     }

@@ -66,4 +66,16 @@ url = {
 
 {% block title %}{% trans "Volg- en Stuursysteem" %}{% endblock title %}
 
-{% block page %}<!-- {{  csrf_token }} -->{% endblock page %}
+{% block page %}
+
+    
+<div id="login-form-wrap" style="position:absolute; top:0px; left:0px; overflow:hidden;visibility:hidden;">
+    <form id='loginform' method="POST" action="/user/login_redirect/" class="x-form">
+    {%    csrf_token %}
+    <input type="text" id="username" name="username" value=""/>
+    <input type="password" id="password" name="password" value=""/>
+    <input type="submit" id="submitbutton" value="Login" />
+    </form>
+</div>
+
+{% endblock page %}

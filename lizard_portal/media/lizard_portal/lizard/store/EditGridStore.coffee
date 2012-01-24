@@ -10,8 +10,19 @@ Ext.define 'Lizard.store.EditGridStore',
     config:
         something: false
 
-    applyParams: (params) ->
+
+    setTempWriteParams: (params) ->
+        @notTmpParams = Ext.merge({}, @proxy.extraParams)
         @proxy.extraParams = Ext.merge(@proxy.extraParams, params)
+
+    applyParams: (params) ->
+        if not @notTmpParams
+            @notTmpParams = Ext.merge({}, @proxy.extraParams, params)
+        else
+            @notTmpParams = Ext.merge(@notTmpParams, params)
+
+        @proxy.extraParams = Ext.merge(@proxy.extraParams, params)
+
         @load()
 
     rejectChanges: () ->
@@ -67,6 +78,9 @@ Ext.define 'Lizard.store.EditGridStore',
             #    if rec.dirty == true
             #        rec.commit()
             #)
+
+            store.proxy.extraParam = Ext.merge({}, store.notTmpParams)
+
             Ext.MessageBox.alert('Opslaan gelukt');
 
 

@@ -1,9 +1,12 @@
 # (c) Nelen & Schuurmans.  GPL licensed, see LICENSE.txt.
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.template import RequestContext
 from django.template import TemplateDoesNotExist
 from django.template import Template
 from django.template.loader import get_template
+
+from vss.utils import auto_login
 
 from lizard_portal.models import PortalConfiguration
 
@@ -11,6 +14,8 @@ def site(request, application_name, active_tab_name):
     """
         returns html page which loads specified (ext-js) application
     """
+    if not request.user.is_authenticated():
+        auto_login(request)
 
     app_javascript_file = get_template('application/'+application_name+'.js')
     #django.template.TemplateDoesNotExist
@@ -48,6 +53,12 @@ def json_configuration(request):
     portal_template = request.GET.get('portalTemplate', 'homepage')
 
     if request.user.is_authenticated():
+
+        if portal_template == 'maatregelen-beheer':
+            return redirect('lizard_measure.measure_groupedit_portal')
+        elif portal_template == 'organisatie-beheer':
+            return redirect('lizard_measure.organization_groupedit_portal')
+
         try:
             t = get_template('portals/'+portal_template+'.js')
         except TemplateDoesNotExist, e:

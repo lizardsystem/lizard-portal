@@ -75,16 +75,42 @@
       me = this;
       return Ext.MessageBox.confirm('Loguit', 'Weet u zeker dat u uit wil loggen?', function(button) {
         if (button === 'yes') {
-          if (me.close_on_logout) {
-            return location.replace('/user/logout_redirect/?url=' + location.href);
-          } else {
-            return location.replace('/user/logout_redirect/?url=/closewindow/' + location.href);
-          }
+          return location.replace('/user/logout_redirect/');
         }
       });
     },
     login: function() {
-      return Ext.create('Ext.window.Window', {
+      var basic, log_me_in, login_window;
+      log_me_in = function(form) {
+        var basic;
+        console.log('submit login');
+        basic = form.getForm();
+        return form.submit({
+          clientValidation: true,
+          url: form.url,
+          params: {
+            check: true
+          },
+          success: function(form, action) {
+            var result;
+            result = Ext.JSON.decode(action.response.responseText);
+            if (result.success) {
+              Ext.get('username').dom.value = basic.findField('username').getValue();
+              Ext.get('password').dom.value = basic.findField('password').getValue();
+              return document.forms["loginform"].submit();
+            } else {
+              return Ext.Msg.alert('Fout', result.msg);
+            }
+          },
+          failure: function(form, action) {
+            var result;
+            result = Ext.JSON.decode(action.response.responseText);
+            return Ext.Msg.alert('Fout', result.msg);
+          }
+        });
+      };
+      login_window = Ext.create('Ext.window.Window', {
+        id: 'login_window',
         title: 'Login',
         items: {
           frame: true,
@@ -92,6 +118,7 @@
           url: '/user/login_redirect/',
           bodyStyle: 'padding:5px 5px 0',
           width: 350,
+          standardSubmit: false,
           fieldDefaults: {
             msgTarget: 'side',
             labelWidth: 90
@@ -103,11 +130,13 @@
           items: [
             {
               fieldLabel: 'Gebruikernaam',
-              name: 'username'
+              name: 'username',
+              allowBlank: false
             }, {
               fieldLabel: 'Password',
               name: 'password',
-              inputType: 'password'
+              inputType: 'password',
+              allowBlank: false
             }, {
               xtype: 'displayfield',
               value: 'Wachtwoord <a href="' + url.auth_password_reset + '" target="_blank">vergeten</a>?'
@@ -115,29 +144,13 @@
           ],
           buttons: [
             {
+              id: 'login_button',
               text: 'Login',
               formBind: true,
               handler: function() {
                 var form;
-                form = this.up('form').getForm();
-                return form.submit({
-                  clientValidation: true,
-                  url: form.url,
-                  success: function(form, action) {
-                    var result;
-                    result = Ext.JSON.decode(action.response.responseText);
-                    if (result.success) {
-                      return location.reload();
-                    } else {
-                      return Ext.Msg.alert('Fout', result.msg);
-                    }
-                  },
-                  failure: function(form, action) {
-                    var result;
-                    result = Ext.JSON.decode(action.response.responseText);
-                    return Ext.Msg.alert('Fout', result.msg);
-                  }
-                });
+                form = this.up('form');
+                return log_me_in(form);
               }
             }, {
               text: 'Cancel',
@@ -150,6 +163,17 @@
           ]
         }
       }).show();
+      basic = login_window.down('form').getForm();
+      basic.findField('username').setValue(Ext.get('username').dom.value);
+      basic.findField('password').setValue(Ext.get('password').dom.value);
+      return new Ext.util.KeyMap(login_window.getEl(), {
+        key: Ext.EventObject.ENTER,
+        fn: function() {
+          var form;
+          form = login_window.down('form');
+          return log_me_in(form);
+        }
+      });
     },
     periodSelection: function() {
       return Ext.create('Ext.window.Window', {
@@ -364,19 +388,17 @@
                 return Ext.MessageBox.alert('release 2', print_object(me.context_manager.getContext()));
               }
             }, '-', {
+              text: 'Andere gebruiker',
+              handler: function(button, event, eOpts) {
+                return me.login();
+              }
+            }, {
               text: 'Log uit',
               handler: function(button, event, eOpts) {
                 return me.logout();
               }
             }
-          ],
-          listeners: {
-            mouseover: {
-              fn: function(button, event, eOpts) {
-                return console.log('over user');
-              }
-            }
-          }
+          ]
         }, '-', {
           iconCls: 'l-icon-clock',
           xtype: 'button',

@@ -131,17 +131,6 @@ Ext.define 'Lizard.window.Screen',
                     tabPosition: 'bottom'
 
                 }
-#                {
-#                    region: 'east'
-#                    id: 'analyse'
-#                    title: 'Analyse'
-#                    width:300
-#                    floatable: true
-#                    collapsed:true
-#                    #layout:'card'
-#                    xtype: 'tabpanel'
-#                    tabPosition: 'bottom'
-#                }
             ]
 
         @callParent(arguments)
