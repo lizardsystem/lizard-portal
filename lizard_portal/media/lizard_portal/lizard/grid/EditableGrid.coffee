@@ -370,26 +370,47 @@ Ext.define('Lizard.grid.EditableGrid', {
 
     getStoreConfig: () ->
         fields = []
+
+
+        getGridFieldSettings = (setting) ->
+            field = {
+                name: setting.name
+                type: setting.type || 'auto'
+                mapping: setting.mapping || setting.name
+            }
+            if setting.type in ['combo', 'gridcombo']
+                field.sortType = 'asIdNameObject'
+
+            return field
+
+
         for field in @dataConfig
 
             if field.columns
                 for subfield in field.columns
-                    fields.push({
-                        name: subfield.name
-                        type: subfield.type || 'auto'
-                        mapping: subfield.mapping || subfield.name
-                    })
+                    fields.push(getGridFieldSettings(subfield))
 
             else
+                fields.push(getGridFieldSettings(field))
 
-
-                fields.push({
-                    name: field.name
-                    type: field.type || 'auto'
-                    mapping: field.mapping || field.name
-                })
 
         url = @getProxyUrl()
+
+        params = []
+        proxyparams = @getProxyParams()
+
+        console.log('++++++++++++++')
+        console.log(proxyparams)
+
+        Ext.Object.each(@getProxyParams(), (key, value) ->
+            params.push( key + '=' + value)
+            console.log(params)
+        )
+
+        params = params.join('&')
+
+        console.log(params)
+        console.log('++++++++++++++')
 
         store = {
             type: 'leditstore'
@@ -397,12 +418,11 @@ Ext.define('Lizard.grid.EditableGrid', {
             proxy: {
                 type: 'ajax'
                 api:
-                    create: "#{url}?_accept=application/json&flat=false&action=create" # Called when saving new records
-                    read: "#{url}?flat=false" # Called when reading existing records
-                    update: "#{url}?_accept=application/json&flat=false&action=update" # Called when updating existing records
-                    destroy: "#{url}?_accept=application/json&flat=false&action=delete" # Called when deleting existing records
+                    create: "#{url}?_accept=application/json&flat=false&action=create&#{params}" # Called when saving new records
+                    read: "#{url}?_accept=application/json&#{params}" # Called when reading existing records
+                    update: "#{url}?_accept=application/json&flat=false&action=update&#{params}" # Called when updating existing records
+                    destroy: "#{url}?_accept=application/json&flat=false&action=delete&#{params}" # Called when deleting existing records
                 extraParams: {
-                   _accept: 'application/json'
                 }
                 reader: {
                     type: 'json'

@@ -368,8 +368,20 @@
       }
     },
     getStoreConfig: function() {
-      var field, fields, store, subfield, url, _i, _j, _len, _len2, _ref, _ref2;
+      var field, fields, getGridFieldSettings, params, proxyparams, store, subfield, url, _i, _j, _len, _len2, _ref, _ref2;
       fields = [];
+      getGridFieldSettings = function(setting) {
+        var field, _ref;
+        field = {
+          name: setting.name,
+          type: setting.type || 'auto',
+          mapping: setting.mapping || setting.name
+        };
+        if ((_ref = setting.type) === 'combo' || _ref === 'gridcombo') {
+          field.sortType = 'asIdNameObject';
+        }
+        return field;
+      };
       _ref = this.dataConfig;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         field = _ref[_i];
@@ -377,35 +389,36 @@
           _ref2 = field.columns;
           for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
             subfield = _ref2[_j];
-            fields.push({
-              name: subfield.name,
-              type: subfield.type || 'auto',
-              mapping: subfield.mapping || subfield.name
-            });
+            fields.push(getGridFieldSettings(subfield));
           }
         } else {
-          fields.push({
-            name: field.name,
-            type: field.type || 'auto',
-            mapping: field.mapping || field.name
-          });
+          fields.push(getGridFieldSettings(field));
         }
       }
       url = this.getProxyUrl();
+      params = [];
+      proxyparams = this.getProxyParams();
+      console.log('++++++++++++++');
+      console.log(proxyparams);
+      Ext.Object.each(this.getProxyParams(), function(key, value) {
+        params.push(key + '=' + value);
+        return console.log(params);
+      });
+      params = params.join('&');
+      console.log(params);
+      console.log('++++++++++++++');
       store = {
         type: 'leditstore',
         fields: fields,
         proxy: {
           type: 'ajax',
           api: {
-            create: "" + url + "?_accept=application/json&flat=false&action=create",
-            read: "" + url + "?flat=false",
-            update: "" + url + "?_accept=application/json&flat=false&action=update",
-            destroy: "" + url + "?_accept=application/json&flat=false&action=delete"
+            create: "" + url + "?_accept=application/json&flat=false&action=create&" + params,
+            read: "" + url + "?_accept=application/json&" + params,
+            update: "" + url + "?_accept=application/json&flat=false&action=update&" + params,
+            destroy: "" + url + "?_accept=application/json&flat=false&action=delete&" + params
           },
-          extraParams: {
-            _accept: 'application/json'
-          },
+          extraParams: {},
           reader: {
             type: 'json',
             root: 'data'

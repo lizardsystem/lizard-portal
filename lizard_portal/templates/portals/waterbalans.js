@@ -51,7 +51,7 @@
             xtype: 'multigraph',
             graph_service_url: '/graph/',
             context_manager: Ext.getCmp('portalWindow').context_manager,
-            graphs: {% get_portal_template graphs-krw-overzicht %}
+            graphs: {% get_portal_template graphs-waterbalans %}
 
 		}]
 	}]
