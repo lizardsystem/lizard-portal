@@ -1,25 +1,52 @@
 (function() {
-  Ext.define('Lizard.grid.EditableGrid', {
+  /*
+      Fields:
+  
+  
+  
+  
+  
+  
+      * combo:
+          choices:
+              * array with string choices; or
+              * array with objects of choices. the objects has a 'id' and 'name' key
+  
+  
+  
+  
+  
+  
+    issues:
+    - editors are to small
+    - multiselect comboboxes doesn't work correct
+  
+  
+  */  Ext.define('Lizard.grid.EditableGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.leditgrid',
     config: {
-      proxyUrl: '/portal/wbbuckets.json',
+      proxyUrl: '',
       proxyParams: {},
       dataConfig: [],
       useSaveBar: true,
       enterEditSummary: true,
-      editable: true
+      editable: true,
+      addEditIcon: false,
+      addDeleteIcon: false,
+      actionEditIcon: null,
+      actionDeleteIcon: null
     },
     extraEditors: {
       timeserie: {
-        field: {
+        editor: {
           xtype: 'combo',
           store: Ext.create('Vss.store.TimeserieObject', {
             fixedParameter: ''
           }),
           queryMode: 'remote',
           displayField: 'name',
-          valueField: 'name',
+          valueField: 'id',
           forceSelection: true,
           typeAhead: true,
           minChars: 0,
@@ -45,8 +72,7 @@
       },
       boolean: {
         field: {
-          xtype: 'checkbox',
-          step: 1
+          xtype: 'checkbox'
         }
       },
       checkbox: {
@@ -64,7 +90,8 @@
       number: {
         field: {
           xtype: 'numberfield',
-          step: 1
+          step: 1,
+          allowDecimals: false
         }
       },
       date: {
@@ -91,16 +118,92 @@
         } else if (this.editors[type]) {
           editor = me.editors[type];
         } else if (type === 'combo') {
-          editor = {
-            field: {
-              xtype: 'combo',
-              store: col.choices,
-              queryMode: 'local',
-              forceSelection: true,
-              triggerAction: 'all',
-              selectOnTab: true
-            }
-          };
+          if (col.choices && col.choices.length > 0 && Ext.type(col.choices[0]) === 'object') {
+            editor = {
+              field: {
+                xtype: 'combodict',
+                displayField: 'name',
+                valueField: 'id',
+                return_json: false,
+                store: {
+                  fields: ['id', 'name'],
+                  data: col.choices
+                },
+                queryMode: 'local',
+                multiSelect: col.multiSelect || false,
+                forceSelection: true,
+                triggerAction: 'all',
+                selectOnTab: true
+              }
+            };
+          } else if (col.remote) {
+            editor = {
+              field: {
+                xtype: 'gridcombobox',
+                store: col.store,
+                queryMode: 'remote',
+                displayField: 'name',
+                valueField: 'id',
+                return_json: false,
+                forceSelection: true,
+                typeAhead: true,
+                minChars: 0,
+                triggerAction: 'all',
+                selectOnTab: true,
+                pageSize: 15,
+                width: 150,
+                size: 150
+              }
+            };
+          } else {
+            editor = {
+              field: {
+                xtype: 'combo',
+                store: col.choices,
+                queryMode: 'local',
+                forceSelection: true,
+                triggerAction: 'all',
+                selectOnTab: true
+              }
+            };
+          }
+        } else if (type === 'gridcombobox') {
+          if (col.remote) {
+            editor = {
+              field: {
+                xtype: 'gridcombobox',
+                store: col.store,
+                queryMode: 'remote',
+                displayField: 'name',
+                valueField: 'id',
+                forceSelection: true,
+                typeAhead: true,
+                minChars: 0,
+                triggerAction: 'all',
+                selectOnTab: true,
+                pageSize: 15,
+                width: 150,
+                size: 150
+              }
+            };
+          } else {
+            editor = {
+              field: {
+                xtype: 'gridcombobox',
+                displayField: 'name',
+                valueField: 'id',
+                store: {
+                  fields: ['id', 'name'],
+                  data: col.choices
+                },
+                queryMode: 'local',
+                forceSelection: true,
+                triggerAction: 'all',
+                selectOnTab: true,
+                multiSelect: col.multiSelect
+              }
+            };
+          }
         }
       }
       if (Ext.type(editor) === 'object') {
@@ -116,6 +219,7 @@
       }
     },
     get_renderer: function(value, style, record, rownr, colnr, store, gridpanel, col) {
+      var names, val, _i, _len, _ref;
       if (value === null) {
         value = '-';
       }
@@ -124,6 +228,19 @@
           value = 'ja';
         } else if (value === false) {
           value = 'nee';
+        }
+      }
+      if ((_ref = col.type) === 'combo' || _ref === 'gridcombobox') {
+        if (Ext.type(value) === 'object') {
+          value = value.name;
+        }
+        if (Ext.type(value) === 'array') {
+          names = [];
+          for (_i = 0, _len = value.length; _i < _len; _i++) {
+            val = value[_i];
+            names.push(val.name);
+          }
+          value = names.join(', ');
         }
       }
       if (!col.editable) {
@@ -142,7 +259,7 @@
       return this.callParent(arguments);
     },
     getColumnConfig: function() {
-      var col, col_sub, cols, cols_with_header, getColconfig, me, _i, _j, _len, _len2, _ref, _ref2;
+      var col, colConfig, col_sub, cols, cols_with_header, getColconfig, me, _i, _j, _len, _len2, _ref, _ref2;
       me = this;
       getColconfig = function(col) {
         var col_config;
@@ -164,9 +281,46 @@
         if (col.editIf) {
           col_config.editIf = col.editIf;
         }
+        if (col.multiSelect) {
+          col_config.multiSelect = true;
+        }
         return col_config;
       };
       cols = [];
+      if (this.addEditIcon || this.addDeleteIcon) {
+        colConfig = {
+          xtype: 'actioncolumn',
+          width: 50,
+          items: []
+        };
+        if (this.addEditIcon) {
+          colConfig.items.push({
+            icon: '/static_media/lizard_portal/images/settingtable.png',
+            tooltip: 'Edit',
+            handler: function(grid, rowIndex, colIndex) {
+              var rec;
+              rec = grid.getStore().getAt(rowIndex);
+              if (me.actionEditIcon) {
+                return me.actionEditIcon(rec);
+              } else {
+                return alert("Edit " + rec.get('id'));
+              }
+            }
+          });
+        }
+        if (this.addDeleteIcon) {
+          colConfig.items.push({
+            icon: '/static_media/lizard_portal/images/delete.png',
+            tooltip: 'Delete',
+            handler: function(grid, rowIndex, colIndex) {
+              var rec;
+              rec = grid.getStore().getAt(rowIndex);
+              return me.store.remove(rec);
+            }
+          });
+        }
+        cols.push(colConfig);
+      }
       _ref = this.dataConfig;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         col = _ref[_i];
@@ -214,8 +368,20 @@
       }
     },
     getStoreConfig: function() {
-      var field, fields, store, subfield, url, _i, _j, _len, _len2, _ref, _ref2;
+      var field, fields, getGridFieldSettings, params, proxyparams, store, subfield, url, _i, _j, _len, _len2, _ref, _ref2;
       fields = [];
+      getGridFieldSettings = function(setting) {
+        var field, _ref;
+        field = {
+          name: setting.name,
+          type: setting.type || 'auto',
+          mapping: setting.mapping || setting.name
+        };
+        if ((_ref = setting.type) === 'combo' || _ref === 'gridcombo') {
+          field.sortType = 'asIdNameObject';
+        }
+        return field;
+      };
       _ref = this.dataConfig;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         field = _ref[_i];
@@ -223,35 +389,36 @@
           _ref2 = field.columns;
           for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
             subfield = _ref2[_j];
-            fields.push({
-              name: subfield.name,
-              type: subfield.type || 'auto',
-              mapping: subfield.mapping || subfield.name
-            });
+            fields.push(getGridFieldSettings(subfield));
           }
         } else {
-          fields.push({
-            name: field.name,
-            type: field.type || 'auto',
-            mapping: field.mapping || field.name
-          });
+          fields.push(getGridFieldSettings(field));
         }
       }
       url = this.getProxyUrl();
+      params = [];
+      proxyparams = this.getProxyParams();
+      console.log('++++++++++++++');
+      console.log(proxyparams);
+      Ext.Object.each(this.getProxyParams(), function(key, value) {
+        params.push(key + '=' + value);
+        return console.log(params);
+      });
+      params = params.join('&');
+      console.log(params);
+      console.log('++++++++++++++');
       store = {
         type: 'leditstore',
         fields: fields,
         proxy: {
           type: 'ajax',
           api: {
-            create: "" + url + "?action=create",
-            read: url,
-            update: "" + url + "?action=update",
-            destroy: "" + url + "?action=delete"
+            create: "" + url + "?_accept=application/json&flat=false&action=create&" + params,
+            read: "" + url + "?_accept=application/json&" + params,
+            update: "" + url + "?_accept=application/json&flat=false&action=update&" + params,
+            destroy: "" + url + "?_accept=application/json&flat=false&action=delete&" + params
           },
-          extraParams: {
-            _accept: 'application/json'
-          },
+          extraParams: {},
           reader: {
             type: 'json',
             root: 'data'
@@ -274,7 +441,7 @@
       me.columns = this.getColumnConfig();
       me.store = this.getStoreConfig();
       if (this.getEditable()) {
-        this.editing = Ext.create('Ext.grid.plugin.CellEditing', {
+        this.editing = Ext.create('Lizard.grid.CellEditing', {
           clicksToEdit: 1
         });
         this.plugins.push(this.editing);
@@ -282,14 +449,14 @@
           {
             xtype: 'button',
             text: 'Toevoegen',
-            iconCls: 'add',
+            iconCls: 'l-icon-add',
             handler: function(menuItem, checked) {
               return me.addRecord();
             }
           }, {
             xtype: 'button',
             text: 'Delete',
-            iconCls: 'add',
+            iconCls: 'l-icon-delete',
             handler: function(menuItem, checked) {
               return me.deleteSelectedRecord();
             }
@@ -297,18 +464,18 @@
         ];
       }
       if (this.getEditable() && this.getUseSaveBar()) {
-        me.bbar.concat([
+        me.bbar = me.bbar.concat([
           '-', {
             xtype: 'button',
             text: 'Cancel',
-            iconCls: 'cancel',
+            iconCls: 'l-icon-cancel',
             handler: function(menuItem, checked) {
               return me.cancelEdits();
             }
           }, {
             xtype: 'button',
             text: 'Save',
-            iconCls: 'save',
+            iconCls: 'l-icon-disk',
             handler: function(menuItem) {
               if (me.getEnterEditSummary()) {
                 return Ext.MessageBox.show({
@@ -319,6 +486,9 @@
                   buttons: Ext.MessageBox.OKCANCEL,
                   fn: function(btn, text) {
                     if (btn === 'ok') {
+                      me.store.setTempWriteParams({
+                        edit_message: text
+                      });
                       return me.saveEdits();
                     }
                   }
@@ -330,6 +500,13 @@
           }
         ]);
       }
+      this.on('edit', function(editor, e) {
+        console.log('editor:');
+        console.log(editor);
+        console.log('e:');
+        console.log(e);
+        return console.log(editor.getActiveEditor());
+      });
       return this.callParent(arguments);
     }
   });

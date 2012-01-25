@@ -55,7 +55,7 @@
         context = this.getContext();
         pw = Ext.getCmp('portalWindow');
         if (pw) {
-          if (context.object_id) {
+          if (context.object_id && this) {
             pw.linkTo({});
           } else {
             pw.showNavigationPortalTemplate();

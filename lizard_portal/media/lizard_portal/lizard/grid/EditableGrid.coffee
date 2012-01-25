@@ -1,78 +1,105 @@
+
+
+
+###
+    Fields:
+
+
+
+
+
+
+    * combo:
+        choices:
+            * array with string choices; or
+            * array with objects of choices. the objects has a 'id' and 'name' key
+
+
+
+
+
+
+  issues:
+  - editors are to small
+  - multiselect comboboxes doesn't work correct
+
+
+###
+
+
+
 Ext.define('Lizard.grid.EditableGrid', {
     extend: 'Ext.grid.Panel'
     alias: 'widget.leditgrid'
     config: {
-        proxyUrl: '/portal/wbbuckets.json'
+        proxyUrl: ''
         proxyParams: {}
         dataConfig: []
         useSaveBar: true
         enterEditSummary: true
         editable: true
+        addEditIcon: false
+        addDeleteIcon: false
+        actionEditIcon: null
+        actionDeleteIcon: null
     }
     extraEditors: {
         timeserie: {
-            field: {
+            editor: {
                 xtype: 'combo'
                 store: Ext.create('Vss.store.TimeserieObject',{
                     fixedParameter: ''
                 }),
                 queryMode: 'remote'
                 displayField: 'name'
-                valueField: 'name'
+                valueField: 'id'
                 forceSelection: true
-                typeAhead: true,
+                typeAhead: true
                 minChars:0,
-                triggerAction: 'all',
-                selectOnTab: true,
-                pageSize: 15,
-                width:150,
+                triggerAction: 'all'
+                selectOnTab: true
+                pageSize: 15
+                width:150
                 size: 150
             }
         }
     }
     editors: {
-        text: {
-            field: {
+        text:
+            field:
                 xtype:'textfield'
-            }
-        }
-        oordeel: {
+
+        oordeel:
             field: Ext.create('Ext.form.field.ComboBox', {
-                editable: false,
+                editable: false
                 store: [[ 1, 'OK' ], [0, 'Kritisch' ]]
             })
-        }
-        boolean: {
-            field: {
-                xtype:'checkbox',
+
+        boolean:
+            field:
+                xtype:'checkbox'
+
+        checkbox:
+            field:
+                xtype:'checkbox'
                 step:1
-            }
-        },
-        checkbox: {
-            field: {
-                xtype:'checkbox',
+
+        float:
+            field:
+                xtype:'numberfield'
                 step:1
-            }
-        },
-        float: {
-            field: {
+
+        number:
+            field:
                 xtype:'numberfield',
                 step:1
-            }
-        },
-        number: {
-            field: {
-                xtype:'numberfield',
-                step:1
-            }
-        },
-        date: {
-            field: {
+                allowDecimals: false,
+
+        date:
+            field:
                 xtype:'datefield',
                 format: 'm d Y',
                 altFormats: 'd,m,Y|d.m.Y',
-            }
-        }
     }
     get_editor: (col) ->
         me = @
@@ -91,20 +118,90 @@ Ext.define('Lizard.grid.EditableGrid', {
             else if @editors[type]
                 editor = me.editors[type]
             else if type == 'combo'
-                editor = {
-                    field: {
-                        xtype: 'combo'
-                        store: col.choices
-                        queryMode: 'local'
-                        forceSelection: true
-                        triggerAction: 'all',
-                        selectOnTab: true,
+                if col.choices and col.choices.length > 0 and Ext.type(col.choices[0]) == 'object'
+                    editor = {
+                        field: {
+                            xtype: 'combodict'
+                            displayField: 'name'
+                            valueField: 'id'
+                            return_json: false
+                            store:
+                                fields: ['id', 'name']
+                                data: col.choices
+                            queryMode: 'local'
+                            multiSelect: col.multiSelect || false
+                            forceSelection: true
+                            triggerAction: 'all'
+                            selectOnTab: true
+                        }
+
                     }
-
-                }
-
-
-
+                else if col.remote
+                    editor = {
+                        field: {
+                            xtype: 'gridcombobox'
+                            store: col.store
+                            queryMode: 'remote'
+                            displayField: 'name'
+                            valueField: 'id'
+                            return_json: false
+                            forceSelection: true
+                            typeAhead: true
+                            minChars:0,
+                            triggerAction: 'all'
+                            selectOnTab: true
+                            pageSize: 15
+                            width:150
+                            size: 150
+                        }
+                    }
+                else
+                    editor = {
+                        field: {
+                            xtype: 'combo'
+                            store: col.choices
+                            queryMode: 'local'
+                            forceSelection: true
+                            triggerAction: 'all',
+                            selectOnTab: true,
+                        }
+                    }
+            else if type == 'gridcombobox'
+                if col.remote
+                    editor = {
+                        field: {
+                            xtype: 'gridcombobox'
+                            store: col.store
+                            queryMode: 'remote'
+                            displayField: 'name'
+                            valueField: 'id'
+                            forceSelection: true
+                            typeAhead: true
+                            minChars:0,
+                            triggerAction: 'all'
+                            selectOnTab: true
+                            pageSize: 15
+                            width:150
+                            size: 150
+                        }
+                    }
+                else
+                    editor = {
+                        field: {
+                            xtype: 'gridcombobox'
+                            displayField: 'name',
+                            valueField: 'id',
+                            store: {
+                                fields: ['id', 'name'],
+                                data: col.choices
+                            },
+                            queryMode: 'local'
+                            forceSelection: true
+                            triggerAction: 'all',
+                            selectOnTab: true,
+                            multiSelect: col.multiSelect
+                        }
+                    }
 
         if Ext.type(editor) == 'object'
             editor = Ext.create('Ext.grid.CellEditor', editor)
@@ -129,6 +226,17 @@ Ext.define('Lizard.grid.EditableGrid', {
             else if value == false
                 value = 'nee'
 
+        if col.type in ['combo', 'gridcombobox']
+            if Ext.type(value) == 'object'
+                value = value.name
+                #else just the value
+            if Ext.type(value) == 'array'
+                names = []
+                for val in value
+                    names.push(val.name)
+                value = names.join(', ')
+                #else just the value
+
         if !col.editable
             value = "<i>#{value}</i>"
 
@@ -147,6 +255,7 @@ Ext.define('Lizard.grid.EditableGrid', {
     getColumnConfig: () ->
         me = @
 
+        #function with default settings
         getColconfig = (col) ->
             col_config = {
                 text: col.title
@@ -169,10 +278,52 @@ Ext.define('Lizard.grid.EditableGrid', {
 
             if col.editIf
                 col_config.editIf = col.editIf
+            if col.multiSelect
+                col_config.multiSelect = true
 
             return col_config
 
         cols = []
+
+
+        if @addEditIcon or @addDeleteIcon
+            colConfig = {
+                xtype:'actioncolumn',
+                width:50,
+                items: []
+            }
+
+            if @addEditIcon
+                colConfig.items.push({
+                        #todo: iconCls is better, but doesn't work
+                        icon: '/static_media/lizard_portal/images/settingtable.png',
+                        tooltip: 'Edit',
+                        handler: (grid, rowIndex, colIndex) ->
+                            rec = grid.getStore().getAt(rowIndex)
+                            if me.actionEditIcon
+                                me.actionEditIcon(rec)
+                            else
+                                alert("Edit " + rec.get('id'))
+
+                    })
+
+            if @addDeleteIcon
+                colConfig.items.push({
+                        #todo: iconCls is better, but doesn't work
+                        icon: '/static_media/lizard_portal/images/delete.png',
+                        #xtype: 'button'
+                        tooltip: 'Delete',
+                        handler: (grid, rowIndex, colIndex) ->
+                            rec = grid.getStore().getAt(rowIndex)
+                            me.store.remove(rec)
+                    })
+
+            cols.push(colConfig)
+
+
+
+
+
         for col in @dataConfig
             if !col.columns
                 cols.push(getColconfig(col))
@@ -182,6 +333,9 @@ Ext.define('Lizard.grid.EditableGrid', {
                     cols_with_header['columns'].push(getColconfig(col_sub))
 
                 cols.push(cols_with_header)
+
+
+
 
         console.log(cols)
 
@@ -211,31 +365,52 @@ Ext.define('Lizard.grid.EditableGrid', {
         selection = @getView().getSelectionModel().getSelection()[0]
         if selection
             @store.remove(selection)
-        
-    
+
+
 
     getStoreConfig: () ->
         fields = []
+
+
+        getGridFieldSettings = (setting) ->
+            field = {
+                name: setting.name
+                type: setting.type || 'auto'
+                mapping: setting.mapping || setting.name
+            }
+            if setting.type in ['combo', 'gridcombo']
+                field.sortType = 'asIdNameObject'
+
+            return field
+
+
         for field in @dataConfig
 
             if field.columns
                 for subfield in field.columns
-                    fields.push({
-                        name: subfield.name
-                        type: subfield.type || 'auto'
-                        mapping: subfield.mapping || subfield.name
-                    })
+                    fields.push(getGridFieldSettings(subfield))
 
             else
+                fields.push(getGridFieldSettings(field))
 
-
-                fields.push({
-                    name: field.name
-                    type: field.type || 'auto'
-                    mapping: field.mapping || field.name
-                })
 
         url = @getProxyUrl()
+
+        params = []
+        proxyparams = @getProxyParams()
+
+        console.log('++++++++++++++')
+        console.log(proxyparams)
+
+        Ext.Object.each(@getProxyParams(), (key, value) ->
+            params.push( key + '=' + value)
+            console.log(params)
+        )
+
+        params = params.join('&')
+
+        console.log(params)
+        console.log('++++++++++++++')
 
         store = {
             type: 'leditstore'
@@ -243,12 +418,11 @@ Ext.define('Lizard.grid.EditableGrid', {
             proxy: {
                 type: 'ajax'
                 api:
-                    create: "#{url}?action=create" # Called when saving new records
-                    read: url # Called when reading existing records
-                    update: "#{url}?action=update" # Called when updating existing records
-                    destroy: "#{url}?action=delete" # Called when deleting existing records
+                    create: "#{url}?_accept=application/json&flat=false&action=create&#{params}" # Called when saving new records
+                    read: "#{url}?_accept=application/json&#{params}" # Called when reading existing records
+                    update: "#{url}?_accept=application/json&flat=false&action=update&#{params}" # Called when updating existing records
+                    destroy: "#{url}?_accept=application/json&flat=false&action=delete&#{params}" # Called when deleting existing records
                 extraParams: {
-                   _accept: 'application/json'
                 }
                 reader: {
                     type: 'json'
@@ -274,7 +448,7 @@ Ext.define('Lizard.grid.EditableGrid', {
 
 
         if @getEditable()
-            @editing = Ext.create('Ext.grid.plugin.CellEditing', {
+            @editing = Ext.create('Lizard.grid.CellEditing', {
                         clicksToEdit: 1
                     })
             @plugins.push(@editing)
@@ -283,7 +457,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                 {
                     xtype: 'button',
                     text: 'Toevoegen',
-                    iconCls: 'add',
+                    iconCls: 'l-icon-add',
                     handler:(menuItem, checked) ->
                         me.addRecord()
 
@@ -291,25 +465,20 @@ Ext.define('Lizard.grid.EditableGrid', {
                 {
                     xtype: 'button',
                     text: 'Delete',
-                    iconCls: 'add',
+                    iconCls: 'l-icon-delete',
                     handler:(menuItem, checked) ->
                         me.deleteSelectedRecord()
 
                 }
             ]
 
-
-
-
-
-
         if @getEditable() and @getUseSaveBar()
-            me.bbar.concat([
+            me.bbar = me.bbar.concat([
                 '-'
                 {
                     xtype: 'button',
                     text: 'Cancel',
-                    iconCls: 'cancel',
+                    iconCls: 'l-icon-cancel',
                     handler:(menuItem, checked) ->
                         me.cancelEdits()
 
@@ -317,7 +486,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                 {
                     xtype: 'button',
                     text: 'Save',
-                    iconCls: 'save',
+                    iconCls: 'l-icon-disk',
                     handler: (menuItem) ->
 
                         if me.getEnterEditSummary()
@@ -329,6 +498,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                                 buttons: Ext.MessageBox.OKCANCEL,
                                 fn: (btn, text)  ->
                                      if (btn=='ok')
+                                         me.store.setTempWriteParams({edit_message: text})
                                          me.saveEdits()
                             })
                         else
@@ -337,10 +507,23 @@ Ext.define('Lizard.grid.EditableGrid', {
                 }
             ])
 
+        @on('edit', (editor, e) ->
+            console.log('editor:')
+            console.log(editor)
+            console.log('e:')
+            console.log(e)
+            console.log(editor.getActiveEditor())
+
+        )
 
 
-
-
+#grid - The grid
+#record - The record being edited
+#field - The field name being edited
+#value - The value being set
+#originalValue - The original value for the field, before the edit.
+#row - The grid table row
+#column - The grid Column defining the column that is being edited.
         
         @callParent(arguments)
     

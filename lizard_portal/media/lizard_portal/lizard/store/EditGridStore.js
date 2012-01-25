@@ -1,11 +1,44 @@
 (function() {
+  Ext.apply(Ext.data.SortTypes, {
+    asIdNameObject: function(obj) {
+      console.log(obj);
+      if (Ext.type(obj) === 'string') {
+        console.log('string');
+        return obj;
+      } else if (Ext.type(obj) === 'object') {
+        if (obj.name) {
+          return obj.name;
+        } else {
+          return null;
+        }
+      } else if (Ext.type(obj) === 'array') {
+        console.log('array');
+        if (obj[0]) {
+          console.log(obj[0].name);
+          return obj[0].name;
+        } else {
+          return '';
+        }
+      }
+      return '';
+    }
+  });
   Ext.define('Lizard.store.EditGridStore', {
     extend: 'Ext.data.Store',
     alias: 'store.leditstore',
     config: {
       something: false
     },
+    setTempWriteParams: function(params) {
+      this.notTmpParams = Ext.merge({}, this.proxy.extraParams);
+      return this.proxy.extraParams = Ext.merge(this.proxy.extraParams, params);
+    },
     applyParams: function(params) {
+      if (!this.notTmpParams) {
+        this.notTmpParams = Ext.merge({}, this.proxy.extraParams, params);
+      } else {
+        this.notTmpParams = Ext.merge(this.notTmpParams, params);
+      }
       this.proxy.extraParams = Ext.merge(this.proxy.extraParams, params);
       return this.load();
     },
@@ -52,6 +85,7 @@
       write: function(store, action, operation) {
         console.log('write:');
         console.log(arguments);
+        store.proxy.extraParam = Ext.merge({}, store.notTmpParams);
         return Ext.MessageBox.alert('Opslaan gelukt');
       }
     }

@@ -175,3 +175,5 @@
 .l-icon-clock{
     background-image: url('images/clock-light.png');
 }
+
+.x-grid-cell-inner { white-space: normal; }

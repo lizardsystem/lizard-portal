@@ -85,20 +85,51 @@ Ext.define('Lizard.window.Header', {
     logout: () ->
         me = @
         Ext.MessageBox.confirm(
-            'Loguit',
-            'Weet u zeker dat u uit wil loggen?',
+            'Loguit'
+            'Weet u zeker dat u uit wil loggen?'
             (button) ->
                 if button == 'yes'
-                    if me.close_on_logout
-                        location.replace('/user/logout_redirect/?url='+location.href)
-                    else
-                        location.replace('/user/logout_redirect/?url=/closewindow/'+location.href)
-                    
+                    location.replace('/user/logout_redirect/')
         )
 
     login: () ->
-        Ext.create('Ext.window.Window', {
 
+        #function which does actually log user in
+        #login procedure has two steps:
+        # 1) check username and password using ajax (and check=true parameter)
+        # 2) login using a 'real' html submit using a real form. This way the browser will popup for remembering the
+        #    username and password the next time
+        #
+        #after creation of the login window, the values for username and password are copied from a html form, which
+        #already exist during creation of the page (is nescessary for the browser). see more details on:
+        #http://www.sencha.com/forum/showthread.php?6450-Saved-user-credentials-and-dynamic-forms-possible
+        log_me_in = (form) ->
+            console.log('submit login')
+            basic = form.getForm()
+
+            form.submit({
+                clientValidation: true
+                url: form.url
+                params: {
+                    check: true #send parameter check to just check username and password and not sign in
+                }
+                success: (form, action) ->
+                    result = Ext.JSON.decode(action.response.responseText)
+                    if result.success
+                        #when username and password are correct, login using the html form to prompt 'remember password'
+                        Ext.get('username').dom.value = basic.findField('username').getValue()
+                        Ext.get('password').dom.value = basic.findField('password').getValue()
+                        document.forms["loginform"].submit()
+                    else
+                        Ext.Msg.alert('Fout', result.msg)
+
+                failure: (form, action) ->
+                    result = Ext.JSON.decode(action.response.responseText)
+                    Ext.Msg.alert('Fout', result.msg)
+            })
+
+        login_window = Ext.create('Ext.window.Window', {
+            id: 'login_window'
             title: 'Login'
             items:
                 frame: true
@@ -106,51 +137,37 @@ Ext.define('Lizard.window.Header', {
                 url:'/user/login_redirect/'
                 bodyStyle: 'padding:5px 5px 0',
                 width: 350,
+                standardSubmit: false, #first check username and passwords using Ajax
                 fieldDefaults:
                     msgTarget: 'side',
                     labelWidth: 90
                 defaultType: 'textfield',
                 defaults:
                     anchor: '100%'
-
                 items: [
                     {
                         fieldLabel: 'Gebruikernaam'
                         name: 'username'
+                        allowBlank:false
                     }
                     {
                         fieldLabel: 'Password'
                         name: 'password'
                         inputType: 'password'
+                        allowBlank:false
                     }
                     {
                         xtype: 'displayfield',
-                        value: 'Wachtwoord <a href="' + url.auth_password_reset + '" target="_blank">vergeten</a>?'#of <a href="' + url.auth_password_reset + '" target="_blank">wijzigen</a>
+                        value: 'Wachtwoord <a href="' + url.auth_password_reset + '" target="_blank">vergeten</a>?'
                     }
                 ]
-
                 buttons: [{
+                    id: 'login_button'
                     text: 'Login'
                     formBind: true,
                     handler: () ->
-                        form = @up('form').getForm()
-
-                        form.submit({
-                            clientValidation: true
-                            url: form.url
-                            success: (form, action) ->
-                                result = Ext.JSON.decode(action.response.responseText)
-                                if result.success
-                                    location.reload()
-                                else
-                                    Ext.Msg.alert('Fout', result.msg)
-
-                            failure: (form, action) ->
-                                result = Ext.JSON.decode(action.response.responseText)
-                                Ext.Msg.alert('Fout', result.msg)
-                        })
-
-
+                        form = @up('form')
+                        log_me_in(form)
                 },{
                     text: 'Cancel'
                     handler: () ->
@@ -159,6 +176,20 @@ Ext.define('Lizard.window.Header', {
                 }]
         }).show()
 
+        #get values from already existing fields in html-page
+        basic = login_window.down('form').getForm()
+        basic.findField('username').setValue(Ext.get('username').dom.value)
+        basic.findField('password').setValue(Ext.get('password').dom.value)
+
+        #set Enter on login button
+        new Ext.util.KeyMap(login_window.getEl(),
+            {
+                key: Ext.EventObject.ENTER
+                fn: () ->
+                    form = login_window.down('form')
+                    log_me_in(form)
+            }
+        )
 
     periodSelection: () ->
         Ext.create('Ext.window.Window', {
@@ -332,15 +363,16 @@ Ext.define('Lizard.window.Header', {
                         }
                         '-'
                         {
+                            text: 'Andere gebruiker'
+                            handler: (button, event, eOpts) ->
+                                me.login()
+                        }
+                        {
                             text: 'Log uit'
                             handler: (button, event, eOpts) ->
                                 me.logout()
                         }
                     ]
-                    listeners:
-                        mouseover:
-                            fn: (button, event, eOpts) ->
-                                console.log('over user')
 
                 }
                 '-'

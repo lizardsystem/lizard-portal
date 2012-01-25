@@ -1,15 +1,13 @@
 (function() {
-  Ext.define('Lizard.form.ComboMultiSelect', {
+  Ext.define('Lizard.form.TableField', {
     extend: 'Ext.form.FieldContainer',
-    alias: 'widget.combomultiselect',
+    alias: 'widget.tablefield',
     mixins: {
       field: 'Ext.form.field.Field'
     },
     config: {
       name: '',
       field_name: 'name',
-      read_at_once: false,
-      combo_store: null,
       options: null,
       extra_fields: null,
       editable: false,
@@ -69,9 +67,6 @@
           type: 'memory'
         }
       });
-      if (this.getOptions()) {
-        this.combo_store = this.getOptions();
-      }
       fields = [
         {
           text: me.getField_name(),
@@ -86,21 +81,6 @@
           fields.push(extra_field);
         }
       }
-      fields.push({
-        xtype: 'actioncolumn',
-        width: 50,
-        items: [
-          {
-            icon: '/static_media/lizard_portal/images/delete.png',
-            tooltip: 'Verwijder item',
-            handler: function(grid, rowIndex, colIndex) {
-              var rec;
-              rec = grid.store.getAt(rowIndex);
-              return grid.store.remove(rec);
-            }
-          }
-        ]
-      });
       if (this.getEditable()) {
         plugins = [
           Ext.create('Ext.grid.plugin.CellEditing', {
@@ -126,26 +106,6 @@
             store: me.store,
             columns: fields,
             plugins: plugins
-          }, {
-            xtype: 'combo',
-            store: me.combo_store,
-            queryMode: 'remote',
-            displayField: 'name',
-            valueField: 'id',
-            forceSelection: true,
-            typeAhead: true,
-            minChars: 0,
-            triggerAction: 'all',
-            selectOnTab: true,
-            listeners: {
-              scope: me,
-              'select': function(combobox, rec, scope) {
-                if (this.store.indexOf(rec[0]) < 0) {
-                  this.store.add(rec[0]);
-                  return combobox.setValue('');
-                }
-              }
-            }
           }
         ]
       });

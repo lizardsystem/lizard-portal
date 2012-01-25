@@ -2,10 +2,20 @@ Changelog of lizard-portal
 ===================================================
 
 
-0.6 (unreleased)
+0.7 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
+0.6 (2012-01-25)
 ----------------
 
 - Fixed permissions check in template.
+- remember login and autologin
+- improved form and editable grid functions
+- minor bug fixing
+- added links to forms in 'beheer' screen
 
 
 0.5 (2011-12-13)

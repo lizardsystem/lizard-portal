@@ -29,12 +29,12 @@ Ext.application({
         'Vss.store.WaterbalanceWaterConfig',
         'Vss.store.AnnotationDetail',
         'Vss.store.AnnotationDescription',
-        'Vss.store.TimeserieObject'
+        'Vss.store.TimeserieObject',
+
     ],
     requires: [
         'Lizard.plugin.ApplyContext',
         'Ext.Img',
-        // 'Ext.DomHelper',
         'Ext.grid.*',
         'Ext.grid.plugin.*',
         'Ext.data.Model',
@@ -64,7 +64,12 @@ Ext.application({
         'Lizard.portlet.GridPortlet',
         'Lizard.portlet.MultiGraph',
         'Lizard.window.Header',
-        'Vss.grid.Esf'
+        'Vss.grid.Esf',
+        'Lizard.form.FormAutoload',
+        'Lizard.grid.GridComboBox',
+        'Lizard.grid.ComboDict',
+        'Lizard.grid.CellEditing',
+        'Lizard.form.TableField'
     ],
     launch: function() {
         //TODO: for the time being on this location, a better location is the template of the watersystem portal
@@ -85,6 +90,64 @@ Ext.application({
 
         {% get_portal_template workspace_layers %}
 
+        var aan_afvoergebied_selection =
+        {
+            id: 'select_aan_afvoergebied',
+            xtype: 'treepanel',
+            listeners: {
+                itemclick: {
+                    fn: function (tree, node) {
+                        //if not root
+                        if (node.raw) {
+                            Ext.getCmp('portalWindow').linkTo({
+                                object_type: 'aan_afvoergebied',
+                                object_id: node.data.id,
+                                object_name: node.data.text
+                            });
+                        } else {
+                            node.expand();
+                        }
+                    }
+                }
+            },
+            store: 'Vss.store.CatchmentTree',
+            bbar: [{
+                text: 'Selecteer op kaart -->',
+                handler: function () {
+                    Ext.getCmp('portalWindow').showNavigationPortalTemplate();
+                }
+            }]
+        }
+
+        var KRW_selection =
+        {
+            id: 'select_krw_waterlichaam',
+            xtype: 'treepanel',
+            listeners: {
+                itemclick: {
+                    fn: function (tree, node) {
+                        //if not root
+                        if (node.raw) {
+                            Ext.getCmp('portalWindow').linkTo({
+                                object_type: 'krw_waterlichaam',
+                                object_id: node.data.id,
+                                object_name: node.data.text});
+                        } else {
+                            node.expand();
+                        }
+                    }
+                }
+            },
+            store: 'Vss.store.KrwGebiedenTree',
+            bbar: [{
+                text: 'Selecteer op kaart -->',
+                handler: function () {
+                    Ext.getCmp('portalWindow').showNavigationPortalTemplate();
+                }
+            }]
+        }
+
+
         var headertabs = [
             Ext.create('Lizard.window.HeaderTab', {
                 title: 'Beleid',
@@ -92,38 +155,7 @@ Ext.application({
                 navigation_portal_template: 'krw_selectie',
                 default_portal_template: 'krw-overzicht',
                 object_types: ['krw_waterlichaam'],
-                navigation: {
-                    id: 'select_krw_waterlichaam',
-                    viewConfig: {
-                        plugins: {
-                            ptype: 'gridviewdragdrop',
-                            dragGroup: 'firstGridDDGroup'
-                        }
-                    },
-                    xtype: 'treepanel',
-                    listeners: {
-                        itemclick: {
-                            fn: function (tree, node) {
-                                //if not root
-                                if (node.raw) {
-                                    Ext.getCmp('portalWindow').linkTo({
-                                        object_type: 'krw_waterlichaam',
-                                        object_id: node.data.id,
-                                        object_name: node.data.text});
-                                } else {
-                                    node.expand();
-                                }
-                            }
-                        }
-                    },
-                    store: 'Vss.store.KrwGebiedenTree',
-                    bbar: [{
-                        text: 'Selecteer op kaart -->',
-                        handler: function () {
-                            Ext.getCmp('portalWindow').showNavigationPortalTemplate();
-                        }
-                    }]
-                }
+                navigation: KRW_selection
             }),
             Ext.create('Lizard.window.HeaderTab', {
                 title: 'Watersysteem',
@@ -131,58 +163,30 @@ Ext.application({
                 navigation_portal_template: 'aan_afvoergebied_selectie',
                 default_portal_template: 'homepage',
                 object_types: ['aan_afvoergebied'],
-                navigation: {
-                    id: 'select_aan_afvoergebied',
-                    viewConfig: {
-                        plugins: {
-                            ptype: 'gridviewdragdrop',
-                            dragGroup: 'firstGridDDGroup'
-                        }
-                    },
-                    xtype: 'treepanel',
-                    listeners: {
-                        itemclick: {
-                            fn: function (tree, node) {
-                                //if not root
-                                if (node.raw) {
-                                    Ext.getCmp('portalWindow').linkTo({
-                                        object_type: 'aan_afvoergebied',
-                                        object_id: node.data.id,
-                                        object_name: node.data.text
-                                    });
-                                } else {
-                                    node.expand();
-                                }
-                            }
-                        }
-                    },
-                    store: 'Vss.store.CatchmentTree',
-                    bbar: [{
-                        text: 'Selecteer op kaart -->',
-                        handler: function () {
-                            Ext.getCmp('portalWindow').showNavigationPortalTemplate();
-                        }
-                    }]
-                }
+                navigation: aan_afvoergebied_selection
             }),
             Ext.create('Lizard.window.HeaderTab',{
                 title: 'Analyse',
                 name: 'analyse',
-                object_types: ['aan_afvoergebied', 'krw_waterlichaam'],
+                object_types: ['aan_afvoergebied'],
                 default_portal_template: 'analyse',
-                navigation_portal_template: 'analyse'
+                navigation_portal_template: 'aan_afvoergebied_selectie',
+                navigation: aan_afvoergebied_selection
             }),
             Ext.create('Lizard.window.HeaderTab',{
                 title: 'Rapportage',
                 name: 'rapportage',
                 default_portal_template: 'rapportage',
+                //object_types: ['aan_afvoergebied', 'krw_waterlichaam'],
                 navigation_portal_template: 'rapportage'
+                //heeft beide navigatie mogelijkheden optioneel
             }),
             Ext.create('Lizard.window.HeaderTab',{
                 title: 'Beheer',
                 name: 'beheer',
                 default_portal_template: 'beheer',
                 navigation_portal_template: 'beheer'
+
             })
         ];
 
@@ -228,14 +232,13 @@ Ext.application({
 
         context_manager.setActiveHeadertab(headerTab);
 
-
         Ext.create('Lizard.window.Screen', {
             context_manager: context_manager,
+            showOnlyPortal: only_portal || false,
             header: {
                 headertabs: headertabs,
                 src_logo: 'vss/stowa_logo.png',
-                url_homepage: '/',
-                close_on_logout: true
+                url_homepage: '/'
             }
         });
     }
