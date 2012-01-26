@@ -10,10 +10,11 @@ from vss.utils import auto_login
 
 from lizard_portal.models import PortalConfiguration
 
-def site(request, application_name, active_tab_name):
+def site(request, application_name, active_tab_name, only_portal=False):
     """
         returns html page which loads specified (ext-js) application
     """
+    print only_portal
     if not request.user.is_authenticated():
         auto_login(request)
 
@@ -22,7 +23,8 @@ def site(request, application_name, active_tab_name):
     t = get_template('portal_pageframe.html')
     c = RequestContext(request, {
             'application': application_name,
-            'active_tab': active_tab_name
+            'active_tab': active_tab_name,
+            'only_portal': only_portal
         })
 
     return HttpResponse(t.render(c),

@@ -19,6 +19,15 @@ urlpatterns = patterns(
          'active_tab_name': 'watersysteem/'},
         name="portalpage"),
 
+    url(r'^only_portal/$',
+         'lizard_portal.views.site',
+        {'application_name': 'vss',
+         'active_tab_name': 'watersysteem/',
+         'only_portal': True},
+        name="portalpage"),
+
+
+
     url(r'^site/(?P<application_name>.*)/(?P<active_tab_name>.*)/$',
         'lizard_portal.views.site',
         name="site"),

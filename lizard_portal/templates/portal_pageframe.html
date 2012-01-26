@@ -35,6 +35,11 @@ try {
 catch (e) {
     console.warning('no window.onpopstate');
 }
+{% if only_portal  %}
+    only_portal = true
+{%  else %}
+    only_portal = false
+{% endif %}
 
 url = {
    auth_password_reset: '{% url auth_password_reset %}'

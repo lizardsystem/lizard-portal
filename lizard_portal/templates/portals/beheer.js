@@ -25,6 +25,10 @@
                 {
                      text: 'Doelen',
                      handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'doelen-beheer'}); }
+                },
+                {
+                     text: 'Gebruikersbeheer',
+                     handler: function() { window.open('/manager/') }
                 }
             ]
 		}]

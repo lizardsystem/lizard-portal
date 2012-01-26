@@ -51,7 +51,7 @@ Ext.define 'Lizard.window.ContextManager',
             context = @getContext()
             pw = Ext.getCmp('portalWindow')
             if pw
-                if context.object_id
+                if context.object_id and @
                     #show selected or default template
                     pw.linkTo({})
                 else
