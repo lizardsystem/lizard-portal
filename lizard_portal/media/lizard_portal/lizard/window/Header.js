@@ -305,14 +305,9 @@
         }
       }).show();
     },
-    constructor: function(config) {
-      this.initConfig(config);
-      return this.callParent(arguments);
-    },
-    initComponent: function() {
-      var active_tab, header_items, me, pressed, print_object, tab, tabs, user, _i, _len;
-      me = this;
-      print_object = function(obj) {
+    showContext: function() {
+      var string_of_object;
+      string_of_object = function(obj) {
         var output;
         output = "";
         Ext.Object.each(obj, function(key, value) {
@@ -327,6 +322,15 @@
         });
         return output;
       };
+      return Ext.MessageBox.alert('Context overzicht', print_object(me.context_manager.getContext()));
+    },
+    constructor: function(config) {
+      this.initConfig(config);
+      return this.callParent(arguments);
+    },
+    initComponent: function() {
+      var active_tab, header_items, me, pressed, tab, tabs, user, _i, _len;
+      me = this;
       header_items = [
         {
           xtype: 'tbspacer',
@@ -349,14 +353,9 @@
           xtype: 'button',
           cls: 'l-headertab',
           toggleGroup: 'headertab',
-          navigation: tab.navigation,
-          tab: tab,
+          headertab: tab,
           handler: function() {
-            var context;
-            console.log(arguments);
-            me.portalWindow.navigation.setNavigation(this.navigation);
-            me.context_manager.setActiveHeadertab(this.tab);
-            return context = me.context_manager.getContext();
+            return me.context_manager.setActiveHeadertab(this.headertab);
           }
         });
       }
@@ -385,7 +384,7 @@
             }, {
               text: 'Toon huidige context',
               handler: function(button, event, eOpts) {
-                return Ext.MessageBox.alert('release 2', print_object(me.context_manager.getContext()));
+                return me.showContext();
               }
             }, '-', {
               text: 'Andere gebruiker',

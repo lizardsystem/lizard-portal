@@ -26,27 +26,9 @@
         headertabs: []
       },
       context_manager: null,
-      showOnlyPortal: false
+      showOnlyPortal: false,
+      navigation_tabs: []
     },
-    /*
-        #setBreadCrumb:
-        #sets breadcrumb of header (reference to function of header)
-        #
-        #
-        #
-        */
-    setBreadCrumb: function(bread_crumbs) {
-      if (this.header) {
-        return this.header.setBreadCrumb(bread_crumbs);
-      }
-    },
-    /*
-        #linkTo:
-        #sets context and load portal
-        #
-        #
-        #
-        */
     linkTo: function(params, save_state, area_selection_collapse, skip_animation) {
       if (save_state == null) {
         save_state = true;
@@ -60,19 +42,8 @@
       console.log('linkTo, with arguments:');
       console.log(arguments);
       this.context_manager.setContext(params, save_state);
-      if (this.header) {
-        this.header.updateContextHeader();
-      }
       return this.loadPortal(this.context_manager.getContext(), area_selection_collapse, skip_animation);
     },
-    /*
-        #loadPortal:
-        #loads portal or activates already active portal with correct context. set breadcrumb based on settings in
-        # the portal templates
-        #
-        #
-        #
-        */
     loadPortal: function(params, area_selection_collapse, skip_animation) {
       var container, me, tab;
       if (area_selection_collapse == null) {
@@ -89,7 +60,7 @@
       if (tab) {
         this.portalContainer.setActiveTab(tab);
         tab.setContext(params);
-        return this.setBreadCrumb(tab.breadcrumbs);
+        return this.header.setBreadCrumb(tab.breadcrumbs);
       } else {
         container.setLoading(true);
         return Ext.Ajax.request({
@@ -111,45 +82,56 @@
               tab = me.portalContainer.add(newComponent);
               me.portalContainer.setActiveTab(tab);
               me.portalContainer.setLoading(false);
-              return me.setBreadCrumb(newComponent.breadcrumbs);
+              return me.header.setBreadCrumb(newComponent.breadcrumbs);
             } catch (error) {
               Ext.Msg.alert("Fout", "Fout in laden scherm. Error: " + error);
               return me.portalContainer.setLoading(false);
             }
           }, this),
-          failure: __bind(function() {
+          failure: __bind(function(error) {
+            console.log(error);
             Ext.Msg.alert("Fout", "Fout in ophalen van scherm. Error: " + error);
             return me.portalContainer.setLoading(false);
           }, this)
         });
       }
     },
-    /*
-        # showNavigationPortalTemplate:
-        # show area selection (left side area selection and navigation)
-        # animate does not work in version
-        #
-        #
-        */
-    showNavigationPortalTemplate: function(animate_navigation_expand, expand_navigation) {
-      var args;
+    showNavigation: function(navigation_id, animate_navigation_expand, expand_navigation, show_portal_template) {
+      var args, navigation_tab;
+      if (animate_navigation_expand == null) {
+        animate_navigation_expand = true;
+      }
       if (expand_navigation == null) {
         expand_navigation = true;
       }
-      if (expand_navigation) {
-        this.navigation.expand(animate_navigation_expand);
+      if (show_portal_template == null) {
+        show_portal_template = true;
       }
-      args = Ext.Object.merge({}, this.context_manager.getContext(), {
-        portalTemplate: this.context_manager.active_headertab.navigation_portal_template
-      });
-      return this.loadPortal(args, false);
+      navigation_tab = this.navigation.getComponent(navigation_id);
+      if (!navigation_tab) {
+        console.log('navigation does not exist');
+        return false;
+      }
+      if (navigation_id && navigation_tab) {
+        this.navigation.setActiveTab(navigation_id);
+        if (expand_navigation) {
+          this.navigation.expand(animate_navigation_expand);
+        }
+      }
+      if (show_portal_template) {
+        args = Ext.Object.merge({}, this.context_manager.getContext(), {
+          portalTemplate: navigation_tab.selection_portal_template
+        });
+        this.loadPortal(args, false);
+      }
+      return true;
     },
     constructor: function(config) {
       this.initConfig(config);
       return this.callParent(arguments);
     },
     initComponent: function() {
-      var me;
+      var me, navig, _i, _len, _ref;
       me = this;
       if (this.showOnlyPortal) {
         this.header = Ext.create('Lizard.window.Header', {
@@ -226,10 +208,7 @@
               layout: 'fit',
               setNavigation: function(navigation) {
                 var tab;
-                tab = this.child("#" + navigation.id);
-                if (!tab) {
-                  tab = this.add(navigation);
-                }
+                tab = this.child(navigation);
                 return this.setActiveTab(tab);
               }
             }, {
@@ -248,12 +227,17 @@
       this.callParent(arguments);
       if (!this.showOnlyPortal) {
         this.navigation = Ext.getCmp('areaNavigation');
+        _ref = this.navigation_tabs;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          navig = _ref[_i];
+          this.navigation.add(navig);
+        }
       }
       this.portalContainer = Ext.getCmp('portalContainer');
       return this;
     },
     afterRender: function() {
-      var activeTab, anim_setting, hash, parts, tab;
+      var activeTab, anim_setting, hash, parts;
       this.callParent(arguments);
       if (window.location.hash) {
         hash = window.location.hash;
@@ -267,17 +251,12 @@
       }
       if (!this.showOnlyPortal) {
         activeTab = this.context_manager.getActive_headertab();
-        if (activeTab) {
-          tab = this.navigation.add(activeTab.navigation);
-          this.navigation.setActiveTab(tab);
-        }
-        if (!this.context_manager.getContext().object_id) {
+        if (activeTab.popup_navigation && !this.context_manager.getContext().object_id) {
           console.log('no object selected, show selection');
           anim_setting = this.navigation.animCollapse;
           this.navigation.animCollapse = false;
-          this.navigation.expand(false);
-          this.navigation.animCollapse = anim_setting;
-          return this.showNavigationPortalTemplate(false);
+          this.context_manager.showNavigationIfNeeded(false);
+          return this.navigation.animCollapse = anim_setting;
         }
       }
     }

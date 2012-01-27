@@ -52,6 +52,7 @@ Ext.application({
         'GeoExt.data.LayerModel',
         'GeoExt.data.reader.Layer',
         'Ext.MessageBox',
+        'Lizard.window.Screen',
         'Lizard.window.HeaderTab',
         'Lizard.window.ContextManager',
         'Lizard.grid.EditablePropertyGrid',
@@ -93,7 +94,9 @@ Ext.application({
         var aan_afvoergebied_selection =
         {
             id: 'select_aan_afvoergebied',
+            name: 'aan_afvoer',
             xtype: 'treepanel',
+            selection_portal_template: 'aan_afvoergebied_selectie',
             listeners: {
                 itemclick: {
                     fn: function (tree, node) {
@@ -122,7 +125,9 @@ Ext.application({
         var KRW_selection =
         {
             id: 'select_krw_waterlichaam',
+            name: 'krw',
             xtype: 'treepanel',
+            selection_portal_template: 'krw_selectie',
             listeners: {
                 itemclick: {
                     fn: function (tree, node) {
@@ -152,40 +157,45 @@ Ext.application({
             Ext.create('Lizard.window.HeaderTab', {
                 title: 'Beleid',
                 name: 'beleid',
-                navigation_portal_template: 'krw_selectie',
+                popup_navigation: true,
+                popup_navigation_portal: true,
                 default_portal_template: 'krw-overzicht',
                 object_types: ['krw_waterlichaam'],
-                navigation: KRW_selection
+                navigation: KRW_selection.id
             }),
             Ext.create('Lizard.window.HeaderTab', {
                 title: 'Watersysteem',
                 name: 'watersysteem',
-                navigation_portal_template: 'aan_afvoergebied_selectie',
+                popup_navigation: true,
+                popup_navigation_portal: true,
                 default_portal_template: 'homepage',
                 object_types: ['aan_afvoergebied'],
-                navigation: aan_afvoergebied_selection
+                navigation: aan_afvoergebied_selection.id
             }),
             Ext.create('Lizard.window.HeaderTab',{
                 title: 'Analyse',
                 name: 'analyse',
-                object_types: ['aan_afvoergebied'],
+                popup_navigation: true,
+                popup_navigation_portal: true,
                 default_portal_template: 'analyse',
-                navigation_portal_template: 'aan_afvoergebied_selectie',
-                navigation: aan_afvoergebied_selection
+                object_types: ['aan_afvoergebied'],
+                navigation: aan_afvoergebied_selection.id
             }),
             Ext.create('Lizard.window.HeaderTab',{
                 title: 'Rapportage',
                 name: 'rapportage',
+                popup_navigation: false,
+                popup_navigation_portal: false,
                 default_portal_template: 'rapportage',
-                //object_types: ['aan_afvoergebied', 'krw_waterlichaam'],
-                navigation_portal_template: 'rapportage'
+                object_types: ['aan_afvoergebied', 'krw_waterlichaam']
                 //heeft beide navigatie mogelijkheden optioneel
             }),
             Ext.create('Lizard.window.HeaderTab',{
                 title: 'Beheer',
                 name: 'beheer',
-                default_portal_template: 'beheer',
-                navigation_portal_template: 'beheer'
+                popup_navigation: false,
+                popup_navigation_portal: false,
+                default_portal_template: 'beheer'
 
             })
         ];
@@ -230,7 +240,7 @@ Ext.application({
 
         //todo: do this dynamic
 
-        context_manager.setActiveHeadertab(headerTab);
+        context_manager.setActiveHeadertab(headerTab)
 
         Ext.create('Lizard.window.Screen', {
             context_manager: context_manager,
@@ -239,7 +249,11 @@ Ext.application({
                 headertabs: headertabs,
                 src_logo: 'vss/stowa_logo.png',
                 url_homepage: '/'
-            }
+            },
+            navigation_tabs: [
+                KRW_selection,
+                aan_afvoergebied_selection
+            ]
         });
     }
 });

@@ -283,16 +283,10 @@ Ext.define('Lizard.window.Header', {
         }).show()
 
 
+    showContext: () ->
+        #todo, deze mooier maken
 
-
-    constructor: (config) ->
-        @initConfig(config)
-        @callParent(arguments)
-
-    initComponent: () ->
-        me = @
-
-        print_object = (obj) ->
+        string_of_object = (obj) ->
             output = ""
             Ext.Object.each(obj,(key, value) ->
                 if typeof(value) == 'object'
@@ -304,6 +298,16 @@ Ext.define('Lizard.window.Header', {
                     output += key + ": " + value + "<br>"
             )
             return output
+
+        Ext.MessageBox.alert('Context overzicht', print_object(me.context_manager.getContext()))
+
+
+    constructor: (config) ->
+        @initConfig(config)
+        @callParent(arguments)
+
+    initComponent: () ->
+        me = @
 
         header_items = [
             { xtype: 'tbspacer', width: 200 },
@@ -317,6 +321,7 @@ Ext.define('Lizard.window.Header', {
             else
                 pressed = false
 
+            #todo, do not unpress button
             header_items.push({
                 id: 'headertab_' + tab.name
                 text: tab.title
@@ -324,13 +329,10 @@ Ext.define('Lizard.window.Header', {
                 xtype: 'button'
                 cls: 'l-headertab'
                 toggleGroup: 'headertab'
-                navigation: tab.navigation
-                tab: tab
+                headertab:tab
                 handler: () ->
-                    console.log arguments
-                    me.portalWindow.navigation.setNavigation(@navigation)
-                    me.context_manager.setActiveHeadertab(@tab)
-                    context = me.context_manager.getContext()
+
+                    me.context_manager.setActiveHeadertab(@headertab)
             })
 
         header_items.push('->')
@@ -359,7 +361,7 @@ Ext.define('Lizard.window.Header', {
                         {
                             text: 'Toon huidige context'
                             handler: (button, event, eOpts) ->
-                                Ext.MessageBox.alert('release 2', print_object(me.context_manager.getContext()))
+                                me.showContext()
                         }
                         '-'
                         {
@@ -373,7 +375,6 @@ Ext.define('Lizard.window.Header', {
                                 me.logout()
                         }
                     ]
-
                 }
                 '-'
                 {
@@ -444,7 +445,6 @@ Ext.define('Lizard.window.Header', {
                     id: 'logo'
                     html:'<a href="/"><img src="' + me.getLogo_url() + '"></img></a>'
                 }
-
             ]
 
         @portalWindow.context_manager.on('contextchange', (change, context, context_m) ->
@@ -461,6 +461,4 @@ Ext.define('Lizard.window.Header', {
             @login()
 
         return @
-
-
 })
