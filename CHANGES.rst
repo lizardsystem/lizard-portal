@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ===================================================
 
 
-0.7 (unreleased)
+0.7 (2012-01-31)
 ----------------
 
 - improved navigation (breadcrumb)
