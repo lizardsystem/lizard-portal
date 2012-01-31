@@ -41,6 +41,9 @@ catch (e) {
     only_portal = false
 {% endif %}
 
+url = {
+   auth_password_reset: '{% url auth_password_reset %}'
+}
 
 </script>
 {{ block.super }}

@@ -16,8 +16,7 @@
       bread_div.dom.innerHTML = '';
       portalWindow = this.portalWindow;
       context = portalWindow.context_manager.getContext();
-      area_name = context.object_name || context.object_id;
-      area_name = area_name || '_';
+      area_name = context.active_headertab.name || 'tab';
       element = {
         tag: 'div',
         cls: 'link',
@@ -29,7 +28,7 @@
         me.context_manager.setContext({
           portalTemplate: null
         });
-        return portalWindow.showNavigationPortalTemplate();
+        return portalWindow.showTabMainpage();
       });
       if (bread_crumbs) {
         bread_div.createChild({

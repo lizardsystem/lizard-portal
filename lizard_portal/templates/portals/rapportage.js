@@ -16,7 +16,7 @@
                 var cm = Ext.getCmp('portalWindow').header.context_manager
                 me.loader.load({url:'/reporting/',
                     params:{
-                        krw_waterlichaam: cm.objects.krw_waterlichaam.object_id,
+                        krw_gebied: cm.objects.krw_waterlichaam.object_id,
                         aan_afvoergebied: cm.objects.aan_afvoergebied.object_id
                     },
                     method: 'GET'

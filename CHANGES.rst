@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- improved navigation (breadcrumb)
+- improved form and grid functions
 
 
 0.6 (2012-01-25)

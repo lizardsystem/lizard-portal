@@ -26,6 +26,47 @@
 
 ###
 
+Ext.override(Ext.form.field.Field, {
+
+    isEqual: (a, b) ->
+        if Ext.isDate(a) and Ext.isDate(b)
+            return a.getTime() == b.getTime()
+        else if Ext.isObject(a) and Ext.isObject(b)
+            return a.id == b.id
+        else if Ext.isArray(a) and Ext.isArray(b)
+            #array with dictionaries of related object
+            #todo: works for longer arrays and all fields
+            console.log(a)
+            console.log(b)
+            if a.length == 1 and b.length == 1
+                console.log(a[0].id == b[0].id)
+                return a[0].id == b[0].id
+
+        return a == b;
+})
+
+
+
+
+Ext.override(Ext.data.Model, {
+
+    isEqual: (a, b) ->
+        if Ext.isDate(a) and Ext.isDate(b)
+            return a.getTime() == b.getTime()
+        else if Ext.isObject(a) and Ext.isObject(b)
+            return a.id == b.id
+        else if Ext.isArray(a) and Ext.isArray(b)
+            #array with dictionaries of related object
+            #todo: works for longer arrays and all fields
+            console.log(a)
+            console.log(b)
+            if a.length == 1 and b.length == 1
+                console.log(a[0].id == b[0].id)
+                return a[0].id == b[0].id
+
+        return a == b;
+})
+
 
 
 Ext.define('Lizard.grid.EditableGrid', {
@@ -119,6 +160,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                 editor = me.editors[type]
             else if type == 'combo'
                 if col.choices and col.choices.length > 0 and Ext.type(col.choices[0]) == 'object'
+                    console.log('combodict')
                     editor = {
                         field: {
                             xtype: 'combodict'
@@ -137,6 +179,7 @@ Ext.define('Lizard.grid.EditableGrid', {
 
                     }
                 else if col.remote
+                    console.log('gridcombobox')
                     editor = {
                         field: {
                             xtype: 'gridcombobox'
@@ -156,6 +199,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                         }
                     }
                 else
+                    console.log('combo')
                     editor = {
                         field: {
                             xtype: 'combo'
@@ -275,12 +319,10 @@ Ext.define('Lizard.grid.EditableGrid', {
                     [col]
                     true
                 )
-
             if col.editIf
                 col_config.editIf = col.editIf
             if col.multiSelect
                 col_config.multiSelect = true
-
             return col_config
 
         cols = []
@@ -304,7 +346,6 @@ Ext.define('Lizard.grid.EditableGrid', {
                                 me.actionEditIcon(rec)
                             else
                                 alert("Edit " + rec.get('id'))
-
                     })
 
             if @addDeleteIcon
@@ -317,12 +358,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                             rec = grid.getStore().getAt(rowIndex)
                             me.store.remove(rec)
                     })
-
             cols.push(colConfig)
-
-
-
-
 
         for col in @dataConfig
             if !col.columns
@@ -331,13 +367,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                 cols_with_header = {text: col.title, columns: []}
                 for col_sub in col['columns']
                     cols_with_header['columns'].push(getColconfig(col_sub))
-
                 cols.push(cols_with_header)
-
-
-
-
-        console.log(cols)
 
         return cols
 
@@ -427,6 +457,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                 reader: {
                     type: 'json'
                     root: 'data'
+                    totalProperty: 'count'
                 }
                 writer: {
                     type: 'json',
@@ -434,18 +465,20 @@ Ext.define('Lizard.grid.EditableGrid', {
                     root: 'data',
                     encode: true,
                     successProperty: 'success'
+                    totalProperty: 'count'
                 }
                 autoLoad: true
             }
         }
+
 
         return store
 
     initComponent: () ->
         me = @
         me.columns = @getColumnConfig()
-        me.store = @getStoreConfig()
-
+        me.store = Ext.create('Lizard.store.EditGridStore', @getStoreConfig())
+        me.bbar = []
 
         if @getEditable()
             @editing = Ext.create('Lizard.grid.CellEditing', {
@@ -505,16 +538,20 @@ Ext.define('Lizard.grid.EditableGrid', {
                             me.saveEdits()
 
                 }
+
             ])
 
-        @on('edit', (editor, e) ->
-            console.log('editor:')
-            console.log(editor)
-            console.log('e:')
-            console.log(e)
-            console.log(editor.getActiveEditor())
 
-        )
+        @bbar =
+            {
+                xtype: 'pagingtoolbar'
+                pageSize: 25,
+                store: me.store,
+                displayInfo: true,
+                items: ['-'].concat(me.bbar)
+
+            }
+
 
 
 #grid - The grid

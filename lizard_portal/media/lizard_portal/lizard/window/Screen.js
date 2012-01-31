@@ -44,6 +44,54 @@
       this.context_manager.setContext(params, save_state);
       return this.loadPortal(this.context_manager.getContext(), area_selection_collapse, skip_animation);
     },
+    linkToNewWindow: function(params, save_state, area_selection_collapse, skip_animation) {
+      var args;
+      if (save_state == null) {
+        save_state = true;
+      }
+      if (area_selection_collapse == null) {
+        area_selection_collapse = true;
+      }
+      if (skip_animation == null) {
+        skip_animation = false;
+      }
+      console.log('linkTo, with arguments:');
+      console.log(arguments);
+      args = Ext.Object.merge({}, this.context_manager.getContext(), params);
+      return window.open('/portal/only_portal/#' + args.active_headertab.name + '/' + args.portalTemplate + '/' + args.object_type + '/' + args.object_id);
+    },
+    linkToPopup: function(title, url, params, add_active_object, modal) {
+      var args, cont;
+      if (add_active_object == null) {
+        add_active_object = true;
+      }
+      if (modal == null) {
+        modal = false;
+      }
+      console.log('linkTo, with arguments:');
+      console.log(arguments);
+      cont = this.context_manager.getContext();
+      args = Ext.Object.merge(params, {
+        object_id: cont.object_id,
+        object_type: cont.object_type
+      });
+      return Ext.create('Ext.window.Window', {
+        title: title,
+        width: 800,
+        height: 600,
+        modal: modal,
+        loader: {
+          loadMask: true,
+          autoLoad: true,
+          url: url,
+          ajaxOptions: {
+            method: 'GET'
+          },
+          params: params,
+          renderer: 'component'
+        }
+      }).show();
+    },
     loadPortal: function(params, area_selection_collapse, skip_animation) {
       var container, me, tab;
       if (area_selection_collapse == null) {
@@ -116,6 +164,7 @@
         this.navigation.setActiveTab(navigation_id);
         if (expand_navigation) {
           this.navigation.expand(animate_navigation_expand);
+          this.navigation.doLayout();
         }
       }
       if (show_portal_template) {
@@ -123,6 +172,28 @@
           portalTemplate: navigation_tab.selection_portal_template
         });
         this.loadPortal(args, false);
+      }
+      return true;
+    },
+    showTabMainpage: function(animate_navigation_expand, expand_navigation, show_portal_template) {
+      var context, ht;
+      if (animate_navigation_expand == null) {
+        animate_navigation_expand = true;
+      }
+      if (expand_navigation == null) {
+        expand_navigation = true;
+      }
+      if (show_portal_template == null) {
+        show_portal_template = true;
+      }
+      context = this.context_manager.getContext();
+      ht = context.active_headertab;
+      if (ht.popup_navigation) {
+        this.showNavigation(ht.navigation, true, true, ht.popup_navigation_portal);
+      } else {
+        this.linkTo({
+          portalTemplate: ht.default_portal_template
+        });
       }
       return true;
     },

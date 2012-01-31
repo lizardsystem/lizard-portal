@@ -43,6 +43,7 @@ Ext.application({
         'Ext.tree.*',
         'Ext.form.*',
         'Ext.button.*',
+        'Ext.toolbar.*',
         'Lizard.ux.CheckColumn',
         'Lizard.ux.CheckColumnTree',
         'Lizard.ux.VBoxScroll',
@@ -94,7 +95,7 @@ Ext.application({
         var aan_afvoergebied_selection =
         {
             id: 'select_aan_afvoergebied',
-            name: 'aan_afvoer',
+            title: 'aan_afvoer',
             xtype: 'treepanel',
             selection_portal_template: 'aan_afvoergebied_selectie',
             listeners: {
@@ -122,10 +123,11 @@ Ext.application({
             }]
         }
 
+
         var KRW_selection =
         {
             id: 'select_krw_waterlichaam',
-            name: 'krw',
+            title: 'krw',
             xtype: 'treepanel',
             selection_portal_template: 'krw_selectie',
             listeners: {

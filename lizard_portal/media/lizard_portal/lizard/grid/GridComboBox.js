@@ -33,42 +33,12 @@
         }
       }
       output = this.callParent(arguments);
-      console.log('-------------------');
-      console.log('setValue');
-      console.log('editor:');
-      console.log(this);
-      console.log('arguments:');
-      console.log(arguments);
-      console.log('output:');
-      console.log(output);
-      console.log('this.value:');
-      console.log(this.value);
-      console.log('this.getRawValue():');
-      console.log(this.getRawValue());
-      console.log('this.getDisplayValue():');
-      console.log(this.getDisplayValue());
-      console.log('-------------------');
       return output;
     },
     getValue: function() {
       var output;
       output = this.callParent(arguments);
       output = this.raw_object;
-      console.log('-------------------');
-      console.log('getValue');
-      console.log('editor:');
-      console.log(this);
-      console.log('arguments:');
-      console.log(arguments);
-      console.log('output:');
-      console.log(output);
-      console.log('this.value:');
-      console.log(this.value);
-      console.log('this.getRawValue():');
-      console.log(this.getRawValue());
-      console.log('this.getDisplayValue():');
-      console.log(this.getDisplayValue());
-      console.log('-------------------');
       return output;
     }
   });

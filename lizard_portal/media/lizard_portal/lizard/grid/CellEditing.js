@@ -58,19 +58,18 @@ Ext.define('Lizard.grid.CellEditing', {
     extend: 'Ext.grid.plugin.CellEditing',
     onEditComplete : function(ed, value, startValue) {
 
-        var submit_value = ed.field.getSubmitValue();
-        alert
-        if (Ext.type(submit_value) == 'array') {
-            value = submit_value;
-        }
-
-
-
         var me = this,
             grid = me.grid,
             sm = grid.getSelectionModel(),
             activeColumn = me.getActiveColumn(),
             dataIndex;
+
+        var org_value = value
+        var submit_value = ed.field.getSubmitValue();
+
+        if (Ext.type(submit_value) == 'array' && Ext.type(me.context.value) == 'object') {
+            value = submit_value[0];
+        }
 
         if (activeColumn) {
             dataIndex = activeColumn.dataIndex;
@@ -85,7 +84,7 @@ Ext.define('Lizard.grid.CellEditing', {
             }
             // Only update the record if the new value is different than the
             // startValue, when the view refreshes its el will gain focus
-            if (value !== startValue) {
+            if (org_value !== startValue) {
                 me.context.record.set(dataIndex, value);
             // Restore focus back to the view's element.
             } else {

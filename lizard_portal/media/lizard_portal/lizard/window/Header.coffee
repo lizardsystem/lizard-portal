@@ -19,8 +19,7 @@ Ext.define('Lizard.window.Header', {
 
 
         context = portalWindow.context_manager.getContext()
-        area_name = context.object_name || context.object_id
-        area_name = area_name || '_'
+        area_name = context.active_headertab.name || 'tab'
 
         element = {
             tag: 'div',
@@ -33,7 +32,7 @@ Ext.define('Lizard.window.Header', {
         el.addListener('click',
             () ->
                me.context_manager.setContext({portalTemplate:null})
-               portalWindow.showNavigationPortalTemplate()
+               portalWindow.showTabMainpage()
         )
 
 

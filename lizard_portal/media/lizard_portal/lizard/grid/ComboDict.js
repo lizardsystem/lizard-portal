@@ -104,8 +104,4 @@ Ext.define('Lizard.grid.ComboDict', {
             return this.getValue();
         }
     }
-
-
-
-       
 });

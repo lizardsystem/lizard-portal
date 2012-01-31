@@ -18,3 +18,6 @@ Ext.define 'Lizard.window.HeaderTab'
     initComponent: () ->
         me = @
         @callParent(arguments)
+
+
+

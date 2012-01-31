@@ -176,4 +176,8 @@
     background-image: url('images/clock-light.png');
 }
 
+.l-icon-cancel{
+    background-image: url('images/cancel.png');
+}
+
 .x-grid-cell-inner { white-space: normal; }

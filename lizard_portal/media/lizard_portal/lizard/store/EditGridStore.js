@@ -27,7 +27,9 @@
     extend: 'Ext.data.Store',
     alias: 'store.leditstore',
     config: {
-      something: false
+      something: false,
+      pageSize: 25,
+      remoteSort: true
     },
     setTempWriteParams: function(params) {
       this.notTmpParams = Ext.merge({}, this.proxy.extraParams);
@@ -75,9 +77,9 @@
     initComponent: function() {
       var me;
       me = this;
-      Ext.apply(this({
+      Ext.apply(this, {
         idProperty: 'id'
-      }));
+      });
       this.callParent(arguments);
       return this;
     },
@@ -87,6 +89,12 @@
         console.log(arguments);
         store.proxy.extraParam = Ext.merge({}, store.notTmpParams);
         return Ext.MessageBox.alert('Opslaan gelukt');
+      },
+      beforeload: function(store, action, operation) {
+        if (store.getNewRecords().length > 0 || store.getUpdatedRecords().length > 0 || store.getRemovedRecords().length > 0) {
+          Ext.Msg.alert("Let op", 'Sla eerst de bewerking(en) in het grid op, voordat nieuwe data wordt geladen');
+          return false;
+        }
       }
     }
   });

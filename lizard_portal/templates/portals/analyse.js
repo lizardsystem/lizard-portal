@@ -177,22 +177,22 @@
             },
             rbar:[{
                     text: 'ESF',
-                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'esf-overzicht'}); }
+                    handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'esf-overzicht'}); }
                 }, {
                    text: 'WB',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'waterbalans'}); }
                 }, {
                    text: 'AI',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'analyse-interpretatie'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'analyse-interpretatie'}); }
                 }, {
                    text: 'Advies',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'advies'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'advies'}); }
                 }, {
                    text: 'Maatr',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'maatregelen'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'maatregelen'}); }
                 }, {
                    text: 'Tsnd',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'toestand-aan-afvoergebied'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'toestand-aan-afvoergebied'}); }
                 }],
             flex:1
 		}]

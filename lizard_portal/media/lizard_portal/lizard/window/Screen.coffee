@@ -46,6 +46,55 @@ Ext.define 'Lizard.window.Screen',
         #    @header.updateContextHeader()
         @loadPortal(@context_manager.getContext(), area_selection_collapse, skip_animation)
 
+   ####
+    #linkToNewWindow:
+    #open portal in new window
+    #
+    #
+    #
+    ####
+    linkToNewWindow:(params, save_state=true, area_selection_collapse=true, skip_animation=false) ->
+        console.log('linkTo, with arguments:')
+        console.log(arguments)
+
+        args = Ext.Object.merge({}, @context_manager.getContext(), params)
+
+        window.open('/portal/only_portal/#'+args.active_headertab.name+'/'+args.portalTemplate+'/'+args.object_type + '/' + args.object_id )
+
+
+   ####
+    #linkToPopup:
+    #open portal in popup (extjs window)
+    #
+    #
+    #
+    ####
+    linkToPopup:(title, url, params, add_active_object=true, modal=false) ->
+        console.log('linkTo, with arguments:')
+        console.log(arguments)
+
+        cont= @context_manager.getContext()
+
+        args = Ext.Object.merge(params, {object_id:cont.object_id, object_type: cont.object_type})
+
+        Ext.create('Ext.window.Window', {
+            title: title,
+            width: 800,
+            height: 600,
+            modal: modal,
+            loader:{
+                loadMask: true,
+                autoLoad: true,
+                url: url,
+                ajaxOptions: {
+                    method: 'GET'
+                },
+                params: params,
+                renderer: 'component'
+            }
+        }).show();
+
+
     ####
     #loadPortal:
     #loads portal or activates already active portal with correct context. set breadcrumb based on settings in
@@ -118,6 +167,7 @@ Ext.define 'Lizard.window.Screen',
             if expand_navigation
                 #animate option does not work in version
                 @navigation.expand(animate_navigation_expand)
+                @navigation.doLayout()
 
         if show_portal_template
             args = Ext.Object.merge({}, @context_manager.getContext(), {
@@ -125,6 +175,18 @@ Ext.define 'Lizard.window.Screen',
                     })
             #send only args to prevent context switch (only temp switch)
             @loadPortal(args, false)
+
+        return true
+
+
+    showTabMainpage: (animate_navigation_expand=true, expand_navigation=true, show_portal_template=true) ->
+        context = @context_manager.getContext()
+        ht = context.active_headertab
+
+        if ht.popup_navigation
+            @showNavigation(ht.navigation, true, true, ht.popup_navigation_portal)
+        else
+            @linkTo({portalTemplate:ht.default_portal_template})
 
         return true
 
@@ -216,8 +278,8 @@ Ext.define 'Lizard.window.Screen',
                         layout: 'fit'
                         setNavigation: (navigation)->
                             tab = @child(navigation)
-
                             @setActiveTab(tab)
+                            
                     }
                     {
                         region: 'center'
