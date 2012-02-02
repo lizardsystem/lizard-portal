@@ -45,7 +45,7 @@
       return this.loadPortal(this.context_manager.getContext(), area_selection_collapse, skip_animation);
     },
     linkToNewWindow: function(params, save_state, area_selection_collapse, skip_animation) {
-      var args;
+      var args, href;
       if (save_state == null) {
         save_state = true;
       }
@@ -58,7 +58,8 @@
       console.log('linkTo, with arguments:');
       console.log(arguments);
       args = Ext.Object.merge({}, this.context_manager.getContext(), params);
-      return window.open('/portal/only_portal/#' + args.active_headertab.name + '/' + args.portalTemplate + '/' + args.object_type + '/' + args.object_id);
+      href = '/portal/only_portal/#' + args.active_headertab.name + '/' + args.portalTemplate + '/' + args.object_type + '/' + args.object_id;
+      return window.open(href, args.portalTemplate + ' ' + args.object_name, 'width=800,height=600,scrollbars=yes');
     },
     linkToPopup: function(title, url, params, add_active_object, modal) {
       var args, cont;

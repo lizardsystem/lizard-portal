@@ -45,6 +45,7 @@
       getImageConfig = function(graph) {
         var output;
         output = graph;
+        output.hidden = graph.hidden || false;
         output.orig_src = graph.graph_service_url || me.graph_service_url;
         output.params = graph.params || {};
         return output;
@@ -66,7 +67,7 @@
         this.graphs.push(graph);
         _results.push(this.tbar.push({
           text: graph_config.title,
-          pressed: true,
+          pressed: !graph_config.hidden,
           enableToggle: true,
           iconCls: 'l-icon-chartbar',
           graph: graph,

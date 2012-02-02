@@ -191,13 +191,16 @@
                 margin: 3
             },
             items:[{
-                    text: 'Overzicht Ecologische sleutelfactoren',
+                    text: 'Overzicht ESF',
+                    icon: '/static_media/vss/icons/esf.png',
                     handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'esf-overzicht'}); }
                 }, {
                     text: 'Ecologische sleutelfactoren',
+                    icon: '/static_media/vss/icons/esf.png',
                     handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'esf-1'}); }
                 }, {
                    text: 'Waterbalansen',
+                   icon: '/static_media/vss/icons/waterbalansen.png',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans'}); }
                 }, {
                    text: 'Analyse interpretaties',
@@ -207,6 +210,7 @@
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'advies'}); }
                 }, {
                    text: 'Maatregelen',
+                   icon: '/static_media/vss/icons/maatregelen.png',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'maatregelen'}); }
                 }, {
                    text: 'Toestand',

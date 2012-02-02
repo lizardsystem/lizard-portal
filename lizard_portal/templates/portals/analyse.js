@@ -176,19 +176,22 @@
                 });
             },
             rbar:[{
-                    text: 'ESF',
-                    handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'esf-overzicht'}); }
+                    //text: 'ESF',
+                    icon: '/static_media/vss/icons/esf.png',
+                    handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'esf-1'}); }
                 }, {
-                   text: 'WB',
+                   //text: 'WB',
+                   icon: '/static_media/vss/icons/waterbalansen.png',
                    handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'waterbalans'}); }
-                }, {
+                },/* {
                    text: 'AI',
                    handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'analyse-interpretatie'}); }
                 }, {
                    text: 'Advies',
                    handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'advies'}); }
-                }, {
-                   text: 'Maatr',
+                },*/ {
+                   //text: 'Maatr',
+                   icon: '/static_media/vss/icons/maatregelen.png',
                    handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'maatregelen'}); }
                 }, {
                    text: 'Tsnd',

@@ -36,6 +36,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
         me = @
         getImageConfig = (graph) -> #dit moet anders
             output = graph
+            output.hidden = graph.hidden || false
             output.orig_src = graph.graph_service_url || me.graph_service_url
             output.params = graph.params || {}
             return output
@@ -61,7 +62,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
 
             @tbar.push({
                 text: graph_config.title,
-                pressed: true,
+                pressed: not graph_config.hidden,
                 enableToggle: true,
                 iconCls: 'l-icon-chartbar',
                 graph: graph,

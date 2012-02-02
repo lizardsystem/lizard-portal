@@ -58,8 +58,10 @@ Ext.define 'Lizard.window.Screen',
         console.log(arguments)
 
         args = Ext.Object.merge({}, @context_manager.getContext(), params)
+        href = '/portal/only_portal/#'+args.active_headertab.name+'/'+args.portalTemplate+'/'+args.object_type + '/' + args.object_id
 
-        window.open('/portal/only_portal/#'+args.active_headertab.name+'/'+args.portalTemplate+'/'+args.object_type + '/' + args.object_id )
+        window.open( href, args.portalTemplate + ' ' + args.object_name, 'width=800,height=600,scrollbars=yes')
+
 
 
    ####
