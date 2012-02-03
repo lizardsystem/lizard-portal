@@ -11,6 +11,9 @@ Ext.define('Vss.model.ObjectTree', {
         {
             name: 'id',
             mapping: 'id'
+        }, {
+            name: 'ident',
+            mapping: 'ident'
         },{
             name: 'text',
             mapping: 'name'

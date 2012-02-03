@@ -105,7 +105,7 @@ Ext.application({
                         if (node.raw) {
                             Ext.getCmp('portalWindow').linkTo({
                                 object_type: 'aan_afvoergebied',
-                                object_id: node.data.id,
+                                object_id: node.data.ident,
                                 object_name: node.data.text
                             });
                         } else {
@@ -137,7 +137,7 @@ Ext.application({
                         if (node.raw) {
                             Ext.getCmp('portalWindow').linkTo({
                                 object_type: 'krw_waterlichaam',
-                                object_id: node.data.id,
+                                object_id: node.data.ident,
                                 object_name: node.data.text});
                         } else {
                             node.expand();
