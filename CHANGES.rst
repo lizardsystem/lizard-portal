@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.8 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Made 
 
 
 0.7 (2012-01-31)
