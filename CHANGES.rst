@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - added last edit information to communique
 
+- added SO4 fields into bicket, structure tables of wbconfiguration form.
+
 
 0.7 (2012-01-31)
 ----------------

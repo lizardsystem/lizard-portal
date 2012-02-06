@@ -230,6 +230,13 @@
                         {name: 'incr_concentr_nitrogen_drainage_indraft', title: 'Incr N drainage', editable: true, visible: true, width: 100, type: 'number'},
                         {name: 'incr_concentr_nitrogen_flow_off', title: 'Incr N afstroom', editable: true, visible: true, width: 100, type: 'number'},
                     ]},
+                    //so4
+                    {title: 'Sulfaat', columns: [
+                        {name: 'min_concentr_so4_drainage_indraft', title: 'Min S drainage', editable: true, visible: true, width: 100, type: 'number'},
+                        {name: 'min_concentr_so4_flow_off', title: 'Min S afstroom', editable: true, visible: true, width: 100, type: 'number'},
+                        {name: 'incr_concentr_so4_drainage_indraft', title: 'Incr S drainage', editable: true, visible: true, width: 100, type: 'number'},
+                        {name: 'incr_concentr_so4_flow_off', title: 'Incr S afstroom', editable: true, visible: true, width: 100, type: 'number'},
+                    ]},
 
                     {name: 'label_drainaige_indraft', title: 'label_drainaige_indraft', editable: true, visible: false, width: 100, type: 'number'},
                     {name: 'label_flow_off', title: 'label_flow_off', editable: true, visible: false, width: 100, type: 'number'}
@@ -275,7 +282,9 @@
                     {name: 'min_concentr_phosphate', title: 'Min P', editable: true, visible: true, width: 75, type: 'number'},
                     {name: 'incr_concentr_phosphate', title: 'Incr P', editable: true, visible: true, width: 75, type: 'number'},
                     {name: 'min_concentr_nitrogen', title: 'Min N', editable: true, visible: true, width: 75, type: 'number'},
-                    {name: 'incr_concentr_nitrogen', title: 'Incr N', editable: true, visible: true, width: 75, type: 'number'}
+                    {name: 'incr_concentr_nitrogen', title: 'Incr N', editable: true, visible: true, width: 75, type: 'number'},
+                    {name: 'min_concentr_so4', title: 'Min S', editable: true, visible: true, width: 75, type: 'number'},
+                    {name: 'incr_concentr_so4', title: 'Incr S', editable: true, visible: true, width: 75, type: 'number'}
 
                ]
             }]
