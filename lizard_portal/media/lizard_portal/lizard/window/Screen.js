@@ -61,25 +61,35 @@
       href = '/portal/only_portal/#' + args.active_headertab.name + '/' + args.portalTemplate + '/' + args.object_type + '/' + args.object_id;
       return window.open(href, args.portalTemplate + ' ' + args.object_name, 'width=800,height=600,scrollbars=yes');
     },
-    linkToPopup: function(title, url, params, add_active_object, modal) {
-      var args, cont;
-      if (add_active_object == null) {
-        add_active_object = true;
+    linkToPopup: function(title, url, params, window_options, add_active_object_to_request, renderer, modal) {
+      var args, cont, me, window_settings;
+      if (window_options == null) {
+        window_options = {};
+      }
+      if (add_active_object_to_request == null) {
+        add_active_object_to_request = true;
+      }
+      if (renderer == null) {
+        renderer = 'html';
       }
       if (modal == null) {
         modal = false;
       }
       console.log('linkTo, with arguments:');
       console.log(arguments);
-      cont = this.context_manager.getContext();
-      args = Ext.Object.merge(params, {
-        object_id: cont.object_id,
-        object_type: cont.object_type
-      });
-      return Ext.create('Ext.window.Window', {
+      me = this;
+      if (add_active_object_to_request) {
+        cont = this.context_manager.getContext();
+        args = Ext.Object.merge(params, {
+          object_id: cont.object_id,
+          object_type: cont.object_type
+        });
+      }
+      window_settings = {
         title: title,
         width: 800,
-        height: 600,
+        height: 500,
+        autoScroll: true,
         modal: modal,
         loader: {
           loadMask: true,
@@ -89,9 +99,21 @@
             method: 'GET'
           },
           params: params,
-          renderer: 'component'
+          renderer: renderer
         }
-      }).show();
+      };
+      if (window_options.save) {
+        window_settings.tools = [
+          {
+            type: 'save',
+            handler: function(e, target, panelHeader, tool) {
+              console.log(arguments);
+              return me.linkToPopup.apply(me, window_options.save);
+            }
+          }
+        ];
+      }
+      return Ext.create('Ext.window.Window', window_settings).show();
     },
     loadPortal: function(params, area_selection_collapse, skip_animation) {
       var container, me, tab;

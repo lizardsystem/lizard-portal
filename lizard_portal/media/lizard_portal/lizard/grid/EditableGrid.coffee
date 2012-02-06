@@ -83,6 +83,8 @@ Ext.define('Lizard.grid.EditableGrid', {
         addDeleteIcon: false
         actionEditIcon: null
         actionDeleteIcon: null
+        usePagination: true
+        recordsPerPage:25
     }
     extraEditors: {
         timeserie: {
@@ -445,6 +447,7 @@ Ext.define('Lizard.grid.EditableGrid', {
         store = {
             type: 'leditstore'
             fields: fields
+            pageSize: @recordsPerPage
             proxy: {
                 type: 'ajax'
                 api:
@@ -467,7 +470,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                     successProperty: 'success'
                     totalProperty: 'count'
                 }
-                autoLoad: true
+                #autoLoad: true
             }
         }
 
@@ -476,6 +479,13 @@ Ext.define('Lizard.grid.EditableGrid', {
 
     initComponent: () ->
         me = @
+
+        if not @getUsePagination()
+            @recordsPerPage = 10000
+
+
+
+
         me.columns = @getColumnConfig()
         me.store = Ext.create('Lizard.store.EditGridStore', @getStoreConfig())
         me.bbar = []
@@ -541,16 +551,16 @@ Ext.define('Lizard.grid.EditableGrid', {
 
             ])
 
+        if @getUsePagination()
+            @bbar =
+                {
+                    xtype: 'pagingtoolbar'
+                    pageSize: @recordsPerPage,
+                    store: me.store,
+                    displayInfo: true,
+                    items: ['-'].concat(me.bbar)
 
-        @bbar =
-            {
-                xtype: 'pagingtoolbar'
-                pageSize: 25,
-                store: me.store,
-                displayInfo: true,
-                items: ['-'].concat(me.bbar)
-
-            }
+                }
 
 
 

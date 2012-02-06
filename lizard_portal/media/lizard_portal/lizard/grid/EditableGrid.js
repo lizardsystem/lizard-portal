@@ -69,7 +69,9 @@
       addEditIcon: false,
       addDeleteIcon: false,
       actionEditIcon: null,
-      actionDeleteIcon: null
+      actionDeleteIcon: null,
+      usePagination: true,
+      recordsPerPage: 25
     },
     extraEditors: {
       timeserie: {
@@ -446,6 +448,7 @@
       store = {
         type: 'leditstore',
         fields: fields,
+        pageSize: this.recordsPerPage,
         proxy: {
           type: 'ajax',
           api: {
@@ -467,8 +470,7 @@
             encode: true,
             successProperty: 'success',
             totalProperty: 'count'
-          },
-          autoLoad: true
+          }
         }
       };
       return store;
@@ -476,6 +478,9 @@
     initComponent: function() {
       var me;
       me = this;
+      if (!this.getUsePagination()) {
+        this.recordsPerPage = 10000;
+      }
       me.columns = this.getColumnConfig();
       me.store = Ext.create('Lizard.store.EditGridStore', this.getStoreConfig());
       me.bbar = [];
@@ -539,13 +544,15 @@
           }
         ]);
       }
-      this.bbar = {
-        xtype: 'pagingtoolbar',
-        pageSize: 25,
-        store: me.store,
-        displayInfo: true,
-        items: ['-'].concat(me.bbar)
-      };
+      if (this.getUsePagination()) {
+        this.bbar = {
+          xtype: 'pagingtoolbar',
+          pageSize: this.recordsPerPage,
+          store: me.store,
+          displayInfo: true,
+          items: ['-'].concat(me.bbar)
+        };
+      }
       return this.callParent(arguments);
     }
   });
