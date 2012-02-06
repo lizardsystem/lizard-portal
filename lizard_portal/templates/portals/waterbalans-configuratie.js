@@ -23,7 +23,6 @@
 		flex:1,
 		items: [{
 			title: 'Instellingen',
-            id: 'xxx',
             flex:1,
             width: '100%',
             layout:{
@@ -38,7 +37,7 @@
                 {
                     xtype: 'button',
                     text: 'Cancel',
-                    iconCls: 'cancel',
+                    iconCls: 'l-icon-cancel',
                     handler: function (menuItem, checked) {
                         var panel = menuItem.up('panel');
                         var grids = panel.query('grid');
@@ -50,10 +49,11 @@
                 {
                     xtype: 'button',
                     text: 'Save',
-                    iconCls: 'save',
+                    iconCls: 'l-icon-disk',
                     handler: function (menuItem) {
                         var panel = menuItem.up('panel');
                         var grids = panel.query('grid');
+                        panel_global = panel;
 
                         Ext.MessageBox.show({
                             title: 'Wijzigingen opslaan',
@@ -63,8 +63,9 @@
                             buttons: Ext.MessageBox.OKCANCEL,
                             fn: function(btn, text)  {
                                 if (btn=='ok') {
+                                    //panel.setLoading(true);
                                     for (var i = 0; i < grids.length; i++) {
-                                        grids[i].saveEdits()
+                                        grids[i].saveEdits();
                                     }
                                 }
                             }
@@ -123,23 +124,6 @@
                             this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceWaterConfig')
-                    },{
-                        title: 'Acties',
-                        width:400,
-                        //autoHeight: true,
-                        xtype: 'panel',
-                        plugins: [
-                            'applycontext'
-                        ],
-                         applyParams: function(params) {
-                            //todo
-                        },
-                        items: [
-                            {html: 'Status: gevalideerd'},
-                            {html: 'Valideer'},
-                            {html: 'Exporteer configuratie'},
-                            {html: 'Importeer configu'}
-                        ]
                     }]
                 },
                 {
@@ -147,6 +131,8 @@
                 anchor:'100%',
                 autoHeight: true,
                 xtype: 'leditgrid',
+                useSaveBar: false,
+                usePagination: false,
                 plugins: [
                     'applycontext'
                 ],
@@ -240,6 +226,8 @@
                 anchor:'100%',
                 autoHeight: true,
                 xtype: 'leditgrid',
+                useSaveBar: false,
+                usePagination: false,
                 plugins: [
                     'applycontext'
                 ],
