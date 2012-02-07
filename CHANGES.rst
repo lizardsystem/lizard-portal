@@ -10,6 +10,8 @@ Changelog of lizard-portal
   - made pagination optional
   
 
+- added SO4 fields into bicket, structure tables of wbconfiguration form.
+
 
 0.7 (2012-01-31)
 ----------------
