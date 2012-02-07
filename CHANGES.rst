@@ -7,7 +7,12 @@ Changelog of lizard-portal
 
 - added last edit information to communique
 
-- added SO4 fields into bicket, structure tables of wbconfiguration form.
+- added SO4 fields into bucket, structure tables of wbconfiguration.
+
+- replaced dependency vss.utils to lizard_registration.utils.
+
+- Pinned:
+  lizard-registration 0.1
 
 
 0.7 (2012-01-31)
