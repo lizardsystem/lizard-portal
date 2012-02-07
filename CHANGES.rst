@@ -6,6 +6,9 @@ Changelog of lizard-portal
 ----------------
 
 - added last edit information to communique
+- editable grids:
+  - made pagination optional
+  
 
 
 0.7 (2012-01-31)
