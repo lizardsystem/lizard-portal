@@ -2,7 +2,13 @@ Changelog of lizard-portal
 ===================================================
 
 
-0.8 (unreleased)
+0.9 (unreleased)
+----------------
+
+- Nothing changed yet.
+
+
+0.8 (2012-02-07)
 ----------------
 
 - added last edit information to communique
@@ -10,7 +16,12 @@ Changelog of lizard-portal
   - made pagination optional
   
 
-- added SO4 fields into bicket, structure tables of wbconfiguration form.
+- added SO4 fields into bucket, structure tables of wbconfiguration.
+
+- replaced dependency vss.utils to lizard_registration.utils.
+
+- Pinned:
+  lizard-registration 0.1
 
 
 0.7 (2012-01-31)
