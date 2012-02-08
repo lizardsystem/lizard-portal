@@ -222,6 +222,7 @@
                 {% if perms.auth.is_analyst %}
                 , {
                    text: 'Toevoegen analyse interpretatie',
+                   icon: '/static_media/vss/icons/toestand.png',
                    handler: function() {
                        Ext.create('Ext.window.Window', {
                             title: 'Analyse interpretatie',
