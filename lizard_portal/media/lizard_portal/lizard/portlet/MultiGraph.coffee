@@ -36,6 +36,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
         me = @
         getImageConfig = (graph) -> #dit moet anders
             output = graph
+            output.hidden = graph.hidden || false
             output.orig_src = graph.graph_service_url || me.graph_service_url
             output.params = graph.params || {}
             return output
@@ -54,14 +55,17 @@ Ext.define('Lizard.portlet.MultiGraph', {
             },getImageConfig(graph_config)))
 
             #graph.applyParams()
+            #graph.hasResetPeriod
+            #graph.hasCumulPeriod
+
 
             @items.push(graph)
             @graphs.push(graph)
 
 
-            @tbar.push({
+            graph_button_settings = {
                 text: graph_config.title,
-                pressed: true,
+                pressed: not graph_config.hidden,
                 enableToggle: true,
                 iconCls: 'l-icon-chartbar',
                 graph: graph,
@@ -70,7 +74,59 @@ Ext.define('Lizard.portlet.MultiGraph', {
                         button.graph.show()
                     else
                         button.graph.hide()
-            })
+            }
+
+            onItemCheck = () ->
+                console.log('klik')
+
+
+
+            graph_button_settings.xtype = 'splitbutton'
+            graph_button_settings.menu = 	[
+                '<b class="menu-title">Cumulatieve periode</b>',
+                {
+                    text: 'Dag',
+                    checked: false,
+                    group: graph_config.title+'cumu',
+                    checkHandler: onItemCheck
+                },
+                {
+                    text: 'Maand',
+                    checked: true,
+                    group: graph_config.title+'cumu',
+                    checkHandler: onItemCheck
+                }, {
+                    text: 'Kwartaal',
+                    checked: false,
+                    group: graph_config.title+'cumu',
+                    checkHandler: onItemCheck
+                }, {
+                    text: 'Jaar',
+                    checked: false,
+                    group: graph_config.title+'cumu',
+                    checkHandler: onItemCheck
+                }
+                '-',
+                '<b class="menu-title">Reset periode</b>',
+                {
+                    text: 'Maand',
+                    checked: true,
+                    group: graph_config.title+'reset',
+                    checkHandler: onItemCheck
+                }, {
+                    text: 'Kwartaal',
+                    checked: false,
+                    group: graph_config.title+'reset',
+                    checkHandler: onItemCheck
+                }, {
+                    text: 'Jaar',
+                    checked: false,
+                    group: graph_config.title+'reset',
+                    checkHandler: onItemCheck
+                }
+            ]
+
+            @tbar.push(graph_button_settings)
     constructor: (config) ->
         console.log(config)
         @initConfig(arguments)

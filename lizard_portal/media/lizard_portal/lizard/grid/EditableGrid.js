@@ -22,7 +22,41 @@
     - multiselect comboboxes doesn't work correct
   
   
-  */  Ext.define('Lizard.grid.EditableGrid', {
+  */  Ext.override(Ext.form.field.Field, {
+    isEqual: function(a, b) {
+      if (Ext.isDate(a) && Ext.isDate(b)) {
+        return a.getTime() === b.getTime();
+      } else if (Ext.isObject(a) && Ext.isObject(b)) {
+        return a.id === b.id;
+      } else if (Ext.isArray(a) && Ext.isArray(b)) {
+        console.log(a);
+        console.log(b);
+        if (a.length === 1 && b.length === 1) {
+          console.log(a[0].id === b[0].id);
+          return a[0].id === b[0].id;
+        }
+      }
+      return a === b;
+    }
+  });
+  Ext.override(Ext.data.Model, {
+    isEqual: function(a, b) {
+      if (Ext.isDate(a) && Ext.isDate(b)) {
+        return a.getTime() === b.getTime();
+      } else if (Ext.isObject(a) && Ext.isObject(b)) {
+        return a.id === b.id;
+      } else if (Ext.isArray(a) && Ext.isArray(b)) {
+        console.log(a);
+        console.log(b);
+        if (a.length === 1 && b.length === 1) {
+          console.log(a[0].id === b[0].id);
+          return a[0].id === b[0].id;
+        }
+      }
+      return a === b;
+    }
+  });
+  Ext.define('Lizard.grid.EditableGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.leditgrid',
     config: {
@@ -35,7 +69,9 @@
       addEditIcon: false,
       addDeleteIcon: false,
       actionEditIcon: null,
-      actionDeleteIcon: null
+      actionDeleteIcon: null,
+      usePagination: true,
+      recordsPerPage: 25
     },
     extraEditors: {
       timeserie: {
@@ -119,6 +155,7 @@
           editor = me.editors[type];
         } else if (type === 'combo') {
           if (col.choices && col.choices.length > 0 && Ext.type(col.choices[0]) === 'object') {
+            console.log('combodict');
             editor = {
               field: {
                 xtype: 'combodict',
@@ -137,6 +174,7 @@
               }
             };
           } else if (col.remote) {
+            console.log('gridcombobox');
             editor = {
               field: {
                 xtype: 'gridcombobox',
@@ -156,6 +194,7 @@
               }
             };
           } else {
+            console.log('combo');
             editor = {
               field: {
                 xtype: 'combo',
@@ -339,7 +378,6 @@
           cols.push(cols_with_header);
         }
       }
-      console.log(cols);
       return cols;
     },
     saveEdits: function() {
@@ -410,6 +448,7 @@
       store = {
         type: 'leditstore',
         fields: fields,
+        pageSize: this.recordsPerPage,
         proxy: {
           type: 'ajax',
           api: {
@@ -421,25 +460,33 @@
           extraParams: {},
           reader: {
             type: 'json',
-            root: 'data'
+            root: 'data',
+            totalProperty: 'count'
           },
           writer: {
             type: 'json',
             writeAllFields: false,
             root: 'data',
             encode: true,
-            successProperty: 'success'
-          },
-          autoLoad: true
+            successProperty: 'success',
+            totalProperty: 'count'
+          }
         }
       };
       return store;
     },
+    addRecord: function() {
+      return me.addRecord();
+    },
     initComponent: function() {
       var me;
       me = this;
+      if (!this.getUsePagination()) {
+        this.recordsPerPage = 10000;
+      }
       me.columns = this.getColumnConfig();
-      me.store = this.getStoreConfig();
+      me.store = Ext.create('Lizard.store.EditGridStore', this.getStoreConfig());
+      me.bbar = [];
       if (this.getEditable()) {
         this.editing = Ext.create('Lizard.grid.CellEditing', {
           clicksToEdit: 1
@@ -500,13 +547,15 @@
           }
         ]);
       }
-      this.on('edit', function(editor, e) {
-        console.log('editor:');
-        console.log(editor);
-        console.log('e:');
-        console.log(e);
-        return console.log(editor.getActiveEditor());
-      });
+      if (this.getUsePagination()) {
+        this.bbar = {
+          xtype: 'pagingtoolbar',
+          pageSize: this.recordsPerPage,
+          store: me.store,
+          displayInfo: true,
+          items: ['-'].concat(me.bbar)
+        };
+      }
       return this.callParent(arguments);
     }
   });

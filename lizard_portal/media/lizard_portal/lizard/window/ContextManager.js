@@ -39,7 +39,7 @@
       base_url: 'portal/site/vss/'
     },
     setActiveHeadertab: function(tab) {
-      var context, pw;
+      var pw;
       if (typeof tab === 'string') {
         tab = Ext.Array.filter(this.headertabs, function(element) {
           if (element.name === tab) {
@@ -52,13 +52,18 @@
       }
       if (tab) {
         this.active_headertab = tab;
-        context = this.getContext();
         pw = Ext.getCmp('portalWindow');
         if (pw) {
-          if (context.object_id && this) {
-            pw.linkTo({});
-          } else {
-            pw.showNavigationPortalTemplate();
+          if (!this.showNavigationIfNeeded(true, true)) {
+            if (tab.active_portal_template) {
+              pw.loadPortal(Ext.merge({
+                portalTemplate: tab.active_portal_template
+              }, this.getContext()));
+            } else {
+              pw.loadPortal(Ext.merge({
+                portalTemplate: tab.default_portal_template
+              }, this.getContext()));
+            }
           }
         }
       } else {
@@ -111,9 +116,7 @@
           object = this.last_selected_object;
         }
       }
-      ({
-        "else": object = this.last_selected_object
-      });
+      object = this.last_selected_object;
       if (typeof params.object_id !== 'undefined') {
         if (object.object_id !== params.object_id) {
           object.object_id = params.object_id;
@@ -221,6 +224,26 @@
       output.period_end = this.getPeriod_end();
       output.user = this.getUser();
       return output;
+    },
+    showNavigationIfNeeded: function(animate_navigation_expand, hide_if_not_needed) {
+      var activeTab;
+      if (animate_navigation_expand == null) {
+        animate_navigation_expand = true;
+      }
+      if (hide_if_not_needed == null) {
+        hide_if_not_needed = true;
+      }
+      activeTab = this.getActive_headertab();
+      if (activeTab) {
+        if (activeTab.popup_navigation && !this.getContext().object_id) {
+          Ext.getCmp('portalWindow').showNavigation(activeTab.navigation, animate_navigation_expand, activeTab.popup_navigation, activeTab.popup_navigation_portal);
+          return true;
+        }
+      }
+      if (hide_if_not_needed) {
+        Ext.getCmp('portalWindow').navigation.collapse();
+      }
+      return false;
     },
     constructor: function(config) {
       this.initConfig(config);

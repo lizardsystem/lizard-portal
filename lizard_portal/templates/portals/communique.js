@@ -8,7 +8,7 @@
                 'applycontext'
             ],
              tpl: new Ext.Template(
-                '<p>{data}</p>'
+                '<p>{description}</p><hr></hr><p><i>{edited_by}, {edited_at}</i></p>'
             ),
             loader: {
                 ajaxOptions: {
@@ -36,7 +36,7 @@
                 handler: function(e, target, panelHeader, tool){
                     console.log(arguments)
                     var portlet = panelHeader.up('panel')
-                    var communique_data = portlet.data.data;
+                    var communique_data = portlet.data.description;
                     console.log(communique_data)
 
                     var form_window = Ext.create('Ext.window.Window', {
@@ -59,7 +59,7 @@
                                 xtype: 'textareafield',
                                 //fieldLabel: 'First Name',
                                 height: '100%',
-                                name: 'communique',
+                                name: 'description',
                                 value: communique_data,
                                 allowBlank: false
                             }],

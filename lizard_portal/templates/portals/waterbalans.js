@@ -19,17 +19,13 @@
         }
     ],
 	items:[{
-		width: 300,
+		width: 200,
 		items: [{
-			title: 'Info',
-            flex:1,
-			html: 'Hier komt het overzicht'
-		},{
-			title: 'Instellingen',
-            height: 150,
+			title: 'Samenvatting instellingen',
+            flex: 1,
             bbar: [{
                 xtype: 'button',
-                text: 'Overzicht instellingen',
+                text: 'Details',
                 iconCls: 'l-icon-setting',
                 handler: function(menuItem, checked) {
                     Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans-instellingen-overzicht'});

@@ -1,28 +1,4 @@
 (function() {
-  Ext.apply(Ext.data.SortTypes, {
-    asIdNameObject: function(obj) {
-      console.log(obj);
-      if (Ext.type(obj) === 'string') {
-        console.log('string');
-        return obj;
-      } else if (Ext.type(obj) === 'object') {
-        if (obj.name) {
-          return obj.name;
-        } else {
-          return null;
-        }
-      } else if (Ext.type(obj) === 'array') {
-        console.log('array');
-        if (obj[0]) {
-          console.log(obj[0].name);
-          return obj[0].name;
-        } else {
-          return '';
-        }
-      }
-      return '';
-    }
-  });
   Ext.define('Lizard.store.EditGridStore', {
     extend: 'Ext.data.Store',
     alias: 'store.leditstore',
@@ -30,10 +6,6 @@
       something: false,
       pageSize: 25,
       remoteSort: true
-    },
-    setTempWriteParams: function(params) {
-      this.notTmpParams = Ext.merge({}, this.proxy.extraParams);
-      return this.proxy.extraParams = Ext.merge(this.proxy.extraParams, params);
     },
     applyParams: function(params) {
       if (!this.notTmpParams) {

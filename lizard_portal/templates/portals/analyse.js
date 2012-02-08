@@ -176,23 +176,26 @@
                 });
             },
             rbar:[{
-                    text: 'ESF',
-                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'esf-overzicht'}); }
+                    //text: 'ESF',
+                    icon: '/static_media/vss/icons/esf.png',
+                    handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'esf-1'}); }
                 }, {
-                   text: 'WB',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans'}); }
-                }, {
+                   //text: 'WB',
+                   icon: '/static_media/vss/icons/waterbalansen.png',
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'waterbalans'}); }
+                },/* {
                    text: 'AI',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'analyse-interpretatie'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'analyse-interpretatie'}); }
                 }, {
                    text: 'Advies',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'advies'}); }
-                }, {
-                   text: 'Maatr',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'maatregelen'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'advies'}); }
+                },*/ {
+                   //text: 'Maatr',
+                   icon: '/static_media/vss/icons/maatregelen.png',
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'maatregelen'}); }
                 }, {
                    text: 'Tsnd',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'toestand-aan-afvoergebied'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'toestand-aan-afvoergebied'}); }
                 }],
             flex:1
 		}]

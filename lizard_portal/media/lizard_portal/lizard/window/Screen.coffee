@@ -28,19 +28,9 @@ Ext.define 'Lizard.window.Screen',
             headertabs: []
         context_manager: null
         showOnlyPortal: false
+        navigation_tabs: []
 
-    ###
-    #setBreadCrumb:
-    #sets breadcrumb of header (reference to function of header)
-    #
-    #
-    #
     ####
-    setBreadCrumb:(bread_crumbs) ->
-        if @header
-            @header.setBreadCrumb(bread_crumbs)
-
-    ###
     #linkTo:
     #sets context and load portal
     #
@@ -52,11 +42,78 @@ Ext.define 'Lizard.window.Screen',
         console.log(arguments)
 
         @context_manager.setContext(params, save_state)
-        if @header
-            @header.updateContextHeader()
+        #if @header
+        #    @header.updateContextHeader()
         @loadPortal(@context_manager.getContext(), area_selection_collapse, skip_animation)
 
-    ###
+   ####
+    #linkToNewWindow:
+    #open portal in new window
+    #
+    #
+    #
+    ####
+    linkToNewWindow:(params, save_state=true, area_selection_collapse=true, skip_animation=false) ->
+        console.log('linkTo, with arguments:')
+        console.log(arguments)
+
+        args = Ext.Object.merge({}, @context_manager.getContext(), params)
+        href = '/portal/only_portal/#'+args.active_headertab.name+'/'+args.portalTemplate+'/'+args.object_type + '/' + args.object_id
+
+        window.open( href, args.portalTemplate + ' ' + args.object_name, 'width=800,height=600,scrollbars=yes')
+
+
+
+   ####
+    #linkToPopup:
+    #open portal in popup (extjs window)
+    #
+    #
+    #
+    ####
+    linkToPopup:(title, url, params, window_options={}, add_active_object_to_request=true, renderer='html', modal=false) ->
+        console.log('linkTo, with arguments:')
+        console.log(arguments)
+
+        me = @
+
+        if add_active_object_to_request
+            cont= @context_manager.getContext()
+
+            args = Ext.Object.merge(params, {object_id:cont.object_id, object_type: cont.object_type})
+
+        window_settings = {
+            title: title,
+            width: 800,
+            height: 500,
+            autoScroll: true,
+            bodyStyle:
+                background: 'white'
+            modal: modal,
+            loader:{
+                loadMask: true,
+                autoLoad: true,
+                url: url,
+                ajaxOptions: {
+                    method: 'GET'
+                },
+                params: params,
+                renderer: renderer
+            }
+        }
+
+        if window_options.save
+            window_settings.tools = [{
+                type: 'save',
+                handler: (e, target, panelHeader, tool) ->
+                    console.log(arguments);
+                    me.linkToPopup.apply(me, window_options.save);
+            }]
+
+        Ext.create('Ext.window.Window', window_settings).show();
+
+
+    ####
     #loadPortal:
     #loads portal or activates already active portal with correct context. set breadcrumb based on settings in
     # the portal templates
@@ -75,8 +132,9 @@ Ext.define 'Lizard.window.Screen',
         if tab
             #switch to tab
             @portalContainer.setActiveTab(tab)
+
             tab.setContext(params)
-            @setBreadCrumb tab.breadcrumbs
+            @header.setBreadCrumb tab.breadcrumbs
         else
             #load portal and put in tab
             container.setLoading true
@@ -98,29 +156,57 @@ Ext.define 'Lizard.window.Screen',
                         tab = me.portalContainer.add newComponent
                         me.portalContainer.setActiveTab(tab)
                         me.portalContainer.setLoading false
-                        me.setBreadCrumb(newComponent.breadcrumbs)
+                        me.header.setBreadCrumb(newComponent.breadcrumbs)
                     catch error
                         Ext.Msg.alert("Fout", "Fout in laden scherm. Error: #{error}")
                         me.portalContainer.setLoading false
 
-                failure: =>
+                failure: (error) =>
+                    #response
+                    console.log(error)
                     Ext.Msg.alert("Fout", "Fout in ophalen van scherm. Error: #{error}")
                     me.portalContainer.setLoading false
 
-    ###
-    # showNavigationPortalTemplate:
+    ####
+    # showNavigation:
     # show area selection (left side area selection and navigation)
     # animate does not work in version
     #
     #
     ####
-    showNavigationPortalTemplate: (animate_navigation_expand, expand_navigation=true) ->
+    showNavigation: (navigation_id, animate_navigation_expand=true, expand_navigation=true, show_portal_template=true) ->
+        navigation_tab = @navigation.getComponent(navigation_id)
+        if not navigation_tab
+            console.log('navigation does not exist')
+            return false
+        if navigation_id and navigation_tab
+            @navigation.setActiveTab(navigation_id)
+            
+            if expand_navigation
+                #animate option does not work in version
+                @navigation.expand(animate_navigation_expand)
+                @navigation.doLayout()
 
-        if expand_navigation
-            @navigation.expand(animate_navigation_expand)
-        args = Ext.Object.merge({}, @context_manager.getContext(), {portalTemplate: @context_manager.active_headertab.navigation_portal_template})
-        #send only args to prevent context switch (only temp switch)
-        @loadPortal(args, false)
+        if show_portal_template
+            args = Ext.Object.merge({}, @context_manager.getContext(), {
+                        portalTemplate: navigation_tab.selection_portal_template
+                    })
+            #send only args to prevent context switch (only temp switch)
+            @loadPortal(args, false)
+
+        return true
+
+
+    showTabMainpage: (animate_navigation_expand=true, expand_navigation=true, show_portal_template=true) ->
+        context = @context_manager.getContext()
+        ht = context.active_headertab
+
+        if ht.popup_navigation
+            @showNavigation(ht.navigation, true, true, ht.popup_navigation_portal)
+        else
+            @linkTo({portalTemplate:ht.default_portal_template})
+
+        return true
 
     constructor: (config) ->
         @initConfig(config)
@@ -128,7 +214,7 @@ Ext.define 'Lizard.window.Screen',
 
     initComponent: () ->
         me = @
-
+        
         if @showOnlyPortal
 
             @header = Ext.create('Lizard.window.Header'
@@ -141,11 +227,9 @@ Ext.define 'Lizard.window.Screen',
                 src_logo: @header.src_logo
                 url_homepage: @header.url_homepage
                 headertabs: @header.headertabs
-                #todo: potential memory leak, becase of cross references
+                #todo: potential memory leak, because of cross references. add in destroy?
                 portalWindow: @
             )
-
-
 
             Ext.apply @,
                 id: 'portalWindow',
@@ -169,12 +253,9 @@ Ext.define 'Lizard.window.Screen',
                         #layout:'card'
                         xtype: 'tabpanel'
                         tabPosition: 'bottom'
-
                     }
                 ]
-
         else
-
             @header = Ext.create('Lizard.window.Header'
                 region: 'north'
                 id:'header'
@@ -214,10 +295,9 @@ Ext.define 'Lizard.window.Screen',
                         autoScroll: true
                         layout: 'fit'
                         setNavigation: (navigation)->
-                            tab = @child("##{navigation.id}")
-                            if not tab
-                                tab = @add navigation
+                            tab = @child(navigation)
                             @setActiveTab(tab)
+                            
                     }
                     {
                         region: 'center'
@@ -238,6 +318,8 @@ Ext.define 'Lizard.window.Screen',
         #set references after creation
         if not @showOnlyPortal
             @navigation = Ext.getCmp('areaNavigation')
+            for navig in @navigation_tabs
+                @navigation.add navig
         @portalContainer = Ext.getCmp('portalContainer')
         return @
 
@@ -259,18 +341,13 @@ Ext.define 'Lizard.window.Screen',
         if not @showOnlyPortal
             #set navigation of active tab
             activeTab = @context_manager.getActive_headertab()
-            if activeTab
-                tab = @navigation.add activeTab.navigation
-                @navigation.setActiveTab tab
 
-
-            if not @context_manager.getContext().object_id
+            if activeTab.popup_navigation and not @context_manager.getContext().object_id
                 console.log('no object selected, show selection')
                 #show navigation and selection
                 #false argument for animation doesn work in extjs 4.0.2, so set animCollapse setting before animation and
                 #reset to original value afterwards
                 anim_setting = @navigation.animCollapse
-                @navigation.animCollapse =  false
-                @navigation.expand(false)
+                @navigation.animCollapse = false
+                @context_manager.showNavigationIfNeeded(false)
                 @navigation.animCollapse =  anim_setting
-                @showNavigationPortalTemplate(false)

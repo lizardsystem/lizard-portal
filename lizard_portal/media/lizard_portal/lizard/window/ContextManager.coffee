@@ -48,20 +48,20 @@ Ext.define 'Lizard.window.ContextManager',
 
         if tab
             @active_headertab = tab
-            context = @getContext()
             pw = Ext.getCmp('portalWindow')
             if pw
-                if context.object_id and @
-                    #show selected or default template
-                    pw.linkTo({})
-                else
-                    pw.showNavigationPortalTemplate()
-                
+                if not @showNavigationIfNeeded(true, true)
+                    if tab.active_portal_template
+                        pw.loadPortal(Ext.merge({portalTemplate: tab.active_portal_template}, @getContext()))
+                    else
+                        pw.loadPortal(Ext.merge({portalTemplate: tab.default_portal_template}, @getContext()))
         else
             console.log('headertab not found')
         return tab
 
         #todo: Events
+
+
 
     setContext:(params, save_state=true, headertab=@active_headertab) ->
         console.log('new context params are:')
@@ -96,8 +96,8 @@ Ext.define 'Lizard.window.ContextManager',
                 @last_selected_object = @objects[params.object_type]
                 object_type_change = true
                 object = @last_selected_object
-        else:
-             object = @last_selected_object
+
+        object = @last_selected_object
 
 
         if typeof(params.object_id) != 'undefined'
@@ -218,6 +218,24 @@ Ext.define 'Lizard.window.ContextManager',
         #todo: user and period
 
 
+
+    showNavigationIfNeeded: (animate_navigation_expand=true, hide_if_not_needed=true) ->
+        activeTab = @getActive_headertab()
+
+        if activeTab
+            if activeTab.popup_navigation and not @getContext().object_id
+                Ext.getCmp('portalWindow').showNavigation(
+                    activeTab.navigation
+                    animate_navigation_expand,
+                    activeTab.popup_navigation, #expand_navigation=
+                    activeTab.popup_navigation_portal #show_portal_template
+                )
+                return true
+
+        if hide_if_not_needed
+            Ext.getCmp('portalWindow').navigation.collapse()
+
+        return false
 
 
 

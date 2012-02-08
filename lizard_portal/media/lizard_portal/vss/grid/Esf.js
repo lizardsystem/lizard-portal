@@ -12,7 +12,8 @@ Ext.define('Vss.grid.Esf', {
     selType: 'cellmodel',
 
     config: {
-        editable: true
+        editable: true,
+        autoLoad: false
     },
     viewConfig:{
         toggleOnDblClick:false
@@ -24,6 +25,7 @@ Ext.define('Vss.grid.Esf', {
         console.log(params);
 
         if (this.store) {
+
             this.store.applyParams({object_id: params.object_id});
         }
     },
@@ -195,7 +197,7 @@ Ext.define('Vss.grid.Esf', {
                 bbar: [{
                     xtype: 'button',
                     text: 'Cancel',
-                    iconCls: 'cancel',
+                    iconCls: 'l-icon-cancel',
                     handler: function(menuItem, checked) {
                         me.store.rejectChanges();
                     }

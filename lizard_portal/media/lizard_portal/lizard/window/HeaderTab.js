@@ -4,10 +4,9 @@
     config: {
       title: '',
       name: '',
-      navigation_portal_template: null,
-      navigation: {
-        id: 'emptyNavigation'
-      },
+      popup_navigation: false,
+      popup_navigation_portal: false,
+      navigation: null,
       default_portal_template: '',
       active_portal_template: null,
       object_types: []

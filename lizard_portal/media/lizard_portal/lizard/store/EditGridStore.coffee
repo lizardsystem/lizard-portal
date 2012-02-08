@@ -1,8 +1,3 @@
-#TODO: add editores
-#TODO: add renderers
-#TODO: finetune save/ cancel/ add/ delete buttons and functionality
-#TODO: finetune communication with server, including adding message and answer with id
-#TODO: implement editable and visible
 
 Ext.apply(Ext.data.SortTypes, {
     asIdNameObject: (obj) ->
@@ -33,6 +28,8 @@ Ext.define 'Lizard.store.EditGridStore',
     alias: 'store.leditstore'
     config:
         something: false
+        pageSize: 25
+        remoteSort: true
 
 
     setTempWriteParams: (params) ->
@@ -84,12 +81,9 @@ Ext.define 'Lizard.store.EditGridStore',
     initComponent: () ->
         me = @
 
-
-        Ext.apply @
+        Ext.apply(@, {
             idProperty: 'id'
-
-
-
+        })
 
         @callParent(arguments)
         return @
@@ -107,4 +101,8 @@ Ext.define 'Lizard.store.EditGridStore',
 
             Ext.MessageBox.alert('Opslaan gelukt');
 
+        beforeload: (store, action, operation) ->
+            if (store.getNewRecords().length >0 or store.getUpdatedRecords().length >0 or store.getRemovedRecords().length >0)
+                Ext.Msg.alert("Let op", 'Sla eerst de bewerking(en) in het grid op, voordat nieuwe data wordt geladen')
+                return false
 
