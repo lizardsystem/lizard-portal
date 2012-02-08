@@ -90,6 +90,9 @@
         width: 800,
         height: 500,
         autoScroll: true,
+        bodyStyle: {
+          background: 'white'
+        },
         modal: modal,
         loader: {
           loadMask: true,

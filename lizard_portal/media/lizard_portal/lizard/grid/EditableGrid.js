@@ -475,6 +475,9 @@
       };
       return store;
     },
+    addRecord: function() {
+      return me.addRecord();
+    },
     initComponent: function() {
       var me;
       me = this;

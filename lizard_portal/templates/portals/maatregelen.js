@@ -31,7 +31,33 @@
             },
             loader:{
                 renderer: 'html'
-            }
+            },
+            tools: [{
+                type: 'plus',
+                handler: function (e, target, panelHeader, tool) {
+                    Ext.create('Ext.window.Window', {
+                        title: 'Nieuwe maatregel toevoegen',
+                        width: 800,
+                        height: 600,
+                        modal: true,
+                        finish_edit_function: function (updated_record) {
+                            //todo
+                        },
+                        editpopup: true,
+                        loader:{
+                            loadMask: true,
+                            autoLoad: true,
+                            url: '/measure/measure_detailedit_portal/',
+                            ajaxOptions: {
+                                method: 'GET'
+                            },
+                            renderer: 'component'
+                        }
+                    }).show();
+                }
+            } ]
+
+
 		}]
 	}]
 }

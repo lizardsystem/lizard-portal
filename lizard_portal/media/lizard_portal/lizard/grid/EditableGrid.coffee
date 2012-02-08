@@ -477,6 +477,10 @@ Ext.define('Lizard.grid.EditableGrid', {
 
         return store
 
+
+    addRecord: () ->
+        me.addRecord()
+
     initComponent: () ->
         me = @
 
