@@ -204,9 +204,11 @@
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans'}); }
                 }, {
                    text: 'Analyse interpretaties',
+                   icon: '/static_media/vss/icons/advies.png',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'analyse-interpretatie'}); }
                 }, {
                    text: 'Advies',
+                   icon: '/static_media/vss/icons/advies.png',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'advies'}); }
                 }, {
                    text: 'Maatregelen',
@@ -214,6 +216,7 @@
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'maatregelen'}); }
                 }, {
                    text: 'Toestand',
+                   icon: '/static_media/vss/icons/toestand.png',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'toestand-aan-afvoergebied'}); }
                 }
                 {% if perms.auth.is_analyst %}
