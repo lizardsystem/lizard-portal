@@ -113,16 +113,26 @@
           success: success
         }
       };
+      if (window_options.save || window_options.search) {
+        window_settings.tools = [];
+      }
       if (window_options.save) {
-        window_settings.tools = [
-          {
-            type: 'save',
-            handler: function(e, target, panelHeader, tool) {
-              console.log(arguments);
-              return me.linkToPopup.apply(me, window_options.save);
-            }
+        window_settings.tools.push({
+          type: 'save',
+          handler: function(e, target, panelHeader, tool) {
+            console.log(arguments);
+            return me.linkToPopup.apply(me, window_options.save);
           }
-        ];
+        });
+      }
+      if (window_options.search) {
+        window_settings.tools.push({
+          type: 'search',
+          handler: function(e, target, panelHeader, tool) {
+            console.log(arguments);
+            return me.linkToPopup.apply(me, window_options.search);
+          }
+        });
       }
       return Ext.create('Ext.window.Window', window_settings).show();
     },

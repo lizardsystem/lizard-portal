@@ -111,13 +111,23 @@ Ext.define 'Lizard.window.Screen',
             }
         }
 
+        if window_options.save or window_options.search
+            window_settings.tools = []
         if window_options.save
-            window_settings.tools = [{
+            window_settings.tools.push {
                 type: 'save',
                 handler: (e, target, panelHeader, tool) ->
                     console.log(arguments);
                     me.linkToPopup.apply(me, window_options.save);
-            }]
+            }
+
+        if window_options.search
+            window_settings.tools.push {
+                type: 'search',
+                handler: (e, target, panelHeader, tool) ->
+                    console.log(arguments);
+                    me.linkToPopup.apply(me, window_options.search);
+            }
 
         Ext.create('Ext.window.Window', window_settings).show();
 
