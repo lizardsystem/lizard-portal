@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.8.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- linkToPopup method also can have a search tool now.
 
 
 0.8.1 (2012-02-09)
