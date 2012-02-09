@@ -5,7 +5,10 @@ Changelog of lizard-portal
 0.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add boolean reload parameter to linkToPopup method of portal window,
+  for reloading images
+
+- Fix graph not loading for measure page
 
 
 0.8 (2012-02-07)

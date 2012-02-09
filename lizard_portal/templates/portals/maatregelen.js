@@ -25,9 +25,15 @@
                 var url = '/measure/summary/'+ cm.object_id +'/krw_measures/';
                 me.loader.load({
                     url:url,
-                    method: 'GET'
+                    method: 'GET',
+                    success: function() {
+                      reloadGraphs();
+                      me.setLoading(false);
+                    },
+                    failure: function() {
+                      me.setLoading(false);
+                    }
                 });
-                me.setLoading(false);
             },
             loader:{
                 renderer: 'html'

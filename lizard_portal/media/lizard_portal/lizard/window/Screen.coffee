@@ -71,7 +71,7 @@ Ext.define 'Lizard.window.Screen',
     #
     #
     ####
-    linkToPopup:(title, url, params, window_options={}, add_active_object_to_request=true, renderer='html', modal=false) ->
+    linkToPopup: (title,url,params,window_options={},add_active_object_to_request=true,renderer='html',modal=false,reloadme=false) ->
         console.log('linkTo, with arguments:')
         console.log(arguments)
 
@@ -80,7 +80,15 @@ Ext.define 'Lizard.window.Screen',
         if add_active_object_to_request
             cont= @context_manager.getContext()
 
-            args = Ext.Object.merge(params, {object_id:cont.object_id, object_type: cont.object_type})
+            args = Ext.Object.merge(
+                params, {
+                    object_id: cont.object_id,
+                    object_type: cont.object_type
+                })
+        if reloadme
+            success = reloadGraphs
+        else
+            success = Ext.emptyFn()
 
         window_settings = {
             title: title,
@@ -97,8 +105,9 @@ Ext.define 'Lizard.window.Screen',
                 ajaxOptions: {
                     method: 'GET'
                 },
-                params: params,
+                params: params
                 renderer: renderer
+                success: success
             }
         }
 
