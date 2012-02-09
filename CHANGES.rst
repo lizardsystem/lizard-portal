@@ -2,8 +2,8 @@ Changelog of lizard-portal
 ===================================================
 
 
-0.9 (unreleased)
-----------------
+0.8.1 (2012-02-09)
+------------------
 
 - Add boolean reload parameter to linkToPopup method of portal window,
   for reloading images
