@@ -71,6 +71,7 @@
       actionEditIcon: null,
       actionDeleteIcon: null,
       usePagination: true,
+      read_only_field: null,
       recordsPerPage: 25
     },
     extraEditors: {
@@ -138,9 +139,12 @@
         }
       }
     },
-    get_editor: function(col) {
+    get_editor: function(record, col) {
       var editor, me, type;
       me = this;
+      if (me.read_only_field && record.data[me.read_only_field] === true) {
+        return false;
+      }
       if (typeof col.editable === 'undefined') {
         col.editable = true;
       }
@@ -314,7 +318,7 @@
         };
         if (col.editable) {
           col_config.getEditor = Ext.Function.bind(function(record, col) {
-            return me.get_editor(col);
+            return me.get_editor(record, col);
           }, me, [col], true);
         }
         if (col.editIf) {
@@ -402,7 +406,11 @@
       var selection;
       selection = this.getView().getSelectionModel().getSelection()[0];
       if (selection) {
-        return this.store.remove(selection);
+        if (this.read_only_field && selection.data[this.read_only_field] === true) {
+          return false;
+        } else {
+          return this.store.remove(selection);
+        }
       }
     },
     getStoreConfig: function() {
@@ -474,9 +482,6 @@
         }
       };
       return store;
-    },
-    addRecord: function() {
-      return me.addRecord();
     },
     initComponent: function() {
       var me;

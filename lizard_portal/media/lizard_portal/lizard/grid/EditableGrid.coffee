@@ -84,6 +84,7 @@ Ext.define('Lizard.grid.EditableGrid', {
         actionEditIcon: null
         actionDeleteIcon: null
         usePagination: true
+        read_only_field: null
         recordsPerPage:25
     }
     extraEditors: {
@@ -144,8 +145,11 @@ Ext.define('Lizard.grid.EditableGrid', {
                 format: 'm d Y',
                 altFormats: 'd,m,Y|d.m.Y',
     }
-    get_editor: (col) ->
+    get_editor: (record, col) ->
         me = @
+
+        if me.read_only_field and record.data[me.read_only_field] == true
+            return false
 
         if typeof(col.editable) == 'undefined'
             col.editable = true
@@ -316,7 +320,7 @@ Ext.define('Lizard.grid.EditableGrid', {
             if col.editable
                 col_config.getEditor = Ext.Function.bind(
                     (record, col) ->
-                        return me.get_editor(col)
+                        return me.get_editor(record, col)
                     me
                     [col]
                     true
@@ -395,9 +399,13 @@ Ext.define('Lizard.grid.EditableGrid', {
 
     deleteSelectedRecord: () ->
         selection = @getView().getSelectionModel().getSelection()[0]
-        if selection
-            @store.remove(selection)
 
+
+        if selection
+            if @read_only_field and selection.data[@read_only_field] == true
+                return false
+            else
+                @store.remove(selection)
 
 
     getStoreConfig: () ->
@@ -478,8 +486,6 @@ Ext.define('Lizard.grid.EditableGrid', {
         return store
 
 
-    addRecord: () ->
-        me.addRecord()
 
     initComponent: () ->
         me = @
