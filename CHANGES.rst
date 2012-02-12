@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - linkToPopup method also can have a search tool now.
 
+- add read-only row functionality to EditableGrid
+
 
 0.8.1 (2012-02-09)
 ------------------
