@@ -128,4 +128,4 @@ Ext.define('Lizard.model.Graph', {
             url += '&format=csv'
 
 
-});s
+});
