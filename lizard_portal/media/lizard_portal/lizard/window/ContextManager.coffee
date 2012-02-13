@@ -36,7 +36,6 @@ Ext.define 'Lizard.window.ContextManager',
 
         base_url: 'portal/site/vss/'
 
-
     setActiveHeadertab: (tab) ->
         if typeof(tab) == 'string'
             tab = Ext.Array.filter(@headertabs, (element) ->

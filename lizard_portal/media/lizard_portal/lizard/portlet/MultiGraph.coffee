@@ -134,6 +134,9 @@ Ext.define('Lizard.portlet.MultiGraph', {
 
     initComponent: () ->
         me = @
+
+
+
         Ext.apply(@, {
             layout:
                 type: 'vboxscroll'

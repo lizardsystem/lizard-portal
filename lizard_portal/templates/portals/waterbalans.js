@@ -42,13 +42,10 @@
 	},{
 		flex: 1,
 		items: [{
-			title: 'Grafieken',
+            title: 'Grafieken',
             flex: 1,
-            xtype: 'multigraph',
-            graph_service_url: '/graph/',
-            context_manager: Ext.getCmp('portalWindow').context_manager,
-            graphs: {% get_portal_template graphs-waterbalans %}
-
+            xtype: 'multigraphstore',
+            store: Ext.create('Lizard.store.Graph', {data: {% get_portal_template graphs-waterbalans %} })
 		}]
 	}]
 }

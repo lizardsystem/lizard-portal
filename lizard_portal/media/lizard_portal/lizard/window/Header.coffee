@@ -217,7 +217,7 @@ Ext.define('Lizard.window.Header', {
                         items: [
                             { boxLabel: 'dg', name: 'period', inputValue: 0, dt: [Ext.Date.DAY,-1]},
                             { boxLabel: '2dg', name: 'period', inputValue: 1, dt: [Ext.Date.DAY,-2] },
-                            { boxLabel: 'wk', name: 'period', inputValue: 2, dt: [Ext.Date.WEEK,-1] },
+                            { boxLabel: 'wk', name: 'period', inputValue: 2, dt: [Ext.Date.DAY,-7] },
                             { boxLabel: 'mnd', name: 'period', inputValue: 3, dt: [Ext.Date.MONTH,-1] },
                             { boxLabel: 'jr', name: 'period', inputValue: 4, dt: [Ext.Date.YEAR,-1] },
                             { boxLabel: '5jr', name: 'period', inputValue: 5, dt: [Ext.Date.YEAR,-5] },

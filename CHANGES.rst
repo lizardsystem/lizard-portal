@@ -9,6 +9,12 @@ Changelog of lizard-portal
 
 - add read-only row functionality to EditableGrid
 
+- add MultiGraph portal with store
+
+- implement MultiGraph portal with store for a few screens
+
+- fixed week selection in period selection window
+
 
 0.8.1 (2012-02-09)
 ------------------

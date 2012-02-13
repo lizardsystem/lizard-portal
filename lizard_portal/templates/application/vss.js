@@ -16,7 +16,8 @@ Ext.application({
         'Vss.model.WaterbalanceStructure',
         'Vss.model.AnnotationDetail',
         'Vss.model.AnnotationDescription',
-        'Vss.model.TimeserieObject'
+        'Vss.model.TimeserieObject',
+        'Lizard.model.Graph'
     ],
     stores: [
         'Vss.store.Communique',
@@ -29,7 +30,8 @@ Ext.application({
         'Vss.store.WaterbalanceWaterConfig',
         'Vss.store.AnnotationDetail',
         'Vss.store.AnnotationDescription',
-        'Vss.store.TimeserieObject',
+        'Vss.store.KrwToestandGraph',
+        'Lizard.store.Graph',
 
     ],
     requires: [
@@ -65,6 +67,7 @@ Ext.application({
         'Lizard.portlet.PortalColumn',
         'Lizard.portlet.GridPortlet',
         'Lizard.portlet.MultiGraph',
+        'Lizard.portlet.MultiGraphStore',
         'Lizard.window.Header',
         'Vss.grid.Esf',
         'Lizard.form.FormAutoload',
