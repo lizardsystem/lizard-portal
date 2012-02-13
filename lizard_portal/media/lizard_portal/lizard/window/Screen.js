@@ -15,8 +15,7 @@
   
   
   
-  */
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  */  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Ext.define('Lizard.window.Screen', {
     extend: 'Ext.container.Viewport',
     config: {
