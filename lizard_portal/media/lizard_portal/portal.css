@@ -241,6 +241,38 @@
 .lizard dd {
     margin-left:1.5em;
 }
+
+
+
+
+
 .lizard table {
-    margin-bottom:1.4em
-}
+	font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 640px;
+	}
+
+.lizard th {
+	padding: 0 0.5em;
+	text-align: left;
+	}
+
+.lizard tr.gray td {
+	border-top: 1px solid #E7E7E7;
+	border-bottom: 1px solid #E7E7E7;
+	background: #E7E5D2;
+	}
+
+.lizard td {
+	border-bottom: 1px solid #CCC;
+	padding: 0 0.5em;
+	}
+
+.lizard td.width {
+	width: 225px;
+	}
+
+.lizard td.adjacent {
+	border-left: 1px solid #CCC;
+	text-align: center;
+	}
