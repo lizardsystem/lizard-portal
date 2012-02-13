@@ -21,8 +21,34 @@
 	items:[{
 		width: 200,
 		items: [{
-			title: 'Samenvatting instellingen',
-            flex: 1,
+			title: 'Maatregelen',
+            flex:1,
+            autoScroll: true,
+            plugins: [
+                'applycontext'
+            ],
+            applyParams: function(params) {
+                var me = this;
+                me.setLoading(true);
+                var cm = Ext.getCmp('portalWindow').context_manager.getContext();
+
+                me.loader.load({
+                    url: 'wbconfiguration/api/summary/',
+                    params: {
+                        object_id: cm.object_id
+                    },
+                    method: 'GET',
+                    success: function() {
+                      me.setLoading(false);
+                    },
+                    failure: function() {
+                      me.setLoading(false);
+                    }
+                });
+            },
+            loader:{
+                renderer: 'html'
+            },
             bbar: [{
                 xtype: 'button',
                 text: 'Details',

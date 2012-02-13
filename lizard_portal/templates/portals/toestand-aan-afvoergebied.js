@@ -5,7 +5,7 @@
     breadcrumbs: [
         {
             name: 'watersysteemkaart',
-            link: 'watersysteemkaart'
+            link: 'homepage'
         },
         {
             name: 'Toestand'

@@ -51,8 +51,9 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                 if graph.get('has_cumulative_period')
                     period = graph.get('cumulative_period')
 
-                    setCumulativePeriod = (button) ->
-                        button.graph.set('cumulative_period', button.value)
+                    setCumulativePeriod = (button, select) ->
+                        if  select
+                            button.graph.set('cumulative_period', button.value)
 
                     menu.push([
                         '<b class="menu-title">Cumulatieve periode</b>',
@@ -60,7 +61,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                             text: 'Dag',
                             checked: period == 'day',
                             value: 'day'
-                            graph:graph
+                            graph: graph
                             group: graph.id+'cumu',
                             checkHandler: setCumulativePeriod
                         },
@@ -68,20 +69,21 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                             text: 'Maand',
                             checked: period == 'month',
                             value: 'month'
-                            graph:graph
+                            graph: graph
                             group: graph.id+'cumu',
                             checkHandler:  setCumulativePeriod
                         }, {
                             text: 'Kwartaal',
                             checked: period == 'quarter',
                             value: 'quarter'
+                            graph: graph
                             group: graph.id+'cumu',
                             checkHandler:  setCumulativePeriod
                         }, {
                             text: 'Jaar',
                             checked: period == 'year',
                             value: 'year'
-                            graph:graph
+                            graph: graph
                             group: graph.id+'cumu',
                             checkHandler:  setCumulativePeriod
                         }
@@ -93,8 +95,9 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                 if graph.get('has_reset_period')
                     period = graph.get('reset_period')
 
-                    setResetPeriod = (button) ->
-                        button.graph.set('reset_period', button.value)
+                    setResetPeriod = (button, select) ->
+                        if  select
+                            button.graph.set('reset_period', button.value)
 
                     menu.push([
                         '<b class="menu-title">Reset periode</b>',
@@ -129,18 +132,11 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                             value: 'year'
                             graph:graph
                             handler: (button) ->
-                                debugger
                                 window.open(Lizard.model.Graph.getDownloadUrl(button.graph.data))
                         }
                     ])
 
-
-
-
-
-
                 graph_button_settings.menu = menu
-
 
             button_config.push(graph_button_settings)
         return button_config

@@ -44,8 +44,10 @@
           menu = [];
           if (graph.get('has_cumulative_period')) {
             period = graph.get('cumulative_period');
-            setCumulativePeriod = function(button) {
-              return button.graph.set('cumulative_period', button.value);
+            setCumulativePeriod = function(button, select) {
+              if (select) {
+                return button.graph.set('cumulative_period', button.value);
+              }
             };
             menu.push([
               '<b class="menu-title">Cumulatieve periode</b>', {
@@ -66,6 +68,7 @@
                 text: 'Kwartaal',
                 checked: period === 'quarter',
                 value: 'quarter',
+                graph: graph,
                 group: graph.id + 'cumu',
                 checkHandler: setCumulativePeriod
               }, {
@@ -83,8 +86,10 @@
           }
           if (graph.get('has_reset_period')) {
             period = graph.get('reset_period');
-            setResetPeriod = function(button) {
-              return button.graph.set('reset_period', button.value);
+            setResetPeriod = function(button, select) {
+              if (select) {
+                return button.graph.set('reset_period', button.value);
+              }
             };
             menu.push([
               '<b class="menu-title">Reset periode</b>', {
@@ -118,7 +123,7 @@
                 value: 'year',
                 graph: graph,
                 handler: function(button) {
-                  debugger;                  return window.open(Lizard.model.Graph.getDownloadUrl(button.graph.data));
+                  return window.open(Lizard.model.Graph.getDownloadUrl(button.graph.data));
                 }
               }
             ]);

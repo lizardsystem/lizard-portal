@@ -127,6 +127,4 @@ Ext.define('Lizard.model.Graph', {
             url = @getGraphUrl(values)
             url += '&format=csv'
 
-
-
 });
