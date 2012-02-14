@@ -71,7 +71,7 @@ Ext.define 'Lizard.window.Screen',
     #
     #
     ####
-    linkToPopup:(title, url, params, window_options={}, add_active_object_to_request=true, renderer='html', modal=false) ->
+    linkToPopup: (title,url,params,window_options={},add_active_object_to_request=true,renderer='html',modal=false,reloadme=false) ->
         console.log('linkTo, with arguments:')
         console.log(arguments)
 
@@ -80,13 +80,23 @@ Ext.define 'Lizard.window.Screen',
         if add_active_object_to_request
             cont= @context_manager.getContext()
 
-            args = Ext.Object.merge(params, {object_id:cont.object_id, object_type: cont.object_type})
+            args = Ext.Object.merge(
+                params, {
+                    object_id: cont.object_id,
+                    object_type: cont.object_type
+                })
+        if reloadme
+            success = reloadGraphs
+        else
+            success = Ext.emptyFn()
 
         window_settings = {
             title: title,
             width: 800,
             height: 500,
             autoScroll: true,
+            bodyStyle:
+                background: 'white'
             modal: modal,
             loader:{
                 loadMask: true,
@@ -95,18 +105,29 @@ Ext.define 'Lizard.window.Screen',
                 ajaxOptions: {
                     method: 'GET'
                 },
-                params: params,
+                params: params
                 renderer: renderer
+                success: success
             }
         }
 
+        if window_options.save or window_options.search
+            window_settings.tools = []
         if window_options.save
-            window_settings.tools = [{
+            window_settings.tools.push {
                 type: 'save',
                 handler: (e, target, panelHeader, tool) ->
                     console.log(arguments);
                     me.linkToPopup.apply(me, window_options.save);
-            }]
+            }
+
+        if window_options.search
+            window_settings.tools.push {
+                type: 'search',
+                handler: (e, target, panelHeader, tool) ->
+                    console.log(arguments);
+                    me.linkToPopup.apply(me, window_options.search);
+            }
 
         Ext.create('Ext.window.Window', window_settings).show();
 

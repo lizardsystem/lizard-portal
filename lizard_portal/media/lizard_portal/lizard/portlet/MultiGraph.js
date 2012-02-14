@@ -40,7 +40,7 @@
       return _results;
     },
     initGraphs: function() {
-      var context, getImageConfig, graph, graph_config, graph_configs, me, _i, _len, _results;
+      var context, getImageConfig, graph, graph_button_settings, graph_config, graph_configs, me, onItemCheck, _i, _len, _results;
       me = this;
       getImageConfig = function(graph) {
         var output;
@@ -65,7 +65,7 @@
         }, getImageConfig(graph_config)));
         this.items.push(graph);
         this.graphs.push(graph);
-        _results.push(this.tbar.push({
+        graph_button_settings = {
           text: graph_config.title,
           pressed: !graph_config.hidden,
           enableToggle: true,
@@ -78,7 +78,50 @@
               return button.graph.hide();
             }
           }
-        }));
+        };
+        onItemCheck = function() {
+          return console.log('klik');
+        };
+        graph_button_settings.xtype = 'splitbutton';
+        graph_button_settings.menu = [
+          '<b class="menu-title">Cumulatieve periode</b>', {
+            text: 'Dag',
+            checked: false,
+            group: graph_config.title + 'cumu',
+            checkHandler: onItemCheck
+          }, {
+            text: 'Maand',
+            checked: true,
+            group: graph_config.title + 'cumu',
+            checkHandler: onItemCheck
+          }, {
+            text: 'Kwartaal',
+            checked: false,
+            group: graph_config.title + 'cumu',
+            checkHandler: onItemCheck
+          }, {
+            text: 'Jaar',
+            checked: false,
+            group: graph_config.title + 'cumu',
+            checkHandler: onItemCheck
+          }, '-', '<b class="menu-title">Reset periode</b>', {
+            text: 'Maand',
+            checked: true,
+            group: graph_config.title + 'reset',
+            checkHandler: onItemCheck
+          }, {
+            text: 'Kwartaal',
+            checked: false,
+            group: graph_config.title + 'reset',
+            checkHandler: onItemCheck
+          }, {
+            text: 'Jaar',
+            checked: false,
+            group: graph_config.title + 'reset',
+            checkHandler: onItemCheck
+          }
+        ];
+        _results.push(this.tbar.push(graph_button_settings));
       }
       return _results;
     },

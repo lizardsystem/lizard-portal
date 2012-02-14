@@ -44,6 +44,12 @@
                      disabled: true,
                      {% endif %}
                      handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'stuurparameter-overzicht'}); }
+                },{
+                     text: 'Koppeling KRW en aan/afvoer gebieden',
+                     {% if not perms.auth.is_analyst %}
+                     disabled: true,
+                     {% endif %}
+                     handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'area_link'}); }
                 },
                 {
                      text: 'Gebruikersbeheer',

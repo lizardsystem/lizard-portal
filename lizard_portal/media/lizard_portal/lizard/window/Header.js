@@ -213,7 +213,7 @@
                   boxLabel: 'wk',
                   name: 'period',
                   inputValue: 2,
-                  dt: [Ext.Date.WEEK, -1]
+                  dt: [Ext.Date.DAY, -7]
                 }, {
                   boxLabel: 'mnd',
                   name: 'period',

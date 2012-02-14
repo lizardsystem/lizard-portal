@@ -15,8 +15,7 @@
   
   
   
-  */
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  */  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Ext.define('Lizard.window.Screen', {
     extend: 'Ext.container.Viewport',
     config: {
@@ -61,8 +60,8 @@
       href = '/portal/only_portal/#' + args.active_headertab.name + '/' + args.portalTemplate + '/' + args.object_type + '/' + args.object_id;
       return window.open(href, args.portalTemplate + ' ' + args.object_name, 'width=800,height=600,scrollbars=yes');
     },
-    linkToPopup: function(title, url, params, window_options, add_active_object_to_request, renderer, modal) {
-      var args, cont, me, window_settings;
+    linkToPopup: function(title, url, params, window_options, add_active_object_to_request, renderer, modal, reloadme) {
+      var args, cont, me, success, window_settings;
       if (window_options == null) {
         window_options = {};
       }
@@ -75,6 +74,9 @@
       if (modal == null) {
         modal = false;
       }
+      if (reloadme == null) {
+        reloadme = false;
+      }
       console.log('linkTo, with arguments:');
       console.log(arguments);
       me = this;
@@ -85,11 +87,19 @@
           object_type: cont.object_type
         });
       }
+      if (reloadme) {
+        success = reloadGraphs;
+      } else {
+        success = Ext.emptyFn();
+      }
       window_settings = {
         title: title,
         width: 800,
         height: 500,
         autoScroll: true,
+        bodyStyle: {
+          background: 'white'
+        },
         modal: modal,
         loader: {
           loadMask: true,
@@ -99,19 +109,30 @@
             method: 'GET'
           },
           params: params,
-          renderer: renderer
+          renderer: renderer,
+          success: success
         }
       };
+      if (window_options.save || window_options.search) {
+        window_settings.tools = [];
+      }
       if (window_options.save) {
-        window_settings.tools = [
-          {
-            type: 'save',
-            handler: function(e, target, panelHeader, tool) {
-              console.log(arguments);
-              return me.linkToPopup.apply(me, window_options.save);
-            }
+        window_settings.tools.push({
+          type: 'save',
+          handler: function(e, target, panelHeader, tool) {
+            console.log(arguments);
+            return me.linkToPopup.apply(me, window_options.save);
           }
-        ];
+        });
+      }
+      if (window_options.search) {
+        window_settings.tools.push({
+          type: 'search',
+          handler: function(e, target, panelHeader, tool) {
+            console.log(arguments);
+            return me.linkToPopup.apply(me, window_options.search);
+          }
+        });
       }
       return Ext.create('Ext.window.Window', window_settings).show();
     },

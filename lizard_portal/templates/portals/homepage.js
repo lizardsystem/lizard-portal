@@ -204,9 +204,11 @@
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans'}); }
                 }, {
                    text: 'Analyse interpretaties',
+                   icon: '/static_media/vss/icons/advies.png',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'analyse-interpretatie'}); }
                 }, {
-                   text: 'Advies',
+                   text: 'Geschikte maatregelen',
+                   icon: '/static_media/vss/icons/gebiedsinformatie.png',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'advies'}); }
                 }, {
                    text: 'Maatregelen',
@@ -214,34 +216,36 @@
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'maatregelen'}); }
                 }, {
                    text: 'Toestand',
+                   icon: '/static_media/vss/icons/toestand.png',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'toestand-aan-afvoergebied'}); }
                 }
-                {% if perms.auth.is_analyst %}
-                , {
-                   text: 'Toevoegen analyse interpretatie',
-                   handler: function() {
-                       Ext.create('Ext.window.Window', {
-                            title: 'Analyse interpretatie',
-                            width: 800,
-                            height: '60%',
-                            analyseinterpretatiepopup: true,
-                            //autoScroll: true,
-                            loader:{
-                                loadMask: true,
-                                autoLoad: true,
-                                url: '/portal/configuration/',
-                                ajaxOptions: {
-                                    method: 'GET'
-                                },
-                                params: {
-                                    portalTemplate: 'analyse_interpretatie_form'
-                                },
-                                renderer: 'component'
-                            }
-                        }).show();
-                   }
-                }
-                {% endif %}
+//                {% if perms.auth.is_analyst %}
+//                , {
+//                   text: 'Toevoegen analyse interpretatie',
+//                   icon: '/static_media/vss/icons/toestand.png',
+//                   handler: function() {
+//                       Ext.create('Ext.window.Window', {
+//                            title: 'Analyse interpretatie',
+//                            width: 800,
+//                            height: '60%',
+//                            analyseinterpretatiepopup: true,
+//                            //autoScroll: true,
+//                            loader:{
+//                                loadMask: true,
+//                                autoLoad: true,
+//                                url: '/portal/configuration/',
+//                                ajaxOptions: {
+//                                    method: 'GET'
+//                                },
+//                                params: {
+//                                    portalTemplate: 'analyse_interpretatie_form'
+//                                },
+//                                renderer: 'component'
+//                            }
+//                        }).show();
+//                   }
+//                }
+//                {% endif %}
             ]
  		},{
 			title: 'Gerelateerde deelgebieden',

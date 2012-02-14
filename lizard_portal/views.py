@@ -6,7 +6,7 @@ from django.template import TemplateDoesNotExist
 from django.template import Template
 from django.template.loader import get_template
 
-from vss.utils import auto_login
+from lizard_registration.utils import auto_login
 
 from lizard_portal.models import PortalConfiguration
 

@@ -2,10 +2,55 @@ Changelog of lizard-portal
 ===================================================
 
 
-0.8 (unreleased)
+0.8.4 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+0.8.3 (2012-02-13)
+------------------
+
+- Nothing changed yet.
+
+
+0.8.2 (2012-02-13)
+------------------
+
+- linkToPopup method also can have a search tool now.
+
+- add read-only row functionality to EditableGrid
+
+- add MultiGraph portal with store
+
+- implement MultiGraph portal with store for a few screens
+
+- fixed week selection in period selection window
+
+
+0.8.1 (2012-02-09)
+------------------
+
+- Add boolean reload parameter to linkToPopup method of portal window,
+  for reloading images
+
+- Fix graph not loading for measure page
+
+
+0.8 (2012-02-07)
 ----------------
 
 - added last edit information to communique
+- editable grids:
+  - made pagination optional
+  
+
+- added SO4 fields into bucket, structure tables of wbconfiguration.
+
+- replaced dependency vss.utils to lizard_registration.utils.
+
+- Pinned:
+  lizard-registration 0.1
 
 
 0.7 (2012-01-31)

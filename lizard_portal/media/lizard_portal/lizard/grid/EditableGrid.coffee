@@ -83,6 +83,9 @@ Ext.define('Lizard.grid.EditableGrid', {
         addDeleteIcon: false
         actionEditIcon: null
         actionDeleteIcon: null
+        usePagination: true
+        read_only_field: null
+        recordsPerPage:25
     }
     extraEditors: {
         timeserie: {
@@ -142,8 +145,11 @@ Ext.define('Lizard.grid.EditableGrid', {
                 format: 'm d Y',
                 altFormats: 'd,m,Y|d.m.Y',
     }
-    get_editor: (col) ->
+    get_editor: (record, col) ->
         me = @
+
+        if me.read_only_field and record.data[me.read_only_field] == true
+            return false
 
         if typeof(col.editable) == 'undefined'
             col.editable = true
@@ -314,7 +320,7 @@ Ext.define('Lizard.grid.EditableGrid', {
             if col.editable
                 col_config.getEditor = Ext.Function.bind(
                     (record, col) ->
-                        return me.get_editor(col)
+                        return me.get_editor(record, col)
                     me
                     [col]
                     true
@@ -393,9 +399,13 @@ Ext.define('Lizard.grid.EditableGrid', {
 
     deleteSelectedRecord: () ->
         selection = @getView().getSelectionModel().getSelection()[0]
-        if selection
-            @store.remove(selection)
 
+
+        if selection
+            if @read_only_field and selection.data[@read_only_field] == true
+                return false
+            else
+                @store.remove(selection)
 
 
     getStoreConfig: () ->
@@ -445,6 +455,7 @@ Ext.define('Lizard.grid.EditableGrid', {
         store = {
             type: 'leditstore'
             fields: fields
+            pageSize: @recordsPerPage
             proxy: {
                 type: 'ajax'
                 api:
@@ -467,15 +478,24 @@ Ext.define('Lizard.grid.EditableGrid', {
                     successProperty: 'success'
                     totalProperty: 'count'
                 }
-                autoLoad: true
+                #autoLoad: true
             }
         }
 
 
         return store
 
+
+
     initComponent: () ->
         me = @
+
+        if not @getUsePagination()
+            @recordsPerPage = 10000
+
+
+
+
         me.columns = @getColumnConfig()
         me.store = Ext.create('Lizard.store.EditGridStore', @getStoreConfig())
         me.bbar = []
@@ -541,16 +561,16 @@ Ext.define('Lizard.grid.EditableGrid', {
 
             ])
 
+        if @getUsePagination()
+            @bbar =
+                {
+                    xtype: 'pagingtoolbar'
+                    pageSize: @recordsPerPage,
+                    store: me.store,
+                    displayInfo: true,
+                    items: ['-'].concat(me.bbar)
 
-        @bbar =
-            {
-                xtype: 'pagingtoolbar'
-                pageSize: 25,
-                store: me.store,
-                displayInfo: true,
-                items: ['-'].concat(me.bbar)
-
-            }
+                }
 
 
 

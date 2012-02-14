@@ -23,7 +23,6 @@
 		flex:1,
 		items: [{
 			title: 'Instellingen',
-            id: 'xxx',
             flex:1,
             width: '100%',
             layout:{
@@ -38,7 +37,7 @@
                 {
                     xtype: 'button',
                     text: 'Cancel',
-                    iconCls: 'cancel',
+                    iconCls: 'l-icon-cancel',
                     handler: function (menuItem, checked) {
                         var panel = menuItem.up('panel');
                         var grids = panel.query('grid');
@@ -50,10 +49,11 @@
                 {
                     xtype: 'button',
                     text: 'Save',
-                    iconCls: 'save',
+                    iconCls: 'l-icon-disk',
                     handler: function (menuItem) {
                         var panel = menuItem.up('panel');
                         var grids = panel.query('grid');
+                        panel_global = panel;
 
                         Ext.MessageBox.show({
                             title: 'Wijzigingen opslaan',
@@ -63,8 +63,9 @@
                             buttons: Ext.MessageBox.OKCANCEL,
                             fn: function(btn, text)  {
                                 if (btn=='ok') {
+                                    //panel.setLoading(true);
                                     for (var i = 0; i < grids.length; i++) {
-                                        grids[i].saveEdits()
+                                        grids[i].saveEdits();
                                     }
                                 }
                             }
@@ -123,23 +124,6 @@
                             this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceWaterConfig')
-                    },{
-                        title: 'Acties',
-                        width:400,
-                        //autoHeight: true,
-                        xtype: 'panel',
-                        plugins: [
-                            'applycontext'
-                        ],
-                         applyParams: function(params) {
-                            //todo
-                        },
-                        items: [
-                            {html: 'Status: gevalideerd'},
-                            {html: 'Valideer'},
-                            {html: 'Exporteer configuratie'},
-                            {html: 'Importeer configu'}
-                        ]
                     }]
                 },
                 {
@@ -147,6 +131,8 @@
                 anchor:'100%',
                 autoHeight: true,
                 xtype: 'leditgrid',
+                useSaveBar: false,
+                usePagination: false,
                 plugins: [
                     'applycontext'
                 ],
@@ -230,6 +216,13 @@
                         {name: 'incr_concentr_nitrogen_drainage_indraft', title: 'Incr N drainage', editable: true, visible: true, width: 100, type: 'number'},
                         {name: 'incr_concentr_nitrogen_flow_off', title: 'Incr N afstroom', editable: true, visible: true, width: 100, type: 'number'},
                     ]},
+                    //so4
+                    {title: 'Sulfaat', columns: [
+                        {name: 'min_concentr_so4_drainage_indraft', title: 'Min S drainage', editable: true, visible: true, width: 100, type: 'number'},
+                        {name: 'min_concentr_so4_flow_off', title: 'Min S afstroom', editable: true, visible: true, width: 100, type: 'number'},
+                        {name: 'incr_concentr_so4_drainage_indraft', title: 'Incr S drainage', editable: true, visible: true, width: 100, type: 'number'},
+                        {name: 'incr_concentr_so4_flow_off', title: 'Incr S afstroom', editable: true, visible: true, width: 100, type: 'number'},
+                    ]},
 
                     {name: 'label_drainaige_indraft', title: 'label_drainaige_indraft', editable: true, visible: false, width: 100, type: 'number'},
                     {name: 'label_flow_off', title: 'label_flow_off', editable: true, visible: false, width: 100, type: 'number'}
@@ -240,6 +233,8 @@
                 anchor:'100%',
                 autoHeight: true,
                 xtype: 'leditgrid',
+                useSaveBar: false,
+                usePagination: false,
                 plugins: [
                     'applycontext'
                 ],
@@ -275,7 +270,9 @@
                     {name: 'min_concentr_phosphate', title: 'Min P', editable: true, visible: true, width: 75, type: 'number'},
                     {name: 'incr_concentr_phosphate', title: 'Incr P', editable: true, visible: true, width: 75, type: 'number'},
                     {name: 'min_concentr_nitrogen', title: 'Min N', editable: true, visible: true, width: 75, type: 'number'},
-                    {name: 'incr_concentr_nitrogen', title: 'Incr N', editable: true, visible: true, width: 75, type: 'number'}
+                    {name: 'incr_concentr_nitrogen', title: 'Incr N', editable: true, visible: true, width: 75, type: 'number'},
+                    {name: 'min_concentr_so4', title: 'Min S', editable: true, visible: true, width: 75, type: 'number'},
+                    {name: 'incr_concentr_so4', title: 'Incr S', editable: true, visible: true, width: 75, type: 'number'}
 
                ]
             }]
