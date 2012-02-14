@@ -1,25 +1,39 @@
+{% load get_portal_template %}
 {
     itemId: 'advies',
     title: 'Advies',
-	xtype: 'portalpanel',
-	items:[{
-		flex: 1,
-		items: [{
-			title: 'Advies',
-            flex:1
-		}]
-	}]
+    xtype: 'portalpanel',
+    items:[{
+               width: 300,
+               items: [
+                  {% get_portal_template gebiedseigenschappen %},
+                  {title: 'ESF scores',
+                    flex:1}
+               ]
+           },{
+               flex:1,
+               items:[{
+                          title: 'Maatregelen',
+                          flex:1,
+                          autoScroll: true,
+                          plugins: [
+                              'applycontext'
+                          ],
+                          applyParams: function(params) {
+                              var me = this;
+                              me.setLoading(true);
+                              var cm = Ext.getCmp('portalWindow').context_manager.getContext();
+                              var url = '/measure/summary/'+ cm.object_id +'/krw_measures/';
+                              me.loader.load({
+                                                 url:url,
+                                                 method: 'GET'
+                                             });
+                              me.setLoading(false);
+                          },
+                          loader:{
+                              renderer: 'html'
+                          }
+                      }]
+	   }]
 }
-
-
-document.forms["myform"].submit();
-
-login_window = Ext.create('Ext.window.Window', {
-    id: 'loginwindow'
-    width: 200
-    height: 200
-    title: 'Login'
-}).show()
-
-login_window.insertFirst(Ext.get('loginform'))
 
