@@ -1,31 +1,35 @@
+{% load get_portal_template %}
 {
     itemId: 'analyse',
     title: 'Analyse scherm',
-	xtype: 'portalpanel',
-	items:[{
-		width: 300,
-		items: [{
-			title: 'Navigatie',
-            flex:2
-		},{
+    xtype: 'portalpanel',
+    items:[{
+	width: 300,
+	items: [{
+	    title: 'Navigatie',
+            flex:2,
+            xtype: 'appscreenportlet',
+            store: Ext.create('Lizard.store.AppScreen', {data: {
+                name: 'Hallo'} })
+	},{
             autoHeight: true,
             minHeight: 200,
-			title: 'Workspace',
+	    title: 'Workspace',
             //id: 'kaartlagen',
 
             xtype: 'grid',
             columns:[{
-                    text: 'aan',
-                    width:35,
-                    dataIndex: 'visibility',
-                    xtype: 'checkcolumn',
-                    sortable: true
-                },{
-                    text: 'Naam',
-                    flex: 1,
-                    sortable: true,
-                    dataIndex: 'title'
-                }],
+                text: 'aan',
+                width:35,
+                dataIndex: 'visibility',
+                xtype: 'checkcolumn',
+                sortable: true
+            },{
+                text: 'Naam',
+                flex: 1,
+                sortable: true,
+                dataIndex: 'title'
+            }],
             store: Ext.data.StoreManager.lookup('Workspace'),
             tools: [{
                 type: 'save',
@@ -40,10 +44,10 @@
                     }).show();
                 }
             }]
-  		}
-       ]
-	},{
-		flex: 1,
+  	}
+               ]
+    },{
+	flex: 1,
 		items: [{
 			title: 'Kaart',
             id:'extmap_analyse',

@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.8.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Added first Analysis navigation: AppScreen.
 
 
 0.8.3 (2012-02-13)
@@ -43,7 +43,7 @@ Changelog of lizard-portal
 - added last edit information to communique
 - editable grids:
   - made pagination optional
-  
+
 
 - added SO4 fields into bucket, structure tables of wbconfiguration.
 
