@@ -162,26 +162,26 @@
 
                    //instellingen bovenste bakje
                     {title: 'Bovenste bakje', columns: [
-                        {name: 'crop_evaporation_factor', title: 'Crop evaporatie factor', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
-                        {name: 'min_crop_evaporation_factor', title: 'Min crop evaporatie factor', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
-                        {name: 'porosity', title: 'Porositeit', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
-                        {name: 'drainage_fraction', title: 'Drainage fractie', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
-                        {name: 'indraft_fraction', title: 'Intrek fractie', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
-                        {name: 'init_water_level', title: 'Initiële waterniveau', editable: true, visible: false, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
-                        {name: 'man_water_level', title: 'Max waterniveau', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
-                        {name: 'min_water_level', title: 'Min waterniveau', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}}
+                        {name: 'crop_evaporation_factor', title: 'Crop evaporatie factor', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
+                        {name: 'min_crop_evaporation_factor', title: 'Min crop evaporatie factor', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
+                        {name: 'porosity', title: 'Porositeit', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
+                        {name: 'drainage_fraction', title: 'Drainage fractie', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
+                        {name: 'indraft_fraction', title: 'Intrek fractie', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
+                        {name: 'init_water_level', title: 'Initiële waterniveau', editable: true, visible: false, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
+                        {name: 'man_water_level', title: 'Max waterniveau', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}},
+                        {name: 'min_water_level', title: 'Min waterniveau', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard', 'ongedraineerd']}}
                     ]},
 
                     //instellingen onderste bakje
                     {title: 'Onderste bakje', columns: [
-                        {name: 'bottom_crop_evaporation_factor', title: 'Crop evaporatie factor', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
-                        {name: 'bottom_min_crop_evaporation_factor', title: 'Min crop evaporatie factor', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
-                        {name: 'bottom_porosity', title: 'Porositeit', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
-                        {name: 'bottom_drainage_fraction', title: 'Drainage fractie', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
-                        {name: 'bottom_indraft_fraction', title: 'Intrek fractie', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
-                        {name: 'bottom_init_water_level', title: 'Initiële waterniveau', editable: true, visible: false, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},//mag weg?
-                        {name: 'bottom_max_water_level', title: 'Max waterniveau', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
-                        {name: 'bottom_min_water_level', title: 'Min waterniveau', editable: true, visible: true, width: 100, type: 'number', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}}
+                        {name: 'bottom_crop_evaporation_factor', title: 'Crop evaporatie factor', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
+                        {name: 'bottom_min_crop_evaporation_factor', title: 'Min crop evaporatie factor', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
+                        {name: 'bottom_porosity', title: 'Porositeit', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
+                        {name: 'bottom_drainage_fraction', title: 'Drainage fractie', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
+                        {name: 'bottom_indraft_fraction', title: 'Intrek fractie', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
+                        {name: 'bottom_init_water_level', title: 'Initiële waterniveau', editable: true, visible: false, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},//mag weg?
+                        {name: 'bottom_max_water_level', title: 'Max waterniveau', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
+                        {name: 'bottom_min_water_level', title: 'Min waterniveau', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}}
                     ]},
 
                     {name: 'ts_referenceoverflow', title: 'Referentie overstortreeks', editable: true, visible: true, width: 100, type: 'timeserie', ts_parameter: 'ALMR110', editIf: {prop: 'bucket_type', value_in: ['stedelijk']}},
@@ -198,35 +198,32 @@
                 //concentraties
                     //chlroide
                     {title: 'Chloride', columns: [
-                        {name: 'concentr_chloride_drainage_indraft', title: 'Cl drainage', editable: true, visible: true, width: 100, type: 'number'},
-                        {name: 'concentr_chloride_flow_off', title: 'Cl afstroom', editable: true, visible: true, width: 100, type: 'number'}
+                        {name: 'concentr_chloride_drainage_indraft', title: 'Cl drainage', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'concentr_chloride_flow_off', title: 'Cl afstroom', editable: true, visible: true, width: 100, type: 'float'}
                     ]},
                     //fosfaat
                     {title: 'Fosfaat', columns: [
                         {name: 'replace_impact_by_nutricalc', title: 'Gebruik nutricalc resultaten', editable: true, visible: true, width: 100, type: 'boolean'},
-                        {name: 'min_concentr_phosphate_drainage_indraft', title: 'Min P drainage', editable: true, visible: true, width: 100, type: 'number'},
-                        {name: 'min_concentr_phosphate_flow_off', title: 'Min P afstroom', editable: true, visible: true, width: 100, type: 'number'},
-                        {name: 'incr_concentr_phosphate_drainage_indraft', title: 'Incr P drainage', editable: true, visible: true, width: 100, type: 'number'},
-                        {name: 'incr_concentr_phosphate_flow_off', title: 'Incr P afstroom', editable: true, visible: true, width: 100, type: 'number'},
+                        {name: 'min_concentr_phosphate_drainage_indraft', title: 'Min P drainage', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'min_concentr_phosphate_flow_off', title: 'Min P afstroom', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'incr_concentr_phosphate_drainage_indraft', title: 'Incr P drainage', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'incr_concentr_phosphate_flow_off', title: 'Incr P afstroom', editable: true, visible: true, width: 100, type: 'float'}
                     ]},
                     //nitraat
                     {title: 'Nitraat', columns: [
-                        {name: 'min_concentr_nitrogen_drainage_indraft', title: 'Min N drainage', editable: true, visible: true, width: 100, type: 'number'},
-                        {name: 'min_concentr_nitrogen_flow_off', title: 'Min N afstroom', editable: true, visible: true, width: 100, type: 'number'},
-                        {name: 'incr_concentr_nitrogen_drainage_indraft', title: 'Incr N drainage', editable: true, visible: true, width: 100, type: 'number'},
-                        {name: 'incr_concentr_nitrogen_flow_off', title: 'Incr N afstroom', editable: true, visible: true, width: 100, type: 'number'},
+                        {name: 'min_concentr_nitrogen_drainage_indraft', title: 'Min N drainage', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'min_concentr_nitrogen_flow_off', title: 'Min N afstroom', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'incr_concentr_nitrogen_drainage_indraft', title: 'Incr N drainage', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'incr_concentr_nitrogen_flow_off', title: 'Incr N afstroom', editable: true, visible: true, width: 100, type: 'float'}
                     ]},
                     //so4
                     {title: 'Sulfaat', columns: [
-                        {name: 'min_concentr_so4_drainage_indraft', title: 'Min S drainage', editable: true, visible: true, width: 100, type: 'number'},
-                        {name: 'min_concentr_so4_flow_off', title: 'Min S afstroom', editable: true, visible: true, width: 100, type: 'number'},
-                        {name: 'incr_concentr_so4_drainage_indraft', title: 'Incr S drainage', editable: true, visible: true, width: 100, type: 'number'},
-                        {name: 'incr_concentr_so4_flow_off', title: 'Incr S afstroom', editable: true, visible: true, width: 100, type: 'number'},
-                    ]},
-
-                    {name: 'label_drainaige_indraft', title: 'label_drainaige_indraft', editable: true, visible: false, width: 100, type: 'number'},
-                    {name: 'label_flow_off', title: 'label_flow_off', editable: true, visible: false, width: 100, type: 'number'}
-                 ]
+                        {name: 'min_concentr_so4_drainage_indraft', title: 'Min S drainage', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'min_concentr_so4_flow_off', title: 'Min S afstroom', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'incr_concentr_so4_drainage_indraft', title: 'Incr S drainage', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'incr_concentr_so4_flow_off', title: 'Incr S afstroom', editable: true, visible: true, width: 100, type: 'float'}
+                    ]}
+                ]
 
             },{
                 title: 'Kunstwerken',
@@ -266,13 +263,13 @@
                     {name: 'deb_zomer', title: 'Debiet zomer', editable: true, visible: true, width: 75, type: 'number', editIf: {prop: 'deb_is_ts', value_in: [false]}},
                     {name: 'ts_debiet', title: 'Tijdserie debiet', editable: true, visible: true, width: 170, type: 'timeserie', ts_parameter: 'Q.meting', editIf: {prop: 'deb_is_ts', value_in: [true]}},
                     //concentraties
-                    {name: 'concentr_chloride', title: 'Cl', editable: true, visible: true, width: 75, type: 'number'},
-                    {name: 'min_concentr_phosphate', title: 'Min P', editable: true, visible: true, width: 75, type: 'number'},
-                    {name: 'incr_concentr_phosphate', title: 'Incr P', editable: true, visible: true, width: 75, type: 'number'},
-                    {name: 'min_concentr_nitrogen', title: 'Min N', editable: true, visible: true, width: 75, type: 'number'},
-                    {name: 'incr_concentr_nitrogen', title: 'Incr N', editable: true, visible: true, width: 75, type: 'number'},
-                    {name: 'min_concentr_so4', title: 'Min S', editable: true, visible: true, width: 75, type: 'number'},
-                    {name: 'incr_concentr_so4', title: 'Incr S', editable: true, visible: true, width: 75, type: 'number'}
+                    {name: 'concentr_chloride', title: 'Cl', editable: true, visible: true, width: 75, type: 'float'},
+                    {name: 'min_concentr_phosphate', title: 'Min P', editable: true, visible: true, width: 75, type: 'float'},
+                    {name: 'incr_concentr_phosphate', title: 'Incr P', editable: true, visible: true, width: 75, type: 'float'},
+                    {name: 'min_concentr_nitrogen', title: 'Min N', editable: true, visible: true, width: 75, type: 'float'},
+                    {name: 'incr_concentr_nitrogen', title: 'Incr N', editable: true, visible: true, width: 75, type: 'float'},
+                    {name: 'min_concentr_so4', title: 'Min S', editable: true, visible: true, width: 75, type: 'float'},
+                    {name: 'incr_concentr_so4', title: 'Incr S', editable: true, visible: true, width: 75, type: 'float'}
 
                ]
             }]
