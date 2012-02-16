@@ -64,13 +64,19 @@
                                 allowBlank: false
                             }],
                             buttons: [{
+                                text: 'Annuleren',
+                                handler: function(button, ev) {
+                                    console.log(arguments)
+                                    button.up('window').close();
+                                }
+                            },{
                                 text: 'Reset',
                                 handler: function(button, ev) {
                                     console.log(arguments)
                                     button.up('form').getForm().reset();
                                 }
                             }, {
-                                text: 'Submit',
+                                text: 'Opslaan',
                                 formBind: true, //only enabled once the form is valid
                                 //disabled: true,
                                 handler: function() {
