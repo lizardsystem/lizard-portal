@@ -1,4 +1,5 @@
 (function() {
+
   Ext.apply(Ext.data.SortTypes, {
     asIdNameObject: function(obj) {
       console.log(obj);
@@ -23,6 +24,7 @@
       return '';
     }
   });
+
   Ext.define('Lizard.store.EditGridStore', {
     extend: 'Ext.data.Store',
     alias: 'store.leditstore',
@@ -48,21 +50,15 @@
       Ext.each(this.removed, function(rec) {
         rec.join(this);
         this.data.add(rec);
-        if (Ext.isDefined(this.snapshot)) {
-          return this.snapshot.add(rec);
-        }
+        if (Ext.isDefined(this.snapshot)) return this.snapshot.add(rec);
       }, this);
       this.removed = [];
       this.getUpdatedRecords().forEach(function(rec) {
-        if (rec.dirty === true) {
-          rec.reject();
-        }
+        if (rec.dirty === true) rec.reject();
         if (rec.phantom === true) {
           rec.unjoin(this);
           this.data.remove(rec);
-          if (Ext.isDefined(this.snapshot)) {
-            return this.snapshot.remove(rec);
-          }
+          if (Ext.isDefined(this.snapshot)) return this.snapshot.remove(rec);
         }
       }, this);
       this.getNewRecords().forEach(function(rec) {
@@ -98,4 +94,5 @@
       }
     }
   });
+
 }).call(this);

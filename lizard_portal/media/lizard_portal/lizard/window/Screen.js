@@ -1,22 +1,21 @@
+
+/*
+Lizard.window.Screen
+
+Setup for the default viewport of Lizard with a header, (area) navigation on the left and the portals in the center
+
+with the option
+showOnlyPortal, only the portal is shown (without the header and left navigation)
+
+
+The class includes functions to load and activate portals, which are:
+linkTo
+loadPortal
+showNavigationPortalTemplate
+*/
+
 (function() {
-  /*
-  Lizard.window.Screen
-  
-  Setup for the default viewport of Lizard with a header, (area) navigation on the left and the portals in the center
-  
-  with the option
-  showOnlyPortal, only the portal is shown (without the header and left navigation)
-  
-  
-  The class includes functions to load and activate portals, which are:
-  linkTo
-  loadPortal
-  showNavigationPortalTemplate
-  
-  
-  
-  */
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   Ext.define('Lizard.window.Screen', {
     extend: 'Ext.container.Viewport',
     config: {
@@ -30,15 +29,9 @@
       navigation_tabs: []
     },
     linkTo: function(params, save_state, area_selection_collapse, skip_animation) {
-      if (save_state == null) {
-        save_state = true;
-      }
-      if (area_selection_collapse == null) {
-        area_selection_collapse = true;
-      }
-      if (skip_animation == null) {
-        skip_animation = false;
-      }
+      if (save_state == null) save_state = true;
+      if (area_selection_collapse == null) area_selection_collapse = true;
+      if (skip_animation == null) skip_animation = false;
       console.log('linkTo, with arguments:');
       console.log(arguments);
       this.context_manager.setContext(params, save_state);
@@ -46,15 +39,9 @@
     },
     linkToNewWindow: function(params, save_state, area_selection_collapse, skip_animation) {
       var args, href;
-      if (save_state == null) {
-        save_state = true;
-      }
-      if (area_selection_collapse == null) {
-        area_selection_collapse = true;
-      }
-      if (skip_animation == null) {
-        skip_animation = false;
-      }
+      if (save_state == null) save_state = true;
+      if (area_selection_collapse == null) area_selection_collapse = true;
+      if (skip_animation == null) skip_animation = false;
       console.log('linkTo, with arguments:');
       console.log(arguments);
       args = Ext.Object.merge({}, this.context_manager.getContext(), params);
@@ -63,21 +50,13 @@
     },
     linkToPopup: function(title, url, params, window_options, add_active_object_to_request, renderer, modal, reloadme) {
       var args, cont, me, success, window_settings;
-      if (window_options == null) {
-        window_options = {};
-      }
+      if (window_options == null) window_options = {};
       if (add_active_object_to_request == null) {
         add_active_object_to_request = true;
       }
-      if (renderer == null) {
-        renderer = 'html';
-      }
-      if (modal == null) {
-        modal = false;
-      }
-      if (reloadme == null) {
-        reloadme = false;
-      }
+      if (renderer == null) renderer = 'html';
+      if (modal == null) modal = false;
+      if (reloadme == null) reloadme = false;
       console.log('linkTo, with arguments:');
       console.log(arguments);
       me = this;
@@ -114,9 +93,7 @@
           success: success
         }
       };
-      if (window_options.save || window_options.search) {
-        window_settings.tools = [];
-      }
+      if (window_options.save || window_options.search) window_settings.tools = [];
       if (window_options.save) {
         window_settings.tools.push({
           type: 'save',
@@ -138,13 +115,10 @@
       return Ext.create('Ext.window.Window', window_settings).show();
     },
     loadPortal: function(params, area_selection_collapse, skip_animation) {
-      var container, me, tab;
-      if (area_selection_collapse == null) {
-        area_selection_collapse = true;
-      }
-      if (skip_animation == null) {
-        skip_animation = false;
-      }
+      var container, me, tab,
+        _this = this;
+      if (area_selection_collapse == null) area_selection_collapse = true;
+      if (skip_animation == null) skip_animation = false;
       console.log("load portal with portalTemplate '" + params.portalTemplate + "' and arguments:");
       console.log(arguments);
       me = this;
@@ -162,15 +136,13 @@
             portalTemplate: params.portalTemplate
           },
           method: 'GET',
-          success: __bind(function(xhr) {
+          success: function(xhr) {
             var newComponent;
             try {
               newComponent = Ext.decode(xhr.responseText);
               newComponent.params = Ext.merge({}, newComponent.params, me.context_manager.getContext());
               if (area_selection_collapse) {
-                if (me.navigation) {
-                  me.navigation.collapse();
-                }
+                if (me.navigation) me.navigation.collapse();
               }
               tab = me.portalContainer.add(newComponent);
               me.portalContainer.setActiveTab(tab);
@@ -180,26 +152,20 @@
               Ext.Msg.alert("Fout", "Fout in laden scherm. Error: " + error);
               return me.portalContainer.setLoading(false);
             }
-          }, this),
-          failure: __bind(function(error) {
+          },
+          failure: function(error) {
             console.log(error);
             Ext.Msg.alert("Fout", "Fout in ophalen van scherm. Error: " + error);
             return me.portalContainer.setLoading(false);
-          }, this)
+          }
         });
       }
     },
     showNavigation: function(navigation_id, animate_navigation_expand, expand_navigation, show_portal_template) {
       var args, navigation_tab;
-      if (animate_navigation_expand == null) {
-        animate_navigation_expand = true;
-      }
-      if (expand_navigation == null) {
-        expand_navigation = true;
-      }
-      if (show_portal_template == null) {
-        show_portal_template = true;
-      }
+      if (animate_navigation_expand == null) animate_navigation_expand = true;
+      if (expand_navigation == null) expand_navigation = true;
+      if (show_portal_template == null) show_portal_template = true;
       navigation_tab = this.navigation.getComponent(navigation_id);
       if (!navigation_tab) {
         console.log('navigation does not exist');
@@ -222,15 +188,9 @@
     },
     showTabMainpage: function(animate_navigation_expand, expand_navigation, show_portal_template) {
       var context, ht;
-      if (animate_navigation_expand == null) {
-        animate_navigation_expand = true;
-      }
-      if (expand_navigation == null) {
-        expand_navigation = true;
-      }
-      if (show_portal_template == null) {
-        show_portal_template = true;
-      }
+      if (animate_navigation_expand == null) animate_navigation_expand = true;
+      if (expand_navigation == null) expand_navigation = true;
+      if (show_portal_template == null) show_portal_template = true;
       context = this.context_manager.getContext();
       ht = context.active_headertab;
       if (ht.popup_navigation) {
@@ -377,4 +337,5 @@
       }
     }
   });
+
 }).call(this);

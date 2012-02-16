@@ -1,10 +1,15 @@
 (function() {
+
   Ext.Loader.setConfig({
     disableCaching: false
   });
+
   Ext.Loader.setPath('Lizard', '/static_media/lizard_portal/lizard');
+
   Ext.Loader.setPath('Vss', '/static_media/lizard_portal/vss');
+
   Ext.Loader.setPath('GeoExt', '/static_media/geoext4/src');
+
   Ext.application({
     name: 'lizardViewer',
     models: ['Vss.model.Communique', 'Vss.model.Esf', 'Vss.model.ObjectTree'],
@@ -29,4 +34,5 @@
       return Ext.create('Lizard.window.Dashboard', settings);
     }
   });
+
 }).call(this);
