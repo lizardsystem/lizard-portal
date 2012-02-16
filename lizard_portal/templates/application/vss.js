@@ -17,7 +17,9 @@ Ext.application({
         'Vss.model.AnnotationDetail',
         'Vss.model.AnnotationDescription',
         'Vss.model.TimeserieObject',
-        'Lizard.model.Graph'
+        'Lizard.model.Graph',
+        'Lizard.model.App'
+
     ],
     stores: [
         'Vss.store.Communique',
@@ -32,6 +34,7 @@ Ext.application({
         'Vss.store.AnnotationDescription',
         'Vss.store.KrwToestandGraph',
         'Lizard.store.Graph',
+        'Lizard.store.App'
 
     ],
     requires: [
@@ -74,7 +77,8 @@ Ext.application({
         'Lizard.grid.GridComboBox',
         'Lizard.grid.ComboDict',
         'Lizard.grid.CellEditing',
-        'Lizard.form.TableField'
+        'Lizard.form.TableField',
+        'Lizard.portlet.AppPortlet'
     ],
     launch: function() {
         //TODO: for the time being on this location, a better location is the template of the watersystem portal

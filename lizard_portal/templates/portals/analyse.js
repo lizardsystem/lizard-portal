@@ -6,7 +6,21 @@
 		width: 300,
 		items: [{
 			title: 'Navigatie',
-            flex:2
+            flex:2,
+            xtype:'appportlet',
+            store: Ext.create('Lizard.store.App', {
+                    proxy: {
+                        url: '',
+                        params: '',
+                        type: 'memory',
+                        reader: {
+                            type: 'json'
+                        },
+                        data: [{name: 'hello'}]
+                    },
+                    autoload: true
+                }
+            )
 		},{
             autoHeight: true,
             minHeight: 200,
