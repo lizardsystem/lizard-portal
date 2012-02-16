@@ -19,9 +19,9 @@
         }
     ],
 	items:[{
-		width: 200,
+		width: 300,
 		items: [{
-			title: 'Maatregelen',
+			title: 'Waterbalans',
             flex:1,
             autoScroll: true,
             plugins: [
@@ -33,7 +33,7 @@
                 var cm = Ext.getCmp('portalWindow').context_manager.getContext();
 
                 me.loader.load({
-                    url: 'wbconfiguration/api/summary/',
+                    url: '/wbconfiguration/api/summary/',
                     params: {
                         object_id: cm.object_id
                     },
