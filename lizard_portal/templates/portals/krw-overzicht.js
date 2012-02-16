@@ -21,8 +21,9 @@
             {% get_portal_template gebiedseigenschappen %},
             {% get_portal_template communique %},
         {
-			title: 'Extra info?',
-            flex:1
+			title: 'Gebieden links',
+            flex:1,
+            html: 'Aan-afvoergebieden:<br> <a href="javascript:Ext.getCmp(\'portalWindow\').linkTo({portalTemplate:\'toestand-aan-afvoergebied\', object_id:\'3300\'})">Muyeveld<a/> '
 		}]
 	},{
 		flex: 1,

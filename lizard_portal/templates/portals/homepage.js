@@ -259,21 +259,8 @@
                 width:150,
                 xtype:'button'
             },
-            items:[
-                {% if area.parent %}
-                {
-                    text: '{{area.parent.name}}',
-                    handler: function() { Ext.getCmp('portalWindow').linkTo({area:"{{ area.parent.ident }}" }); }
-                },
-                {% endif %}
+            html: 'KRW-waterlichaam:<br> <a href="javascript:Ext.getCmp(\'portalWindow\').linkTo({portalTemplate:\'krw-overzicht\', object_id:\'NL11_5_1\'})">Loosdrechtse Plassen<a/> '
 
-                {% for a in area.get_children %}
-                {
-                    text: '{{a.name}}',
-                    handler: function() { Ext.getCmp('portalWindow').linkTo({area:"{{ a.ident }}" }); }
-                },
-                {% endfor %}
-            ]
 		}]
        }]
 }

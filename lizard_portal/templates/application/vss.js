@@ -8,6 +8,7 @@ Ext.Loader.setPath('GeoExt', '{{ STATIC_URL }}geoext4/src');
 Ext.application({
     name: 'KRW_vss',
     models: [
+        'Vss.model.AppScreen',
         'Vss.model.Communique',
         'Vss.model.Esf',
         'Vss.model.ObjectTree',
@@ -17,9 +18,7 @@ Ext.application({
         'Vss.model.AnnotationDetail',
         'Vss.model.AnnotationDescription',
         'Vss.model.TimeserieObject',
-        'Lizard.model.Graph',
-        'Lizard.model.App'
-
+        'Lizard.model.Graph'
     ],
     stores: [
         'Vss.store.Communique',
@@ -33,9 +32,8 @@ Ext.application({
         'Vss.store.AnnotationDetail',
         'Vss.store.AnnotationDescription',
         'Vss.store.KrwToestandGraph',
-        'Lizard.store.Graph',
-        'Lizard.store.App'
-
+        'Lizard.store.AppScreen',
+        'Lizard.store.Graph'
     ],
     requires: [
         'Lizard.plugin.ApplyContext',
@@ -65,6 +63,7 @@ Ext.application({
         'Lizard.form.ComboMultiSelect',
         'Lizard.grid.EditableGrid',
         'Lizard.store.EditGridStore',
+        'Lizard.portlet.AppScreenPortlet',
         'Lizard.portlet.Portlet',
         'Lizard.portlet.PortalPanel',
         'Lizard.portlet.PortalColumn',
@@ -77,8 +76,7 @@ Ext.application({
         'Lizard.grid.GridComboBox',
         'Lizard.grid.ComboDict',
         'Lizard.grid.CellEditing',
-        'Lizard.form.TableField',
-        'Lizard.portlet.AppPortlet'
+        'Lizard.form.TableField'
     ],
     launch: function() {
         //TODO: for the time being on this location, a better location is the template of the watersystem portal
