@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ===================================================
 
 
-0.8.4 (unreleased)
+0.8.4 (2012-02-17)
 ------------------
 
 - Added first Analysis navigation: AppScreen.
