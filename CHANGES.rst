@@ -7,6 +7,14 @@ Changelog of lizard-portal
 
 - Added first Analysis navigation: AppScreen.
 
+- removed authorization parts from portals (implement this later)
+
+- added Lizard.windiw.EditSummaryBox and implementation in portals
+
+- add sortabel to column settings
+
+
+
 
 0.8.3 (2012-02-13)
 ------------------
