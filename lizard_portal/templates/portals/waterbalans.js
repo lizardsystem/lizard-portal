@@ -51,19 +51,12 @@
             },
             bbar: [{
                 xtype: 'button',
-                text: 'Details',
-                iconCls: 'l-icon-setting',
-                handler: function(menuItem, checked) {
-                    Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans-instellingen-overzicht'});
-                }
-            } {% if perms.auth.is_analyst %},{
-                xtype: 'button',
-                text: 'Configureren',
+                text: 'Configuratie',
                 iconCls: 'l-icon-setting',
                 handler: function(menuItem, checked) {
                     Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans-configuratie'});
                 }
-            }{% endif%}]
+            }]
 		}]
 	},{
 		flex: 1,

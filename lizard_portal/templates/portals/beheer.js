@@ -1,3 +1,4 @@
+
 {
     itemId: 'beheer',
     title: 'Beheer',
@@ -14,48 +15,50 @@
             defaults:{
                  width:180,
                  xtype:'button',
-                 margin: 3
+                 margin: 3,
+                 disabled:true
             },
             items: [
                 {
                      text: 'Maatregelen beheer',
-                     {% if not perms.auth.is_beleidsmaker %}
-                     disabled: true,
+                     {% if user.is_authenticated %}
+                     disabled: false,
                      {% endif %}
                      handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'maatregelen-beheer'}); }
                 },
                 {
                      text: 'Organisatie beheer',
-                     {% if not perms.auth.is_beleidsmaker %}
-                     disabled: true,
+                     {% if user.is_authenticated %}
+                     disabled: false,
                      {% endif %}
                      handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'organisatie-beheer'}); }
                 },
                 {
-                     text: 'Doelen',
-                     {% if not perms.auth.is_beleidsmaker %}
-                     disabled: true,
+                     text: 'EKR doelen',
+                     {% if user.is_authenticated %}
+                     disabled: false,
                      {% endif %}
                      handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'doelen-beheer'}); }
                 },
                 {
                      text: 'Stuurparameters',
-                     {% if not perms.auth.is_analyst %}
-                     disabled: true,
+                     {% if user.is_authenticated %}
+                     disabled: false,
                      {% endif %}
                      handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'stuurparameter-overzicht'}); }
                 },{
                      text: 'Koppeling KRW en aan/afvoer gebieden',
-                     {% if not perms.auth.is_analyst %}
-                     disabled: true,
+                     {% if user.is_authenticated %}
+                     disabled: false,
                      {% endif %}
                      handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'area_link'}); }
                 },
                 {
                      text: 'Gebruikersbeheer',
-                     {% if not perms.auth.is_helpdesk %}
-                     disabled: true,
+                     {% if user.is_authenticated %}
+                         disabled: false,
                      {% endif %}
+ 
                      handler: function() { window.open('/manager/') }
                 }
             ]

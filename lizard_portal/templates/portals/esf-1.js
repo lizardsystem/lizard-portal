@@ -22,7 +22,7 @@
             items: {
                 flex: 1,
                 xtype: 'esf_grid',
-            {% if perms.auth.is_analyst %}
+            {% if user.is_authenticated %}
                 editable:true
             {% else %}
                 editable:false

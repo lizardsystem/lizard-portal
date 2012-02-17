@@ -1,7 +1,6 @@
 {% load get_grid %}
 {% load get_portal_template %}
 
-{% if perms.auth.is_analyst %}
 
 {
     itemId: 'waterbalans-configuratie',
@@ -33,6 +32,7 @@
                 margin: 15
             },
             autoScroll:true,
+            {% if user.is_authenticated %}
             bbar: [
                 {
                     xtype: 'button',
@@ -55,12 +55,7 @@
                         var grids = panel.query('grid');
                         panel_global = panel;
 
-                        Ext.MessageBox.show({
-                            title: 'Wijzigingen opslaan',
-                            msg: 'Samenvatting',
-                            width: 300,
-                            multiline: true,
-                            buttons: Ext.MessageBox.OKCANCEL,
+                        Lizard.window.EditSummaryBox.show({
                             fn: function(btn, text)  {
                                 if (btn=='ok') {
                                     //panel.setLoading(true);
@@ -68,12 +63,14 @@
                                         grids[i].saveEdits();
                                     }
                                 }
+                                return true
                             }
                         });
 
                     }
                 }
             ],
+            {% endif %}
             items:[{
                 anchor: "100%",
                 autoHeight: true,
@@ -276,6 +273,4 @@
 		}]
 	}]
 }
-{% else %}
-    {% get_portal_template geen_toegang %}
-{% endif %}
+

@@ -72,6 +72,7 @@ Ext.application({
         'Lizard.portlet.MultiGraphStore',
         'Lizard.window.Header',
         'Vss.grid.Esf',
+        'Lizard.window.EditSummaryBox',
         'Lizard.form.FormAutoload',
         'Lizard.grid.GridComboBox',
         'Lizard.grid.ComboDict',

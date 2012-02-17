@@ -30,7 +30,7 @@
                         object_id: params.object_id
                     }
                 });
-           }{% if perms.auth.is_analyst %},
+           }{% if user.is_authenticated %},
             tools: [{
                 type: 'save',
                 handler: function(e, target, panelHeader, tool){

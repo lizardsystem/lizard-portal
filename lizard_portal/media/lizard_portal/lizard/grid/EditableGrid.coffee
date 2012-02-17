@@ -72,6 +72,7 @@ Ext.override(Ext.data.Model, {
 Ext.define('Lizard.grid.EditableGrid', {
     extend: 'Ext.grid.Panel'
     alias: 'widget.leditgrid'
+    requires: ['Lizard.window.EditSummaryBox']
     config: {
         proxyUrl: ''
         proxyParams: {}
@@ -307,10 +308,13 @@ Ext.define('Lizard.grid.EditableGrid', {
 
         #function with default settings
         getColconfig = (col) ->
+            if typeof(col.sortable) == 'undefined'
+                col.sortable = true
+
             col_config = {
                 text: col.title
                 width: col.width || 100
-                sortable: true
+                sortable: col.sortable
                 hidden: !col.visible
                 dataIndex: col.name
                 type: col.type
@@ -543,22 +547,16 @@ Ext.define('Lizard.grid.EditableGrid', {
                     handler: (menuItem) ->
 
                         if me.getEnterEditSummary()
-                            Ext.MessageBox.show({
-                                title: 'Wijzigingen opslaan',
-                                msg: 'Samenvatting',
-                                width: 300,
-                                multiline: true,
-                                buttons: Ext.MessageBox.OKCANCEL,
-                                fn: (btn, text)  ->
+                            Lizard.window.EditSummaryBox.show(
+                                fn: (btn, text, field)  ->
                                      if (btn=='ok')
                                          me.store.setTempWriteParams({edit_message: text})
                                          me.saveEdits()
-                            })
+                                     return true
+                            )
                         else
                             me.saveEdits()
-
                 }
-
             ])
 
         if @getUsePagination()

@@ -59,6 +59,7 @@
   Ext.define('Lizard.grid.EditableGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.leditgrid',
+    requires: ['Lizard.window.EditSummaryBox'],
     config: {
       proxyUrl: '',
       proxyParams: {},
@@ -306,10 +307,13 @@
       me = this;
       getColconfig = function(col) {
         var col_config;
+        if (typeof col.sortable === 'undefined') {
+          col.sortable = true;
+        }
         col_config = {
           text: col.title,
           width: col.width || 100,
-          sortable: true,
+          sortable: col.sortable,
           hidden: !col.visible,
           dataIndex: col.name,
           type: col.type,
@@ -530,19 +534,15 @@
             iconCls: 'l-icon-disk',
             handler: function(menuItem) {
               if (me.getEnterEditSummary()) {
-                return Ext.MessageBox.show({
-                  title: 'Wijzigingen opslaan',
-                  msg: 'Samenvatting',
-                  width: 300,
-                  multiline: true,
-                  buttons: Ext.MessageBox.OKCANCEL,
-                  fn: function(btn, text) {
+                return Lizard.window.EditSummaryBox.show({
+                  fn: function(btn, text, field) {
                     if (btn === 'ok') {
                       me.store.setTempWriteParams({
                         edit_message: text
                       });
-                      return me.saveEdits();
+                      me.saveEdits();
                     }
+                    return true;
                   }
                 });
               } else {

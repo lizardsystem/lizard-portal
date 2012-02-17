@@ -304,7 +304,7 @@ Ext.define 'Lizard.window.Screen',
                     {
                         region: 'west'
                         id: 'areaNavigation'
-                        title: 'Navigatie'
+                        title: 'Gebiedsselectie'
                         animCollapse:500
                         width: 250
                         collapsed: true
