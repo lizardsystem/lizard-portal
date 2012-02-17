@@ -1,6 +1,5 @@
 (function() {
-  " Under construction; just copied from Graph ";
-  Ext.define('Lizard.model.AppScreen', {
+  " Under construction; just copied from Graph ";  Ext.define('Lizard.model.AppScreen', {
     extend: 'Ext.data.Model',
     fields: [
       {
