@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.portlet.MultiGraphStore', {
     extend: 'Lizard.portlet.Portlet',
     alias: 'widget.multigraphstore',
@@ -87,9 +88,7 @@
           if (graph.get('has_reset_period')) {
             period = graph.get('reset_period');
             setResetPeriod = function(button, select) {
-              if (select) {
-                return button.graph.set('reset_period', button.value);
-              }
+              if (select) return button.graph.set('reset_period', button.value);
             };
             menu.push([
               '<b class="menu-title">Reset periode</b>', {
@@ -136,15 +135,9 @@
     },
     calcHeights: function(new_width, new_height, new_fit) {
       var fit, graph, height, orig_height_visible_graphs, scale_factor, size, width, _i, _j, _len, _len2, _ref, _ref2, _results;
-      if (new_width == null) {
-        new_width = null;
-      }
-      if (new_height == null) {
-        new_height = null;
-      }
-      if (new_fit == null) {
-        new_fit = null;
-      }
+      if (new_width == null) new_width = null;
+      if (new_height == null) new_height = null;
+      if (new_fit == null) new_fit = null;
       size = this.body.getSize();
       width = new_width || this.body.getSize().width;
       height = new_height || this.body.getSize().height;
@@ -168,9 +161,7 @@
             orig_height_visible_graphs += 12;
           }
         }
-        if (orig_height_visible_graphs === 0) {
-          orig_height_visible_graphs = 1;
-        }
+        if (orig_height_visible_graphs === 0) orig_height_visible_graphs = 1;
         scale_factor = height / orig_height_visible_graphs;
       } else {
         scale_factor = 1;
@@ -180,15 +171,18 @@
       for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
         graph = _ref2[_j];
         orig_height_visible_graphs;
-        _results.push(graph.get('visible') ? (graph.set('height', graph.get('orig_height') * scale_factor - 12), graph.set('width', width - 20)) : void 0);
+        if (graph.get('visible')) {
+          graph.set('height', graph.get('orig_height') * scale_factor - 12);
+          _results.push(graph.set('width', width - 20));
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
     },
     applyFitInPortal: function(value, something) {
       console.log(arguments);
-      if (this.body) {
-        this.calcHeights(null, null, value);
-      }
+      if (this.body) this.calcHeights(null, null, value);
       return value;
     },
     updateGraphs: function(changes, new_context, context_manager, me) {
@@ -209,9 +203,7 @@
       var buttonBarConfig, me;
       me = this;
       buttonBarConfig = null;
-      if (this.useGraphButtonBar) {
-        buttonBarConfig = this.getGraphButtonConfig();
-      }
+      if (this.useGraphButtonBar) buttonBarConfig = this.getGraphButtonConfig();
       Ext.apply(this, {
         layout: {
           type: 'vboxscroll',
@@ -258,4 +250,5 @@
       return this.callParent(arguments);
     }
   });
+
 }).call(this);

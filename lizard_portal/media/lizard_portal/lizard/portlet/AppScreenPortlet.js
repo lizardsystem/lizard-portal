@@ -3,14 +3,10 @@
   Ext.define('Lizard.portlet.AppScreenPortlet', {
     extend: 'Lizard.portlet.Portlet',
     alias: 'widget.appscreenportlet',
-    config: {
-      graph_service_url: '',
-      graphs: [],
-      context_manager: []
-    },
     initComponent: function() {
       var me;
       me = this;
+      console.log('Jack Init portlet');
       Ext.apply(this, {
         layout: {
           type: 'vboxscroll',
@@ -21,27 +17,12 @@
           height: 250
         },
         autoScroll: true,
-        tbar: ['Apps:'],
-        items: [],
-        tools: [
-          {
-            type: 'plus',
-            handler: function(e, target, panelHeader, tool) {
-              var portlet;
-              portlet = panelHeader.ownerCt;
-              if (tool.type === 'plus') {
-                tool.setType('minus');
-                return me.setGraphFit(false);
-              } else {
-                tool.setType('plus');
-                return me.setGraphFit(true);
-              }
-            }
-          }
-        ]
+        items: {
+          xtype: 'dataview',
+          store: this.store,
+          tpl: new Ext.XTemplate('<tpl for=".">', '<li class="app_icon draggable"><a href="{url}" title="{description}">', '<img src="/static_media/lizard_portal/app_icons/metingen.png" ', 'id="app-{slug}" />', '<div>{name} ({type})</div>', '</a></li>', '</tpl>')
+        }
       });
-      console.log('cm');
-      console.log(this.context_manager);
       return this.callParent(arguments);
     }
   });

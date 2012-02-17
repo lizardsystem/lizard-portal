@@ -8,6 +8,7 @@ Ext.Loader.setPath('GeoExt', '{{ STATIC_URL }}geoext4/src');
 Ext.application({
     name: 'KRW_vss',
     models: [
+        'Vss.model.App',
         'Vss.model.AppScreen',
         'Vss.model.Communique',
         'Vss.model.Esf',

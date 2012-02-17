@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.model.Graph', {
     extend: 'Ext.data.Model',
     fields: [
@@ -94,16 +95,12 @@
       getGraphUrl: function(values) {
         var a, url;
         url = values['base_url'];
-        if (url.indexOf('?') < 0) {
-          url += '?';
-        }
+        if (url.indexOf('?') < 0) url += '?';
         url += "&height=" + values['height'];
         url += "&width=" + values['width'];
         url += "&dt_start=" + values['dt_start'];
         url += "&dt_end=" + values['dt_end'];
-        if (values['location']) {
-          url += "&location=" + values['location'];
-        }
+        if (values['location']) url += "&location=" + values['location'];
         if (values['predefined_graph']) {
           url += "&graph=" + values['predefined_graph'];
         }
@@ -132,4 +129,5 @@
       }
     }
   });
+
 }).call(this);

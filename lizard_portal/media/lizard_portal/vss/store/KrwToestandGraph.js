@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Vss.store.KrwToestandGraph', {
     extend: 'Lizard.store.Graph',
     model: 'Lizard.model.Graph',
@@ -76,4 +77,5 @@
       }
     ]
   });
+
 }).call(this);

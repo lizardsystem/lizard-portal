@@ -1,9 +1,9 @@
-# Collection of apps selected by User
+# Collection of available apps
 
-Ext.define('Lizard.store.AppScreen', {
+Ext.define('Lizard.store.Apps', {
     extend: 'Ext.data.Store',
     model: 'Lizard.model.App',
-    # data must be provided from outside
+    # Must be provided from outside
     # data: apps,
 
     # Apparently required

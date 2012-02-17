@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.window.ContextManager', {
     extend: 'Ext.util.Observable',
     config: {
@@ -42,13 +43,9 @@
       var pw;
       if (typeof tab === 'string') {
         tab = Ext.Array.filter(this.headertabs, function(element) {
-          if (element.name === tab) {
-            return element;
-          }
+          if (element.name === tab) return element;
         });
-        if (tab.length > 0) {
-          tab = tab[0];
-        }
+        if (tab.length > 0) tab = tab[0];
       }
       if (tab) {
         this.active_headertab = tab;
@@ -73,12 +70,8 @@
     },
     setContext: function(params, save_state, headertab) {
       var context, headertab_change, object, object_change, object_type_change, period_change, tab, template_change;
-      if (save_state == null) {
-        save_state = true;
-      }
-      if (headertab == null) {
-        headertab = this.active_headertab;
-      }
+      if (save_state == null) save_state = true;
+      if (headertab == null) headertab = this.active_headertab;
       console.log('new context params are:');
       console.log(params);
       headertab_change = false;
@@ -128,9 +121,7 @@
           object.object_name = params.object_name;
         }
       }
-      if (typeof params.period !== 'undefined') {
-        this.period = params.period;
-      }
+      if (typeof params.period !== 'undefined') this.period = params.period;
       if (typeof params.period_start !== 'undefined') {
         if (Ext.typeOf(params.period_start) !== 'date') {
           params.period_start = Ext.Date.parse(params.period_start, 'd-m-Y');
@@ -166,16 +157,10 @@
     },
     getContext: function(headertab, no_references) {
       var check, me, obj_type, object, output, _i, _len, _ref;
-      if (headertab == null) {
-        headertab = this.active_headertab;
-      }
-      if (no_references == null) {
-        no_references = false;
-      }
+      if (headertab == null) headertab = this.active_headertab;
+      if (no_references == null) no_references = false;
       me = this;
-      if (headertab === null) {
-        headertab = {};
-      }
+      if (headertab === null) headertab = {};
       output = {};
       if (no_references) {
         output.active_headertab = {
@@ -186,9 +171,7 @@
         output.active_headertab = headertab;
       }
       check = function(el) {
-        if (el === me.last_selected_object.object_type) {
-          return true;
-        }
+        if (el === me.last_selected_object.object_type) return true;
       };
       if (headertab) {
         console.log('supported objecttypes are:');
@@ -227,12 +210,8 @@
     },
     showNavigationIfNeeded: function(animate_navigation_expand, hide_if_not_needed) {
       var activeTab;
-      if (animate_navigation_expand == null) {
-        animate_navigation_expand = true;
-      }
-      if (hide_if_not_needed == null) {
-        hide_if_not_needed = true;
-      }
+      if (animate_navigation_expand == null) animate_navigation_expand = true;
+      if (hide_if_not_needed == null) hide_if_not_needed = true;
       activeTab = this.getActive_headertab();
       if (activeTab) {
         if (activeTab.popup_navigation && !this.getContext().object_id) {
@@ -240,9 +219,7 @@
           return true;
         }
       }
-      if (hide_if_not_needed) {
-        Ext.getCmp('portalWindow').navigation.collapse();
-      }
+      if (hide_if_not_needed) Ext.getCmp('portalWindow').navigation.collapse();
       return false;
     },
     constructor: function(config) {
@@ -259,4 +236,5 @@
       return this.callParent(arguments);
     }
   });
+
 }).call(this);

@@ -1,28 +1,30 @@
+
+/*
+    Fields:
+
+
+
+
+
+
+    * combo:
+        choices:
+            * array with string choices; or
+            * array with objects of choices. the objects has a 'id' and 'name' key
+
+
+
+
+
+
+  issues:
+  - editors are to small
+  - multiselect comboboxes doesn't work correct
+*/
+
 (function() {
-  /*
-      Fields:
-  
-  
-  
-  
-  
-  
-      * combo:
-          choices:
-              * array with string choices; or
-              * array with objects of choices. the objects has a 'id' and 'name' key
-  
-  
-  
-  
-  
-  
-    issues:
-    - editors are to small
-    - multiselect comboboxes doesn't work correct
-  
-  
-  */  Ext.override(Ext.form.field.Field, {
+
+  Ext.override(Ext.form.field.Field, {
     isEqual: function(a, b) {
       if (Ext.isDate(a) && Ext.isDate(b)) {
         return a.getTime() === b.getTime();
@@ -39,6 +41,7 @@
       return a === b;
     }
   });
+
   Ext.override(Ext.data.Model, {
     isEqual: function(a, b) {
       if (Ext.isDate(a) && Ext.isDate(b)) {
@@ -56,6 +59,7 @@
       return a === b;
     }
   });
+
   Ext.define('Lizard.grid.EditableGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.leditgrid',
@@ -146,12 +150,8 @@
       if (me.read_only_field && record.data[me.read_only_field] === true) {
         return false;
       }
-      if (typeof col.editable === 'undefined') {
-        col.editable = true;
-      }
-      if (!col.editable) {
-        return false;
-      }
+      if (typeof col.editable === 'undefined') col.editable = true;
+      if (!col.editable) return false;
       type = col.type || 'text';
       if (type) {
         if (me.extraEditors[type]) {
@@ -264,9 +264,7 @@
     },
     get_renderer: function(value, style, record, rownr, colnr, store, gridpanel, col) {
       var names, val, _i, _len, _ref;
-      if (value === null) {
-        value = '-';
-      }
+      if (value === null) value = '-';
       if (col.type === 'boolean') {
         if (value === true) {
           value = 'ja';
@@ -275,9 +273,7 @@
         }
       }
       if ((_ref = col.type) === 'combo' || _ref === 'gridcombobox') {
-        if (Ext.type(value) === 'object') {
-          value = value.name;
-        }
+        if (Ext.type(value) === 'object') value = value.name;
         if (Ext.type(value) === 'array') {
           names = [];
           for (_i = 0, _len = value.length; _i < _len; _i++) {
@@ -287,9 +283,7 @@
           value = names.join(', ');
         }
       }
-      if (!col.editable) {
-        value = "<i>" + value + "</i>";
-      }
+      if (!col.editable) value = "<i>" + value + "</i>";
       if (col.editIf) {
         if (!Ext.Array.contains(col.editIf.value_in, record.data[col.editIf.prop])) {
           console.log('grijs');
@@ -325,12 +319,8 @@
             return me.get_editor(record, col);
           }, me, [col], true);
         }
-        if (col.editIf) {
-          col_config.editIf = col.editIf;
-        }
-        if (col.multiSelect) {
-          col_config.multiSelect = true;
-        }
+        if (col.editIf) col_config.editIf = col.editIf;
+        if (col.multiSelect) col_config.multiSelect = true;
         return col_config;
       };
       cols = [];
@@ -490,9 +480,7 @@
     initComponent: function() {
       var me;
       me = this;
-      if (!this.getUsePagination()) {
-        this.recordsPerPage = 10000;
-      }
+      if (!this.getUsePagination()) this.recordsPerPage = 10000;
       me.columns = this.getColumnConfig();
       me.store = Ext.create('Lizard.store.EditGridStore', this.getStoreConfig());
       me.bbar = [];
@@ -564,4 +552,5 @@
       return this.callParent(arguments);
     }
   });
+
 }).call(this);
