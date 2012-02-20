@@ -180,21 +180,18 @@
 		width: 200,
 		items: [{
             title: 'Links van dit gebied',
+
             layout: {
                 type: 'table',
                 columns:1
             },
-            height: 250,
+            height: 200,
             defaults:{
-                width:180,
+                width:160,
                 xtype:'button',
                 margin: 3
             },
             items:[{
-                    text: 'Overzicht ESF',
-                    icon: '/static_media/vss/icons/esf.png',
-                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'esf-overzicht'}); }
-                }, {
                     text: 'Ecologische sleutelfactoren',
                     icon: '/static_media/vss/icons/esf.png',
                     handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'esf-1'}); }
@@ -219,35 +216,11 @@
                    icon: '/static_media/vss/icons/toestand.png',
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'toestand-aan-afvoergebied'}); }
                 }
-//                {% if perms.auth.is_analyst %}
-//                , {
-//                   text: 'Toevoegen analyse interpretatie',
-//                   icon: '/static_media/vss/icons/toestand.png',
-//                   handler: function() {
-//                       Ext.create('Ext.window.Window', {
-//                            title: 'Analyse interpretatie',
-//                            width: 800,
-//                            height: '60%',
-//                            analyseinterpretatiepopup: true,
-//                            //autoScroll: true,
-//                            loader:{
-//                                loadMask: true,
-//                                autoLoad: true,
-//                                url: '/portal/configuration/',
-//                                ajaxOptions: {
-//                                    method: 'GET'
-//                                },
-//                                params: {
-//                                    portalTemplate: 'analyse_interpretatie_form'
-//                                },
-//                                renderer: 'component'
-//                            }
-//                        }).show();
-//                   }
-//                }
-//                {% endif %}
+
             ]
- 		},{
+ 		},
+        {% get_portal_template esf-overzicht %},
+        {
 			title: 'Gerelateerde deelgebieden',
             flex:1,
             autoScroll:true,

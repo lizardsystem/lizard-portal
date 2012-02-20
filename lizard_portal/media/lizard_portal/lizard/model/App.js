@@ -1,5 +1,4 @@
 (function() {
-
   Ext.define('Lizard.model.App', {
     extend: 'Ext.data.Model',
     idProperty: 'slug',
@@ -27,5 +26,4 @@
       }
     ]
   });
-
 }).call(this);

@@ -1,5 +1,4 @@
 (function() {
-
   Ext.define('Lizard.form.FormAutoload', {
     extend: 'Ext.form.Panel',
     alias: 'widget.formautoload',
@@ -17,8 +16,9 @@
     },
     afterRender: function() {
       this.callParent(arguments);
-      if (this.getLoadProxy()) return this.load(this.getLoadProxy());
+      if (this.getLoadProxy()) {
+        return this.load(this.getLoadProxy());
+      }
     }
   });
-
 }).call(this);

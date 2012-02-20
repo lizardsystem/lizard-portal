@@ -3,6 +3,7 @@
             bodyCls: 'l-grid',
             height: 150,
             collapsed: true,
+            collapsible: true,
             autoScroll: true,
             plugins: [
                 'applycontext'

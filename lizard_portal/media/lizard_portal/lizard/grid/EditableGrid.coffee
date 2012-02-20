@@ -77,6 +77,7 @@ Ext.define('Lizard.grid.EditableGrid', {
         proxyUrl: ''
         proxyParams: {}
         dataConfig: []
+        storeAutoLoad: false
         useSaveBar: true
         enterEditSummary: true
         editable: true
@@ -133,6 +134,7 @@ Ext.define('Lizard.grid.EditableGrid', {
             field:
                 xtype:'numberfield'
                 step:1
+                allowDecimals: true,
 
         number:
             field:
@@ -311,6 +313,7 @@ Ext.define('Lizard.grid.EditableGrid', {
             if typeof(col.sortable) == 'undefined'
                 col.sortable = true
 
+
             col_config = {
                 text: col.title
                 width: col.width || 100
@@ -371,13 +374,14 @@ Ext.define('Lizard.grid.EditableGrid', {
             cols.push(colConfig)
 
         for col in @dataConfig
-            if !col.columns
-                cols.push(getColconfig(col))
-            else
-                cols_with_header = {text: col.title, columns: []}
-                for col_sub in col['columns']
-                    cols_with_header['columns'].push(getColconfig(col_sub))
-                cols.push(cols_with_header)
+            if not col.only_store
+                if !col.columns
+                    cols.push(getColconfig(col))
+                else
+                    cols_with_header = {text: col.title, columns: []}
+                    for col_sub in col['columns']
+                        cols_with_header['columns'].push(getColconfig(col_sub))
+                    cols.push(cols_with_header)
 
         return cols
 
@@ -422,6 +426,9 @@ Ext.define('Lizard.grid.EditableGrid', {
                 type: setting.type || 'auto'
                 mapping: setting.mapping || setting.name
             }
+            if setting.defaultValue
+                field['defaultValue'] = setting.defaultValue
+
             if setting.type in ['combo', 'gridcombo']
                 field.sortType = 'asIdNameObject'
 
@@ -443,9 +450,6 @@ Ext.define('Lizard.grid.EditableGrid', {
         params = []
         proxyparams = @getProxyParams()
 
-        console.log('++++++++++++++')
-        console.log(proxyparams)
-
         Ext.Object.each(@getProxyParams(), (key, value) ->
             params.push( key + '=' + value)
             console.log(params)
@@ -453,13 +457,12 @@ Ext.define('Lizard.grid.EditableGrid', {
 
         params = params.join('&')
 
-        console.log(params)
-        console.log('++++++++++++++')
 
         store = {
             type: 'leditstore'
             fields: fields
             pageSize: @recordsPerPage
+            remoteFilter: true
             proxy: {
                 type: 'ajax'
                 api:
@@ -494,6 +497,8 @@ Ext.define('Lizard.grid.EditableGrid', {
     initComponent: () ->
         me = @
 
+
+
         if not @getUsePagination()
             @recordsPerPage = 10000
 
@@ -503,11 +508,25 @@ Ext.define('Lizard.grid.EditableGrid', {
         me.columns = @getColumnConfig()
         me.store = Ext.create('Lizard.store.EditGridStore', @getStoreConfig())
         me.bbar = []
+        #for filtering
+#        me.features = [{
+#            ftype : 'filters',
+#            encode : true,
+#            local : false,
+#            filters : [{
+#                type : 'boolean',
+#                dataIndex : 'visible'
+#            }]
+#        }]
 
         if @getEditable()
             @editing = Ext.create('Lizard.grid.CellEditing', {
                         clicksToEdit: 1
                     })
+
+            if not @plugins
+                @plugins = []
+
             @plugins.push(@editing)
 
             me.bbar = [
@@ -581,5 +600,10 @@ Ext.define('Lizard.grid.EditableGrid', {
 #column - The grid Column defining the column that is being edited.
         
         @callParent(arguments)
+
+    afterRender: () ->
+        if @storeAutoLoad
+            @store.load()
+
     
 })

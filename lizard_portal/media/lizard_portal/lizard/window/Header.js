@@ -1,5 +1,4 @@
 (function() {
-
   Ext.define('Lizard.window.Header', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.pageheader',
@@ -39,29 +38,21 @@
         _results = [];
         for (_i = 0, _len = bread_crumbs.length; _i < _len; _i++) {
           crumb = bread_crumbs[_i];
-          if (crumb.link) {
-            element = {
-              tag: 'div',
-              cls: 'link',
-              html: crumb.name
-            };
-            bread_div.createChild(element);
-            el = bread_div.last();
-            el.addListener('click', function(evt, obj, crumb_l) {
-              return portalWindow.linkTo({
-                portalTemplate: crumb_l.link
-              });
-            }, this, crumb);
-            _results.push(bread_div.createChild({
-              tag: 'div',
-              html: ' - '
-            }));
-          } else {
-            _results.push(bread_div.createChild({
-              tag: 'div',
-              html: crumb.name
-            }));
-          }
+          _results.push(crumb.link ? (element = {
+            tag: 'div',
+            cls: 'link',
+            html: crumb.name
+          }, bread_div.createChild(element), el = bread_div.last(), el.addListener('click', function(evt, obj, crumb_l) {
+            return portalWindow.linkTo({
+              portalTemplate: crumb_l.link
+            });
+          }, this, crumb), bread_div.createChild({
+            tag: 'div',
+            html: ' - '
+          })) : bread_div.createChild({
+            tag: 'div',
+            html: crumb.name
+          }));
         }
         return _results;
       }
@@ -82,7 +73,9 @@
       var me;
       me = this;
       return Ext.MessageBox.confirm('Loguit', 'Weet u zeker dat u uit wil loggen?', function(button) {
-        if (button === 'yes') return location.replace('/user/logout_redirect/');
+        if (button === 'yes') {
+          return location.replace('/user/logout_redirect/');
+        }
       });
     },
     login: function() {
@@ -485,5 +478,4 @@
       return this;
     }
   });
-
 }).call(this);

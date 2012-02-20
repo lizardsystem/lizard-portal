@@ -9,6 +9,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
         store: null
         useGraphButtonBar: true
         fitInPortal: true
+        tools: []
 
     plugins: [
         'applycontext'
@@ -208,6 +209,19 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
         if @useGraphButtonBar
             buttonBarConfig = @getGraphButtonConfig()
 
+        me.tools.push([{
+                type: 'plus'
+                handler: (e, target, panelHeader, tool) ->
+                    portlet = panelHeader.ownerCt;
+
+                    if (tool.type == 'plus')
+                        tool.setType('minus')
+                        me.setFitInPortal(false)
+                    else
+                        tool.setType('plus')
+                        me.setFitInPortal(true)
+            }])
+
 
         Ext.apply(@, {
             layout:
@@ -249,18 +263,6 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                 #beforeComponentLayout: (adjWidth, adjHeight) ->
                 #    me.calcHeights(adjWidth, adjHeight)
             }
-            tools: [{
-                type: 'plus'
-                handler: (e, target, panelHeader, tool) ->
-                    portlet = panelHeader.ownerCt;
-
-                    if (tool.type == 'plus')
-                        tool.setType('minus')
-                        me.setFitInPortal(false)
-                    else
-                        tool.setType('plus')
-                        me.setFitInPortal(true)
-            }],
             listeners: {
                 resize: () ->
                     me.calcHeights()

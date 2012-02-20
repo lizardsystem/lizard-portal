@@ -1,5 +1,4 @@
 (function() {
-
   Ext.define('Lizard.grid.GridComboBox', {
     extend: 'Ext.form.field.ComboBox',
     alias: 'widget.gridcombobox',
@@ -43,5 +42,4 @@
       return output;
     }
   });
-
 }).call(this);

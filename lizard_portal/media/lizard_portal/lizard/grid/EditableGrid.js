@@ -1,30 +1,28 @@
-
-/*
-    Fields:
-
-
-
-
-
-
-    * combo:
-        choices:
-            * array with string choices; or
-            * array with objects of choices. the objects has a 'id' and 'name' key
-
-
-
-
-
-
-  issues:
-  - editors are to small
-  - multiselect comboboxes doesn't work correct
-*/
-
 (function() {
-
-  Ext.override(Ext.form.field.Field, {
+  /*
+      Fields:
+  
+  
+  
+  
+  
+  
+      * combo:
+          choices:
+              * array with string choices; or
+              * array with objects of choices. the objects has a 'id' and 'name' key
+  
+  
+  
+  
+  
+  
+    issues:
+    - editors are to small
+    - multiselect comboboxes doesn't work correct
+  
+  
+  */  Ext.override(Ext.form.field.Field, {
     isEqual: function(a, b) {
       if (Ext.isDate(a) && Ext.isDate(b)) {
         return a.getTime() === b.getTime();
@@ -41,7 +39,6 @@
       return a === b;
     }
   });
-
   Ext.override(Ext.data.Model, {
     isEqual: function(a, b) {
       if (Ext.isDate(a) && Ext.isDate(b)) {
@@ -59,7 +56,6 @@
       return a === b;
     }
   });
-
   Ext.define('Lizard.grid.EditableGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.leditgrid',
@@ -68,6 +64,7 @@
       proxyUrl: '',
       proxyParams: {},
       dataConfig: [],
+      storeAutoLoad: false,
       useSaveBar: true,
       enterEditSummary: true,
       editable: true,
@@ -126,7 +123,8 @@
       float: {
         field: {
           xtype: 'numberfield',
-          step: 1
+          step: 1,
+          allowDecimals: true
         }
       },
       number: {
@@ -150,8 +148,12 @@
       if (me.read_only_field && record.data[me.read_only_field] === true) {
         return false;
       }
-      if (typeof col.editable === 'undefined') col.editable = true;
-      if (!col.editable) return false;
+      if (typeof col.editable === 'undefined') {
+        col.editable = true;
+      }
+      if (!col.editable) {
+        return false;
+      }
       type = col.type || 'text';
       if (type) {
         if (me.extraEditors[type]) {
@@ -264,7 +266,9 @@
     },
     get_renderer: function(value, style, record, rownr, colnr, store, gridpanel, col) {
       var names, val, _i, _len, _ref;
-      if (value === null) value = '-';
+      if (value === null) {
+        value = '-';
+      }
       if (col.type === 'boolean') {
         if (value === true) {
           value = 'ja';
@@ -273,7 +277,9 @@
         }
       }
       if ((_ref = col.type) === 'combo' || _ref === 'gridcombobox') {
-        if (Ext.type(value) === 'object') value = value.name;
+        if (Ext.type(value) === 'object') {
+          value = value.name;
+        }
         if (Ext.type(value) === 'array') {
           names = [];
           for (_i = 0, _len = value.length; _i < _len; _i++) {
@@ -283,7 +289,9 @@
           value = names.join(', ');
         }
       }
-      if (!col.editable) value = "<i>" + value + "</i>";
+      if (!col.editable) {
+        value = "<i>" + value + "</i>";
+      }
       if (col.editIf) {
         if (!Ext.Array.contains(col.editIf.value_in, record.data[col.editIf.prop])) {
           console.log('grijs');
@@ -319,8 +327,12 @@
             return me.get_editor(record, col);
           }, me, [col], true);
         }
-        if (col.editIf) col_config.editIf = col.editIf;
-        if (col.multiSelect) col_config.multiSelect = true;
+        if (col.editIf) {
+          col_config.editIf = col.editIf;
+        }
+        if (col.multiSelect) {
+          col_config.multiSelect = true;
+        }
         return col_config;
       };
       cols = [];
@@ -361,19 +373,21 @@
       _ref = this.dataConfig;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         col = _ref[_i];
-        if (!col.columns) {
-          cols.push(getColconfig(col));
-        } else {
-          cols_with_header = {
-            text: col.title,
-            columns: []
-          };
-          _ref2 = col['columns'];
-          for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-            col_sub = _ref2[_j];
-            cols_with_header['columns'].push(getColconfig(col_sub));
+        if (!col.only_store) {
+          if (!col.columns) {
+            cols.push(getColconfig(col));
+          } else {
+            cols_with_header = {
+              text: col.title,
+              columns: []
+            };
+            _ref2 = col['columns'];
+            for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+              col_sub = _ref2[_j];
+              cols_with_header['columns'].push(getColconfig(col_sub));
+            }
+            cols.push(cols_with_header);
           }
-          cols.push(cols_with_header);
         }
       }
       return cols;
@@ -417,6 +431,9 @@
           type: setting.type || 'auto',
           mapping: setting.mapping || setting.name
         };
+        if (setting.defaultValue) {
+          field['defaultValue'] = setting.defaultValue;
+        }
         if ((_ref = setting.type) === 'combo' || _ref === 'gridcombo') {
           field.sortType = 'asIdNameObject';
         }
@@ -438,19 +455,16 @@
       url = this.getProxyUrl();
       params = [];
       proxyparams = this.getProxyParams();
-      console.log('++++++++++++++');
-      console.log(proxyparams);
       Ext.Object.each(this.getProxyParams(), function(key, value) {
         params.push(key + '=' + value);
         return console.log(params);
       });
       params = params.join('&');
-      console.log(params);
-      console.log('++++++++++++++');
       store = {
         type: 'leditstore',
         fields: fields,
         pageSize: this.recordsPerPage,
+        remoteFilter: true,
         proxy: {
           type: 'ajax',
           api: {
@@ -480,7 +494,9 @@
     initComponent: function() {
       var me;
       me = this;
-      if (!this.getUsePagination()) this.recordsPerPage = 10000;
+      if (!this.getUsePagination()) {
+        this.recordsPerPage = 10000;
+      }
       me.columns = this.getColumnConfig();
       me.store = Ext.create('Lizard.store.EditGridStore', this.getStoreConfig());
       me.bbar = [];
@@ -488,6 +504,9 @@
         this.editing = Ext.create('Lizard.grid.CellEditing', {
           clicksToEdit: 1
         });
+        if (!this.plugins) {
+          this.plugins = [];
+        }
         this.plugins.push(this.editing);
         me.bbar = [
           {
@@ -550,7 +569,11 @@
         };
       }
       return this.callParent(arguments);
+    },
+    afterRender: function() {
+      if (this.storeAutoLoad) {
+        return this.store.load();
+      }
     }
   });
-
 }).call(this);

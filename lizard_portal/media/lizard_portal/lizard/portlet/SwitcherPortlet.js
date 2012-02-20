@@ -1,5 +1,4 @@
 (function() {
-
   Ext.define('Lizard.portlet.SwitcherPortlet', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.switcherportlet',
@@ -16,5 +15,4 @@
       return this.callParent(arguments);
     }
   });
-
 }).call(this);

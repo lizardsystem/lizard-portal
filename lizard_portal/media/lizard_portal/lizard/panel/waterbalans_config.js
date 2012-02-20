@@ -1,5 +1,5 @@
 (function() {
-
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   Ext.define('Lizard.window.Dashboard', {
     extend: 'Ext.container.Viewport',
     uses: ['Lizard.portlet.Portlet', 'Lizard.portlet.PortalPanel', 'Lizard.portlet.PortalColumn', 'Lizard.portlet.GridPortlet', 'Lizard.portlet.ChartPortlet', 'GeoExt.MapPanel', 'Ext.Img', 'Ext.grid.*', 'Ext.data.Model', 'Ext.data.*', 'Ext.tree.*', 'Ext.button.*', 'Lizard.ux.CheckColumn', 'Ext.MessageBox'],
@@ -50,8 +50,7 @@
       });
     },
     loadPortal: function(params) {
-      var container,
-        _this = this;
+      var container;
       console.log(params);
       console.log("portalTemplate:" + params.portalTemplate);
       container = Ext.getCmp('app-portal');
@@ -61,22 +60,24 @@
         url: '/portal/configuration/',
         params: params,
         method: 'GET',
-        success: function(xhr) {
+        success: __bind(function(xhr) {
           var navigation, newComponent;
           newComponent = eval('eval( ' + xhr.responseText + ')');
           navigation = Ext.getCmp('areaNavigation');
           navigation.collapse();
           container.add(newComponent);
           return container.setLoading(false);
-        },
-        failure: function() {
+        }, this),
+        failure: __bind(function() {
           Ext.Msg.alert("portal creation failed", "Server communication failure");
           return container.setLoading(false);
-        }
+        }, this)
       });
     },
     linkTo: function(options, save_state) {
-      if (save_state == null) save_state = true;
+      if (save_state == null) {
+        save_state = true;
+      }
       console.log(options);
       this.lizard_context = Ext.Object.merge(this.lizard_context, options);
       if (save_state) {
@@ -85,8 +86,7 @@
       return this.loadPortal(this.lizard_context);
     },
     initComponent: function(arguments) {
-      var content,
-        _this = this;
+      var content;
       content = '<div class="portlet-content">hier moet iets komen</div>';
       Ext.apply(this, {
         id: 'portalWindow',
@@ -130,11 +130,11 @@
             autoScroll: true,
             listeners: {
               itemclick: {
-                fn: function(tree, node) {
-                  return _this.linkTo({
+                fn: __bind(function(tree, node) {
+                  return this.linkTo({
                     area: node.data.id
                   });
-                }
+                }, this)
               }
             },
             store: this.getStore(),
@@ -178,7 +178,9 @@
       return Ext.defer(this.clearMsg, 3000, this, [msgId]);
     },
     clearMsg: function(msgId) {
-      if (msgId === this.msgId) return Ext.get('app-msg').hide();
+      if (msgId === this.msgId) {
+        return Ext.get('app-msg').hide();
+      }
     },
     getTools: function() {
       return [
@@ -197,5 +199,4 @@
       ];
     }
   });
-
 }).call(this);

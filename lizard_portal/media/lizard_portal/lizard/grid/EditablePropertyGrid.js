@@ -1,7 +1,5 @@
 (function() {
-
   Ext.create('Vss.store.TimeserieObject');
-
   Ext.define('Lizard.grid.EditablePropertyGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.leditpropgrid',
@@ -71,7 +69,9 @@
     },
     get_editor: function(record, default_editor, me) {
       var editor, type;
-      if (!record.data.editable) return false;
+      if (!record.data.editable) {
+        return false;
+      }
       type = record.data.type;
       editor = {
         field: Ext.create('Ext.form.field.ComboBox', {
@@ -100,7 +100,9 @@
       }
     },
     get_renderer: function(value, metaData, record) {
-      if (value === null) value = '-';
+      if (value === null) {
+        value = '-';
+      }
       if (record.data.type === 'boolean') {
         if (value === true) {
           value = 'ja';
@@ -108,7 +110,9 @@
           value = 'nee';
         }
       }
-      if (!record.data.editable) value = "<i>" + value + "</i>";
+      if (!record.data.editable) {
+        value = "<i>" + value + "</i>";
+      }
       return value;
     },
     saveEdits: function() {
@@ -152,7 +156,9 @@
                   multiline: true,
                   buttons: Ext.MessageBox.OKCANCEL,
                   fn: function(btn, text) {
-                    if (btn === 'ok') return me.saveEdits();
+                    if (btn === 'ok') {
+                      return me.saveEdits();
+                    }
                   }
                 });
               } else {
@@ -236,5 +242,4 @@
       return this.callParent(arguments);
     }
   });
-
 }).call(this);

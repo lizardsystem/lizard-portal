@@ -24,7 +24,7 @@ Ext.define('Lizard.portlet.Portlet', {
     anchor: '100%',
     frame: true,
     closable: false,
-    collapsible: true,
+    //collapsible: true,
     animCollapse: true,
     draggable: true,
     cls: 'x-portlet',

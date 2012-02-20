@@ -14,20 +14,17 @@
         }
     ],
 	items: [{
-		width:500,
+		width:360,
 		items: [{
             flex:2,
             title: "Opbouw ESF'en",
             closable: false,
-            items: {
-                flex: 1,
-                xtype: 'esf_grid',
-            {% if user.is_authenticated %}
-                editable:true
-            {% else %}
-                editable:false
-            {% endif %}
-            }
+            xtype: 'esf_grid',
+        {% if user.is_authenticated %}
+            editable:true
+        {% else %}
+            editable:false
+        {% endif %}
         }]
 	},{
         flex:1,

@@ -15,10 +15,22 @@ Ext.define('Vss.grid.Esf', {
         editable: true,
         autoLoad: false
     },
-    viewConfig:{
-        toggleOnDblClick:false
-    },
+    tools: [{
+        type: 'right',
+        handler: function (e, target, panelHeader, tool) {
+            var portal_col = panelHeader.up('portalcolumn')
+            if (tool.type == 'left') {
+                tool.setType('right');
+                portal_col.setWidth(360);
+            } else {
+                tool.setType('left');
+                portal_col.setWidth(700);
 
+            }
+
+        }
+
+    }],
     applyParams: function(params) {
         var params = params|| {};
         console.log('apply params');
@@ -41,7 +53,7 @@ Ext.define('Vss.grid.Esf', {
         var oordeel_editor =  Ext.create('Ext.grid.CellEditor', {
             field: Ext.create('Ext.form.field.ComboBox', {
                 editable: false,
-                store: [[ 1, 'OK' ], [0, 'Kritisch' ]]
+                store: [[ 2, 'OK' ], [1, 'Kritisch' ]]
             })
         });
         var number_editor = Ext.create('Ext.grid.CellEditor', {
@@ -57,11 +69,13 @@ Ext.define('Vss.grid.Esf', {
                 if (record.data.type == 'oordeel') {
                     if (value == null){
                         return '-'
+                    } else if (value < 0.1) {
+                        return '-'
                     }
-                    else if (value > 0.1) {
-                        return '<span style="color:green;">OK</span>';
-                    } else {
+                    else if (value < 1.1) {
                         return '<span style="color:red;">Kritisch</span>';
+                    } else {
+                        return '<span style="color:green;">OK</span>';
                     }
                 } else if (value == null){
                     return '-'
@@ -141,14 +155,15 @@ Ext.define('Vss.grid.Esf', {
 
 
         Ext.apply(this, {
-            frame: false,
-            border:false,
             collapsible: false,
             useArrows: true,
             store: Ext.create("Vss.store.Esf"),
             rootVisible: false,
             multiSelect: true,
-
+            viewConfig: {
+                trackOver: true,
+                toggleOnDblClick:false
+            },
             columns: [{
                 xtype: 'treecolumn',
                 text: 'Onderdeel',
@@ -156,40 +171,44 @@ Ext.define('Vss.grid.Esf', {
                 sortable: true,
                 dataIndex: 'name'
             },{
-                text: 'Bron',
-                flex: 1,
-                dataIndex: 'source_name',
-                sortable: true
-            },{
                 text: 'Handm.',
-                width: 50,
+                width: 40,
                 dataIndex: 'manual',
                 renderer: manual_renderer,
                 getEditor: manual_editor,
                 sortable: true
             },{
                 text: 'Waarde',
-                flex: 1,
+                width: 60,
                 dataIndex: 'manual_value',
                 sortable: true,
                 getEditor: value_editor,
-                renderer: value_renderer
-                /*listeners: {
-                    'mouseover': function(a,b,c,d){
-                        console.log(a);
-                        console.log(b);
-                        console.log(c);
-                        console.log(d);
-                    }
-
-                    listeners:
-                        itemclick:
-                            fn: (tree, node) =>
-                                @linkTo {object_id: node.data.id}
-
-                }*/
+                renderer: value_renderer,
+                listeners: {
+                      'mouseover': function(grid, component, row, col){
+                          console.log(arguments);
+                          record = grid.store.getAt(row);
+                          //alert(record.get('name'))
+                          Ext.create('Ext.tip.ToolTip', {
+                              title: record.get('name'),
+                              html: record.get('comment') + '<br><i>' + record.get('last_edit_by') + ', ' + record.get('last_edit_date') + '</i>',
+                              anchor: 'left',
+                              width: 300,
+                              target: component
+                          }).show()
+                      }
+                }
+            },{
+                text: 'Bron auto',
+                width: 70,
+                dataIndex: 'source_name'
+            },{
+                text: 'Omschrijving',
+                flex: 1,
+                dataIndex: 'comment',
+                editor: 'textfield',
+                sortable: true
             }]
-
         });
 
         if (this.editable) {
