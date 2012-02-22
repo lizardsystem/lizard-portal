@@ -273,22 +273,32 @@ Ext.define('Lizard.grid.EditableGrid', {
         if value == null
             value = '-'
 
-        if col.type == 'boolean'
+        else if col.type == 'boolean'
             if value == true
                 value = 'ja'
             else if value == false
                 value = 'nee'
 
-        if col.type in ['combo', 'gridcombobox']
+        else if col.type in ['combo', 'gridcombobox']
             if Ext.type(value) == 'object'
                 value = value.name
                 #else just the value
-            if Ext.type(value) == 'array'
+            else if Ext.type(value) == 'array'
                 names = []
                 for val in value
                     names.push(val.name)
                 value = names.join(', ')
                 #else just the value
+            else if col.choices
+                list_choices = Ext.Array.filter(col.choices, (val)->
+                    if val.id == value
+                        return true
+                )
+                if list_choices.length > 0
+                    value = list_choices[0].name
+
+
+
 
         if !col.editable
             value = "<i>#{value}</i>"
