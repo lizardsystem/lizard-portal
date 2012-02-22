@@ -7,6 +7,9 @@ Changelog of lizard-portal
 
 - Made graph store work remote proxy. Improved store change flags and update of graph buttons after reload of store
 
+- portlet gebieden link added
+
+- esf portlet and gebiedenlink portlet implemented in some portals
 
 
 0.8.4 (2012-02-17)
