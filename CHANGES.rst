@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Made graph store work remote proxy. Improved store change flags and update of graph buttons after reload of store
+
 
 
 0.8.4 (2012-02-17)

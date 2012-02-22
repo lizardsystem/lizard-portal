@@ -17,11 +17,8 @@
 		items: [
             {% get_portal_template gebiedseigenschappen %},
             {% get_portal_template communique %},
-        {
-            title: 'ESF-scores',
-            html: 'esf scores (GS300)',
-            flex:1
-        }]
+            {% get_portal_template esf-overzicht %}
+        ]
     },{
 		flex: 1,
 		items: [{
@@ -29,7 +26,37 @@
             flex: 1,
             xtype: 'multigraphstore',
             store: Ext.create('Lizard.store.Graph', {data: {% get_portal_template graphs-aanafvoer_toestand %} })
-		}]
+		}],
+        tools: [{
+            type: 'save',
+            handler: function (e, target, panelHeader, tool) {
+                var cm = Ext.getCmp('portalWindow').context_manager.getContext();
+
+                Ext.create('Ext.window.Window', {
+                    title: 'Stuurparameters instellen',
+                    width: 800,
+                    height: 600,
+                    modal: true,
+                    finish_edit_function: function (updated_record) {
+                        //todo
+                    },
+                    editpopup: true,
+
+                    loader:{
+                        loadMask: true,
+                        autoLoad: true,
+                        url: '/measure/steering_parameter_form/',
+                        params: {
+                            object_id: cm.object_id
+                        },
+                        ajaxOptions: {
+                            method: 'GET'
+                        },
+                        renderer: 'component'
+                    }
+                }).show();
+            }
+        }]
     },
     {
 		width: 200,
@@ -56,21 +83,9 @@
                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'homepage'}); }
                 }
             ]
- 		},{
-			title: 'Gerelateerde deelgebieden',
-            flex:1,
-            autoScroll:true,
-            layout: {
-                type: 'table',
-                columns:1
-            },
-            defaults:{
-                width:150,
-                xtype:'button'
-            },
-            items:[
-            ]
-		}]
+ 		},
+        {% get_portal_template gebieden_links %}
+        ]
     }]
 }
 

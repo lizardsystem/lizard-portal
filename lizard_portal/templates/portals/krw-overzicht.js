@@ -20,18 +20,39 @@
 		items: [
             {% get_portal_template gebiedseigenschappen %},
             {% get_portal_template communique %},
-        {
-			title: 'Gebieden links',
-            flex:1,
-            html: 'Aan-afvoergebieden:<br> <a href="javascript:Ext.getCmp(\'portalWindow\').linkTo({portalTemplate:\'toestand-aan-afvoergebied\', object_id:\'3300\'})">Muyeveld<a/> '
-		}]
+            {% get_portal_template gebieden_links %}
+        ]
 	},{
 		flex: 1,
 		items: [{
             title: 'Grafieken',
             flex: 1,
             xtype: 'multigraphstore',
-            store: Ext.create('Lizard.store.Graph', {data: {% get_portal_template graphs-krw-overzicht %} }),
+            applyParams: function(params) {
+                var me = this;
+                me.store.load({
+                    params: {
+                        object_id: params.object_id
+                    }
+                });
+            },
+            plugins: [
+                'applycontext'
+            ],
+            store: Ext.create('Lizard.store.Graph',{
+                context_ready: true,
+                proxy: {
+                    type: 'ajax',
+                    url: '/measure/api/steer_parameter_graphs/',
+                    extraParams: {
+                          _accept: 'application/json'
+                    },
+                    reader: {
+                          //root: 'data',
+                          type: 'json'
+                    }
+                }
+            }),
             tools: [{
                 type: 'save',
                 handler: function (e, target, panelHeader, tool) {

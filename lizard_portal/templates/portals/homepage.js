@@ -220,20 +220,7 @@
             ]
  		},
         {% get_portal_template esf-overzicht %},
-        {
-			title: 'Gerelateerde deelgebieden',
-            flex:1,
-            autoScroll:true,
-            layout: {
-                type: 'table',
-                columns:1
-            },
-            defaults:{
-                width:150,
-                xtype:'button'
-            },
-            html: 'KRW-waterlichaam:<br> <a href="javascript:Ext.getCmp(\'portalWindow\').linkTo({portalTemplate:\'krw-overzicht\', object_id:\'NL11_5_1\'})">Loosdrechtse Plassen<a/> '
-
-		}]
-       }]
+        {% get_portal_template gebieden_links %}
+       ]
+    }]
 }
