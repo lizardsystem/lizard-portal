@@ -37,12 +37,14 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                 iconCls: 'l-icon-chartbar',
                 graph: graph,
                 handler: (button) ->
+                    button.graph.beginEdit()
                     if button.pressed
                         button.graph.set('visible', true)
                     else
                         button.graph.set('visible', false)
 
                     me.calcHeights()
+                    button.graph.endEdit()
             }
 
             if graph.get('has_reset_period') or graph.get('has_cumulative_period') or graph.get('add_download_link')
@@ -177,8 +179,10 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
         for graph in @store.data.items
             orig_height_visible_graphs
             if graph.get('visible')
+                graph.beginEdit()
                 graph.set('height', graph.get('orig_height') * scale_factor - 12)
                 graph.set('width', width - 20)
+                graph.endEdit()
 
 
     applyFitInPortal: (value, something) ->
@@ -227,8 +231,6 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
             layout:
                 type: 'vboxscroll'
                 align: 'stretch'
-
-
             autoScroll:true
             tbar: buttonBarConfig
             items: {
@@ -253,7 +255,11 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                     '</tpl>',
                     {
                         get_url:(values) ->
-                           return Lizard.model.Graph.getGraphUrl(values)
+
+                            if values.width > 0 and values.height >0 and values.dt_start and values.dt_end
+                                return Lizard.model.Graph.getGraphUrl(values)
+                            else
+                                return 'data:image/gif'
                         context_ready:() ->
                            return me.store.context_ready
                     }
@@ -270,6 +276,23 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
 
 
         })
+
+        @store.on('load', (store, records, successful) ->
+            #me.store.context_ready = false
+
+            me.calcHeights()
+            params = Ext.getCmp('portalWindow').context_manager.getContext()
+            if params
+                me.store.applyContext(null, params)
+
+            #me.store.context_ready = true
+            if me.useGraphButtonBar
+                toolbar = me.down('toolbar')
+                toolbar.removeAll()
+                toolbar.add(me.getGraphButtonConfig())
+
+                me.forceComponentLayout()
+        )
 
 
         @callParent(arguments)

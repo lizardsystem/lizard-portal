@@ -32,12 +32,14 @@
           iconCls: 'l-icon-chartbar',
           graph: graph,
           handler: function(button) {
+            button.graph.beginEdit();
             if (button.pressed) {
               button.graph.set('visible', true);
             } else {
               button.graph.set('visible', false);
             }
-            return me.calcHeights();
+            me.calcHeights();
+            return button.graph.endEdit();
           }
         };
         if (graph.get('has_reset_period') || graph.get('has_cumulative_period') || graph.get('add_download_link')) {
@@ -181,7 +183,7 @@
       for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
         graph = _ref2[_j];
         orig_height_visible_graphs;
-        _results.push(graph.get('visible') ? (graph.set('height', graph.get('orig_height') * scale_factor - 12), graph.set('width', width - 20)) : void 0);
+        _results.push(graph.get('visible') ? (graph.beginEdit(), graph.set('height', graph.get('orig_height') * scale_factor - 12), graph.set('width', width - 20), graph.endEdit()) : void 0);
       }
       return _results;
     },
@@ -241,7 +243,11 @@
           store: this.store,
           tpl: new Ext.XTemplate('<tpl if="this.context_ready()">', '<tpl for=".">', '<div class="thumb-wrap">', '<tpl if="visible">', '{name}:   ', '<tpl if="detail_link">', '<a href="javascript:Ext.getCmp(\'portalWindow\').linkTo({portalTemplate:\'{detail_link}\'})">details</a>', '</tpl>', '<img src="', '{[this.get_url(values)]}', '" height={height} width={width} />', '</tpl>', '</div>', '</tpl>', '</tpl>', {
             get_url: function(values) {
-              return Lizard.model.Graph.getGraphUrl(values);
+              if (values.width > 0 && values.height > 0 && values.dt_start && values.dt_end) {
+                return Lizard.model.Graph.getGraphUrl(values);
+              } else {
+                return 'data:image/gif';
+              }
             },
             context_ready: function() {
               return me.store.context_ready;
@@ -254,6 +260,20 @@
           resize: function() {
             return me.calcHeights();
           }
+        }
+      });
+      this.store.on('load', function(store, records, successful) {
+        var params, toolbar;
+        me.calcHeights();
+        params = Ext.getCmp('portalWindow').context_manager.getContext();
+        if (params) {
+          me.store.applyContext(null, params);
+        }
+        if (me.useGraphButtonBar) {
+          toolbar = me.down('toolbar');
+          toolbar.removeAll();
+          toolbar.add(me.getGraphButtonConfig());
+          return me.forceComponentLayout();
         }
       });
       return this.callParent(arguments);
