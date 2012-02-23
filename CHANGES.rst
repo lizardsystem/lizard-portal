@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Replace area layer on homepage with geoserver layer.
 
 
 0.8.4 (2012-02-17)
