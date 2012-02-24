@@ -57,9 +57,24 @@
             //(4.7221503096837303, 52.097418937370598, 5.3054492200965404, 52.431493172200199)
             layers: [
                 new OpenLayers.Layer.OSM(),
-                new OpenLayers.Layer.WMS('gebieden', '/map/workspace/1/wms/',
-                    {layers:'basic'}, {transitionEffect: 'resize', singleTile: true, displayOutsideMaxExtent: true, projection: new OpenLayers.Projection("EPSG:900913")})
+                new OpenLayers.Layer.WMS(
+                  'Gebieden',
+                  '/layers/wms/?',
+                  {
+                    layers:['vss:area_polygon_random'],
+                    transparent: true,
+                    format: 'image/png'
+                  },
+                  {
+                    singleTile: false,
+                    opacity: 0.5,
+                    transitionEffect: 'resize',
+                    singleTile: false,
+                    displayOutsideMaxExtent: true,
+                    projection: new OpenLayers.Projection("EPSG:900913")
+                  }
+                )
             ]
-		}]
+	}]
     }]
 }
