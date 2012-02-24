@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - Replace area layer on homepage with geoserver layer.
 
+- Make area selection work via geoserver feature request.
+
 
 0.8.4 (2012-02-17)
 ------------------

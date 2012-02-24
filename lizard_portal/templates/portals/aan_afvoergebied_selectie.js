@@ -22,29 +22,37 @@
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],
             onMapClick: function(event, lonlat) {
-                console.log(event);
-                console.log(lonlat);
                 Ext.Ajax.request({
-                    url: '/map/search_name/',
+                    url: '/layers/wms/?',
                     reader:{
-                        type: 'json'
+                        type: 'xml'
                     },
                     params: {
-                        x: lonlat.lon,
-                        y: lonlat.lat,
-                        radius: 0,
-                        epsg: 900913,
-                        stored_workspace_id: 1,
-                        format: 'object'
+                      namespace: 'inspire',
+                      REQUEST: "GetFeatureInfo",
+                      EXCEPTIONS: "application/vnd.ogc.se_xml",
+                      BBOX: this.map.getExtent().toBBOX(),
+                      X: event.xy.x,
+                      Y: event.xy.y,
+                      //INFO_FORMAT: 'application/vnd.ogc.gml',
+                      INFO_FORMAT: 'application/vnd.ogc.gml',
+                      QUERY_LAYERS: event.object.layers[1].params.LAYERS,
+                      LAYERS: event.object.layers[1].params.LAYERS,
+                      FEATURE_COUNT: 1,
+                      WIDTH: this.map.size.w,
+                      HEIGHT: this.map.size.h,
+                      SRS: 'EPSG:900913'
                     },
                     method: 'GET',
                     success: function(xhr, request) {
-                        var areas = Ext.JSON.decode(xhr.responseText);
-                        console.log(areas);;
+                        gml_text = xhr.responseText;
+                        format = new OpenLayers.Format.GML.v3();
+                        gml = format.read(gml_text)
                         Ext.getCmp('portalWindow').linkTo({
-                            object_id: areas[0].id.ident,
-                            object_name: areas[0].name,
-                            object_type: 'aan_afvoergebied'});
+                          object_id: gml[0].data.ident,
+                          object_name: gml[0].data.name,
+                          object_type: 'aan_afvoergebied'
+                        });
                     },
                     failure: function(xhr) {
                         alert('failure');
@@ -69,7 +77,7 @@
                     singleTile: false,
                     opacity: 0.5,
                     transitionEffect: 'resize',
-                    singleTile: false,
+                    singleTile: true,
                     displayOutsideMaxExtent: true,
                     projection: new OpenLayers.Projection("EPSG:900913")
                   }
