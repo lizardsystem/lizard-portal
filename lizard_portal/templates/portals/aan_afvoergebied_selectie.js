@@ -40,7 +40,7 @@
                       FEATURE_COUNT: 1,
                       WIDTH: this.map.size.w,
                       HEIGHT: this.map.size.h,
-                      SRS: 'EPSG:900913'
+                      SRS: event.object.layers[1].projection.projCode
                     },
                     method: 'GET',
                     success: function(xhr, request) {

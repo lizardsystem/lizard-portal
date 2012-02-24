@@ -9,6 +9,8 @@ Changelog of lizard-portal
 
 - Replace krw layer on krw selection page with geoserver layer.
 
+- For feature requests, use layer parameter.
+
 
 0.9 (2012-02-24)
 ----------------
