@@ -1,11 +1,22 @@
 Changelog of lizard-portal
-===================================================
+==========================
 
 
-0.9 (unreleased)
+0.10 (unreleased)
+-----------------
+
+- Nothing changed yet.
+
+
+0.9 (2012-02-24)
 ----------------
 
-- Replace area layer on homepage with geoserver layer.
+- Adds initial support for suitable measures (beta) (#18).
+- Replaces area layer on homepage with geoserver layer.
+- Updates
+  - lizard-area to 0.2.3,
+  - lizard-measure to 1.9 (from 1.5.8),
+  - nens-graph to 0.7.
 
 - Make area selection work via geoserver feature request.
 
