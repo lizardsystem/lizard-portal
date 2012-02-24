@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.10 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Make area selection work via geoserver feature request.
+
+- Replace krw layer on krw selection page with geoserver layer.
 
 
 0.9 (2012-02-24)
