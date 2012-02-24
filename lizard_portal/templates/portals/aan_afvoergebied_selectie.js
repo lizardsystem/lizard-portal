@@ -28,7 +28,6 @@
                         type: 'xml'
                     },
                     params: {
-                      namespace: 'inspire',
                       REQUEST: "GetFeatureInfo",
                       EXCEPTIONS: "application/vnd.ogc.se_xml",
                       BBOX: this.map.getExtent().toBBOX(),
