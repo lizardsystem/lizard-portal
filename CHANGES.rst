@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.9 (unreleased)
+0.9 (2012-02-24)
 ----------------
 
 - Adds initial support for suitable measures (beta) (#18).
