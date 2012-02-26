@@ -40,11 +40,14 @@
                     method: 'GET',
                     success: function(xhr, request) {
                         var areas = Ext.JSON.decode(xhr.responseText);
-                        console.log(areas);;
+                        console.log(areas);
                         Ext.getCmp('portalWindow').linkTo({
-                            object_id: areas[0].id.ident,
-                            object_name: areas[0].name,
-                            object_type: 'aan_afvoergebied'});
+                                object: {
+                                    id: areas[0].id.ident,
+                                    name: areas[0].name,
+                                    type: 'aan_afvoergebied'
+                                }
+                            });
                     },
                     failure: function(xhr) {
                         alert('failure');

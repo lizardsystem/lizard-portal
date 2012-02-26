@@ -54,7 +54,7 @@
                 text: 'Configuratie',
                 iconCls: 'l-icon-setting',
                 handler: function(menuItem, checked) {
-                    Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans-configuratie'});
+                    Lizard.CM.setContext({portal_template:'waterbalans-configuratie'});
                 }
             }]
 		}]

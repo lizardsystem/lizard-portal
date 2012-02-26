@@ -1,3 +1,13 @@
+#
+#
+#
+#
+#
+#  todo:
+#     - version information
+#     - show context
+#     - make area selection less vss specific (now hardcoded krw_waterlichaam and krw_aanafvoergebied
+
 Ext.define('Lizard.window.Header', {
     extend:'Ext.panel.Panel'
     alias: 'widget.pageheader'
@@ -8,6 +18,12 @@ Ext.define('Lizard.window.Header', {
         portalWindow: null
         close_on_logout:false
 
+    #////
+    #  setBreadCrumb(bread_crumbs)
+    #  function for setting breadcrumb
+    #
+    #  bread_crumbs: dictionary with name and link (name of portal_template)
+    #////
     setBreadCrumb:(bread_crumbs) ->
         #bread_crumbs = bread_crumbs[0]
 
@@ -15,11 +31,8 @@ Ext.define('Lizard.window.Header', {
         bread_div = @breadcrumb.el
         bread_div.dom.innerHTML = ''
 
-        portalWindow = @portalWindow
-
-
-        context = portalWindow.context_manager.getContext()
-        area_name = context.active_headertab.name || 'tab'
+        context = Lizard.CM.getContext()
+        area_name = context.headertab.name || 'tab'
 
         element = {
             tag: 'div',
@@ -31,10 +44,9 @@ Ext.define('Lizard.window.Header', {
         el = bread_div.last()
         el.addListener('click',
             () ->
-               me.context_manager.setContext({portalTemplate:null})
-               portalWindow.showTabMainpage()
+               me.context_manager.setContext({portal_template:null})
+               me.portalWindow.showTabMainpage()
         )
-
 
         if bread_crumbs
             bread_div.createChild({
@@ -53,7 +65,7 @@ Ext.define('Lizard.window.Header', {
                     el = bread_div.last()
                     el.addListener('click'
                         (evt, obj, crumb_l) ->
-                            portalWindow.linkTo({portalTemplate: crumb_l.link})
+                            me.portalWindow.linkTo({portal_template: crumb_l.link})
                         @,
                         crumb)
                     bread_div.createChild({
@@ -66,21 +78,48 @@ Ext.define('Lizard.window.Header', {
                         html: crumb.name
                     })
 
+    #////
+    #  updateContextPeriodHeader()
+    #  updates part in header which shows period
+    #
+    #
+    #////
+    updateContextPeriodHeader: (context) ->
+        html = ''
+        html += Ext.Date.format(context.period.start, 'd-m-Y') + '-<br>' + Ext.Date.format(context.period.end, 'd-m-Y') + ' '
+        @contextheader_period.el.dom.innerHTML = html
 
-    updateContextHeader: () ->
-        context = @context_manager.getContext()
-
+    #////
+    #  updateContextAreaHeader()
+    #  updates part in header which shows selected
+    #
+    #
+    #////
+    updateContextAreaHeader: (context) ->
         html = ''
 
-        if context.object_name
-            html += context.object_name + ' (' + context.object_id +  ')<br>'
-        else if context.object_id
-            html += ' (' + context.object_id +  ')<br>'
+        if Lizard.CM.objects.krw_waterlichaam
+            obj_str = Lizard.CM.objects.krw_waterlichaam.name + ' (' + Lizard.CM.objects.krw_waterlichaam.id +  ')'
+            if 'krw_waterlichaam' in Lizard.CM.getContext().headertab.object_types
+                obj_str = '<b>' + obj_str + '</b>'
+            html += obj_str
 
-        html += Ext.Date.format(context.period_start, 'd-m-Y') + ' t/m ' + Ext.Date.format(context.period_end, 'd-m-Y')
-        @contextheader.body.dom.innerHTML = html
+        html += '<br>'
+        
+        if Lizard.CM.objects.aan_afvoergebied
+            obj_str=  Lizard.CM.objects.aan_afvoergebied.name + ' (' + Lizard.CM.objects.aan_afvoergebied.id +  ')'
+            if 'aan_afvoergebied' in Lizard.CM.getContext().headertab.object_types
+                obj_str = '<b>' + obj_str + '</b>'
+            html += obj_str
 
+        @contextheader_area.el.dom.innerHTML = html
 
+    #////
+    #  logout()
+    #  logout user
+    #
+    #
+    #////
     logout: () ->
         me = @
         Ext.MessageBox.confirm(
@@ -91,17 +130,20 @@ Ext.define('Lizard.window.Header', {
                     location.replace('/user/logout_redirect/')
         )
 
+    #////
+    #  login()
+    #  shows dialog for login of user
+    #
+    #  login procedure has two steps:
+    #   1) check username and password using ajax (and check=true parameter)
+    #   2) login using a 'real' html submit using a real form. This way the browser will popup for remembering the
+    #      username and password the next time
+    #
+    #  after creation of the login window, the values for username and password are copied from a html form, which
+    #  already exist during creation of the page (is nescessary for the browser). see more details on:
+    #  http://www.sencha.com/forum/showthread.php?6450-Saved-user-credentials-and-dynamic-forms-possible
+    #////
     login: () ->
-
-        #function which does actually log user in
-        #login procedure has two steps:
-        # 1) check username and password using ajax (and check=true parameter)
-        # 2) login using a 'real' html submit using a real form. This way the browser will popup for remembering the
-        #    username and password the next time
-        #
-        #after creation of the login window, the values for username and password are copied from a html form, which
-        #already exist during creation of the page (is nescessary for the browser). see more details on:
-        #http://www.sencha.com/forum/showthread.php?6450-Saved-user-credentials-and-dynamic-forms-possible
         log_me_in = (form) ->
             console.log('submit login')
             basic = form.getForm()
@@ -190,115 +232,131 @@ Ext.define('Lizard.window.Header', {
             }
         )
 
+    #////
+    #  periodSelection()
+    #  dialog with period selection
+    #
+    #  output: set period on the contextManager
+    #////
+
     periodSelection: () ->
-        Ext.create('Ext.window.Window', {
+        windows = Ext.WindowManager.getBy((obj) ->
+            if obj.is_period_selection
+                return true
+            else
+                return false
+        )
 
-            title: 'Periode selectie'
-            items:
-                frame: true
-                xtype: 'form'
-                bodyStyle: 'padding:5px 5px 0',
-                width: 350,
-                fieldDefaults:
-                    msgTarget: 'side',
-                    labelWidth: 90
-                defaultType: 'textfield',
-                defaults:
-                    anchor: '100%'
+        if windows.length > 0
+            Ext.WindowManager.bringToFront(windows[0])
+        else
+            Ext.create('Ext.window.Window', {
+                title: 'Periode selectie'
+                is_period_selection:true,
+                items:
+                    frame: true
+                    xtype: 'form'
+                    bodyStyle: 'padding:5px 5px 0',
+                    width: 350,
+                    fieldDefaults:
+                        msgTarget: 'side',
+                        labelWidth: 90
+                    defaultType: 'textfield',
+                    defaults:
+                        anchor: '100%'
+                    items: [
+                        {
+                            xtype: 'radiogroup',
+                            name: 'period_selection',
+                            id: 'ps'
+                            fieldLabel: 'Periode',
+                            columns: 3,
+                            vertical: false,
+                            items: Lizard.CM.periods
+                            listeners:
+                                change: (field, new_value, old_value, optional) ->
+                                    selected = field.getChecked()[0]
+                                    form = field.up(form).getForm()
+                                    if new_value.type != 0
+                                        form.findField('period_start').setValue(Ext.Date.add(new Date(), selected.dt[0], selected.dt[1]))
+                                        form.findField('period_end').setValue(new Date())
+                                        form.findField('period_start').setDisabled(true)
+                                        form.findField('period_end').setDisabled(true)
+                                    else
+                                        form.findField('period_start').setDisabled(false)
+                                        form.findField('period_end').setDisabled(false)
+                        }
+                        {
+                            xtype: 'datefield',
+                            fieldLabel: 'van'
+                            name: 'period_start'
+                            format: 'd-m-Y'
+                        }
+                        {
+                            xtype: 'datefield',
+                            fieldLabel: 't/m'
+                            name: 'period_end'
+                            format: 'd-m-Y'
+                        }
+                    ]
+                    buttons: [{
+                        text: 'Ok'
+                        formBind: true,
+                        handler: () ->
+                            form = @up('form').getForm()
+                            if form.isValid()
+                                start = form.findField('period_start').getValue()
+                                end = form.findField('period_end').getValue()
+                                if end > start
+                                    #form.findField('period_start').setDisabled(false)
+                                    #form.findField('period_end').setDisabled(false)
+                                    values = form.getValues()
+                                    console.log(values)
+                                    Lizard.ContextManager.setContext({
+                                        period_start: start
+                                        period_end: end
+                                        period: {
+                                            type: values.period
+                                            start: start
+                                            end: end
+                                        }
+                                    })
+                                    window = @up('window')
+                                    window.close()
+                                else
+                                    Ext.MessageBox.alert('Invoer fout', 'Begin datum moet voor eind datum zijn.')
 
-                items: [
-                    {
-                        xtype: 'radiogroup',
-                        name: 'period_selection',
-                        id: 'ps'
-                        fieldLabel: 'Periode',
-                        columns: 3,
-                        vertical: false,
-                        items: [
-                            { boxLabel: 'dg', name: 'period', inputValue: 0, dt: [Ext.Date.DAY,-1]},
-                            { boxLabel: '2dg', name: 'period', inputValue: 1, dt: [Ext.Date.DAY,-2] },
-                            { boxLabel: 'wk', name: 'period', inputValue: 2, dt: [Ext.Date.DAY,-7] },
-                            { boxLabel: 'mnd', name: 'period', inputValue: 3, dt: [Ext.Date.MONTH,-1] },
-                            { boxLabel: 'jr', name: 'period', inputValue: 4, dt: [Ext.Date.YEAR,-1] },
-                            { boxLabel: '5jr', name: 'period', inputValue: 5, dt: [Ext.Date.YEAR,-5] },
-                            { boxLabel: 'anders', name: 'period', inputValue: 6, checked: true }
-                        ]
-                        listeners:
-                            change: (field, new_value, old_value, optional) ->
-                                selected = field.getChecked()[0]
-                                form = field.up(form).getForm()
-                                if new_value != 6
-                                    form.findField('period_start').setValue(Ext.Date.add(new Date(), selected.dt[0], selected.dt[1]))
-                                    form.findField('period_end').setValue(new Date())
+                            else
+                                Ext.MessageBox.alert('Invoer fout', 'Kies geldige periode')
 
-                    }
-                    {
-                        xtype: 'datefield',
-                        fieldLabel: 'van'
-                        name: 'period_start'
-                        format: 'd-m-Y',
-                    }
-                    {
-                        xtype: 'datefield',
-                        fieldLabel: 't/m'
-                        name: 'period_end'
-                        format: 'd-m-Y',
-                    }
-                ]
-
-                buttons: [{
-                    text: 'Ok'
-                    formBind: true,
-                    handler: () ->
-                        form = @up('form').getForm()
-                        #todo
-                        console.log('form:')
-                        if form.isValid()
-                            values = form.getValues()
-                            console.log(values)
-                            Ext.getCmp('portalWindow').context_manager.setContext({
-                                period_start: values.period_start
-                                period_end: values.period_end
-                                period: {
-                                    selection: values.period
-                                }
-                            })
+                    },{
+                        text: 'Cancel'
+                        handler: () ->
                             window = @up('window')
                             window.close()
-
-                },{
-                    text: 'Cancel'
-                    handler: () ->
-                        window = @up('window')
-                        window.close()
-                }]
-                afterRender: () ->
-                     form = @getForm()
-                     ps = form.findField('period_selection')
-                     context = Ext.getCmp('portalWindow').context_manager.getContext()
-                     form.findField('period_start').setValue(context.period_start)
-                     form.findField('period_end').setValue(context.period_end)
-                     ps.setValue({period:context.period.selection})
-        }).show()
+                    }]
+                    afterRender: () ->
+                         form = @getForm()
+                         ps = form.findField('period_selection')
+                         context = Lizard.CM.getContext()
+                         form.findField('period_start').setValue(context.period_start)
+                         form.findField('period_end').setValue(context.period_end)
+                         ps.setValue({period:context.period.type})
+            }).show()
 
 
     showContext: () ->
-        #todo, deze mooier maken
 
-        string_of_object = (obj) ->
-            output = ""
-            Ext.Object.each(obj,(key, value) ->
-                if typeof(value) == 'object'
-                    output += key + ":<br>"
-                    Ext.Object.each(value,(key2, value2) ->
-                        output += '....' + key2 + ": " + value2 + "<br>"
-                    )
-                else
-                    output += key + ": " + value + "<br>"
-            )
-            return output
+        user = Lizard.CM.context.user
 
-        Ext.MessageBox.alert('Context overzicht', print_object(me.context_manager.getContext()))
+        output = ''
+        output += 'naam: ' + user.name + '<br>';
+        output += 'organisatie: ' + user.organization + '<br>';
+        output += 'rechten:<br>'
+        for perm in user.permissions
+            output += '   ' + perm + '<br>'
+
+        Ext.MessageBox.alert('Gebruikers informatie', output)
 
 
     constructor: (config) ->
@@ -308,35 +366,48 @@ Ext.define('Lizard.window.Header', {
     initComponent: () ->
         me = @
 
+        tabs = @getHeadertabs()
+        context = Lizard.CM.context
+
         header_items = [
             { xtype: 'tbspacer', width: 200 },
             '->'
         ]
-        tabs = @getHeadertabs()
-        active_tab = @context_manager.getActive_headertab()
+
+        active_tab = context.headertab
         for tab in tabs
+            #set initial headertab
             if active_tab == tab
                 pressed = true
             else
                 pressed = false
 
-            #todo, do not unpress button
+            if tab.config.menu
+                xtype = 'splitbutton'
+                menu = tab.config.menu
+            else
+                xtype = 'button'
+                menu = null
+
             header_items.push({
                 id: 'headertab_' + tab.name
                 text: tab.title
                 pressed: pressed
-                xtype: 'button'
+                xtype: xtype
+                menu: menu
+                plain: true
                 cls: 'l-headertab'
                 toggleGroup: 'headertab'
                 headertab:tab
                 handler: () ->
-
-                    me.context_manager.setActiveHeadertab(@headertab)
+                    if !@pressed
+                        @toggle()
+                    Lizard.CM.setContext({headertab:@headertab})
             })
 
         header_items.push('->')
 
-        user = @context_manager.getUser()
+        user = @context_manager.context.user
 
         if user.id == null
             header_items.push({
@@ -353,12 +424,12 @@ Ext.define('Lizard.window.Header', {
                     xtype: 'button'
                     componentCls: 'l-headertabs'
                     menu: [{
-                            text: 'Instellingen'
+                            text: 'Over deze versie'
                             handler: (button, event, eOpts) ->
-                                Ext.MessageBox.alert('release 2', 'release2')
+                                Ext.MessageBox.alert('Todo', 'todo')
                         },
                         {
-                            text: 'Toon huidige context'
+                            text: 'Toon informatie gebruiker'
                             handler: (button, event, eOpts) ->
                                 me.showContext()
                         }
@@ -376,6 +447,14 @@ Ext.define('Lizard.window.Header', {
                     ]
                 }
                 '-'
+                {
+                    id: 'contextheader_period'
+                    cls: 'l-header-contextinfo'
+                    html: ''
+                    border: false
+                    xtype: 'component'
+                    width: 55
+                }
                 {
                     iconCls: 'l-icon-clock'
                     xtype: 'button'
@@ -399,20 +478,16 @@ Ext.define('Lizard.window.Header', {
                 itemCls: 'l-headertab'
             items: [
                 {
-                    x: 20,
+                    x: 0,
                     y: 30,
+                    width: '100%'
                     height:25
                     border: false
-                    id: 'contextheader'
-                    bodyStyle:
-                        'padding-right':'10px'
-                        background: 'transparent'
-                        'text-align':'right'
-                        'font-size': '9px'
-                        color: '#555'
+                    id: 'contextheader_area'
+                    cls: 'l-header-contextinfo-area'
                     html:''
+                    xtype: 'component'
                 }
-
                 {
                     x: 0,
                     y: 0,
@@ -446,18 +521,36 @@ Ext.define('Lizard.window.Header', {
                 }
             ]
 
-        @portalWindow.context_manager.on('contextchange', (change, context, context_m) ->
-            me.updateContextHeader()
+        @portalWindow.context_manager.on('contextchange', (change, changed_objects, new_context, context_m) ->
+            me._updateOnContextChange(change, changed_objects, new_context, context_m);
+
         )
 
         @callParent(arguments)
 
         @breadcrumb = Ext.getCmp('breadcrumb')
-        @contextheader = Ext.getCmp('contextheader')
+        @contextheader_area = Ext.getCmp('contextheader_area')
+        @contextheader_period = Ext.getCmp('contextheader_period')
 
-
-        if @portalWindow.context_manager.getContext().user.id == null
+        if Lizard.CM.getContext().user.id == null
             @login()
 
         return @
+
+    afterRender: () ->
+        @callParent(arguments)
+
+        context = Lizard.CM.getContext()
+        @updateContextAreaHeader(context)
+        @updateContextPeriodHeader(context)
+
+    _updateOnContextChange: (change, changed_objects, new_context, context_m) ->
+        @updateContextAreaHeader(new_context)
+        @updateContextPeriodHeader(new_context)
+
+        tab = Ext.getCmp('headertab_' + new_context.headertab.name)
+
+        if !tab.pressed
+            tab.toggle()
+
 })

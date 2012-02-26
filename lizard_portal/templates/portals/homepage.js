@@ -157,7 +157,7 @@
                 var me = this;
                 me.setLoading(true);
                 Ext.Ajax.request({
-                    url: '/area/api/area_special/'+ params.object_id +'/',
+                    url: '/area/api/area_special/'+ params.object.id +'/',
                     method: 'GET',
                     params: {
                         _accept: 'application/json'
@@ -165,13 +165,14 @@
                     success: function(xhr) {
                         var area_data = Ext.JSON.decode(xhr.responseText).area;
                         console.log(area_data)
+
                         me.map.zoomToExtent(new OpenLayers.Bounds.fromArray(area_data.extent));
 
-                        return me.setLoading(false);
+                        me.setLoading(false);
                     },
                     failure: function() {
                         Ext.Msg.alert("portal creation failed", "Server communication failure");
-                        return me.setLoading(false);
+                        me.setLoading(false);
                     }
                 });
             }
@@ -194,27 +195,27 @@
             items:[{
                     text: 'Ecologische sleutelfactoren',
                     icon: '/static_media/vss/icons/esf.png',
-                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'esf-1'}); }
+                    handler: function() { Lizard.CM.setContext({portal_template:'esf-1'}); }
                 }, {
                    text: 'Waterbalansen',
                    icon: '/static_media/vss/icons/waterbalansen.png',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'waterbalans'}); }
+                   handler: function() { Lizard.CM.setContext({portal_template:'waterbalans'}); }
                 }, {
                    text: 'Analyse interpretaties',
                    icon: '/static_media/vss/icons/advies.png',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'analyse-interpretatie'}); }
+                   handler: function() { Lizard.CM.setContext({portal_template:'analyse-interpretatie'}); }
                 }, {
                    text: 'Geschikte maatregelen',
                    icon: '/static_media/vss/icons/gebiedsinformatie.png',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'advies'}); }
+                   handler: function() { Lizard.CM.setContext({portal_template:'advies'}); }
                 }, {
                    text: 'Maatregelen',
                    icon: '/static_media/vss/icons/maatregelen.png',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'maatregelen'}); }
+                   handler: function() { Lizard.CM.setContext({portal_template:'maatregelen'}); }
                 }, {
                    text: 'Toestand',
                    icon: '/static_media/vss/icons/toestand.png',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'toestand-aan-afvoergebied'}); }
+                   handler: function() { Lizard.CM.setContext({portal_template:'toestand-aan-afvoergebied'}); }
                 }
 
             ]

@@ -241,7 +241,7 @@
         items: {
           xtype: 'dataview',
           store: this.store,
-          tpl: new Ext.XTemplate('<tpl if="this.context_ready()">', '<tpl for=".">', '<div class="thumb-wrap">', '<tpl if="visible">', '{name}:   ', '<tpl if="detail_link">', '<a href="javascript:Ext.getCmp(\'portalWindow\').linkTo({portalTemplate:\'{detail_link}\'})">details</a>', '</tpl>', '<img src="', '{[this.get_url(values)]}', '" height={height} width={width} />', '</tpl>', '</div>', '</tpl>', '</tpl>', {
+          tpl: new Ext.XTemplate('<tpl if="this.context_ready()">', '<tpl for=".">', '<div class="thumb-wrap">', '<tpl if="visible">', '{name}:   ', '<tpl if="detail_link">', '<a href="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>', '</tpl>', '<img src="', '{[this.get_url(values)]}', '" height={height} width={width} />', '</tpl>', '</div>', '</tpl>', '</tpl>', {
             get_url: function(values) {
               if (values.width > 0 && values.height > 0 && values.dt_start && values.dt_end) {
                 return Lizard.model.Graph.getGraphUrl(values);
@@ -265,7 +265,7 @@
       this.store.on('load', function(store, records, successful) {
         var params, toolbar;
         me.calcHeights();
-        params = Ext.getCmp('portalWindow').context_manager.getContext();
+        params = Lizard.CM.getContext();
         if (params) {
           me.store.applyContext(null, params);
         }

@@ -21,8 +21,7 @@
             applyParams: function(params) {
                 var me = this;
                 me.setLoading(true);
-                var cm = Ext.getCmp('portalWindow').context_manager.getContext();
-                var url = '/measure/summary/'+ cm.object_id +'/krw_measures/';
+                var url = '/measure/summary/'+ Lizard.CM.context.object.id +'/krw_measures/';
                 me.loader.load({
                     url:url,
                     method: 'GET',

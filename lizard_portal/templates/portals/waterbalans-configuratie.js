@@ -98,7 +98,7 @@
                             'applycontext'
                         ],
                         applyParams: function(params) {
-                            this.store.applyParams({object_id: params.object_id, grid_name: 'area'});
+                            this.store.applyParams({object_id: params.object.id, grid_name: 'area'});
                             this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceAreaConfig')
@@ -117,7 +117,7 @@
                             grid_name: 'water'
                         },
                         applyParams: function(params) {
-                            this.store.applyParams({object_id: params.object_id, grid_name: 'water'});
+                            this.store.applyParams({object_id: params.object.id, grid_name: 'water'});
                             this.store.load();
                         },
                         store: Ext.create('Vss.store.WaterbalanceWaterConfig')
@@ -137,7 +137,7 @@
                     var params = params|| {};
 
                     if (this.store) {
-                        this.store.applyParams({object_id: params.object_id,
+                        this.store.applyParams({object_id: params.object.id,
                                                 area_object_type: 'Bucket'});
                         this.store.load();
                     }
@@ -238,7 +238,7 @@
                     console.log(params);
 
                     if (this.store) {
-                        this.store.applyParams({object_id: params.object_id,
+                        this.store.applyParams({object_id: params.object.id,
                                                 area_object_type: 'Structure'});
                         this.store.load();
                     }

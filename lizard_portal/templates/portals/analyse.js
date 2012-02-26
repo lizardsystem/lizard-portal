@@ -168,7 +168,7 @@
                 var me = this;
                 me.setLoading(true);
                 Ext.Ajax.request({
-                    url: '/area/api/area_special/'+ params.object_id +'/',
+                    url: '/area/api/area_special/'+ params.object.id +'/',
                     method: 'GET',
                     params: {
                         _accept: 'application/json'
@@ -187,11 +187,11 @@
             rbar:[{
                     //text: 'ESF',
                     icon: '/static_media/vss/icons/esf.png',
-                    handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'esf-1'}); }
+                    handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portal_template:'esf-1'}); }
                 }, {
                    //text: 'WB',
                    icon: '/static_media/vss/icons/waterbalansen.png',
-                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'waterbalans'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portal_template:'waterbalans'}); }
                 },/* {
                    text: 'AI',
                    handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'analyse-interpretatie'}); }
@@ -201,10 +201,10 @@
                 },*/ {
                    //text: 'Maatr',
                    icon: '/static_media/vss/icons/maatregelen.png',
-                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'maatregelen'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portal_template:'maatregelen'}); }
                 }, {
                    text: 'Tsnd',
-                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({portalTemplate:'toestand-aan-afvoergebied'}); }
+                   handler: function() { Ext.getCmp('portalWindow').linkToNewWindow({porta_template:'toestand-aan-afvoergebied'}); }
                 }],
             flex:1
 		}]

@@ -1,4 +1,10 @@
 (function() {
+  var __indexOf = Array.prototype.indexOf || function(item) {
+    for (var i = 0, l = this.length; i < l; i++) {
+      if (this[i] === item) return i;
+    }
+    return -1;
+  };
   Ext.define('Lizard.window.Header', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.pageheader',
@@ -10,13 +16,12 @@
       close_on_logout: false
     },
     setBreadCrumb: function(bread_crumbs) {
-      var area_name, bread_div, context, crumb, el, element, me, portalWindow, _i, _len, _results;
+      var area_name, bread_div, context, crumb, el, element, me, _i, _len, _results;
       me = this;
       bread_div = this.breadcrumb.el;
       bread_div.dom.innerHTML = '';
-      portalWindow = this.portalWindow;
-      context = portalWindow.context_manager.getContext();
-      area_name = context.active_headertab.name || 'tab';
+      context = Lizard.CM.getContext();
+      area_name = context.headertab.name || 'tab';
       element = {
         tag: 'div',
         cls: 'link',
@@ -26,9 +31,9 @@
       el = bread_div.last();
       el.addListener('click', function() {
         me.context_manager.setContext({
-          portalTemplate: null
+          portal_template: null
         });
-        return portalWindow.showTabMainpage();
+        return me.portalWindow.showTabMainpage();
       });
       if (bread_crumbs) {
         bread_div.createChild({
@@ -43,8 +48,8 @@
             cls: 'link',
             html: crumb.name
           }, bread_div.createChild(element), el = bread_div.last(), el.addListener('click', function(evt, obj, crumb_l) {
-            return portalWindow.linkTo({
-              portalTemplate: crumb_l.link
+            return me.portalWindow.linkTo({
+              portal_template: crumb_l.link
             });
           }, this, crumb), bread_div.createChild({
             tag: 'div',
@@ -57,17 +62,31 @@
         return _results;
       }
     },
-    updateContextHeader: function() {
-      var context, html;
-      context = this.context_manager.getContext();
+    updateContextPeriodHeader: function(context) {
+      var html;
       html = '';
-      if (context.object_name) {
-        html += context.object_name + ' (' + context.object_id + ')<br>';
-      } else if (context.object_id) {
-        html += ' (' + context.object_id + ')<br>';
+      html += Ext.Date.format(context.period.start, 'd-m-Y') + '-<br>' + Ext.Date.format(context.period.end, 'd-m-Y') + ' ';
+      return this.contextheader_period.el.dom.innerHTML = html;
+    },
+    updateContextAreaHeader: function(context) {
+      var html, obj_str;
+      html = '';
+      if (Lizard.CM.objects.krw_waterlichaam) {
+        obj_str = Lizard.CM.objects.krw_waterlichaam.name + ' (' + Lizard.CM.objects.krw_waterlichaam.id + ')';
+        if (__indexOf.call(Lizard.CM.getContext().headertab.object_types, 'krw_waterlichaam') >= 0) {
+          obj_str = '<b>' + obj_str + '</b>';
+        }
+        html += obj_str;
       }
-      html += Ext.Date.format(context.period_start, 'd-m-Y') + ' t/m ' + Ext.Date.format(context.period_end, 'd-m-Y');
-      return this.contextheader.body.dom.innerHTML = html;
+      html += '<br>';
+      if (Lizard.CM.objects.aan_afvoergebied) {
+        obj_str = Lizard.CM.objects.aan_afvoergebied.name + ' (' + Lizard.CM.objects.aan_afvoergebied.id + ')';
+        if (__indexOf.call(Lizard.CM.getContext().headertab.object_types, 'aan_afvoergebied') >= 0) {
+          obj_str = '<b>' + obj_str + '</b>';
+        }
+        html += obj_str;
+      }
+      return this.contextheader_area.el.dom.innerHTML = html;
     },
     logout: function() {
       var me;
@@ -175,169 +194,155 @@
       });
     },
     periodSelection: function() {
-      return Ext.create('Ext.window.Window', {
-        title: 'Periode selectie',
-        items: {
-          frame: true,
-          xtype: 'form',
-          bodyStyle: 'padding:5px 5px 0',
-          width: 350,
-          fieldDefaults: {
-            msgTarget: 'side',
-            labelWidth: 90
-          },
-          defaultType: 'textfield',
-          defaults: {
-            anchor: '100%'
-          },
-          items: [
-            {
-              xtype: 'radiogroup',
-              name: 'period_selection',
-              id: 'ps',
-              fieldLabel: 'Periode',
-              columns: 3,
-              vertical: false,
-              items: [
-                {
-                  boxLabel: 'dg',
-                  name: 'period',
-                  inputValue: 0,
-                  dt: [Ext.Date.DAY, -1]
-                }, {
-                  boxLabel: '2dg',
-                  name: 'period',
-                  inputValue: 1,
-                  dt: [Ext.Date.DAY, -2]
-                }, {
-                  boxLabel: 'wk',
-                  name: 'period',
-                  inputValue: 2,
-                  dt: [Ext.Date.DAY, -7]
-                }, {
-                  boxLabel: 'mnd',
-                  name: 'period',
-                  inputValue: 3,
-                  dt: [Ext.Date.MONTH, -1]
-                }, {
-                  boxLabel: 'jr',
-                  name: 'period',
-                  inputValue: 4,
-                  dt: [Ext.Date.YEAR, -1]
-                }, {
-                  boxLabel: '5jr',
-                  name: 'period',
-                  inputValue: 5,
-                  dt: [Ext.Date.YEAR, -5]
-                }, {
-                  boxLabel: 'anders',
-                  name: 'period',
-                  inputValue: 6,
-                  checked: true
-                }
-              ],
-              listeners: {
-                change: function(field, new_value, old_value, optional) {
-                  var form, selected;
-                  selected = field.getChecked()[0];
-                  form = field.up(form).getForm();
-                  if (new_value !== 6) {
-                    form.findField('period_start').setValue(Ext.Date.add(new Date(), selected.dt[0], selected.dt[1]));
-                    return form.findField('period_end').setValue(new Date());
+      var windows;
+      windows = Ext.WindowManager.getBy(function(obj) {
+        if (obj.is_period_selection) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      if (windows.length > 0) {
+        return Ext.WindowManager.bringToFront(windows[0]);
+      } else {
+        return Ext.create('Ext.window.Window', {
+          title: 'Periode selectie',
+          is_period_selection: true,
+          items: {
+            frame: true,
+            xtype: 'form',
+            bodyStyle: 'padding:5px 5px 0',
+            width: 350,
+            fieldDefaults: {
+              msgTarget: 'side',
+              labelWidth: 90
+            },
+            defaultType: 'textfield',
+            defaults: {
+              anchor: '100%'
+            },
+            items: [
+              {
+                xtype: 'radiogroup',
+                name: 'period_selection',
+                id: 'ps',
+                fieldLabel: 'Periode',
+                columns: 3,
+                vertical: false,
+                items: Lizard.CM.periods,
+                listeners: {
+                  change: function(field, new_value, old_value, optional) {
+                    var form, selected;
+                    selected = field.getChecked()[0];
+                    form = field.up(form).getForm();
+                    if (new_value.type !== 0) {
+                      form.findField('period_start').setValue(Ext.Date.add(new Date(), selected.dt[0], selected.dt[1]));
+                      form.findField('period_end').setValue(new Date());
+                      form.findField('period_start').setDisabled(true);
+                      return form.findField('period_end').setDisabled(true);
+                    } else {
+                      form.findField('period_start').setDisabled(false);
+                      return form.findField('period_end').setDisabled(false);
+                    }
                   }
                 }
+              }, {
+                xtype: 'datefield',
+                fieldLabel: 'van',
+                name: 'period_start',
+                format: 'd-m-Y'
+              }, {
+                xtype: 'datefield',
+                fieldLabel: 't/m',
+                name: 'period_end',
+                format: 'd-m-Y'
               }
-            }, {
-              xtype: 'datefield',
-              fieldLabel: 'van',
-              name: 'period_start',
-              format: 'd-m-Y'
-            }, {
-              xtype: 'datefield',
-              fieldLabel: 't/m',
-              name: 'period_end',
-              format: 'd-m-Y'
-            }
-          ],
-          buttons: [
-            {
-              text: 'Ok',
-              formBind: true,
-              handler: function() {
-                var form, values, window;
-                form = this.up('form').getForm();
-                console.log('form:');
-                if (form.isValid()) {
-                  values = form.getValues();
-                  console.log(values);
-                  Ext.getCmp('portalWindow').context_manager.setContext({
-                    period_start: values.period_start,
-                    period_end: values.period_end,
-                    period: {
-                      selection: values.period
+            ],
+            buttons: [
+              {
+                text: 'Ok',
+                formBind: true,
+                handler: function() {
+                  var end, form, start, values, window;
+                  form = this.up('form').getForm();
+                  if (form.isValid()) {
+                    start = form.findField('period_start').getValue();
+                    end = form.findField('period_end').getValue();
+                    if (end > start) {
+                      values = form.getValues();
+                      console.log(values);
+                      Lizard.ContextManager.setContext({
+                        period_start: start,
+                        period_end: end,
+                        period: {
+                          type: values.period,
+                          start: start,
+                          end: end
+                        }
+                      });
+                      window = this.up('window');
+                      return window.close();
+                    } else {
+                      return Ext.MessageBox.alert('Invoer fout', 'Begin datum moet voor eind datum zijn.');
                     }
-                  });
+                  } else {
+                    return Ext.MessageBox.alert('Invoer fout', 'Kies geldige periode');
+                  }
+                }
+              }, {
+                text: 'Cancel',
+                handler: function() {
+                  var window;
                   window = this.up('window');
                   return window.close();
                 }
               }
-            }, {
-              text: 'Cancel',
-              handler: function() {
-                var window;
-                window = this.up('window');
-                return window.close();
-              }
+            ],
+            afterRender: function() {
+              var context, form, ps;
+              form = this.getForm();
+              ps = form.findField('period_selection');
+              context = Lizard.CM.getContext();
+              form.findField('period_start').setValue(context.period_start);
+              form.findField('period_end').setValue(context.period_end);
+              return ps.setValue({
+                period: context.period.type
+              });
             }
-          ],
-          afterRender: function() {
-            var context, form, ps;
-            form = this.getForm();
-            ps = form.findField('period_selection');
-            context = Ext.getCmp('portalWindow').context_manager.getContext();
-            form.findField('period_start').setValue(context.period_start);
-            form.findField('period_end').setValue(context.period_end);
-            return ps.setValue({
-              period: context.period.selection
-            });
           }
-        }
-      }).show();
+        }).show();
+      }
     },
     showContext: function() {
-      var string_of_object;
-      string_of_object = function(obj) {
-        var output;
-        output = "";
-        Ext.Object.each(obj, function(key, value) {
-          if (typeof value === 'object') {
-            output += key + ":<br>";
-            return Ext.Object.each(value, function(key2, value2) {
-              return output += '....' + key2 + ": " + value2 + "<br>";
-            });
-          } else {
-            return output += key + ": " + value + "<br>";
-          }
-        });
-        return output;
-      };
-      return Ext.MessageBox.alert('Context overzicht', print_object(me.context_manager.getContext()));
+      var output, perm, user, _i, _len, _ref;
+      user = Lizard.CM.context.user;
+      output = '';
+      output += 'naam: ' + user.name + '<br>';
+      output += 'organisatie: ' + user.organization + '<br>';
+      output += 'rechten:<br>';
+      _ref = user.permissions;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        perm = _ref[_i];
+        output += '   ' + perm + '<br>';
+      }
+      return Ext.MessageBox.alert('Gebruikers informatie', output);
     },
     constructor: function(config) {
       this.initConfig(config);
       return this.callParent(arguments);
     },
     initComponent: function() {
-      var active_tab, header_items, me, pressed, tab, tabs, user, _i, _len;
+      var active_tab, context, header_items, me, menu, pressed, tab, tabs, user, xtype, _i, _len;
       me = this;
+      tabs = this.getHeadertabs();
+      context = Lizard.CM.context;
       header_items = [
         {
           xtype: 'tbspacer',
           width: 200
         }, '->'
       ];
-      tabs = this.getHeadertabs();
-      active_tab = this.context_manager.getActive_headertab();
+      active_tab = context.headertab;
       for (_i = 0, _len = tabs.length; _i < _len; _i++) {
         tab = tabs[_i];
         if (active_tab === tab) {
@@ -345,21 +350,35 @@
         } else {
           pressed = false;
         }
+        if (tab.config.menu) {
+          xtype = 'splitbutton';
+          menu = tab.config.menu;
+        } else {
+          xtype = 'button';
+          menu = null;
+        }
         header_items.push({
           id: 'headertab_' + tab.name,
           text: tab.title,
           pressed: pressed,
-          xtype: 'button',
+          xtype: xtype,
+          menu: menu,
+          plain: true,
           cls: 'l-headertab',
           toggleGroup: 'headertab',
           headertab: tab,
           handler: function() {
-            return me.context_manager.setActiveHeadertab(this.headertab);
+            if (!this.pressed) {
+              this.toggle();
+            }
+            return Lizard.CM.setContext({
+              headertab: this.headertab
+            });
           }
         });
       }
       header_items.push('->');
-      user = this.context_manager.getUser();
+      user = this.context_manager.context.user;
       if (user.id === null) {
         header_items.push({
           text: 'Login',
@@ -376,12 +395,12 @@
           componentCls: 'l-headertabs',
           menu: [
             {
-              text: 'Instellingen',
+              text: 'Over deze versie',
               handler: function(button, event, eOpts) {
-                return Ext.MessageBox.alert('release 2', 'release2');
+                return Ext.MessageBox.alert('Todo', 'todo');
               }
             }, {
-              text: 'Toon huidige context',
+              text: 'Toon informatie gebruiker',
               handler: function(button, event, eOpts) {
                 return me.showContext();
               }
@@ -398,6 +417,13 @@
             }
           ]
         }, '-', {
+          id: 'contextheader_period',
+          cls: 'l-header-contextinfo',
+          html: '',
+          border: false,
+          xtype: 'component',
+          width: 55
+        }, {
           iconCls: 'l-icon-clock',
           xtype: 'button',
           bodyCls: 'l-headertab',
@@ -421,19 +447,15 @@
         },
         items: [
           {
-            x: 20,
+            x: 0,
             y: 30,
+            width: '100%',
             height: 25,
             border: false,
-            id: 'contextheader',
-            bodyStyle: {
-              'padding-right': '10px',
-              background: 'transparent',
-              'text-align': 'right',
-              'font-size': '9px',
-              color: '#555'
-            },
-            html: ''
+            id: 'contextheader_area',
+            cls: 'l-header-contextinfo-area',
+            html: '',
+            xtype: 'component'
           }, {
             x: 0,
             y: 0,
@@ -466,16 +488,33 @@
           }
         ]
       });
-      this.portalWindow.context_manager.on('contextchange', function(change, context, context_m) {
-        return me.updateContextHeader();
+      this.portalWindow.context_manager.on('contextchange', function(change, changed_objects, new_context, context_m) {
+        return me._updateOnContextChange(change, changed_objects, new_context, context_m);
       });
       this.callParent(arguments);
       this.breadcrumb = Ext.getCmp('breadcrumb');
-      this.contextheader = Ext.getCmp('contextheader');
-      if (this.portalWindow.context_manager.getContext().user.id === null) {
+      this.contextheader_area = Ext.getCmp('contextheader_area');
+      this.contextheader_period = Ext.getCmp('contextheader_period');
+      if (Lizard.CM.getContext().user.id === null) {
         this.login();
       }
       return this;
+    },
+    afterRender: function() {
+      var context;
+      this.callParent(arguments);
+      context = Lizard.CM.getContext();
+      this.updateContextAreaHeader(context);
+      return this.updateContextPeriodHeader(context);
+    },
+    _updateOnContextChange: function(change, changed_objects, new_context, context_m) {
+      var tab;
+      this.updateContextAreaHeader(new_context);
+      this.updateContextPeriodHeader(new_context);
+      tab = Ext.getCmp('headertab_' + new_context.headertab.name);
+      if (!tab.pressed) {
+        return tab.toggle();
+      }
     }
   });
 }).call(this);

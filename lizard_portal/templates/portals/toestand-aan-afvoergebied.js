@@ -30,7 +30,7 @@
         tools: [{
             type: 'save',
             handler: function (e, target, panelHeader, tool) {
-                var cm = Ext.getCmp('portalWindow').context_manager.getContext();
+                var cm = Lizard.CM;
 
                 Ext.create('Ext.window.Window', {
                     title: 'Stuurparameters instellen',
@@ -47,7 +47,7 @@
                         autoLoad: true,
                         url: '/measure/steering_parameter_form/',
                         params: {
-                            object_id: cm.object_id
+                            object_id: cm.object.id
                         },
                         ajaxOptions: {
                             method: 'GET'
@@ -74,13 +74,28 @@
             },
             items:[{
                     text: 'Ecologische sleutelfactoren',
-                    handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'esf-overzicht'}); }
+                    icon: '/static_media/vss/icons/esf.png',
+                    handler: function() { Lizard.CM.setContext({portal_template:'esf-1'}); }
+                }, {
+                   text: 'Waterbalansen',
+                   icon: '/static_media/vss/icons/waterbalansen.png',
+                   handler: function() { Lizard.CM.setContext({portal_template:'waterbalans'}); }
+                }, {
+                   text: 'Analyse interpretaties',
+                   icon: '/static_media/vss/icons/advies.png',
+                   handler: function() { Lizard.CM.setContext({portal_template:'analyse-interpretatie'}); }
+                }, {
+                   text: 'Geschikte maatregelen',
+                   icon: '/static_media/vss/icons/gebiedsinformatie.png',
+                   handler: function() { Lizard.CM.setContext({portal_template:'advies'}); }
                 }, {
                    text: 'Maatregelen',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'maatregelen'}); }
+                   icon: '/static_media/vss/icons/maatregelen.png',
+                   handler: function() { Lizard.CM.setContext({portal_template:'maatregelen'}); }
                 }, {
                    text: 'Watersysteemkaart',
-                   handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'homepage'}); }
+                   //icon: '/static_media/vss/icons/toestand.png',
+                   handler: function() { Lizard.CM.setContext({portal_template:'homepage'}); }
                 }
             ]
  		},

@@ -38,7 +38,7 @@ Ext.define('Vss.grid.Esf', {
 
         if (this.store) {
 
-            this.store.applyParams({object_id: params.object_id});
+            this.store.applyParams({object_id: params.object.id});
         }
     },
 

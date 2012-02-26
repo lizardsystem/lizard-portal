@@ -32,7 +32,7 @@
                 var me = this;
                 me.store.load({
                     params: {
-                        object_id: params.object_id
+                        object_id: params.object.id
                     }
                 });
             },
@@ -73,7 +73,7 @@
                             autoLoad: true,
                             url: '/measure/steering_parameter_form/',
                             params: {
-                                object_id: cm.object_id
+                                object_id: cm.object.id
                             },
                             ajaxOptions: {
                                 method: 'GET'

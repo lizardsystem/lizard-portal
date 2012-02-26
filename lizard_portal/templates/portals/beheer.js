@@ -20,38 +20,45 @@
             },
             items: [
                 {
+                     text: 'EKR - doelen overzicht',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({portal_template:'doelen-beheer'}); }
+                },
+                {
                      text: 'Maatregelen beheer',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
-                     handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'maatregelen-beheer'}); }
+                     handler: function() { Lizard.CM.setContext({portal_template:'maatregelen-beheer'}); }
                 },
                 {
                      text: 'Organisatie beheer',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
-                     handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'organisatie-beheer'}); }
+                     handler: function() { Lizard.CM.setContext({portal_template:'organisatie-beheer'}); }
                 },
                 {
-                     text: 'EKR doelen',
+                     text: 'Stuurparameter beheer',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
-                     handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'doelen-beheer'}); }
-                },
-                {
-                     text: 'Stuurparameters',
-                     {% if user.is_authenticated %}
-                     disabled: false,
-                     {% endif %}
-                     handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'stuurparameter-overzicht'}); }
+                     handler: function() { Lizard.CM.setContext({portal_template:'stuurparameter-overzicht'}); }
                 },{
-                     text: 'Koppeling KRW en aan/afvoer gebieden',
+                   text: 'Koppeling KRW en aan/afvoer gebieden',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
-                     handler: function() { Ext.getCmp('portalWindow').linkTo({portalTemplate:'area_link'}); }
+                     handler: function() { Lizard.CM.setContext({portal_template:'area_link'}); }
+                },
+                {
+                   text: 'Geschikte maatregelen beheer',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({portal_template:'area_link'}); }
                 },
                 {
                      text: 'Gebruikersbeheer',

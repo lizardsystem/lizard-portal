@@ -1,6 +1,7 @@
 {
     title: 'Gebieden links',
     flex:1,
+    autoScroll: true,
     plugins: [
         'applycontext'
     ],
@@ -17,7 +18,7 @@
         me.getLoader().load({
             url: me.url,
             params: {
-                object_id: params.object_id
+                object_id: params.object.id
             }
         });
     },
@@ -25,22 +26,26 @@
         click: {
             element: 'el',
             fn: function (event, element) {
-                var params = {}
-                var object_dom = element.attributes.getNamedItem('object_id')
-                if (object_dom) {
-                    params.object_id = object_dom.value
+                var params = {object:{}}
+                var object_id_dom = element.attributes.getNamedItem('object_id')
+                if (object_id_dom) {
+                    params.object.id = object_id_dom.value
                 }
                 var template_dom = element.attributes.getNamedItem('template')
                 if (template_dom) {
-                    params.portalTemplate = template_dom.value
+                    params.portal_template = template_dom.value
                 }
-                var area_type_dom = element.attributes.getNamedItem('object_type')
-                if (area_type_dom) {
-                    params.object_type= area_type_dom.value
+                var object_type_dom = element.attributes.getNamedItem('object_type')
+                if (object_type_dom) {
+                    params.object.type= object_type_dom.value
                 }
                 var headertab_dom = element.attributes.getNamedItem('headertab')
                 if (headertab_dom) {
-                    params.headerTab= headertab_dom.value
+                    params.headertab = headertab_dom.value
+                }
+                var object_name_dom = element.attributes.getNamedItem('object_name')
+                if (object_name_dom) {
+                    params.object.name = object_name_dom.value
                 }
                 console.log('switch')
                 console.log(params)

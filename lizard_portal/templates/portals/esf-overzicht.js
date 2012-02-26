@@ -18,7 +18,7 @@
             },
             applyParams: function(params) {
                 var me = this;
-                me.url = '/esf/esf_overview/'+params.object_id+'/'
+                me.url = '/esf/esf_overview/'+params.object.id+'/'
                 me.getLoader().load({
                     url: me.url,
                     params: {

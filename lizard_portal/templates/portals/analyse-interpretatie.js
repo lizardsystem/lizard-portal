@@ -34,7 +34,7 @@
               Ext.getCmp('portalWindow').linkTo({
                 object:'analyse-interpretatie',
                 object_id:record.data.id,
-                portalTemplate:'analyse-interpretatie-details'
+                portal_template:'analyse-interpretatie-details'
               }) ;
             }
           }      
@@ -44,7 +44,7 @@
         ],
         applyParams: function(params) {
             //this.store.applyParams({object_id: params.object_id});
-            this.store.load({params: {object_ident: params.object_id}});
+            this.store.load({params: {object_ident: params.object.id}});
         },
       columns: [
         {

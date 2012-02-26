@@ -8,7 +8,7 @@
             plugins: [
                 'applycontext'
             ],
-             tpl: new Ext.Template(
+            tpl: new Ext.Template(
                 '<p>{description}</p><hr></hr><p><i>{edited_by}, {edited_at}</i></p>'
             ),
             loader: {
@@ -28,7 +28,7 @@
                 me.getLoader().load({
                     url: '/area/api/area_communique/',
                     params: {
-                        object_id: params.object_id
+                        object_id: params.object.id
                     }
                 });
            }{% if user.is_authenticated %},
@@ -55,7 +55,7 @@
                             items: [{
                                 xtype: 'hiddenfield',
                                 name: 'object_id',
-                                value: Ext.getCmp('portalWindow').context_manager.getContext().object_id
+                                value: Lizard.CM.getContext().object.id
                             },{
                                 xtype: 'textareafield',
                                 //fieldLabel: 'First Name',
@@ -87,7 +87,7 @@
                                             success: function(form, action) {
                                                 console.log('Opslaan gelukt');
                                                 portlet.applyParams({
-                                                       object_id: Ext.getCmp('portalWindow').context_manager.getContext().object_id
+                                                       object_id:Lizard.CM.getContext().object.id
                                                 });
                                                 form.owner.up('window').close();
 

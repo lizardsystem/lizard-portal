@@ -13,20 +13,26 @@
             applyParams: function(params) {
                 var me = this;
                 me.setLoading(true);
-                var cm = Ext.getCmp('portalWindow').header.context_manager
-                me.loader.load({url:'/reporting/',
-                    params:{
-                        krw_gebied: cm.objects.krw_waterlichaam.object_id,
-                        aan_afvoergebied: cm.objects.aan_afvoergebied.object_id
-                    },
-                    method: 'GET'
+                var cm = Lizard.CM;
+                var request_params = {}
+
+                Ext.Object.each(cm.objects, function(key, value) {
+                    if (value.object && value.object.id) {
+                        request_params['key'] = value.object.id
+                    }
                 })
-                me.setLoading(false);
+
+                me.loader.load({url:'/reporting/',
+                    params: request_params,
+                    method: 'GET',
+                    callback: function() {
+                        me.setLoading(false);
+                    }
+                })
             },
             loader:{
                 renderer: 'html',
                 url: '/reporting/'
-
             }
 		}]
 	}]

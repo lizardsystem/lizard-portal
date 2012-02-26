@@ -16,7 +16,12 @@
   
   
   */
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __indexOf = Array.prototype.indexOf || function(item) {
+    for (var i = 0, l = this.length; i < l; i++) {
+      if (this[i] === item) return i;
+    }
+    return -1;
+  };
   Ext.define('Lizard.window.Screen', {
     extend: 'Ext.container.Viewport',
     config: {
@@ -41,8 +46,7 @@
       }
       console.log('linkTo, with arguments:');
       console.log(arguments);
-      this.context_manager.setContext(params, save_state);
-      return this.loadPortal(this.context_manager.getContext(), area_selection_collapse, skip_animation);
+      return Lizard.CM.setContext(params, save_state, false);
     },
     linkToNewWindow: function(params, save_state, area_selection_collapse, skip_animation) {
       var args, href;
@@ -55,11 +59,11 @@
       if (skip_animation == null) {
         skip_animation = false;
       }
-      console.log('linkTo, with arguments:');
+      console.log('linkToNewWindow, with arguments:');
       console.log(arguments);
       args = Ext.Object.merge({}, this.context_manager.getContext(), params);
-      href = '/portal/only_portal/#' + args.active_headertab.name + '/' + args.portalTemplate + '/' + args.object_type + '/' + args.object_id;
-      return window.open(href, args.portalTemplate + ' ' + args.object_name, 'width=800,height=600,scrollbars=yes');
+      href = '/portal/only_portal/#' + args.headertab.name + '/' + args.portal_template + '/' + args.object.type + '/' + args.object.id;
+      return window.open(href, args.portal_template + ' ' + args.object.name, 'width=800,height=600,scrollbars=yes');
     },
     linkToPopup: function(title, url, params, window_options, add_active_object_to_request, renderer, modal, reloadme) {
       var args, cont, me, success, window_settings;
@@ -82,10 +86,10 @@
       console.log(arguments);
       me = this;
       if (add_active_object_to_request) {
-        cont = this.context_manager.getContext();
+        cont = Lizard.CM.getContext();
         args = Ext.Object.merge(params, {
-          object_id: cont.object_id,
-          object_type: cont.object_type
+          object_id: cont.object.id,
+          object_type: cont.object.type
         });
       }
       if (reloadme) {
@@ -137,20 +141,31 @@
       }
       return Ext.create('Ext.window.Window', window_settings).show();
     },
-    loadPortal: function(params, area_selection_collapse, skip_animation) {
-      var container, me, tab;
+    loadPortal: function(params, area_selection_collapse, skip_animation, show_navigation) {
+      var container, me, pos, tab, _ref;
       if (area_selection_collapse == null) {
         area_selection_collapse = true;
       }
       if (skip_animation == null) {
         skip_animation = false;
       }
-      console.log("load portal with portalTemplate '" + params.portalTemplate + "' and arguments:");
+      if (show_navigation == null) {
+        show_navigation = true;
+      }
+      console.log("load portal with portal template '" + params.portal_template + "' and arguments:");
       console.log(arguments);
+      if (show_navigation && params.object && ((_ref = typeof params.object.id) === 'null' || _ref === 'undefined') && params.headertab.navigation) {
+        this.showNavigation(params.headertab.navigation);
+        return true;
+      }
       me = this;
       container = this.portalContainer;
-      tab = this.portalContainer.child("#" + params.portalTemplate);
+      tab = this.portalContainer.child("#" + params.portal_template);
       if (tab) {
+        pos = this.portalContainer.tabBar.items.indexOf(tab.tab);
+        if (pos > 0) {
+          this.portalContainer.tabBar.move(pos, 0);
+        }
         this.portalContainer.setActiveTab(tab);
         tab.setContext(params);
         return this.header.setBreadCrumb(tab.breadcrumbs);
@@ -159,21 +174,32 @@
         return Ext.Ajax.request({
           url: '/portal/configuration/',
           params: {
-            portalTemplate: params.portalTemplate
+            portal_template: params.portal_template
           },
           method: 'GET',
           success: __bind(function(xhr) {
             var newComponent;
             try {
               newComponent = Ext.decode(xhr.responseText);
-              newComponent.params = Ext.merge({}, newComponent.params, me.context_manager.getContext());
+              newComponent.params = Ext.merge({}, newComponent.params, Lizard.CM.getContext());
+              newComponent.headertab = Lizard.CM.context.headertab;
               if (area_selection_collapse) {
                 if (me.navigation) {
                   me.navigation.collapse();
                 }
               }
               tab = me.portalContainer.add(newComponent);
+              pos = this.portalContainer.tabBar.items.indexOf(tab.tab);
+              if (pos > 0) {
+                this.portalContainer.tabBar.move(pos, 0);
+              }
               me.portalContainer.setActiveTab(tab);
+              tab.on('activate', function(tab) {
+                return Lizard.CM.setContext({
+                  headertab: tab.headertab,
+                  portal_template: tab.params.portal_template
+                });
+              });
               me.portalContainer.setLoading(false);
               return me.header.setBreadCrumb(newComponent.breadcrumbs);
             } catch (error) {
@@ -214,14 +240,14 @@
       }
       if (show_portal_template) {
         args = Ext.Object.merge({}, this.context_manager.getContext(), {
-          portalTemplate: navigation_tab.selection_portal_template
+          portal_template: navigation_tab.selection_portal_template
         });
-        this.loadPortal(args, false);
+        this.loadPortal(args, false, false, false);
       }
       return true;
     },
     showTabMainpage: function(animate_navigation_expand, expand_navigation, show_portal_template) {
-      var context, ht;
+      var context, ht, opmerking;
       if (animate_navigation_expand == null) {
         animate_navigation_expand = true;
       }
@@ -231,16 +257,37 @@
       if (show_portal_template == null) {
         show_portal_template = true;
       }
-      context = this.context_manager.getContext();
-      ht = context.active_headertab;
+      debugger;
+      opmerking = 'wordt deze nog gebruikt';
+      context = Lizard.ContextManager.getContext();
+      ht = context.headertab;
       if (ht.popup_navigation) {
         this.showNavigation(ht.navigation, true, true, ht.popup_navigation_portal);
       } else {
         this.linkTo({
-          portalTemplate: ht.default_portal_template
+          portal_template: ht.default_portal_template
         });
       }
       return true;
+    },
+    switchNavigation: function(headertab) {
+      var obj, tab, _i, _len, _ref, _ref2;
+      obj = headertab.object_types;
+      _ref = this.navigation.items.items;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tab = _ref[_i];
+        if (_ref2 = tab.object_type, __indexOf.call(obj, _ref2) >= 0) {
+          tab.enable();
+          this.navigation.setActiveTab(tab);
+        } else {
+          tab.disable();
+        }
+      }
+      return this.navigation.doLayout();
+    },
+    updateOnContextChange: function(changes, changed_context, new_context) {
+      this.loadPortal(new_context);
+      return this.switchNavigation(new_context.headertab);
     },
     constructor: function(config) {
       this.initConfig(config);
@@ -255,7 +302,7 @@
           id: 'header',
           height: 0,
           xtype: 'pageheader',
-          context_manager: this.getContext_manager(),
+          context_manager: Lizard.ContextManager,
           header_tabs: this.header.headertabs,
           src_logo: this.header.src_logo,
           url_homepage: this.header.url_homepage,
@@ -292,7 +339,7 @@
           id: 'header',
           height: 55,
           xtype: 'pageheader',
-          context_manager: this.getContext_manager(),
+          context_manager: Lizard.ContextManager,
           header_tabs: this.header.headertabs,
           src_logo: this.header.src_logo,
           url_homepage: this.header.url_homepage,
@@ -326,6 +373,9 @@
                 var tab;
                 tab = this.child(navigation);
                 return this.setActiveTab(tab);
+              },
+              setEnabledNavigations: function(navigations) {
+                debugger;
               }
             }, {
               region: 'center',
@@ -353,28 +403,32 @@
       return this;
     },
     afterRender: function() {
-      var activeTab, anim_setting, hash, parts;
+      var activetab, anim_setting, hash, parts;
       this.callParent(arguments);
       if (window.location.hash) {
         hash = window.location.hash;
         parts = hash.replace('#', '').split('/');
-        this.linkTo({
-          headerTab: parts[0],
-          portalTemplate: parts[1],
-          object_type: parts[2],
-          object_id: parts[3]
+        Lizard.CM.setContext({
+          headertab: parts[0],
+          portal_template: parts[1],
+          object: {
+            type: parts[2],
+            id: parts[3]
+          }
         }, false, true, false);
       }
       if (!this.showOnlyPortal) {
-        activeTab = this.context_manager.getActive_headertab();
-        if (activeTab.popup_navigation && !this.context_manager.getContext().object_id) {
+        activetab = Lizard.CM.context.headertab;
+        if (activetab.popup_navigation && !Lizard.CM.context.object.id) {
           console.log('no object selected, show selection');
           anim_setting = this.navigation.animCollapse;
           this.navigation.animCollapse = false;
-          this.context_manager.showNavigationIfNeeded(false);
-          return this.navigation.animCollapse = anim_setting;
+          this.navigation.animCollapse = anim_setting;
         }
       }
+      Lizard.CM.on('contextchange', this.updateOnContextChange, this);
+      this.loadPortal(Lizard.CM.getContext());
+      return this.switchNavigation(Lizard.CM.context.headertab);
     }
   });
 }).call(this);

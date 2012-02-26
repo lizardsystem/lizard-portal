@@ -243,7 +243,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                             '<tpl if="visible">',
                                 '{name}:   ',
                                     '<tpl if="detail_link">',
-                                         '<a href="javascript:Ext.getCmp(\'portalWindow\').linkTo({portalTemplate:\'{detail_link}\'})">details</a>',
+                                         '<a href="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>',
                                     '</tpl>',
                                 '<img src="',
                                 '{[this.get_url(values)]}',
@@ -281,7 +281,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
             #me.store.context_ready = false
 
             me.calcHeights()
-            params = Ext.getCmp('portalWindow').context_manager.getContext()
+            params = Lizard.CM.getContext()
             if params
                 me.store.applyContext(null, params)
 

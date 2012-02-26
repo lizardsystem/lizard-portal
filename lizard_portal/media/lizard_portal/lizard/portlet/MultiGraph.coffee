@@ -26,9 +26,9 @@ Ext.define('Lizard.portlet.MultiGraph', {
         for graph in me.graphs
             console.log(arguments)
             graph.applyParams({
-                dt_start: Ext.Date.format(new_context.period_start,'Y-m-d H:i:s'),
-                dt_end: Ext.Date.format(new_context.period_end,'Y-m-d H:i:s'),
-                location: new_context.object_id
+                dt_start: Ext.Date.format(new_context.period.start,'Y-m-d H:i:s'),
+                dt_end: Ext.Date.format(new_context.period.end,'Y-m-d H:i:s'),
+                location: new_context.object.id
             })
 
 
@@ -49,9 +49,9 @@ Ext.define('Lizard.portlet.MultiGraph', {
         for graph_config in graph_configs
             graph = Ext.create('Lizard.ux.ImageResize', Ext.merge({
                 params:
-                    dt_start: Ext.Date.format(context.period_start,'Y-m-d H:i:s'),
-                    dt_end: Ext.Date.format(context.period_end,'Y-m-d H:i:s'),
-                    location: context.object_id
+                    dt_start: Ext.Date.format(context.period.start,'Y-m-d H:i:s'),
+                    dt_end: Ext.Date.format(context.period.end,'Y-m-d H:i:s'),
+                    location: context.object.id
             },getImageConfig(graph_config)))
 
             #graph.applyParams()

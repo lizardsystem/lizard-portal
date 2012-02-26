@@ -24,7 +24,7 @@ Ext.define('Lizard.portlet.PortalPanel', {
     },
     setContext: function(params) {
         this.params = Ext.merge({}, this.params, params);
-        this.fireEvent("contextchange", params);
+        this.fireEvent("portalcontextchange", params);
         //this.contextChange(this, new_params);
    },
     contextChange: function() {
@@ -49,7 +49,7 @@ Ext.define('Lizard.portlet.PortalPanel', {
         this.callParent();
         console.log('check');
         this.addEvents({
-            contextchange: true,
+            portalcontextchange: true,
             validatedrop: true,
             beforedragover: true,
             dragover: true,
@@ -99,7 +99,7 @@ Ext.define('Lizard.portlet.PortalPanel', {
     afterRender: function() {
         this.callParent(arguments);
         console.log('afterRender');
-        this.fireEvent("contextchange", this.getParams());
+        this.fireEvent("portalcontextchange", this.getParams());
     }
 });
 

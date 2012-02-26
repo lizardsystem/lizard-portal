@@ -27,7 +27,7 @@
                  var me = this;
                  me.getLoader().load({
                      params: {
-                         object_id: params.object_id
+                         object_id: params.object.id
                      }
                  });
             }
