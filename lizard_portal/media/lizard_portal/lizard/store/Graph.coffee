@@ -18,10 +18,10 @@ Ext.define('Lizard.store.Graph', {
         for rec in @data.items
             rec.beginEdit()
 
-            rec.set('dt_start', Ext.Date.format(context.period_start,'Y-m-d H:i:s'))
-            rec.set('dt_end', Ext.Date.format(context.period_end,'Y-m-d H:i:s'))
+            rec.set('dt_start', Ext.Date.format(context.period.start,'Y-m-d H:i:s'))
+            rec.set('dt_end', Ext.Date.format(context.period.end,'Y-m-d H:i:s'))
             if rec.get('use_context_location')
-                rec.set('location', context.object_id)
+                rec.set('location', context.object.id)
 
             rec.endEdit()
 

@@ -23,13 +23,12 @@ Ext.define('Lizard.plugin.ApplyContext', {
 
         if (!obj.applyParams) {
             obj.applyParams = function(params) {
-                console.log('add applyParams to function for '+ this.id);
-                console.log(params);
+                console.log('WARNING: add applyParams to function for '+ this.id);
             }
         }
 
         obj.on('beforerender', function(event){
-               success = me.register_event_parent(this, 'contextchange', this.applyParams);
+               success = me.register_event_parent(this, 'portalcontextchange', this.applyParams);
                console.log('status event registration: '+ success);
 
             }, obj);
