@@ -7,8 +7,7 @@
                width: 300,
                items: [
                   {% get_portal_template gebiedseigenschappen %},
-                  {title: 'ESF scores',
-                    flex:1}
+                  {% get_portal_template esf-overzicht %}
                ]
            },{
                flex:1,
@@ -22,14 +21,18 @@
                           applyParams: function(params) {
                               var me = this;
                               me.setLoading(true);
-                              var cm = Ext.getCmp('portalWindow').context_manager.getContext();
-                              var url = '/measure/summary/'+ cm.object.id +'/krw_measures/';
+                              var cm = Lizard.CM.getContext();
+
+                              var url = '/measure/summary/'+ cm.object.id +'/suited_measures/';
+
                               me.loader.load({
-                                                 url:url,
-                                                 method: 'GET'
-                                             });
-                              me.setLoading(false);
-                          },
+                                  url:url,
+                                  method: 'GET',
+                                  callback: function() {
+                                      me.setLoading(false);
+                                  }
+                              });
+                           },
                           loader:{
                               renderer: 'html'
                           }

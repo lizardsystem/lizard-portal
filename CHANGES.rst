@@ -1,15 +1,43 @@
 Changelog of lizard-portal
-===================================================
+==========================
 
 
-0.9 (unreleased)
-----------------
+0.10 (unreleased)
+-----------------
+
+- Make area selection work via geoserver feature request.
+
+- Replace krw layer on krw selection page with geoserver layer.
+
+- For feature requests, use layer parameter.
 
 - Made graph store work remote proxy. Improved store change flags and update of graph buttons after reload of store
 
 - portlet gebieden link added
 
 - esf portlet and gebiedenlink portlet implemented in some portals
+
+- new Context manager and implement these in all portals and other files
+
+- extra features in header
+
+- fixed and improved period selection
+
+- some small bug-fixes
+
+0.9 (2012-02-24)
+----------------
+
+
+- Adds initial support for suitable measures (beta) (#18).
+- Replaces area layer on homepage with geoserver layer.
+- Updates
+  - lizard-area to 0.2.3,
+  - lizard-measure to 1.9 (from 1.5.8),
+  - nens-graph to 0.7.
+
+- Make area selection work via geoserver feature request.
+
 
 
 0.8.4 (2012-02-17)

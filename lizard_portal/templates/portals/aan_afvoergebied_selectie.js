@@ -22,32 +22,38 @@
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],
             onMapClick: function(event, lonlat) {
-                console.log(event);
-                console.log(lonlat);
                 Ext.Ajax.request({
-                    url: '/map/search_name/',
+                    url: '/layers/wms/?',
                     reader:{
-                        type: 'json'
+                        type: 'xml'
                     },
                     params: {
-                        x: lonlat.lon,
-                        y: lonlat.lat,
-                        radius: 0,
-                        epsg: 900913,
-                        stored_workspace_id: 1,
-                        format: 'object'
+                      REQUEST: "GetFeatureInfo",
+                      EXCEPTIONS: "application/vnd.ogc.se_xml",
+                      BBOX: this.map.getExtent().toBBOX(),
+                      X: event.xy.x,
+                      Y: event.xy.y,
+                      //INFO_FORMAT: 'application/vnd.ogc.gml',
+                      INFO_FORMAT: 'application/vnd.ogc.gml',
+                      QUERY_LAYERS: event.object.layers[1].params.LAYERS,
+                      LAYERS: event.object.layers[1].params.LAYERS,
+                      FEATURE_COUNT: 1,
+                      WIDTH: this.map.size.w,
+                      HEIGHT: this.map.size.h,
+                      SRS: event.object.layers[1].projection.projCode
                     },
                     method: 'GET',
                     success: function(xhr, request) {
-                        var areas = Ext.JSON.decode(xhr.responseText);
-                        console.log(areas);
+                        gml_text = xhr.responseText;
+                        format = new OpenLayers.Format.GML.v3();
+                        gml = format.read(gml_text)
                         Ext.getCmp('portalWindow').linkTo({
-                                object: {
-                                    id: areas[0].id.ident,
-                                    name: areas[0].name,
-                                    type: 'aan_afvoergebied'
-                                }
-                            });
+                          object: {
+                              id: gml[0].data.ident,
+                              name: gml[0].data.name,
+                              type: 'aan_afvoergebied'
+                              }
+                        });
                     },
                     failure: function(xhr) {
                         alert('failure');
@@ -60,9 +66,24 @@
             //(4.7221503096837303, 52.097418937370598, 5.3054492200965404, 52.431493172200199)
             layers: [
                 new OpenLayers.Layer.OSM(),
-                new OpenLayers.Layer.WMS('gebieden', '/map/workspace/1/wms/',
-                    {layers:'basic'}, {transitionEffect: 'resize', singleTile: true, displayOutsideMaxExtent: true, projection: new OpenLayers.Projection("EPSG:900913")})
+                new OpenLayers.Layer.WMS(
+                  'Gebieden',
+                  '/layers/wms/?',
+                  {
+                    layers:['vss:area_polygon_random'],
+                    transparent: true,
+                    format: 'image/png'
+                  },
+                  {
+                    singleTile: false,
+                    opacity: 0.5,
+                    transitionEffect: 'resize',
+                    singleTile: true,
+                    displayOutsideMaxExtent: true,
+                    projection: new OpenLayers.Projection("EPSG:900913")
+                  }
+                )
             ]
-		}]
+	}]
     }]
 }
