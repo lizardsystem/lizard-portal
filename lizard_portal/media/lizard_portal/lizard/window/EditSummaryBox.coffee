@@ -1,24 +1,36 @@
+#
+#  base class for edit summary input
+#
+#  usage:
+#    Lizard.window.EditSummaryBox.show(
+#        fn: (btn, text, field)  ->
+#             if (btn=='ok')
+#                 me.store.setTempWriteParams({edit_message: text})
+#                 me.saveEdits()
+#             return true
+#    )
+#
+
 Ext.define 'Lizard.window.EditSummaryBox',
 
     statics:
         show: (config) ->
-
             a = Ext.create('Ext.window.MessageBox',{
                   btnCallback: (btn) ->
-                      msgBox = @
+                      if (btn=='ok')
+                          msgBox = @
 
-                      field = msgBox.textArea
-                      value = field.getValue()
-                      if value < 1
-                           field.setActiveError('Minimale lengte is 1 letter')
-                           return false
+                          field = msgBox.textArea
+                          value = field.getValue()
+                          if value < 1
+                               field.setActiveError('Minimale lengte is 1 letter')
+                               return false
 
-                      btn.blur();
+                          btn.blur();
 
-                      if msgBox.userCallback(btn.itemId, value, field)
-                          msgBox.hide()
-                          msgBox.destroy()
-
+                          if msgBox.userCallback(btn.itemId, value, field)
+                              msgBox.hide()
+                              msgBox.destroy()
             })
 
             args = Ext.merge({
@@ -28,8 +40,6 @@ Ext.define 'Lizard.window.EditSummaryBox',
                 multiline: true,
                 buttons: Ext.MessageBox.OKCANCEL,
                 fn: (btn, text, field)  ->
-                     if (btn=='ok')
-                         return true
                      return true
             }, config)
 
