@@ -57,9 +57,9 @@ Ext.application({
         'GeoExt.data.LayerModel',
         'GeoExt.data.reader.Layer',
         'Ext.MessageBox',
+        'Lizard.ContextManager',
         'Lizard.window.Screen',
         'Lizard.window.HeaderTab',
-        'Lizard.window.ContextManager',
         'Lizard.grid.EditablePropertyGrid',
         'Lizard.form.ComboMultiSelect',
         'Lizard.grid.EditableGrid',
@@ -81,7 +81,7 @@ Ext.application({
         'Lizard.form.TableField'
     ],
     launch: function() {
-        //TODO: for the time being on this location, a better location is the template of the watersystem portal
+        //TODO: for the time being on this location, a better location??
 
         Ext.require(["Ext.util.Cookies", "Ext.Ajax"], function(){
             // Add csrf token to every ajax request
@@ -102,6 +102,7 @@ Ext.application({
         var aan_afvoergebied_selection =
         {
             id: 'select_aan_afvoergebied',
+            object_type: 'aan_afvoergebied',
             title: 'aan_afvoer',
             xtype: 'treepanel',
             selection_portal_template: 'aan_afvoergebied_selectie',
@@ -111,9 +112,11 @@ Ext.application({
                         //if not root
                         if (node.raw) {
                             Ext.getCmp('portalWindow').linkTo({
-                                object_type: 'aan_afvoergebied',
-                                object_id: node.data.ident,
-                                object_name: node.data.text
+                                object:{
+                                    type: 'aan_afvoergebied',
+                                    id: node.data.ident,
+                                    name: node.data.text
+                                }
                             });
                         } else {
                             node.expand();
@@ -135,6 +138,7 @@ Ext.application({
         {
             id: 'select_krw_waterlichaam',
             title: 'krw',
+            object_type: 'krw_waterlichaam',
             xtype: 'treepanel',
             selection_portal_template: 'krw_selectie',
             listeners: {
@@ -143,9 +147,12 @@ Ext.application({
                         //if not root
                         if (node.raw) {
                             Ext.getCmp('portalWindow').linkTo({
-                                object_type: 'krw_waterlichaam',
-                                object_id: node.data.ident,
-                                object_name: node.data.text});
+                                object:{
+                                    type: 'krw_waterlichaam',
+                                    id: node.data.ident,
+                                    name: node.data.text
+                                }
+                            });
                         } else {
                             node.expand();
                         }
@@ -161,8 +168,21 @@ Ext.application({
             }]
         }
 
-
         var headertabs = [
+            Ext.create('Lizard.window.HeaderTab', {
+                title: 'Overzicht',
+                name: 'overzicht',
+                popup_navigation: false,
+                popup_navigation_portal: false,
+                default_portal_template: 'krw-overzicht',
+                menu: [{
+                    text: 'Themakaart KRW',
+                    handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'krw-overzicht'}); }
+                },{
+                    text: 'Themakaart ESF',
+                    handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'krw-overzicht'}); }
+                }]
+            }),
             Ext.create('Lizard.window.HeaderTab', {
                 title: 'Beleid',
                 name: 'beleid',
@@ -204,55 +224,123 @@ Ext.application({
                 name: 'beheer',
                 popup_navigation: false,
                 popup_navigation_portal: false,
-                default_portal_template: 'beheer'
+                default_portal_template: 'beheer',
+                menu: [
+                {
+                     text: 'EKR - doelen overzicht',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer', portal_template:'doelen-beheer'}); }
+                },
+                '-',
+                {
+                     text: 'Maatregelen beheer',
+                     {% if user.is_authenticated %}
+                     {% else %}
+                     disabled: true,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'maatregelen-beheer'}); }
+                },
+                {
+                     text: 'Organisatie beheer',
+                     {% if perms.is_beleidsmaker %}
+                     {% else %}
+                     disabled: true,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'organisatie-beheer'}); }
+                },
+                {
+                     text: 'Stuurparameter beheer',
+                     {% if user.is_analyst %}
+                     disabled: true,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'stuurparameter-overzicht'}); }
+                },{
+                   text: 'Koppeling KRW en aan/afvoer gebieden',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'area_link'}); }
+                },
+                {
+                   text: 'Geschikte maatregelen beheer',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'area_link'}); }
+                },
+                {
+                     text: 'Gebruikersbeheer',
+                     {% if user.is_authenticated %}
+                         disabled: false,
+                     {% endif %}
+
+                     handler: function() { window.open('/manager/') }
+                }]
 
             })
         ];
 
-        var headerTab = 'watersysteem';
-        var portalTemplate = null;
-        var object_type = null;
-        var object_id = null;
+        //(1) initialise Context Manager with default settings
+        Lizard.ContextManager.setConfiguration({
+            headertabs: headertabs,
+            context: {
+                base_url: '{% url portalpage %}',
+                period_start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5),
+                period_end: new Date(),
+                period: {
+                    start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5),
+                    end: new Date(),
+                    type: 6
+                },
+                user: {
+                    id: {{ user.id|default_if_none:"null" }},
+                    name: '{{ user.get_full_name }}',
+                    organisation: '{% for profile in  user.userprofile_set.all %}{{profile.organization.name}}, {% endfor %}',
+                    permissions: [
+{% for perm in permission_list %}
+'{{perm.name}}',
+{% endfor %}
+''
+                    ]
+                }
+            }
+        })
+        Lizard.ContextManager.setContext({
+                headertab: 'watersysteem'
+        }, false)
 
+        //(2) overwrite defaults with stored context
+        stored_context = Ext.JSON.decode({% autoescape off %}'{{ context }}'{% endautoescape %})
+
+        if (stored_context.objects) {
+            Lizard.ContextManager.setConfiguration({objects: stored_context.objects});
+        }
+        if (stored_context.context) {
+            Lizard.ContextManager.setContext(stored_context.context);
+        }
+
+        //(3) overwrite defaults and context
         if (window.location.hash) {
             var hash = window.location.hash;
             var parts = hash.replace('#', '').split('/');
 
-            headerTab = parts[0];
-            portalTemplate = parts[1];
-            object_type = parts[2];
-            object_id = parts[3];
+            hash_context = {}
+            hash_context.headertab = parts[0];
+            hash_context.portal_template = parts[1];
+            if (parts.length > 3) {
+                hash_context.object = {
+                    type:  parts[2],
+                    id: parts[3],
+                    name: ''
+                }
+            }
+            Lizard.ContextManager.setContext(hash_context, false)
         }
 
-
-        var context_manager = Ext.create('Lizard.window.ContextManager', {
-            user: {
-                id: {{ user.id|default_if_none:"null" }},
-                name: '{{ user.get_full_name }}',
-                permission: [
-                    {% if perms.auth.is_analyst %}'analyst',{% endif %}
-                    {% if perms.auth.is_veldmedewerker %}'veldmedewerker',{% endif %}
-                    {% if perms.auth.is_beleidmaker %}'beleidmaker',{% endif %}'']
-            },
-            period: {
-                selection: 6
-            },
-            base_url: '{% url portalpage %}',
-            period_start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5),
-            period_end: new Date(),
-            headertabs: headertabs,
-            portalTemplate: portalTemplate,
-            object_type: object_type,
-            object_id: object_id,
-            object_name: '-'
-        });
-
-        //todo: do this dynamic
-
-        context_manager.setActiveHeadertab(headerTab)
-
         Ext.create('Lizard.window.Screen', {
-            context_manager: context_manager,
+            context_manager: Lizard.ContextManager,
             showOnlyPortal: only_portal || false,
             header: {
                 headertabs: headertabs,
