@@ -1,20 +1,23 @@
 # (c) Nelen & Schuurmans.  GPL licensed, see LICENSE.txt.
+import json
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import RequestContext
 from django.template import TemplateDoesNotExist
 from django.template import Template
 from django.template.loader import get_template
+from lizard_registration.models import SessionContextStore, UserContextStore
 
 from lizard_registration.utils import auto_login
 
 from lizard_portal.models import PortalConfiguration
 
+from lizard_registration.utils import get_user_permissions_overall
+
 def site(request, application_name, active_tab_name, only_portal=False):
     """
         returns html page which loads specified (ext-js) application
     """
-    print only_portal
     if not request.user.is_authenticated():
         auto_login(request)
 
@@ -35,11 +38,33 @@ def application(request, application_name, active_tab_name):
     """
         returns html page which loads specified (ext-js) application
     """
+    context = '{}'
+    user = request.user
+
+    if user.iprangelogin_set.all().count() > 0:
+        session_key = request.session.session_key
+        try:
+            context_store = user.sessioncontextstore.get(session_key=session_key)
+            context = context_store.context
+        except SessionContextStore.DoesNotExist:
+            successful = False
+    else:
+        try:
+            context = user.usercontextstore.context
+        except UserContextStore.DoesNotExist:
+            successful = False
+
+    perms_list = get_user_permissions_overall(user, 'user')
+
+    perms = dict(get_user_permissions_overall(user, 'user', as_list=True))
 
     t = get_template('application/'+application_name+'.js')
     c = RequestContext(request, {
             'application': application_name,
-            'active_tab': active_tab_name
+            'active_tab': active_tab_name,
+            'context': context,
+            'permission_list': perms_list,
+            'perms': perms
         })
 
     return HttpResponse(t.render(c),
@@ -52,7 +77,7 @@ def json_configuration(request):
     """
     c = RequestContext(request)
 
-    portal_template = request.GET.get('portalTemplate', 'homepage')
+    portal_template = request.GET.get('portal_template', 'homepage')
 
     if request.user.is_authenticated():
 

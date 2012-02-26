@@ -91,8 +91,8 @@ It is a Ext.container.Viewport with the following additions:
 - When you enter, the page shows a tree on the left, a 'portal'
   (default: Area Selection map) in the middle, Analyse on the right,
   breadcrumbs on top.
-- Stores lizard context: period_start, period_end, object, object_id,
-  portalTemplate, base_url.
+- Stores lizard context: period: {start, end, selection}, object {id, name, type},
+  portal_template, base_url.
 - Can load another (portal) page as replacement for the selection map
   when selecting an element from the tree or on the map.
 - Analysis on the right
@@ -100,9 +100,9 @@ It is a Ext.container.Viewport with the following additions:
 After selecting an area there will be a hash (#) with 3 items next to
 it:
 
-- portalTemplate (i.e. 'homepage', 'aan_afvoergebied_selectie')
+- portal_template (i.e. 'homepage', 'aan_afvoergebied_selectie')
 - object: object type, i.e. 'aan_afvoergebied'
-- object_id: id in the object type. i.e. '2120' (primary key)
+- object.id: id in the object type. i.e. '2120' (primary key)
 These will be applied.
 
 Settings
@@ -110,8 +110,8 @@ Settings
 - area_selection_template, i.e. aan_afvoergebied_selectie. Points to a
   js file in templates/portals/ subdir.
 - area_store, i.e. 'Vss.store.CatchmentTree'
-- lizard_context: period_start, period_end, object, object_id,
-  portalTemplate, base_url
+- lizard_context: period: {start, end, selection}, object {id, name, type},
+  portal_template, base_url.
 
 
 

@@ -183,7 +183,20 @@
 .x-grid-cell-inner { white-space: normal; }
 
 
+.l-header-contextinfo {
+    background: transparent;
+    text-align: right;
+    font-size: 9px;
+    color: #555;
 
+}
+.l-header-contextinfo-area {
+    padding-right: 10px;
+    background: transparent;
+    text-align: right;
+    font-size: 9px;
+    color: #555;
+}
 
 .lizard h1, h2, h3, h4, h5, h6 {
     font-weight:normal;
