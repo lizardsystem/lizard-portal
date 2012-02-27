@@ -65,6 +65,7 @@ Ext.application({
         'Lizard.grid.EditableGrid',
         'Lizard.store.EditGridStore',
         'Lizard.portlet.AppScreenPortlet',
+        'Lizard.portlet.AppsPortlet',
         'Lizard.portlet.Portlet',
         'Lizard.portlet.PortalPanel',
         'Lizard.portlet.PortalColumn',

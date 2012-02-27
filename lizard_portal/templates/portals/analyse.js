@@ -8,14 +8,14 @@
 	width: 300,
 	items: [{
 	    title: 'Navigatie',
-        flex:2,
-        xtype: 'appscreenportlet',
-        store: Ext.create('Lizard.store.AppScreen', {data: [
-            {slug: 'app1', name: 'N&S', description: 'app1 description',
-             type: 'external', url: 'http://www.nelen-schuurmans.nl'},
-            {slug: 'app2', name: 'Lizard', description: 'app2 description',
-             type: 'external', url: 'http://lizard.net'},
-        ] })
+            flex:2,
+            xtype: 'appscreenportlet',
+            store: Ext.create('Lizard.store.AppScreen', {data: [
+                {slug: 'app1', name: 'N&S', description: 'app1 description',
+                 type: 'external', url: 'http://www.nelen-schuurmans.nl'},
+                {slug: 'app2', name: 'Lizard', description: 'app2 description',
+                 type: 'external', url: 'http://lizard.net'},
+            ] })
 	},{
         autoHeight: true,
         minHeight: 200,

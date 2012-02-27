@@ -1,4 +1,5 @@
 # Collection of available apps
+# Do we need this store????
 
 Ext.define('Lizard.store.Apps', {
     extend: 'Ext.data.Store',
