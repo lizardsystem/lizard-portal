@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.12 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added AppsPortlet, AnalysisPortlet js and coffee files.
 
 
 0.11 (2012-02-27)
