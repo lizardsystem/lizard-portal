@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.10 (unreleased)
+0.10 (2012-02-27)
 -----------------
 
 - context manager parameters changed. see new structure of period en location!
