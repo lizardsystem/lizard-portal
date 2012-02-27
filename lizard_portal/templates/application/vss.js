@@ -318,7 +318,7 @@ Ext.application({
             Lizard.ContextManager.setConfiguration({objects: stored_context.objects});
         }
         if (stored_context.context) {
-            Lizard.ContextManager.setContext(stored_context.context);
+            Lizard.ContextManager.setContext(stored_context.context, false);
         }
 
         //(3) overwrite defaults and context

@@ -199,6 +199,17 @@
       console.log(arguments);
       return this.store.applyContext(changes, new_context);
     },
+    open_graph_window: function(graph_id) {
+      var graph_url, querystring, record, url;
+      record = this.store.data.map[graph_id];
+      graph_url = Lizard.model.Graph.getGraphUrl(record.data, true);
+      querystring = Ext.Object.toQueryString({
+        title: record.data.name,
+        graph_url: graph_url
+      });
+      url = Ext.String.urlAppend("/graph/window/", querystring);
+      return window.open(url);
+    },
     initGraphs: function() {
       var me;
       return me = this;
@@ -241,13 +252,16 @@
         items: {
           xtype: 'dataview',
           store: this.store,
-          tpl: new Ext.XTemplate('<tpl if="this.context_ready()">', '<tpl for=".">', '<div class="thumb-wrap">', '<tpl if="visible">', '{name}:   ', '<tpl if="detail_link">', '<a href="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>', '</tpl>', '<img src="', '{[this.get_url(values)]}', '" height={height} width={width} />', '</tpl>', '</div>', '</tpl>', '</tpl>', {
+          tpl: new Ext.XTemplate('<tpl if="this.context_ready()">', '<tpl for=".">', '<div class="thumb-wrap">', '<tpl if="visible">', '{name}:   ', '<tpl if="detail_link">', '<a href="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>', '</tpl>', '<a href="javascript:', '{[this.get_function_for_graph_window(values)]}', '"> groot</a>', '<img src="', '{[this.get_url(values)]}', '" height={height} width={width} />', '</tpl>', '</div>', '</tpl>', '</tpl>', {
             get_url: function(values) {
               if (values.width > 0 && values.height > 0 && values.dt_start && values.dt_end) {
                 return Lizard.model.Graph.getGraphUrl(values);
               } else {
                 return 'data:image/gif';
               }
+            },
+            get_function_for_graph_window: function(values) {
+              return "Ext.getCmp('" + me.id + "').open_graph_window('" + values.id + "');";
             },
             context_ready: function() {
               return me.store.context_ready;

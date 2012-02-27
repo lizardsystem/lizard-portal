@@ -5,6 +5,8 @@ Changelog of lizard-portal
 0.10 (unreleased)
 -----------------
 
+- context manager parameters changed. see new structure of period en location!
+
 - Make area selection work via geoserver feature request.
 
 - Replace krw layer on krw selection page with geoserver layer.
@@ -24,6 +26,8 @@ Changelog of lizard-portal
 - fixed and improved period selection
 
 - some small bug-fixes
+
+- link from multigraphstore to popup window with fullscreen graph
 
 0.9 (2012-02-24)
 ----------------

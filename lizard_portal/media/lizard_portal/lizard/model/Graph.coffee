@@ -95,33 +95,40 @@ Ext.define('Lizard.model.Graph', {
 
 
     statics:
-        getGraphUrl: (values) ->
-            url = values['base_url'];
-            if url.indexOf('?') < 0
-                url += '?'
-            url += "&height=#{values['height']}"
-            url += "&width=#{values['width']}"
-            url += "&dt_start=#{values['dt_start']}"
-            url += "&dt_end=#{values['dt_end']}"
+        getGraphUrl: (values, without_height_width=false) ->
+            base_url = values['base_url']
+
+            params = {
+                dt_start: values.dt_start
+                dt_end: values.dt_end
+            }
+
             if values['location']
-                url += "&location=#{values['location']}"
+                params.location = values['location']
+
             if values['predefined_graph']
-                url += "&graph=#{values['predefined_graph']}"
+                params.graph = values['predefined_graph']
             if values['use_context_location']
-                url += "&location=#{values['location']}"
+               params.location = values['location']
             if values['has_reset_period'] and values['reset_period']
-                url += "&reset-period=#{values['reset_period']}"
+                params['reset-period'] = values['reset_period']
             if values['has_cumulative_period'] and values['cumulative_period']
-                url += "&aggregation-period=#{values['cumulative_period']}"
-            a = values['extra_params']
+                params['aggregation-period'] =  values['cumulative_period']
+
             if values['extra_params']
                 Ext.Object.each(
                     values['extra_params'],
                     (key,value) ->
-                        url += "&#{key}=#{value}"
-                        return true
+                        params.key = value
                 )
-            return url
+
+            if not without_height_width
+                params.height = values['height']
+                params.width = values['width']
+
+            querystring = Ext.Object.toQueryString(params)
+
+            return Ext.String.urlAppend(base_url, querystring)
 
         getDownloadUrl: (values) ->
             url = @getGraphUrl(values)
