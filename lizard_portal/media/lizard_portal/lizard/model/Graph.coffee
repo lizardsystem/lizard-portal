@@ -119,7 +119,7 @@ Ext.define('Lizard.model.Graph', {
                 Ext.Object.each(
                     values['extra_params'],
                     (key,value) ->
-                        params.key = value
+                        params[key] = value
                 )
 
             if not without_height_width

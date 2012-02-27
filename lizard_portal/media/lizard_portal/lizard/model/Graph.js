@@ -118,7 +118,7 @@
         }
         if (values['extra_params']) {
           Ext.Object.each(values['extra_params'], function(key, value) {
-            return params.key = value;
+            return params[key] = value;
           });
         }
         if (!without_height_width) {
