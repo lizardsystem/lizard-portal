@@ -41,22 +41,26 @@ def application(request, application_name, active_tab_name):
     context = '{}'
     user = request.user
 
-    if user.iprangelogin_set.all().count() > 0:
-        session_key = request.session.session_key
-        try:
-            context_store = user.sessioncontextstore.get(session_key=session_key)
-            context = context_store.context
-        except SessionContextStore.DoesNotExist:
-            successful = False
+    if user.is_authenticated():
+        if user.iprangelogin_set.all().count() > 0:
+            session_key = request.session.session_key
+            try:
+                context_store = user.sessioncontextstore.get(session_key=session_key)
+                context = context_store.context
+            except SessionContextStore.DoesNotExist:
+                pass
+        else:
+            try:
+                context = user.usercontextstore.context
+            except UserContextStore.DoesNotExist:
+                pass
+
+        perms_list = get_user_permissions_overall(user, 'user')
+
+        perms = dict(get_user_permissions_overall(user, 'user', as_list=True))
     else:
-        try:
-            context = user.usercontextstore.context
-        except UserContextStore.DoesNotExist:
-            successful = False
-
-    perms_list = get_user_permissions_overall(user, 'user')
-
-    perms = dict(get_user_permissions_overall(user, 'user', as_list=True))
+        perms = {}
+        perms_list = []
 
     t = get_template('application/'+application_name+'.js')
     c = RequestContext(request, {

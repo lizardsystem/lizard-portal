@@ -5,8 +5,9 @@ Changelog of lizard-portal
 0.11 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- bugfix with un-autorized user
 
+- bugfix with date selection
 
 0.10 (2012-02-27)
 -----------------

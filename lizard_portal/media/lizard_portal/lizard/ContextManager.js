@@ -65,7 +65,7 @@
         boxLabel: 'anders',
         name: 'period',
         inputValue: 0,
-        dt: null
+        dt: [null, null]
       }
     ],
     context: {
@@ -148,14 +148,10 @@
       if (changed_context.headertab) {
         changed_context.headertab = params.headertab;
       }
-      if (changed_context['period']) {
-        changed_context['period'] = this.calcPeriod(changed_context['period']);
-      }
       if (Ext.Object.getKeys(changed_context).length === 0) {
         return console.log('context not changed');
       } else {
         console.log('contextchange');
-        this.context = Ext.Object.merge(me.context, changed_context);
         if (changed_context['headertab'] && typeof changed_context.headertab === 'string') {
           changed_context.headertab = Ext.Array.filter(this.headertabs, function(element) {
             if (element.name === changed_context.headertab) {
@@ -169,13 +165,16 @@
         if (changed_context['headertab'] && !params['portal_template']) {
           changed_context['portal_template'] = changed_context.headertab.default_portal_template;
         }
+        if (changed_context['period']) {
+          changed_context['period'] = this.calcPeriod(Ext.Object.merge({}, this.context['period'], changed_context['period']));
+        }
+        this.context = Ext.Object.merge(me.context, changed_context);
         if (changed_context['object']) {
           if (!changed_context.object['type']) {
             changed_context.object.type = this.context.object.type;
           }
           this._setObjectOfType(changed_context.object);
         }
-        this.context = Ext.Object.merge(me.context, changed_context);
         if (this.context.headertab) {
           console.log('supported objecttypes are:');
           console.log(this.context.headertab.object_types);
@@ -223,7 +222,7 @@
       if (period.end && typeof period.end === 'string') {
         period.end = Ext.Date.parse(period.end, 'Y-m-d');
       }
-      if (period.type === 0) {
+      if (period.type === 0 || !period.start || !period.end) {
         if (period.start && period.end) {
           output = period;
         } else if (period.start) {
@@ -313,7 +312,7 @@
       return true;
     },
     initComponent: function() {
-      debugger;      return this.callParent(arguments);
+      return this.callParent(arguments);
     }
   });
 }).call(this);

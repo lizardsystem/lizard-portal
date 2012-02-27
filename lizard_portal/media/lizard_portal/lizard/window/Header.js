@@ -235,7 +235,7 @@
                     var form, selected;
                     selected = field.getChecked()[0];
                     form = field.up(form).getForm();
-                    if (new_value.type !== 0) {
+                    if (new_value.period !== 0) {
                       form.findField('period_start').setValue(Ext.Date.add(new Date(), selected.dt[0], selected.dt[1]));
                       form.findField('period_end').setValue(new Date());
                       form.findField('period_start').setDisabled(true);
@@ -303,8 +303,8 @@
               form = this.getForm();
               ps = form.findField('period_selection');
               context = Lizard.CM.getContext();
-              form.findField('period_start').setValue(context.period_start);
-              form.findField('period_end').setValue(context.period_end);
+              form.findField('period_start').setValue(context.period.start);
+              form.findField('period_end').setValue(context.period.end);
               return ps.setValue({
                 period: context.period.type
               });

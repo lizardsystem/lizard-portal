@@ -26,7 +26,7 @@ Ext.define 'Lizard.ContextManager',
         { boxLabel: 'mnd', name: 'period', inputValue: 4, dt: [Ext.Date.MONTH,-1] },
         { boxLabel: 'jr', name: 'period', inputValue: 5, dt: [Ext.Date.YEAR,-1] },
         { boxLabel: '5jr', name: 'period', inputValue: 6, dt: [Ext.Date.YEAR,-5] },
-        { boxLabel: 'anders', name: 'period', inputValue: 0, dt: null }
+        { boxLabel: 'anders', name: 'period', inputValue: 0, dt: [null, null] }
     ]
     context:
         period_start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5)
@@ -130,19 +130,11 @@ Ext.define 'Lizard.ContextManager',
         if changed_context.headertab
             changed_context.headertab = params.headertab
 
-        if changed_context['period']
-            changed_context['period'] = @calcPeriod(changed_context['period'])
-
-
         if Ext.Object.getKeys(changed_context).length == 0
             console.log('context not changed')
         else
             #context is updated
             console.log('contextchange')
-
-            @context = Ext.Object.merge(me.context, changed_context)
-
-
 
             if changed_context['headertab'] and typeof(changed_context.headertab) == 'string'
                 #get real headertab object based on string
@@ -158,12 +150,15 @@ Ext.define 'Lizard.ContextManager',
                 #add headertab switch, select default template (except when specified in change)
                 changed_context['portal_template'] = changed_context.headertab.default_portal_template
 
+            if changed_context['period']
+                changed_context['period'] = @calcPeriod(Ext.Object.merge({}, @context['period'], changed_context['period']))
+
+            @context = Ext.Object.merge(me.context, changed_context)
+
             if changed_context['object']
                 if not changed_context.object['type']
                     changed_context.object.type = @context.object.type
                 @_setObjectOfType(changed_context.object)
-
-            @context = Ext.Object.merge(me.context, changed_context)
 
             if  @context.headertab
                 console.log('supported objecttypes are:')
@@ -221,8 +216,7 @@ Ext.define 'Lizard.ContextManager',
             period.start = Ext.Date.parse(period.start, 'Y-m-d')
         if period.end and typeof(period.end) == 'string'
             period.end = Ext.Date.parse(period.end, 'Y-m-d')
-
-        if period.type == 0
+        if period.type == 0 or not period.start or not period.end
             if period.start and period.end
                 output = period
             else if period.start
@@ -303,5 +297,4 @@ Ext.define 'Lizard.ContextManager',
 
     initComponent: () ->
         #is deze nog nodig???
-        debugger
         @callParent(arguments)
