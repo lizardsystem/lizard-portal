@@ -26,7 +26,7 @@ Ext.define('Vss.store.Esf', {
     requires: 'Vss.model.Esf',
     model: 'Vss.model.Esf',
     autoLoad: false,
-    //indexOf: Ext.emptyFn,
+    indexOf: Ext.emptyFn,
     config: {
         area_id: null,
         constructed: false,
@@ -41,11 +41,21 @@ Ext.define('Vss.store.Esf', {
             type: 'json',
             writeAllFields: false,
             root: 'data',
-            successProperty: 'success'
+            successProperty: 'success',
+            encode:true
         },
         reader: {
             type: 'json',
             successProperty: 'success'
+        },
+        afterRequest:function(request,success){
+            if (request.method == 'POST') {
+                if (success) {
+                    Ext.MessageBox.alert('Opslaan gelukt');
+                } else {
+                    Ext.MessageBox.alert('Opslaan mislukt');
+                }
+            }
         }
     },
     constructor: function(config) {
@@ -70,7 +80,6 @@ Ext.define('Vss.store.Esf', {
                     rec.commit();
                 }
             });
-            Ext.MessageBox.alert('Opslaan gelukt');
         }
     },
     rejectChanges : function(){
