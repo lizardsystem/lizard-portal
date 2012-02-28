@@ -37,11 +37,26 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
             portlet = panelHeader.ownerCt;
             a = portlet.html;
 
-            form_window = Ext.create('Ext.window.Window', {
-                title: 'Save workspace',
-                width: 400,
-                height: 300
-            }).show()
+            Ext.create('Ext.window.Window', {
+                title: 'Laad workspace',
+                width: 800,
+                height: 600,
+                modal: true,
+                finish_edit_function: (updated_record) ->
+                    #me.store.load();
+                editpopup: true,
+
+                loader:{
+                    loadMask: true,
+                    autoLoad: true,
+                    url: '/measure/measure_detailedit_portal/',
+                    ajaxOptions: {
+                        method: 'GET'
+                    },
+                    params: {},
+                    renderer: 'component'
+                }
+            }).show();
     }
     {
         type: 'gear',
@@ -64,7 +79,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
 
 
     initComponent: () ->
-
+        me = @
 
         @callParent(arguments)
 })
