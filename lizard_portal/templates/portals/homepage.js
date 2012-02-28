@@ -24,7 +24,6 @@
         {
             flex:2,
 			title: 'Kaartlagen',
-            id: 'kaartlagen',
             xtype: 'grid',
             columns:[{
                     text: 'aan',

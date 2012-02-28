@@ -72,6 +72,7 @@ Ext.application({
         'Lizard.portlet.GridPortlet',
         'Lizard.portlet.MultiGraph',
         'Lizard.portlet.MultiGraphStore',
+        'Lizard.portlet.WorkspacePortlet',
         'Lizard.window.Header',
         'Vss.grid.Esf',
         'Lizard.window.EditSummaryBox',

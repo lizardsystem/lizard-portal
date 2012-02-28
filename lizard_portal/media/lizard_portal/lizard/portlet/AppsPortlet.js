@@ -1,5 +1,4 @@
 (function() {
-
   Ext.define('Lizard.portlet.AppsPortlet', {
     extend: 'Lizard.portlet.Portlet',
     alias: 'widget.appsportlet',
@@ -25,5 +24,4 @@
       return this.callParent(arguments);
     }
   });
-
 }).call(this);
