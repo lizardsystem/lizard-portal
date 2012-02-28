@@ -70,13 +70,13 @@
                   'Gebieden',
                   '/layers/wms/?',
                   {
-                    layers:['vss:area_polygon_random'],
+                    layers:['vss:aan_afvoergebieden'],
                     transparent: true,
                     format: 'image/png'
                   },
                   {
                     singleTile: false,
-                    opacity: 0.5,
+                    opacity: 1.0,
                     transitionEffect: 'resize',
                     singleTile: true,
                     displayOutsideMaxExtent: true,
