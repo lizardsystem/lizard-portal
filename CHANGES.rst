@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.11.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed bug in views.application crashing on sessioncontextstore.
 
 
 0.11.1 (2012-02-27)
