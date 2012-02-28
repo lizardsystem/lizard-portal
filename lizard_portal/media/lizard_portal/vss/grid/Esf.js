@@ -215,7 +215,7 @@ Ext.define('Vss.grid.Esf', {
             Ext.apply(this, {
                 bbar: [{
                     xtype: 'button',
-                    text: 'Cancel',
+                    text: 'Reset',
                     iconCls: 'l-icon-cancel',
                     handler: function(menuItem, checked) {
                         me.store.rejectChanges();
@@ -227,20 +227,8 @@ Ext.define('Vss.grid.Esf', {
                     iconCls: 'l-icon-disk',
                     handler: function(menuItem) {
 
-                        Ext.MessageBox.show({
-                            title: 'Wijzigingen opslaan',
-                            msg: 'Opmerking',
-                            width: 300,
-                            multiline: true,
-                            buttons: Ext.MessageBox.OKCANCEL,
-                            fn: function (btn, text) {
-                                 if (btn=='ok') {
-                                     me.store.sync();
-                                 }
-                            }
-
-                        });
-                     }
+                        me.store.sync();
+                    }
                 }]
             });
         }

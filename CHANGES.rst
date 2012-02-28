@@ -2,12 +2,24 @@ Changelog of lizard-portal
 ==========================
 
 
-0.11.4 (unreleased)
+0.11.5 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+0.11.4 (2012-02-28)
 -------------------
 
 - Change layers in krw_selection and area_selection.
 
 - Add addslashes filter to context in js template.
+
+- change cancel button in reset for esf and waterbalance configuration
+
+- bugfix in edit summary window
+
+- fix some esf screen bugs
 
 
 0.11.3 (2012-02-28)
