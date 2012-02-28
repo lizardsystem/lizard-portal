@@ -5,7 +5,13 @@ Changelog of lizard-portal
 0.11.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- seperate screen for KRW measures
+
+- fixed problems with ESF tree
+
+- area navigation layout fixed
+
+- reload multiGrpah updated to latest contextManager
 
 
 0.11.1 (2012-02-27)
