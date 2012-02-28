@@ -36,7 +36,7 @@
             bbar: [
                 {
                     xtype: 'button',
-                    text: 'Cancel',
+                    text: 'Reset',
                     iconCls: 'l-icon-cancel',
                     handler: function (menuItem, checked) {
                         var panel = menuItem.up('panel');

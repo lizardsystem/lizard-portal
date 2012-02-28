@@ -7,6 +7,12 @@ Changelog of lizard-portal
 
 - Change layers in krw_selection and area_selection
 
+- change cancel button in reset for esf and waterbalance configuration
+
+- bugfix in edit summary window
+
+- fix some esf screen bugs
+
 
 0.11.3 (2012-02-28)
 -------------------

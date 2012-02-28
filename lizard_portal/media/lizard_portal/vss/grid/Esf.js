@@ -215,7 +215,7 @@ Ext.define('Vss.grid.Esf', {
             Ext.apply(this, {
                 bbar: [{
                     xtype: 'button',
-                    text: 'Cancel',
+                    text: 'Reset',
                     iconCls: 'l-icon-cancel',
                     handler: function(menuItem, checked) {
                         me.store.rejectChanges();
