@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.11.3 (unreleased)
+0.11.3 (2012-02-28)
 -------------------
 
 - seperate screen for KRW measures
