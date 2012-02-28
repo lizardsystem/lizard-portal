@@ -5,12 +5,28 @@
  * Time: 14:46
  * To change this template use File | Settings | File Templates.
  */
+
+Ext.override(Ext.data.proxy.Server,{
+   destroy: function() {
+
+       if (arguments[0].url) {
+           return this.doRequest.apply(this, arguments);
+       } else {
+           return true
+       }
+   }
+});
+
+
+
+
+
 Ext.define('Vss.store.Esf', {
     extend: 'Ext.data.TreeStore',
     requires: 'Vss.model.Esf',
     model: 'Vss.model.Esf',
     autoLoad: false,
-    indexOf: Ext.emptyFn,
+    //indexOf: Ext.emptyFn,
     config: {
         area_id: null,
         constructed: false,
@@ -25,7 +41,6 @@ Ext.define('Vss.store.Esf', {
             type: 'json',
             writeAllFields: false,
             root: 'data',
-            encode: true,
             successProperty: 'success'
         },
         reader: {
@@ -43,10 +58,7 @@ Ext.define('Vss.store.Esf', {
         if (!this.proxy.extraParams) {
             this.proxy.extraParams = { }
         }
-        this.proxy.extraParams = Ext.merge(this.proxy.extraParams, {area_id:this.area_id });
-
-
-    },
+   },
     applyParams: function(params) {
         this.proxy.extraParams = Ext.merge(this.proxy.extraParams, params);
         this.load();

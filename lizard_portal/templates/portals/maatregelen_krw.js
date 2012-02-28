@@ -1,11 +1,11 @@
 {
-    itemId: 'maatregelen',
-    title: 'Maatregelen',
+    itemId: 'maatregelen_krw',
+    title: 'Maatregelen KRW-waterlichaam',
 	xtype: 'portalpanel',
     breadcrumbs: [
     {
-        name: 'Watersysteemkaart',
-        link: 'homepage'
+        name: 'KRW-overzicht',
+        link: 'krw-overzicht'
     },{
         name: 'Maatregelen'
     }],

@@ -374,8 +374,12 @@
                 tab = this.child(navigation);
                 return this.setActiveTab(tab);
               },
-              setEnabledNavigations: function(navigations) {
-                debugger;
+              listeners: {
+                expand: {
+                  fn: function(panel) {
+                    return panel.doLayout();
+                  }
+                }
               }
             }, {
               region: 'center',

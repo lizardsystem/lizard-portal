@@ -20,7 +20,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
         @doLayout()
 
 
-    updateGraphs: (changes, new_context, context_manager, me) ->
+    updateGraphs: (changes, changed_objects, new_context,  me) ->
         console.log('update graphs')
 
         for graph in me.graphs
@@ -81,50 +81,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
 
 
 
-            graph_button_settings.xtype = 'splitbutton'
-            graph_button_settings.menu = 	[
-                '<b class="menu-title">Cumulatieve periode</b>',
-                {
-                    text: 'Dag',
-                    checked: false,
-                    group: graph_config.title+'cumu',
-                    checkHandler: onItemCheck
-                },
-                {
-                    text: 'Maand',
-                    checked: true,
-                    group: graph_config.title+'cumu',
-                    checkHandler: onItemCheck
-                }, {
-                    text: 'Kwartaal',
-                    checked: false,
-                    group: graph_config.title+'cumu',
-                    checkHandler: onItemCheck
-                }, {
-                    text: 'Jaar',
-                    checked: false,
-                    group: graph_config.title+'cumu',
-                    checkHandler: onItemCheck
-                }
-                '-',
-                '<b class="menu-title">Reset periode</b>',
-                {
-                    text: 'Maand',
-                    checked: true,
-                    group: graph_config.title+'reset',
-                    checkHandler: onItemCheck
-                }, {
-                    text: 'Kwartaal',
-                    checked: false,
-                    group: graph_config.title+'reset',
-                    checkHandler: onItemCheck
-                }, {
-                    text: 'Jaar',
-                    checked: false,
-                    group: graph_config.title+'reset',
-                    checkHandler: onItemCheck
-                }
-            ]
+            
 
             @tbar.push(graph_button_settings)
     constructor: (config) ->

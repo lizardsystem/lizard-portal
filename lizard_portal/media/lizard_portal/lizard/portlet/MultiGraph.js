@@ -23,7 +23,7 @@
       }
       return this.doLayout();
     },
-    updateGraphs: function(changes, new_context, context_manager, me) {
+    updateGraphs: function(changes, changed_objects, new_context, me) {
       var graph, _i, _len, _ref, _results;
       console.log('update graphs');
       _ref = me.graphs;
@@ -82,45 +82,6 @@
         onItemCheck = function() {
           return console.log('klik');
         };
-        graph_button_settings.xtype = 'splitbutton';
-        graph_button_settings.menu = [
-          '<b class="menu-title">Cumulatieve periode</b>', {
-            text: 'Dag',
-            checked: false,
-            group: graph_config.title + 'cumu',
-            checkHandler: onItemCheck
-          }, {
-            text: 'Maand',
-            checked: true,
-            group: graph_config.title + 'cumu',
-            checkHandler: onItemCheck
-          }, {
-            text: 'Kwartaal',
-            checked: false,
-            group: graph_config.title + 'cumu',
-            checkHandler: onItemCheck
-          }, {
-            text: 'Jaar',
-            checked: false,
-            group: graph_config.title + 'cumu',
-            checkHandler: onItemCheck
-          }, '-', '<b class="menu-title">Reset periode</b>', {
-            text: 'Maand',
-            checked: true,
-            group: graph_config.title + 'reset',
-            checkHandler: onItemCheck
-          }, {
-            text: 'Kwartaal',
-            checked: false,
-            group: graph_config.title + 'reset',
-            checkHandler: onItemCheck
-          }, {
-            text: 'Jaar',
-            checked: false,
-            group: graph_config.title + 'reset',
-            checkHandler: onItemCheck
-          }
-        ];
         _results.push(this.tbar.push(graph_button_settings));
       }
       return _results;

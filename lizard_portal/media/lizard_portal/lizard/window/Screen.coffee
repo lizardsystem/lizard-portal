@@ -357,8 +357,10 @@ Ext.define 'Lizard.window.Screen',
                         setNavigation: (navigation)->
                             tab = @child(navigation)
                             @setActiveTab(tab)
-                        setEnabledNavigations: (navigations) ->
-                            debugger
+                        listeners:
+                            expand:
+                                fn: (panel) ->
+                                    panel.doLayout()
                             
                     }
                     {
