@@ -80,7 +80,7 @@
                   },
                   {
                     singleTile: false,
-                    opacity: 0.5,
+                    opacity: 1.0,
                     transitionEffect: 'resize',
                     singleTile: true,
                     displayOutsideMaxExtent: true,

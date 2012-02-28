@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.11.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Change layers in krw_selection and area_selection
 
 
 0.11.3 (2012-02-28)
