@@ -314,7 +314,7 @@ Ext.application({
         }, false)
 
         //(2) overwrite defaults with stored context
-        stored_context = Ext.JSON.decode({% autoescape off %}'{{ context }}'{% endautoescape %})
+        stored_context = Ext.JSON.decode({% autoescape off %}'{{ context|addslashes }}'{% endautoescape %})
 
         if (stored_context.objects) {
             Lizard.ContextManager.setConfiguration({objects: stored_context.objects});
