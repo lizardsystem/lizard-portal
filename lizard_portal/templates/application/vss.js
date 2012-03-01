@@ -62,10 +62,13 @@ Ext.application({
         'Lizard.window.HeaderTab',
         'Lizard.grid.EditablePropertyGrid',
         'Lizard.form.ComboMultiSelect',
+        'Lizard.form.WorkspaceSaveForm',
         'Lizard.grid.EditableGrid',
         'Lizard.store.EditGridStore',
+        'Lizard.store.WorkspaceStore',  // Not yet used
         'Lizard.portlet.AppScreenPortlet',
         'Lizard.portlet.AppsPortlet',
+        'Lizard.portlet.AvailableLayersPortlet',
         'Lizard.portlet.Portlet',
         'Lizard.portlet.PortalPanel',
         'Lizard.portlet.PortalColumn',
@@ -99,7 +102,11 @@ Ext.application({
 
         {% get_portal_template watersysteem_layers %}
 
+        // Globally create workspace layers
         {% get_portal_template workspace_layers %}
+
+        // !Try! to initialize WorkspaceStore, does not work yet.
+        Ext.create(Lizard.store.WorkspaceStore, );
 
         var aan_afvoergebied_selection =
         {
