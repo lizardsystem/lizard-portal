@@ -21,12 +21,18 @@
             closable: false,
             xtype: 'esf_grid',
         {% if user.is_authenticated %}
-            editable:true
+            editable:true,
         {% else %}
-            editable:false
+            editable:false,
         {% endif %}
+            tools: [{
+                type: 'save',
+                handler: function() {
+                    Lizard.window.MapWindow.show()
+                }
+            }]
         }]
-	},{
+    },{
         flex:1,
         items: {
             title: 'Grafieken',

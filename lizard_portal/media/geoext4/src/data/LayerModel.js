@@ -39,7 +39,7 @@ Ext.define('GeoExt.data.LayerModel', {
 		return this.get("layer");
 	},
 	setLayer : function(layer) {
-		me.set("layer", layer);
+        this.set("layer", layer);
 		return;
 		//
 		var me = this;

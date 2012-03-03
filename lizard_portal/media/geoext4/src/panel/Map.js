@@ -145,7 +145,7 @@ Ext.define('GeoExt.panel.Map', {
 		var me = this;
 
         var options = Ext.merge({
-				allOverlays: true,
+				allOverlays: false,
                 controls: []
 
 			}, me.options);
@@ -159,7 +159,8 @@ Ext.define('GeoExt.panel.Map', {
         zoom_panel = new OpenLayers.Control.Panel();
         zoom_panel.addControls([ new this.ZoomSlider({ zoomStopHeight: 3 }) ]);
         this.map.addControl(zoom_panel);
-        this.map.addControl(new OpenLayers.Control.Navigation());
+        this.navigation = new OpenLayers.Control.Navigation();
+        this.map.addControl(this.navigation);
 
         for (var i = 0; i < me.controls.length; i++) {
             me.map.addControl(me.controls[i]);
@@ -325,7 +326,7 @@ Ext.define('GeoExt.panel.Map', {
 		var i, l, layer, layerId, visibility, opacity;
 		var layers = me.map.layers;
 		for( i = 0, l = layers.length; i < l; i++) {
-			layer = layers[i];
+            layer = layers[i];
 			layerId = me.prettyStateKeys ? layer.name : layer.id;
 			visibility = state["visibility_" + layerId];
 			if(visibility !== undefined) {

@@ -362,6 +362,7 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  Handler for a store's update event
 	 */
 	onUpdate : function(store, record, operation) {
+
 		if(operation === Ext.data.Model.EDIT) {
 			if(record.modified && record.modified.title) {
 				var layer = record.getLayer();
