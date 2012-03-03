@@ -18,8 +18,6 @@
                  type: 'external', url: 'http://lizard.net'}
             ] })
         },{
-            autoHeight: true,
-            minHeight: 200,
             xtype: 'workspaceportlet',
             store: Ext.data.StoreManager.lookup('Workspace')
         }]

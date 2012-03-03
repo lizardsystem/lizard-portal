@@ -1,6 +1,7 @@
-#
-#
-#
+# Workspace portlet.
+# Load workspace: choose from a list of workspaces.
+# Save workspace: provide info, then save.
+
 Ext.define('Lizard.portlet.WorkspacePortlet', {
     extend: 'Ext.grid.Panel'
     mixins: [
@@ -11,13 +12,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
     autoHeight: true,
     minHeight: 200,
 
-    store: Ext.data.StoreManager.lookup('Workspace'),
-
-    #config:
-    #    params
-
-    #applyParams: (new_value) ->
-    #    @store.load(new_value)
+    # store: Ext.data.StoreManager.lookup('Workspace'),
 
     columns:[{
         text: 'aan',
@@ -32,51 +27,63 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
         dataIndex: 'title'
     }],
     tools: [{
-        type: 'save',
+        type: 'save',  # Save
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
             a = portlet.html;
 
             Ext.create('Ext.window.Window', {
-                title: 'Laad workspace',
-                width: 800,
-                height: 600,
+                title: 'Bewaar workspace',
+                width: 400,
+                height: 500,
                 modal: true,
-                finish_edit_function: (updated_record) ->
-                    #me.store.load();
-                editpopup: true,
 
-                loader:{
-                    loadMask: true,
-                    autoLoad: true,
-                    url: '/measure/measure_detailedit_portal/',
-                    ajaxOptions: {
-                        method: 'GET'
-                    },
-                    params: {},
-                    renderer: 'component'
-                }
+                xtype: 'leditgrid'
+                itemId: 'save-workspace'
+
+                finish_edit_function: (updated_record) ->
+
+                editpopup: true,
+                items: [{
+                    xtype: 'workspacesaveform'
+                }]
             }).show();
     }
     {
-        type: 'gear',
+        type: 'gear',  # Manage
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
             a = portlet.html;
 
-            form_window = Ext.create('Ext.window.Window', {
-                title: 'Save workspace',
-                width: 400,
-                height: 300
+            form_window = Ext.create('Ext.window.Window',
+            {
+
+                extend: 'Ext.grid.Panel'
+                # mixins: [
+                #     'Lizard.portlet.Portlet'
+                # ]
+                alias: 'widget.manageworkspacesportlet'
+                title: 'Beheer workspaces',
+                width: 800,
+                height: 600,
+                modal: true,
+
+                items: [{
+                    xtype: 'leditgrid'
+                    proxyUrl: '/workspace/api/workspace/'
+                    proxyParams: {}
+                    dataConfig: [
+                      {name: 'id', title: 'id', editable: false, visible: true, width: 50, type: 'text'}
+                      {name: 'name', title: 'Naam', editable: true, visible: true, width: 150, type: 'text'}
+                      {name: 'owner_id', title: 'Eigenaar', editable: true, visible: true, width: 150, type: 'text'}
+                      ]
+                    storeAutoLoad: true
+                    enterEditSummary: false
+                    # How to reload store after a new item has been added?
+                }]
             }).show()
 
     }]
-
-
-
-
-
-
 
     initComponent: () ->
         me = @
