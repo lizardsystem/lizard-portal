@@ -234,7 +234,7 @@
                   change: function(field, new_value, old_value, optional) {
                     var form, selected;
                     selected = field.getChecked()[0];
-                    form = field.up(form).getForm();
+                    form = field.up('form').getForm();
                     if (new_value.period !== 0) {
                       form.findField('period_start').setValue(Ext.Date.add(new Date(), selected.dt[0], selected.dt[1]));
                       form.findField('period_end').setValue(new Date());
