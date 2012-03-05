@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - Add addslashes filter to context in js template.
 
+- Added fields into Bakjes table of wbconfiguration form.
+
 
 0.11.4 (2012-02-28)
 -------------------

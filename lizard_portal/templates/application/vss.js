@@ -111,10 +111,10 @@ Ext.application({
 
         // Globally create workspace layers
 
+        // !Try! to initialize WorkspaceStore, does not work yet.
+        // Ext.create(Lizard.store.WorkspaceStore, );
         Ext.create(Lizard.store.LayerStore, {storeId: 'Workspace'} );
         Ext.create(Lizard.store.AvailableLayersStore, {storeId: 'AvailableLayers'} );
-
-        //debugger
 
         var aan_afvoergebied_selection =
         {
