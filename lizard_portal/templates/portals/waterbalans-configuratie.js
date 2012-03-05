@@ -180,17 +180,25 @@
                         {name: 'bottom_max_water_level', title: 'Max waterniveau', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}},
                         {name: 'bottom_min_water_level', title: 'Min waterniveau', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}}
                     ]},
-
-                    {name: 'ts_referenceoverflow', title: 'Referentie overstortreeks', editable: true, visible: true, width: 100, type: 'timeserie', ts_parameter: 'ALMR110', editIf: {prop: 'bucket_type', value_in: ['stedelijk']}},
+                    {title: 'Referentie overstort', columns: [
+                        {name: 'referenceoverflow', title: 'Waarde', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'referenceoverflow_is_ts', title: 'Is tijdserie?', editable: true, visible: true, width: 65, type: 'boolean'},
+                        {name: 'ts_referenceoverflow', title: 'Tijdserie', editable: true, visible: true, width: 100, type: 'text', editIf: {prop: 'bucket_type', value_in: ['stedelijk']}}
+                    ]},
                     //kwel
                     {title: 'Kwel/ wegzijging', columns: [
+                        {name: 'kwelwegz', title: 'Waarde', editable: true, visible: true, width: 100, type: 'float'},
                         {name: 'kwelwegz_is_ts', title: 'Is tijdserie?', editable: true, visible: true, width: 65, type: 'boolean'},
-                        {name: 'ts_kwelwegz', title: 'Tijdserie', editable: true, visible: true, width: 170, type: 'timeserie', ts_parameter: 'KWEL', editIf: {prop: 'kwelwegz_is_ts', value_in: [false]}}
+                        {name: 'ts_kwelwegz', title: 'Tijdserie', editable: true, visible: true, width: 170, type: 'text', editIf: {prop: 'kwelwegz_is_ts', value_in: [false]}}
                     ]},
                 //als niet berekend
                     {title: 'Opgedrukt', columns: [
-                        {name: 'ts_drainageindraft', title: 'Tijdserie drainage en intrek', editable: true, visible: true, width: 170, type: 'timeserie', editIf: {prop: 'is_computed', value_in: [true]}},
-                        {name: 'ts_flowoff', title: 'Tijdserie oppervlakte afstroom', editable: true, visible: true, width: 170, type: 'timeserie', editIf: {prop: 'is_computed', value_in: [true]}}
+                        {name: 'drainageindraft', title: 'Waarde drainage en intrek', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'drainageindraft_is_ts', title: 'Is tijdserie drainage en intrek?', editable: true, visible: true, width: 65, type: 'boolean'},
+                        {name: 'ts_drainageindraft', title: 'Tijdserie drainage en intrek', editable: true, visible: true, width: 170, type: 'text', editIf: {prop: 'is_computed', value_in: [true]}},
+                        {name: 'flowoff', title: 'Waarde oppervlakte afstroom', editable: true, visible: true, width: 100, type: 'float'},
+                        {name: 'drainageindraft_is_ts', title: 'Is tijdserie oppervlakte afstroom?', editable: true, visible: true, width: 65, type: 'boolean'},
+                        {name: 'ts_flowoff', title: 'Tijdserie oppervlakte afstroom', editable: true, visible: true, width: 170, type: 'text', editIf: {prop: 'is_computed', value_in: [true]}}
                      ]},
                 //concentraties
                     //chlroide
@@ -258,7 +266,7 @@
                     {name: 'deb_is_ts', title: 'Debiet is tijdserie?', editable: true, visible: true, width: 100, type: 'boolean'},
                     {name: 'deb_wint', title: 'Debiet winter', editable: true, visible: true, width: 75, type: 'number', editIf: {prop: 'deb_is_ts', value_in: [false]}},
                     {name: 'deb_zomer', title: 'Debiet zomer', editable: true, visible: true, width: 75, type: 'number', editIf: {prop: 'deb_is_ts', value_in: [false]}},
-                    {name: 'ts_debiet', title: 'Tijdserie debiet', editable: true, visible: true, width: 170, type: 'timeserie', ts_parameter: 'Q.meting', editIf: {prop: 'deb_is_ts', value_in: [true]}},
+                    {name: 'ts_debiet', title: 'Tijdserie debiet', editable: true, visible: true, width: 170, type: 'text', editIf: {prop: 'deb_is_ts', value_in: [true]}},
                     //concentraties
                     {name: 'concentr_chloride', title: 'Cl', editable: true, visible: true, width: 75, type: 'float'},
                     {name: 'min_concentr_phosphate', title: 'Min P', editable: true, visible: true, width: 75, type: 'float'},

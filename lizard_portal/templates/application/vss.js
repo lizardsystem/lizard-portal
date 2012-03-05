@@ -107,7 +107,7 @@ Ext.application({
         {% get_portal_template workspace_layers %}
 
         // !Try! to initialize WorkspaceStore, does not work yet.
-        Ext.create(Lizard.store.WorkspaceStore, );
+        // Ext.create(Lizard.store.WorkspaceStore, );
 
         var aan_afvoergebied_selection =
         {
