@@ -19,7 +19,8 @@ Ext.application({
         'Vss.model.AnnotationDetail',
         'Vss.model.AnnotationDescription',
         'Vss.model.TimeserieObject',
-        'Lizard.model.Graph'
+        'Lizard.model.Graph',
+        'Lizard.model.WorkspaceModel'
     ],
     stores: [
         'Vss.store.Communique',
@@ -35,6 +36,7 @@ Ext.application({
         'Vss.store.KrwToestandGraph',
         'Lizard.store.AppScreen',
         'Lizard.store.Graph'
+
     ],
     requires: [
         'Lizard.plugin.ApplyContext',
@@ -56,22 +58,31 @@ Ext.application({
         'GeoExt.data.LayerStore',
         'GeoExt.data.LayerModel',
         'GeoExt.data.reader.Layer',
+        // 'GeoExt.tree.LayerContainer',
         'Ext.MessageBox',
         'Lizard.ContextManager',
         'Lizard.window.Screen',
         'Lizard.window.HeaderTab',
         'Lizard.grid.EditablePropertyGrid',
         'Lizard.form.ComboMultiSelect',
+        'Lizard.form.WorkspaceSaveForm',
         'Lizard.grid.EditableGrid',
         'Lizard.store.EditGridStore',
+        'Lizard.store.AvailableLayersStore',
+        'Lizard.store.LayerStore',
+        'Lizard.store.WorkspaceStore',  // Not yet used
         'Lizard.portlet.AppScreenPortlet',
         'Lizard.portlet.AppsPortlet',
+        'Lizard.portlet.AvailableLayersPortlet',
         'Lizard.portlet.Portlet',
         'Lizard.portlet.PortalPanel',
         'Lizard.portlet.PortalColumn',
+        'Lizard.portlet.MapPortlet',
         'Lizard.portlet.GridPortlet',
         'Lizard.portlet.MultiGraph',
         'Lizard.portlet.MultiGraphStore',
+        'Lizard.portlet.WorkspacePortlet',
+        'Lizard.window.MapWindow',
         'Lizard.window.Header',
         'Vss.grid.Esf',
         'Lizard.window.EditSummaryBox',
@@ -98,7 +109,12 @@ Ext.application({
 
         {% get_portal_template watersysteem_layers %}
 
-        {% get_portal_template workspace_layers %}
+        // Globally create workspace layers
+
+        // !Try! to initialize WorkspaceStore, does not work yet.
+        // Ext.create(Lizard.store.WorkspaceStore, );
+        Ext.create(Lizard.store.LayerStore, {storeId: 'Workspace'} );
+        Ext.create(Lizard.store.AvailableLayersStore, {storeId: 'AvailableLayers'} );
 
         var aan_afvoergebied_selection =
         {
@@ -313,7 +329,7 @@ Ext.application({
         }, false)
 
         //(2) overwrite defaults with stored context
-        stored_context = Ext.JSON.decode({% autoescape off %}'{{ context }}'{% endautoescape %})
+        stored_context = Ext.JSON.decode({% autoescape off %}'{{ context|addslashes }}'{% endautoescape %})
 
         if (stored_context.objects) {
             Lizard.ContextManager.setConfiguration({objects: stored_context.objects});

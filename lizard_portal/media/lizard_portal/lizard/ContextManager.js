@@ -1,10 +1,6 @@
 (function() {
-  var __indexOf = Array.prototype.indexOf || function(item) {
-    for (var i = 0, l = this.length; i < l; i++) {
-      if (this[i] === item) return i;
-    }
-    return -1;
-  }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
   Ext.define('Lizard.ContextManager', {
     extend: 'Ext.AbstractManager',
     alternateClassName: 'Lizard.CM',
@@ -13,12 +9,8 @@
     },
     singleton: true,
     setContext: function(params, save_state, headertab) {
-      if (save_state == null) {
-        save_state = true;
-      }
-      if (headertab == null) {
-        headertab = this.active_headertab;
-      }
+      if (save_state == null) save_state = true;
+      if (headertab == null) headertab = this.active_headertab;
       return this._setContext(params, save_state, headertab);
     },
     setConfiguration: function(params) {
@@ -98,9 +90,7 @@
     },
     _checkChangeAndUpdate: function(context_param, new_param) {
       var new_value, updated;
-      if (typeof new_param === 'undefined') {
-        return false;
-      }
+      if (typeof new_param === 'undefined') return false;
       new_value = {};
       updated = false;
       if (Ext.type(new_param) === 'object') {
@@ -128,12 +118,8 @@
     },
     _setContext: function(params, save_state, silent) {
       var changed_context, changed_elements, headertab_name, me, new_context, obj_type, object, _i, _len, _ref;
-      if (save_state == null) {
-        save_state = true;
-      }
-      if (silent == null) {
-        silent = false;
-      }
+      if (save_state == null) save_state = true;
+      if (silent == null) silent = false;
       console.log('new context params are:');
       console.log(params);
       me = this;
@@ -141,22 +127,16 @@
       Ext.Object.each(params, function(key, value) {
         var new_value;
         new_value = me._checkChangeAndUpdate(me.context[key], value);
-        if (new_value !== null) {
-          return changed_context[key] = new_value;
-        }
+        if (new_value !== null) return changed_context[key] = new_value;
       });
-      if (changed_context.headertab) {
-        changed_context.headertab = params.headertab;
-      }
+      if (changed_context.headertab) changed_context.headertab = params.headertab;
       if (Ext.Object.getKeys(changed_context).length === 0) {
         return console.log('context not changed');
       } else {
         console.log('contextchange');
         if (changed_context['headertab'] && typeof changed_context.headertab === 'string') {
           changed_context.headertab = Ext.Array.filter(this.headertabs, function(element) {
-            if (element.name === changed_context.headertab) {
-              return element;
-            }
+            if (element.name === changed_context.headertab) return element;
           });
           if (changed_context.headertab.length > 0) {
             changed_context.headertab = changed_context.headertab[0];
@@ -252,12 +232,8 @@
     },
     getContext: function(headertab, no_references) {
       var me, output;
-      if (headertab == null) {
-        headertab = null;
-      }
-      if (no_references == null) {
-        no_references = false;
-      }
+      if (headertab == null) headertab = null;
+      if (no_references == null) no_references = false;
       if (headertab !== null) {
         console.log('is headertab support outside active really needed. not supported anymore');
       }
@@ -276,7 +252,8 @@
       this.addEvents(['contextchange']);
       me = this;
       window.onunload = function() {
-        var context, portalWindow;
+        var context, portalWindow,
+          _this = this;
         if (me.context.user.id) {
           context = Ext.JSON.encode({
             objects: me.objects,
@@ -297,15 +274,15 @@
               context: context
             },
             method: 'POST',
-            success: __bind(function(xhr) {
+            success: function(xhr) {
               Ext.Msg.alert("Melding", "Context opgeslagen");
               return portalWindow.setLoading(false);
-            }, this),
-            failure: __bind(function(error) {
+            },
+            failure: function(error) {
               console.log(error);
               Ext.Msg.alert("Fout", "Fout in ophalen van scherm. Error: " + error);
               return portalWindow.setLoading(false);
-            }, this)
+            }
           });
         }
       };
@@ -315,4 +292,5 @@
       return this.callParent(arguments);
     }
   });
+
 }).call(this);

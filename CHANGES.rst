@@ -2,10 +2,48 @@ Changelog of lizard-portal
 ==========================
 
 
-0.12 (unreleased)
------------------
+0.11.5 (unreleased)
+-------------------
 
-- Nothing changed yet.
+- Add addslashes filter to context in js template.
+
+- Added fields into Bakjes table of wbconfiguration form.
+
+
+0.11.4 (2012-02-28)
+-------------------
+
+- Change layers in krw_selection and area_selection.
+
+- change cancel button in reset for esf and waterbalance configuration
+
+- bugfix in edit summary window
+
+- fix some esf screen bugs
+
+
+0.11.3 (2012-02-28)
+-------------------
+
+- seperate screen for KRW measures
+
+- fixed problems with ESF tree
+
+- area navigation layout fixed
+
+- reload multiGrpah updated to latest contextManager
+
+
+0.11.2 (2012-02-28)
+-------------------
+
+- Fixed bug in views.application crashing on sessioncontextstore.
+
+
+0.11.1 (2012-02-27)
+-------------------
+
+- Added AppsPortlet, AnalysisPortlet js and coffee files.
 
 
 0.11 (2012-02-27)

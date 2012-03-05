@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.model.Graph', {
     extend: 'Ext.data.Model',
     fields: [
@@ -93,23 +94,15 @@
     statics: {
       getGraphUrl: function(values, without_height_width) {
         var base_url, params, querystring;
-        if (without_height_width == null) {
-          without_height_width = false;
-        }
+        if (without_height_width == null) without_height_width = false;
         base_url = values['base_url'];
         params = {
           dt_start: values.dt_start,
           dt_end: values.dt_end
         };
-        if (values['location']) {
-          params.location = values['location'];
-        }
-        if (values['predefined_graph']) {
-          params.graph = values['predefined_graph'];
-        }
-        if (values['use_context_location']) {
-          params.location = values['location'];
-        }
+        if (values['location']) params.location = values['location'];
+        if (values['predefined_graph']) params.graph = values['predefined_graph'];
+        if (values['use_context_location']) params.location = values['location'];
         if (values['has_reset_period'] && values['reset_period']) {
           params['reset-period'] = values['reset_period'];
         }
@@ -118,7 +111,7 @@
         }
         if (values['extra_params']) {
           Ext.Object.each(values['extra_params'], function(key, value) {
-            return params.key = value;
+            return params[key] = value;
           });
         }
         if (!without_height_width) {
@@ -135,4 +128,5 @@
       }
     }
   });
+
 }).call(this);

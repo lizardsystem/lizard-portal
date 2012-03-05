@@ -1,28 +1,30 @@
+
+/*
+    Fields:
+
+
+
+
+
+
+    * combo:
+        choices:
+            * array with string choices; or
+            * array with objects of choices. the objects has a 'id' and 'name' key
+
+
+
+
+
+
+  issues:
+  - editors are to small
+  - multiselect comboboxes doesn't work correct
+*/
+
 (function() {
-  /*
-      Fields:
-  
-  
-  
-  
-  
-  
-      * combo:
-          choices:
-              * array with string choices; or
-              * array with objects of choices. the objects has a 'id' and 'name' key
-  
-  
-  
-  
-  
-  
-    issues:
-    - editors are to small
-    - multiselect comboboxes doesn't work correct
-  
-  
-  */  Ext.override(Ext.form.field.Field, {
+
+  Ext.override(Ext.form.field.Field, {
     isEqual: function(a, b) {
       if (Ext.isDate(a) && Ext.isDate(b)) {
         return a.getTime() === b.getTime();
@@ -39,6 +41,7 @@
       return a === b;
     }
   });
+
   Ext.override(Ext.data.Model, {
     isEqual: function(a, b) {
       if (Ext.isDate(a) && Ext.isDate(b)) {
@@ -56,6 +59,7 @@
       return a === b;
     }
   });
+
   Ext.define('Lizard.grid.EditableGrid', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.leditgrid',
@@ -66,6 +70,7 @@
       dataConfig: [],
       storeAutoLoad: false,
       useSaveBar: true,
+      useAddDeleteButtons: true,
       enterEditSummary: true,
       editable: true,
       addEditIcon: false,
@@ -148,12 +153,8 @@
       if (me.read_only_field && record.data[me.read_only_field] === true) {
         return false;
       }
-      if (typeof col.editable === 'undefined') {
-        col.editable = true;
-      }
-      if (!col.editable) {
-        return false;
-      }
+      if (typeof col.editable === 'undefined') col.editable = true;
+      if (!col.editable) return false;
       type = col.type || 'text';
       if (type) {
         if (me.extraEditors[type]) {
@@ -286,18 +287,12 @@
           value = names.join(', ');
         } else if (col.choices) {
           list_choices = Ext.Array.filter(col.choices, function(val) {
-            if (val.id === value) {
-              return true;
-            }
+            if (val.id === value) return true;
           });
-          if (list_choices.length > 0) {
-            value = list_choices[0].name;
-          }
+          if (list_choices.length > 0) value = list_choices[0].name;
         }
       }
-      if (!col.editable) {
-        value = "<i>" + value + "</i>";
-      }
+      if (!col.editable) value = "<i>" + value + "</i>";
       if (col.editIf) {
         if (!Ext.Array.contains(col.editIf.value_in, record.data[col.editIf.prop])) {
           console.log('grijs');
@@ -315,9 +310,7 @@
       me = this;
       getColconfig = function(col) {
         var col_config;
-        if (typeof col.sortable === 'undefined') {
-          col.sortable = true;
-        }
+        if (typeof col.sortable === 'undefined') col.sortable = true;
         col_config = {
           text: col.title,
           width: col.width || 100,
@@ -333,12 +326,8 @@
             return me.get_editor(record, col);
           }, me, [col], true);
         }
-        if (col.editIf) {
-          col_config.editIf = col.editIf;
-        }
-        if (col.multiSelect) {
-          col_config.multiSelect = true;
-        }
+        if (col.editIf) col_config.editIf = col.editIf;
+        if (col.multiSelect) col_config.multiSelect = true;
         return col_config;
       };
       cols = [];
@@ -437,9 +426,7 @@
           type: setting.type || 'auto',
           mapping: setting.mapping || setting.name
         };
-        if (setting.defaultValue) {
-          field['defaultValue'] = setting.defaultValue;
-        }
+        if (setting.defaultValue) field['defaultValue'] = setting.defaultValue;
         if ((_ref = setting.type) === 'combo' || _ref === 'gridcombo') {
           field.sortType = 'asIdNameObject';
         }
@@ -500,37 +487,36 @@
     initComponent: function() {
       var me;
       me = this;
-      if (!this.getUsePagination()) {
-        this.recordsPerPage = 10000;
-      }
+      if (!this.getUsePagination()) this.recordsPerPage = 10000;
       me.columns = this.getColumnConfig();
       me.store = Ext.create('Lizard.store.EditGridStore', this.getStoreConfig());
+      me.bbar = [];
       me.bbar = [];
       if (this.getEditable()) {
         this.editing = Ext.create('Lizard.grid.CellEditing', {
           clicksToEdit: 1
         });
-        if (!this.plugins) {
-          this.plugins = [];
-        }
+        if (!this.plugins) this.plugins = [];
         this.plugins.push(this.editing);
-        me.bbar = [
-          {
-            xtype: 'button',
-            text: 'Toevoegen',
-            iconCls: 'l-icon-add',
-            handler: function(menuItem, checked) {
-              return me.addRecord();
+        if (this.useAddDeleteButtons) {
+          me.bbar.concat([
+            {
+              xtype: 'button',
+              text: 'Toevoegen',
+              iconCls: 'l-icon-add',
+              handler: function(menuItem, checked) {
+                return me.addRecord();
+              }
+            }, {
+              xtype: 'button',
+              text: 'Delete',
+              iconCls: 'l-icon-delete',
+              handler: function(menuItem, checked) {
+                return me.deleteSelectedRecord();
+              }
             }
-          }, {
-            xtype: 'button',
-            text: 'Delete',
-            iconCls: 'l-icon-delete',
-            handler: function(menuItem, checked) {
-              return me.deleteSelectedRecord();
-            }
-          }
-        ];
+          ]);
+        }
       }
       if (this.getEditable() && this.getUseSaveBar()) {
         me.bbar = me.bbar.concat([
@@ -577,9 +563,8 @@
       return this.callParent(arguments);
     },
     afterRender: function() {
-      if (this.storeAutoLoad) {
-        return this.store.load();
-      }
+      if (this.storeAutoLoad) return this.store.load();
     }
   });
+
 }).call(this);

@@ -5,54 +5,28 @@
     title: 'Analyse scherm',
     xtype: 'portalpanel',
     items:[{
-	width: 300,
-	items: [{
-	    title: 'Navigatie',
+	    width: 300,
+
+        items: [{
+            title: 'Navigatie',
             flex:2,
             xtype: 'appscreenportlet',
             store: Ext.create('Lizard.store.AppScreen', {data: [
                 {slug: 'app1', name: 'N&S', description: 'app1 description',
                  type: 'external', url: 'http://www.nelen-schuurmans.nl'},
                 {slug: 'app2', name: 'Lizard', description: 'app2 description',
-                 type: 'external', url: 'http://lizard.net'},
+                 type: 'external', url: 'http://lizard.net'}
             ] })
-	},{
-        autoHeight: true,
-        minHeight: 200,
-	    title: 'Workspace',
-            //id: 'kaartlagen',
+        },{
+            xtype: 'availablelayersportlet',
+            store: Ext.data.StoreManager.lookup('Workspace')
+        },{
+            xtype: 'workspaceportlet',
+            store: Ext.data.StoreManager.lookup('Workspace')
+        }]
 
-            xtype: 'grid',
-            columns:[{
-                text: 'aan',
-                width:35,
-                dataIndex: 'visibility',
-                xtype: 'checkcolumn',
-                sortable: true
-            },{
-                text: 'Naam',
-                flex: 1,
-                sortable: true,
-                dataIndex: 'title'
-            }],
-            store: Ext.data.StoreManager.lookup('Workspace'),
-            tools: [{
-                type: 'save',
-                handler: function(e, target, panelHeader, tool) {
-                    var portlet = panelHeader.ownerCt;
-                    var a = portlet.html;
-
-                    var form_window = Ext.create('Ext.window.Window', {
-                        title: 'Save workspace',
-                        width: 400,
-                        height: 300
-                    }).show();
-                }
-            }]
-  	}
-               ]
     },{
-	flex: 1,
+	    flex: 1,
 		items: [{
 			title: 'Kaart',
             id:'extmap_analyse',
@@ -60,7 +34,7 @@
                 'applycontext'
             ],
             flex:1,
-            xtype: "gx_mappanel",
+            xtype: "mapportlet",
             initZoomOnRender: false,
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],

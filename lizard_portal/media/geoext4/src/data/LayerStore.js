@@ -91,7 +91,7 @@ Ext.define('GeoExt.data.LayerStore', {
 	/** private: method[constructor]
 	 */
 	constructor : function(config) {
-		config = config || {};
+        config = config || {};
 		delete config.fields;
 		// "map" option
 		var map = config.map instanceof GeoExt.panel.Map ? config.map.map : config.map;
@@ -132,7 +132,7 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  is synchronized with the map and vice-versa.
 	 */
 	bind : function(map, options) {
-		var me = this;
+        var me = this;
 		if(me.map) {
 			// already bound
 			return;
@@ -169,6 +169,7 @@ Ext.define('GeoExt.data.LayerStore', {
 			"add" : me.onAdd,
 			"remove" : me.onRemove,
 			"update" : me.onUpdate,
+            "datachanged" : me.onDatachanged,
 			scope : me
 		});
 		me.data.on({
@@ -180,19 +181,21 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  Unbind this store from the map it is currently bound.
 	 */
 	unbind : function() {
-		var me = this;
+        var me = this;
 		if(me.map) {
 			me.map.events.un({
 				"changelayer" : me.onChangeLayer,
 				"addlayer" : me.onAddLayer,
 				"removelayer" : me.onRemoveLayer,
+
 				scope : me
 			});
 			me.un("load", me.onLoad, me);
 			me.un("clear", me.onClear, me);
 			me.un("add", me.onAdd, me);
 			me.un("remove", me.onRemove, me);
-
+			me.un("update", me.onUpdate, me);
+            me.un("datachanged", me.onDatachanged, me);
 			me.data.un("replace", me.onReplace, me);
 
 			me.map = null;
@@ -205,7 +208,7 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  appropriate record within the store.
 	 */
 	onChangeLayer : function(evt) {
-		console.log(evt);
+        console.log(evt);
         var me = this, layer = evt.layer;
 		var recordIndex = this.findBy(function(rec, id) {
 			return rec.getLayer() === layer;
@@ -240,7 +243,7 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  Handler for a map's addlayer event
 	 */
 	onAddLayer : function(evt) {
-		var me=this;
+        var me=this;
 		if(!me._adding) {
 			var layer = evt.layer;
 			me._adding = true;
@@ -277,7 +280,7 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  Handler for a store's load event
 	 */
 	onLoad : function(store, records, options) {
-		var me=this;
+        var me=this;
 		if(!Ext.isArray(records)) {
 			records = [records];
 		}
@@ -301,13 +304,16 @@ Ext.define('GeoExt.data.LayerStore', {
 			}
 		}
 	},
+    onDatachanged: function(store, records) {
+        this.onLoad(store, records, {});
+    },
 	/** private: method[onClear]
 	 *  :param store: ``Ext.data.Store``
 	 *
 	 *  Handler for a store's clear event
 	 */
 	onClear : function(store) {
-		var me=this;
+        var me=this;
 		me._removing = true;
 		for(var i = me.map.layers.length - 1; i >= 0; i--) {
 			me.map.removeLayer(me.map.layers[i]);
@@ -322,7 +328,7 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  Handler for a store's add event
 	 */
 	onAdd : function(store, records, index) {
-		var me=this;
+        var me=this;
 		if(!me._adding) {
 			me._adding = true;
 			var layer;
@@ -344,7 +350,7 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  Handler for a store's remove event
 	 */
 	onRemove : function(store, record, index) {
-		var me=this;
+        var me=this;
 		if(!me._removing) {
 			var layer = record.getLayer();
 			if(me.map.getLayer(layer.id) != null) {
@@ -386,7 +392,7 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  Removes a record's layer from the bound map.
 	 */
 	removeMapLayer : function(record) {
-		this.map.removeLayer(record.getLayer());
+        this.map.removeLayer(record.getLayer());
 	},
 	/** private: method[onReplace]
 	 *  :param key: ``String``
@@ -398,7 +404,7 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  Handler for a store's data collections' replace event
 	 */
 	onReplace : function(key, oldRecord, newRecord) {
-		this.removeMapLayer(oldRecord);
+        this.removeMapLayer(oldRecord);
 	},
 	/** public: method[getByLayer]
 	 *  :param layer: ``OpenLayers.Layer``

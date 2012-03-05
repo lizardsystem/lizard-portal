@@ -49,7 +49,7 @@ Ext.define('Lizard.form.ComboMultiSelect', {
         data = {}
         data[@.name] = @getValue()
         return data
-    
+
     constructor: () ->
         @initConfig(arguments)
         @callParent(arguments)
@@ -79,8 +79,7 @@ Ext.define('Lizard.form.ComboMultiSelect', {
             for extra_field in me.extra_fields
                 fields.push(extra_field)
 
-        fields.push(
-            {
+        fields.push({
                 xtype: 'actioncolumn'
                 width: 50
                 items: [

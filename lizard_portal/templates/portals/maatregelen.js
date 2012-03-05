@@ -4,8 +4,8 @@
 	xtype: 'portalpanel',
     breadcrumbs: [
     {
-        name: 'KRW-overzicht',
-        link: 'krw-overzicht'
+        name: 'Watersysteemkaart',
+        link: 'homepage'
     },{
         name: 'Maatregelen'
     }],

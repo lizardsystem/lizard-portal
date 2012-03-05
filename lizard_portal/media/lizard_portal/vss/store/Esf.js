@@ -5,6 +5,22 @@
  * Time: 14:46
  * To change this template use File | Settings | File Templates.
  */
+
+Ext.override(Ext.data.proxy.Server,{
+   destroy: function() {
+
+       if (arguments[0].url) {
+           return this.doRequest.apply(this, arguments);
+       } else {
+           return true
+       }
+   }
+});
+
+
+
+
+
 Ext.define('Vss.store.Esf', {
     extend: 'Ext.data.TreeStore',
     requires: 'Vss.model.Esf',
@@ -25,12 +41,21 @@ Ext.define('Vss.store.Esf', {
             type: 'json',
             writeAllFields: false,
             root: 'data',
-            encode: true,
-            successProperty: 'success'
+            successProperty: 'success',
+            encode:true
         },
         reader: {
             type: 'json',
             successProperty: 'success'
+        },
+        afterRequest:function(request,success){
+            if (request.method == 'POST') {
+                if (success) {
+                    Ext.MessageBox.alert('Opslaan gelukt');
+                } else {
+                    Ext.MessageBox.alert('Opslaan mislukt');
+                }
+            }
         }
     },
     constructor: function(config) {
@@ -43,10 +68,7 @@ Ext.define('Vss.store.Esf', {
         if (!this.proxy.extraParams) {
             this.proxy.extraParams = { }
         }
-        this.proxy.extraParams = Ext.merge(this.proxy.extraParams, {area_id:this.area_id });
-
-
-    },
+   },
     applyParams: function(params) {
         this.proxy.extraParams = Ext.merge(this.proxy.extraParams, params);
         this.load();
@@ -58,7 +80,6 @@ Ext.define('Vss.store.Esf', {
                     rec.commit();
                 }
             });
-            Ext.MessageBox.alert('Opslaan gelukt');
         }
     },
     rejectChanges : function(){

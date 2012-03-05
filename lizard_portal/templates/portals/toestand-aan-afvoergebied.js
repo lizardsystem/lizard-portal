@@ -25,37 +25,61 @@
             title: 'Grafieken',
             flex: 1,
             xtype: 'multigraphstore',
-            store: Ext.create('Lizard.store.Graph', {data: {% get_portal_template graphs-aanafvoer_toestand %} })
-		}],
-        tools: [{
-            type: 'save',
-            handler: function (e, target, panelHeader, tool) {
-                var cm = Lizard.CM;
-
-                Ext.create('Ext.window.Window', {
-                    title: 'Stuurparameters instellen',
-                    width: 800,
-                    height: 600,
-                    modal: true,
-                    finish_edit_function: function (updated_record) {
-                        //todo
-                    },
-                    editpopup: true,
-
-                    loader:{
-                        loadMask: true,
-                        autoLoad: true,
-                        url: '/measure/steering_parameter_form/',
-                        params: {
-                            object_id: cm.object.id
-                        },
-                        ajaxOptions: {
-                            method: 'GET'
-                        },
-                        renderer: 'component'
+            applyParams: function(params) {
+                var me = this;
+                me.store.load({
+                    params: {
+                        object_id: params.object.id
                     }
-                }).show();
-            }
+                });
+            },
+            plugins: [
+                'applycontext'
+            ],
+            store: Ext.create('Lizard.store.Graph',{
+                context_ready: true,
+                proxy: {
+                    type: 'ajax',
+                    url: '/measure/api/steer_parameter_graphs/',
+                    extraParams: {
+                          _accept: 'application/json'
+                    },
+                    reader: {
+                          //root: 'data',
+                          type: 'json'
+                    }
+                }
+            }),
+            tools: [{
+                type: 'save',
+                handler: function (e, target, panelHeader, tool) {
+                    var cm = Ext.getCmp('portalWindow').context_manager.getContext();
+
+                    Ext.create('Ext.window.Window', {
+                        title: 'Stuurparameters instellen',
+                        width: 800,
+                        height: 600,
+                        modal: true,
+                        finish_edit_function: function (updated_record) {
+                            //todo
+                        },
+                        editpopup: true,
+
+                        loader:{
+                            loadMask: true,
+                            autoLoad: true,
+                            url: '/measure/steering_parameter_form/',
+                            params: {
+                                object_id: cm.object.id
+                            },
+                            ajaxOptions: {
+                                method: 'GET'
+                            },
+                            renderer: 'component'
+                        }
+                    }).show();
+                }
+            }]
         }]
     },
     {

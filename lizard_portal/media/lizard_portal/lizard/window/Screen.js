@@ -1,27 +1,22 @@
+
+/*
+Lizard.window.Screen
+
+Setup for the default viewport of Lizard with a header, (area) navigation on the left and the portals in the center
+
+with the option
+showOnlyPortal, only the portal is shown (without the header and left navigation)
+
+
+The class includes functions to load and activate portals, which are:
+linkTo
+loadPortal
+showNavigationPortalTemplate
+*/
+
 (function() {
-  /*
-  Lizard.window.Screen
-  
-  Setup for the default viewport of Lizard with a header, (area) navigation on the left and the portals in the center
-  
-  with the option
-  showOnlyPortal, only the portal is shown (without the header and left navigation)
-  
-  
-  The class includes functions to load and activate portals, which are:
-  linkTo
-  loadPortal
-  showNavigationPortalTemplate
-  
-  
-  
-  */
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __indexOf = Array.prototype.indexOf || function(item) {
-    for (var i = 0, l = this.length; i < l; i++) {
-      if (this[i] === item) return i;
-    }
-    return -1;
-  };
+  var __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
   Ext.define('Lizard.window.Screen', {
     extend: 'Ext.container.Viewport',
     config: {
@@ -35,30 +30,18 @@
       navigation_tabs: []
     },
     linkTo: function(params, save_state, area_selection_collapse, skip_animation) {
-      if (save_state == null) {
-        save_state = true;
-      }
-      if (area_selection_collapse == null) {
-        area_selection_collapse = true;
-      }
-      if (skip_animation == null) {
-        skip_animation = false;
-      }
+      if (save_state == null) save_state = true;
+      if (area_selection_collapse == null) area_selection_collapse = true;
+      if (skip_animation == null) skip_animation = false;
       console.log('linkTo, with arguments:');
       console.log(arguments);
       return Lizard.CM.setContext(params, save_state, false);
     },
     linkToNewWindow: function(params, save_state, area_selection_collapse, skip_animation) {
       var args, href;
-      if (save_state == null) {
-        save_state = true;
-      }
-      if (area_selection_collapse == null) {
-        area_selection_collapse = true;
-      }
-      if (skip_animation == null) {
-        skip_animation = false;
-      }
+      if (save_state == null) save_state = true;
+      if (area_selection_collapse == null) area_selection_collapse = true;
+      if (skip_animation == null) skip_animation = false;
       console.log('linkToNewWindow, with arguments:');
       console.log(arguments);
       args = Ext.Object.merge({}, this.context_manager.getContext(), params);
@@ -67,21 +50,13 @@
     },
     linkToPopup: function(title, url, params, window_options, add_active_object_to_request, renderer, modal, reloadme) {
       var args, cont, me, success, window_settings;
-      if (window_options == null) {
-        window_options = {};
-      }
+      if (window_options == null) window_options = {};
       if (add_active_object_to_request == null) {
         add_active_object_to_request = true;
       }
-      if (renderer == null) {
-        renderer = 'html';
-      }
-      if (modal == null) {
-        modal = false;
-      }
-      if (reloadme == null) {
-        reloadme = false;
-      }
+      if (renderer == null) renderer = 'html';
+      if (modal == null) modal = false;
+      if (reloadme == null) reloadme = false;
       console.log('linkTo, with arguments:');
       console.log(arguments);
       me = this;
@@ -118,9 +93,7 @@
           success: success
         }
       };
-      if (window_options.save || window_options.search) {
-        window_settings.tools = [];
-      }
+      if (window_options.save || window_options.search) window_settings.tools = [];
       if (window_options.save) {
         window_settings.tools.push({
           type: 'save',
@@ -142,16 +115,11 @@
       return Ext.create('Ext.window.Window', window_settings).show();
     },
     loadPortal: function(params, area_selection_collapse, skip_animation, show_navigation) {
-      var container, me, pos, tab, _ref;
-      if (area_selection_collapse == null) {
-        area_selection_collapse = true;
-      }
-      if (skip_animation == null) {
-        skip_animation = false;
-      }
-      if (show_navigation == null) {
-        show_navigation = true;
-      }
+      var container, me, pos, tab, _ref,
+        _this = this;
+      if (area_selection_collapse == null) area_selection_collapse = true;
+      if (skip_animation == null) skip_animation = false;
+      if (show_navigation == null) show_navigation = true;
       console.log("load portal with portal template '" + params.portal_template + "' and arguments:");
       console.log(arguments);
       if (show_navigation && params.object && ((_ref = typeof params.object.id) === 'null' || _ref === 'undefined') && params.headertab.navigation) {
@@ -163,9 +131,7 @@
       tab = this.portalContainer.child("#" + params.portal_template);
       if (tab) {
         pos = this.portalContainer.tabBar.items.indexOf(tab.tab);
-        if (pos > 0) {
-          this.portalContainer.tabBar.move(pos, 0);
-        }
+        if (pos > 0) this.portalContainer.tabBar.move(pos, 0);
         this.portalContainer.setActiveTab(tab);
         tab.setContext(params);
         return this.header.setBreadCrumb(tab.breadcrumbs);
@@ -177,22 +143,18 @@
             portal_template: params.portal_template
           },
           method: 'GET',
-          success: __bind(function(xhr) {
+          success: function(xhr) {
             var newComponent;
             try {
               newComponent = Ext.decode(xhr.responseText);
               newComponent.params = Ext.merge({}, newComponent.params, Lizard.CM.getContext());
               newComponent.headertab = Lizard.CM.context.headertab;
               if (area_selection_collapse) {
-                if (me.navigation) {
-                  me.navigation.collapse();
-                }
+                if (me.navigation) me.navigation.collapse();
               }
               tab = me.portalContainer.add(newComponent);
-              pos = this.portalContainer.tabBar.items.indexOf(tab.tab);
-              if (pos > 0) {
-                this.portalContainer.tabBar.move(pos, 0);
-              }
+              pos = _this.portalContainer.tabBar.items.indexOf(tab.tab);
+              if (pos > 0) _this.portalContainer.tabBar.move(pos, 0);
               me.portalContainer.setActiveTab(tab);
               tab.on('activate', function(tab) {
                 return Lizard.CM.setContext({
@@ -206,26 +168,20 @@
               Ext.Msg.alert("Fout", "Fout in laden scherm. Error: " + error);
               return me.portalContainer.setLoading(false);
             }
-          }, this),
-          failure: __bind(function(error) {
+          },
+          failure: function(error) {
             console.log(error);
             Ext.Msg.alert("Fout", "Fout in ophalen van scherm. Error: " + error);
             return me.portalContainer.setLoading(false);
-          }, this)
+          }
         });
       }
     },
     showNavigation: function(navigation_id, animate_navigation_expand, expand_navigation, show_portal_template) {
       var args, navigation_tab;
-      if (animate_navigation_expand == null) {
-        animate_navigation_expand = true;
-      }
-      if (expand_navigation == null) {
-        expand_navigation = true;
-      }
-      if (show_portal_template == null) {
-        show_portal_template = true;
-      }
+      if (animate_navigation_expand == null) animate_navigation_expand = true;
+      if (expand_navigation == null) expand_navigation = true;
+      if (show_portal_template == null) show_portal_template = true;
       navigation_tab = this.navigation.getComponent(navigation_id);
       if (!navigation_tab) {
         console.log('navigation does not exist');
@@ -248,15 +204,9 @@
     },
     showTabMainpage: function(animate_navigation_expand, expand_navigation, show_portal_template) {
       var context, ht, opmerking;
-      if (animate_navigation_expand == null) {
-        animate_navigation_expand = true;
-      }
-      if (expand_navigation == null) {
-        expand_navigation = true;
-      }
-      if (show_portal_template == null) {
-        show_portal_template = true;
-      }
+      if (animate_navigation_expand == null) animate_navigation_expand = true;
+      if (expand_navigation == null) expand_navigation = true;
+      if (show_portal_template == null) show_portal_template = true;
       debugger;
       opmerking = 'wordt deze nog gebruikt';
       context = Lizard.ContextManager.getContext();
@@ -374,8 +324,12 @@
                 tab = this.child(navigation);
                 return this.setActiveTab(tab);
               },
-              setEnabledNavigations: function(navigations) {
-                debugger;
+              listeners: {
+                expand: {
+                  fn: function(panel) {
+                    return panel.doLayout();
+                  }
+                }
               }
             }, {
               region: 'center',
@@ -431,4 +385,5 @@
       return this.switchNavigation(Lizard.CM.context.headertab);
     }
   });
+
 }).call(this);

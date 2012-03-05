@@ -45,7 +45,7 @@ def application(request, application_name, active_tab_name):
         if user.iprangelogin_set.all().count() > 0:
             session_key = request.session.session_key
             try:
-                context_store = user.sessioncontextstore.get(session_key=session_key)
+                context_store = user.sessioncontextstore_set.get(session_key=session_key)
                 context = context_store.context
             except SessionContextStore.DoesNotExist:
                 pass

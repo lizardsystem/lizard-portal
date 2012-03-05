@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.store.AppScreen', {
     extend: 'Ext.data.Store',
     model: 'Lizard.model.App',
@@ -9,4 +10,5 @@
       }
     }
   });
+
 }).call(this);

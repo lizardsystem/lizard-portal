@@ -17,10 +17,9 @@ Ext.define 'Lizard.window.EditSummaryBox',
         show: (config) ->
             a = Ext.create('Ext.window.MessageBox',{
                   btnCallback: (btn) ->
-                      if (btn=='ok')
-                          msgBox = @
-
-                          field = msgBox.textArea
+                      debugger
+                      if (btn.itemId=='ok')
+                          field = @textArea
                           value = field.getValue()
                           if value < 1
                                field.setActiveError('Minimale lengte is 1 letter')
@@ -28,9 +27,12 @@ Ext.define 'Lizard.window.EditSummaryBox',
 
                           btn.blur();
 
-                          if msgBox.userCallback(btn.itemId, value, field)
-                              msgBox.hide()
-                              msgBox.destroy()
+                          if @userCallback(btn.itemId, value, field)
+                              @hide()
+                              @destroy()
+                      else
+                          @hide()
+                          @destroy()
             })
 
             args = Ext.merge({

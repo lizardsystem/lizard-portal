@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.store.Graph', {
     extend: 'Ext.data.Store',
     model: 'Lizard.model.Graph',
@@ -28,4 +29,5 @@
       return this.context_ready = true;
     }
   });
+
 }).call(this);
