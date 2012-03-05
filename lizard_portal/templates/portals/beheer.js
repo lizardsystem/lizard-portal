@@ -1,4 +1,3 @@
-
 {
     itemId: 'beheer',
     title: 'Beheer',
@@ -61,11 +60,18 @@
                      handler: function() { Lizard.CM.setContext({portal_template:'area_link'}); }
                 },
                 {
+                   text: 'Valideer configuraties',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({portal_template:'valideer_configuraties'}); }
+                },
+                {
                      text: 'Gebruikersbeheer',
                      {% if user.is_authenticated %}
                          disabled: false,
                      {% endif %}
- 
+
                      handler: function() { window.open('/manager/') }
                 }
             ]
