@@ -31,7 +31,7 @@
                 'applycontext'
             ],
             flex:1,
-            xtype: "gx_mappanel",
+            xtype: "mapportlet",
             initZoomOnRender: false,
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],

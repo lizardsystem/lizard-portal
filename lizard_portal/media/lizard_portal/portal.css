@@ -1,3 +1,10 @@
+.l-hidden {
+    visibility: hidden;
+    height: 1px;
+    overflow:  hidden;
+}
+
+
 .l-grid {
     font-size: 11px;
 

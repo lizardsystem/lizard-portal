@@ -34,6 +34,11 @@ Ext.define('GeoExt.data.LayerModel', {
 		name : "visibility",
 		type : "boolean",
 		mapping : "visibility"
+	},{
+		name : "isbaselayer",
+		type : "boolean",
+        defaultValue: false,
+		mapping : "isbaselayer"
 	}],
 	getLayer : function() {
 		return this.get("layer");
@@ -41,7 +46,7 @@ Ext.define('GeoExt.data.LayerModel', {
 	setLayer : function(layer) {
         this.set("layer", layer);
 		return;
-		//
+		//orgineel
 		var me = this;
 		if(layer !== me.getLayer) {
 			me.dirty = true;
