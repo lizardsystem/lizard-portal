@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.form.WorkspaceSaveForm', {
     extend: 'Ext.form.Panel',
     alias: 'widget.workspacesaveform',
@@ -95,4 +96,5 @@
       }
     }
   });
+
 }).call(this);

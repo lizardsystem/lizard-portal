@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.portlet.MultiGraph', {
     extend: 'Lizard.portlet.Portlet',
     alias: 'widget.multigraph',
@@ -135,4 +136,5 @@
       return this.callParent(arguments);
     }
   });
+
 }).call(this);

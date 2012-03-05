@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.portlet.WorkspacePortlet', {
     extend: 'Ext.grid.Panel',
     mixins: ['Lizard.portlet.Portlet'],
@@ -56,9 +57,7 @@
           if (me.workspaceStore.layerStore) {
             me.workspaceStore.layerStore.loadData(records[0].get('layers'));
           }
-          if (config.callback) {
-            return config.callback(records, operation, success);
-          }
+          if (config.callback) return config.callback(records, operation, success);
         }
       });
     },
@@ -206,4 +205,5 @@
       return this.callParent(arguments);
     }
   });
+
 }).call(this);

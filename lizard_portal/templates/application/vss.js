@@ -58,6 +58,7 @@ Ext.application({
         'GeoExt.data.LayerStore',
         'GeoExt.data.LayerModel',
         'GeoExt.data.reader.Layer',
+        // 'GeoExt.tree.LayerContainer',
         'Ext.MessageBox',
         'Lizard.ContextManager',
         'Lizard.window.Screen',
@@ -67,6 +68,7 @@ Ext.application({
         'Lizard.form.WorkspaceSaveForm',
         'Lizard.grid.EditableGrid',
         'Lizard.store.EditGridStore',
+        'Lizard.store.AvailableLayersStore',
         'Lizard.store.LayerStore',
         'Lizard.store.WorkspaceStore',  // Not yet used
         'Lizard.portlet.AppScreenPortlet',
@@ -108,9 +110,9 @@ Ext.application({
         {% get_portal_template watersysteem_layers %}
 
         // Globally create workspace layers
-        
-        // !Try! to initialize WorkspaceStore, does not work yet.
+
         Ext.create(Lizard.store.LayerStore, {storeId: 'Workspace'} );
+        Ext.create(Lizard.store.AvailableLayersStore, {storeId: 'AvailableLayers'} );
 
         //debugger
 

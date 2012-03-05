@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.window.MapWindow', {
     extend: 'Ext.window.Window',
     title: 'Kaart',
@@ -14,9 +15,7 @@
     statics: {
       show: function(config) {
         var map_window, map_windows;
-        if (config == null) {
-          config = {};
-        }
+        if (config == null) config = {};
         map_windows = [];
         if (config.window_ref) {
           map_windows = Ext.WindowManager.getBy(function(obj) {
@@ -47,9 +46,7 @@
       features = this.format.read(features_string);
       this.geometry_type = features.geometry.CLASS_NAME;
       if (features) {
-        if (features.constructor !== Array) {
-          features = [features];
-        }
+        if (features.constructor !== Array) features = [features];
         final_features = [];
         for (_i = 0, _len = features.length; _i < _len; _i++) {
           feature = features[_i];
@@ -114,9 +111,7 @@
       vlayer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0", {
         layers: 'basic'
       });
-      if (this.start_geometry) {
-        this.deserialize(this.start_geometry);
-      }
+      if (this.start_geometry) this.deserialize(this.start_geometry);
       layers = [vlayer, this.points, this.lines, this.polygons];
       map_controls = [new OpenLayers.Control.LayerSwitcher()];
       items = [];
@@ -179,17 +174,13 @@
             xtype: 'button',
             text: 'Undo',
             handler: function() {
-              if (this.active_editor.undo) {
-                return this.active_editor.undo();
-              }
+              if (this.active_editor.undo) return this.active_editor.undo();
             }
           }, {
             xtype: 'button',
             text: 'Cancel toevoegen',
             handler: function() {
-              if (me.active_editor.cancel) {
-                return me.active_editor.cancel();
-              }
+              if (me.active_editor.cancel) return me.active_editor.cancel();
             }
           }, {
             xtype: 'button',
@@ -305,9 +296,7 @@
       config = {
         items: items
       };
-      if (tbar) {
-        config.tbar = tbar;
-      }
+      if (tbar) config.tbar = tbar;
       config.bbar = {
         xtype: 'button',
         text: 'Klaar met bewerken',
@@ -319,4 +308,5 @@
       return this.callParent(arguments);
     }
   });
+
 }).call(this);

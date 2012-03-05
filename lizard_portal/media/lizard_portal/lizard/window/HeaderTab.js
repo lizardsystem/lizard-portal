@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.window.HeaderTab', {
     alias: 'widget.headertab',
     config: {
@@ -21,4 +22,5 @@
       return this.callParent(arguments);
     }
   });
+
 }).call(this);

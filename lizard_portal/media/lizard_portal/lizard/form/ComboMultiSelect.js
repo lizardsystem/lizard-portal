@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.form.ComboMultiSelect', {
     extend: 'Ext.form.FieldContainer',
     alias: 'widget.combomultiselect',
@@ -31,9 +32,7 @@
     },
     getValue: function(jsonFormat) {
       var me, values;
-      if (jsonFormat == null) {
-        jsonFormat = false;
-      }
+      if (jsonFormat == null) jsonFormat = false;
       console.log('getValue');
       console.log(this.store);
       me = this;
@@ -41,9 +40,7 @@
       this.store.data.each(function(ref) {
         return values.push(ref.data);
       });
-      if (jsonFormat) {
-        return Ext.JSON.encode(values);
-      }
+      if (jsonFormat) return Ext.JSON.encode(values);
       return values;
     },
     getSubmitValue: function() {
@@ -69,9 +66,7 @@
           type: 'memory'
         }
       });
-      if (this.getOptions()) {
-        this.combo_store = this.getOptions();
-      }
+      if (this.getOptions()) this.combo_store = this.getOptions();
       fields = [
         {
           text: me.getField_name(),
@@ -152,4 +147,5 @@
       return this.callParent(arguments);
     }
   });
+
 }).call(this);

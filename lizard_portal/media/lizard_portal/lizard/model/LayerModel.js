@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.model.LayerModel', {
     extend: 'Ext.data.Model',
     fields: [
@@ -124,9 +125,7 @@
         }
       } else if (ol_class === 'OpenLayers.Layer.OSM') {
         url = this.get('url');
-        if (!url) {
-          url = null;
-        }
+        if (!url) url = null;
         return new OpenLayers.Layer.OSM(this.get('name'), url);
       } else {
         return console.error('dit type wordt niet ondersteund');
@@ -147,4 +146,5 @@
       }, this.data), id || layer.id);
     }
   });
+
 }).call(this);

@@ -66,13 +66,6 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
                 if config.callback
                    config.callback(records, operation, success)
         })
-
-
-
-
-
-
-
     tools: [{
         type: 'save',  # Save
         handler: (e, target, panelHeader, tool) ->

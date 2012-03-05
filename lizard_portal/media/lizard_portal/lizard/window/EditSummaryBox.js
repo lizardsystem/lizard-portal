@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.window.EditSummaryBox', {
     statics: {
       show: function(config) {
@@ -39,4 +40,5 @@
       }
     }
   });
+
 }).call(this);

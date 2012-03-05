@@ -1,3 +1,4 @@
+# A screen with (user selected) apps.
 Ext.define('Lizard.portlet.AppScreenPortlet', {
     # A specialized Ext.panel.Panel
     extend: 'Lizard.portlet.Portlet'

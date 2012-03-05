@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.store.WorkspaceStore', {
     extend: 'Ext.data.Store',
     alias: 'store.workspacestore',
@@ -6,4 +7,5 @@
     autoLoad: false,
     layerStore: null
   });
+
 }).call(this);

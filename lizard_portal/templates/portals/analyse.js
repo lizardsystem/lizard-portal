@@ -18,6 +18,9 @@
                  type: 'external', url: 'http://lizard.net'}
             ] })
         },{
+            xtype: 'availablelayersportlet',
+            store: Ext.data.StoreManager.lookup('Workspace')
+        },{
             xtype: 'workspaceportlet',
             store: Ext.data.StoreManager.lookup('Workspace')
         }]

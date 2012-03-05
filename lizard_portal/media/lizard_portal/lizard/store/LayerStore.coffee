@@ -1,5 +1,4 @@
-
-# New and experimental. Not sure if this works... Bastiaan?
+# Current layers in workspace
 Ext.define('Lizard.store.LayerStore', {
     extend: 'GeoExt.data.LayerStore'
     alias: 'store.layerstore'
@@ -12,6 +11,3 @@ Ext.define('Lizard.store.LayerStore', {
         new OpenLayers.Layer.OSM('Openstreetmap')
     ]
 })
-
-
-

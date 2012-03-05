@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.model.WorkspaceModel', {
     extend: 'Ext.data.Model',
     proxy: {
@@ -54,4 +55,5 @@
       }
     ]
   });
+
 }).call(this);

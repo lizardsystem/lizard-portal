@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.portlet.MapPortlet', {
     extend: 'GeoExt.panel.Map',
     alias: 'widget.mapportlet',
@@ -37,4 +38,5 @@
       return this.callParent(arguments);
     }
   });
+
 }).call(this);
