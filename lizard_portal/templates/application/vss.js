@@ -19,7 +19,8 @@ Ext.application({
         'Vss.model.AnnotationDetail',
         'Vss.model.AnnotationDescription',
         'Vss.model.TimeserieObject',
-        'Lizard.model.Graph'
+        'Lizard.model.Graph',
+        'Lizard.model.WorkspaceModel'
     ],
     stores: [
         'Vss.store.Communique',
@@ -35,6 +36,7 @@ Ext.application({
         'Vss.store.KrwToestandGraph',
         'Lizard.store.AppScreen',
         'Lizard.store.Graph'
+
     ],
     requires: [
         'Lizard.plugin.ApplyContext',
@@ -65,6 +67,7 @@ Ext.application({
         'Lizard.form.WorkspaceSaveForm',
         'Lizard.grid.EditableGrid',
         'Lizard.store.EditGridStore',
+        'Lizard.store.LayerStore',
         'Lizard.store.WorkspaceStore',  // Not yet used
         'Lizard.portlet.AppScreenPortlet',
         'Lizard.portlet.AppsPortlet',
@@ -72,6 +75,7 @@ Ext.application({
         'Lizard.portlet.Portlet',
         'Lizard.portlet.PortalPanel',
         'Lizard.portlet.PortalColumn',
+        'Lizard.portlet.MapPortlet',
         'Lizard.portlet.GridPortlet',
         'Lizard.portlet.MultiGraph',
         'Lizard.portlet.MultiGraphStore',
@@ -104,10 +108,11 @@ Ext.application({
         {% get_portal_template watersysteem_layers %}
 
         // Globally create workspace layers
-        {% get_portal_template workspace_layers %}
-
+        
         // !Try! to initialize WorkspaceStore, does not work yet.
-        Ext.create(Lizard.store.WorkspaceStore, );
+        Ext.create(Lizard.store.LayerStore, {storeId: 'Workspace'} );
+
+        //debugger
 
         var aan_afvoergebied_selection =
         {
