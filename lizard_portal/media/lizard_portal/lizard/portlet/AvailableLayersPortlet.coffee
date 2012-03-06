@@ -22,13 +22,12 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
     autoLoad:false
 
     onLayerClick: (view, record, item, index, event, eOpts) ->
-        arguments
-        if record.get('checked')
-            @workspaceStore.createWorkspaceItem()
-        else
-            @workspaceStore.deleteWorkspaceItem()
-        @workspaceStore.sync()
-        debugger
+        if record.dirty == true
+            if record.get('checked')
+                @workspaceStore.createWorkspaceItem()
+            else
+                @workspaceStore.deleteWorkspaceItem()
+            @workspaceStore.sync()
 
     initComponent: () ->
         me = @

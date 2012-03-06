@@ -21,7 +21,7 @@
                 xtype: 'appscreenportlet',
                 start_appscreen_slug: 'krw-volg-en-stuursysteem',
                 store: Ext.create('Lizard.store.Apps'),
-                workspaceStore: Ext.data.StoreManager.lookup('WorkspaceItems')
+                workspaceItemStore: Ext.data.StoreManager.lookup('WorkspaceItems')
             }]
         },{
             xtype: 'workspaceportlet',

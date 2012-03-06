@@ -11,7 +11,7 @@ Ext.define('Lizard.model.WorkspaceModel', {
         extraParams: {}
 
         params: {}
-            
+
         writer:
             type: 'json',
             writeAllFields: true,
@@ -24,7 +24,7 @@ Ext.define('Lizard.model.WorkspaceModel', {
             totalProperty: 'count'
         }
         afterRequest: (request, success) ->
-            debugger
+            # debugger
             if request.method == 'POST'
                 if success
                     Ext.MessageBox.alert('Opslaan gelukt')

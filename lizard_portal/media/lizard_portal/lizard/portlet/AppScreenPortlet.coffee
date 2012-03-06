@@ -69,6 +69,8 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
             listeners:
                 itemclick: @onAppClick
         )
+        if not @workspaceStore
+            @workspaceStore = Ext.create(Lizard.store.WorkspaceStore, {layerStore: @workspaceItemStore})
 
         @callParent(arguments)
 

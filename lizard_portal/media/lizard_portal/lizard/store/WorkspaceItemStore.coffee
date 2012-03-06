@@ -9,11 +9,6 @@ Ext.define('Lizard.store.WorkspaceItemStore', {
 
     data: [
         new OpenLayers.Layer.OSM('Openstreetmap')
+        new OpenLayers.Layer.OSM('Openstreetmap')
     ]
-
-    createWorkspaceItem: () ->
-        alert('creating workspace item')
-
-    deleteWorkspaceItem: () ->
-        alert('deleting workspace item')
 })
