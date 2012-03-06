@@ -15,7 +15,7 @@
       return this.callParent(arguments);
     },
     afterRender: function() {
-      debugger;      this.callParent(arguments);
+      this.callParent(arguments);
       return this.store.load({
         params: {
           object_id: this.root_map_slug

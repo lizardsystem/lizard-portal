@@ -17,11 +17,6 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
     title: 'Layers'
     rootVisible: false
     autoLoad:false
-    
-
-
-
-
 
     initComponent: () ->
         me = @
@@ -29,7 +24,7 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
         @callParent(arguments)
 
     afterRender: () ->
-        debugger
+        # debugger
         @callParent(arguments)
         @store.load({
             params:
