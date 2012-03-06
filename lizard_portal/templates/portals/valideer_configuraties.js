@@ -17,6 +17,7 @@
 		items: [{
 			    title: 'Configuraties',
 			    xtype: 'leditgrid',
+			    storeAutoLoad: true,
 			    anchor: '100%',
 			    flex:1,
 			    columnLines: true,
@@ -25,7 +26,11 @@
 				{name: 'type', title: 'Type', editable: false, visible: true, width: 150, type: 'text'},
 				{name: 'gebruiker', title: 'Gebruiker', editable: false, visible: true, width: 150, type: 'text'},
 				{name: 'datum', title: 'Datum', editable: false, visible: true, width: 150, type: 'text'}
-			    ]
+			    ],
+			    proxyUrl: '/portal/validate',
+			    proxyParams: {
+			    }
 			}]
 	    }]
 }
+

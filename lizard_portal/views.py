@@ -1,18 +1,22 @@
 # (c) Nelen & Schuurmans.  GPL licensed, see LICENSE.txt.
+
 import json
+import logging
+
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import RequestContext
 from django.template import TemplateDoesNotExist
 from django.template import Template
 from django.template.loader import get_template
-from lizard_registration.models import SessionContextStore, UserContextStore
-
-from lizard_registration.utils import auto_login
+from django.utils import simplejson
 
 from lizard_portal.models import PortalConfiguration
-
+from lizard_registration.models import SessionContextStore, UserContextStore
+from lizard_registration.utils import auto_login
 from lizard_registration.utils import get_user_permissions_overall
+
+logger = logging.getLogger(__name__)
 
 def site(request, application_name, active_tab_name, only_portal=False):
     """
@@ -120,3 +124,15 @@ def feature_info(request):
 
     content =  resp.read()
     return HttpResponse(content,  mimetype="text/plain")
+
+
+def validate(request):
+    logger.warning('lizard_portal.views.validate')
+    return HttpResponse(simplejson.dumps({'data':
+                                          [
+                                              {'polder': 'Atekpolder', 'type': 'waterbalans', 'gebruiker': 'Analist John', 'datum': '1-02-2012 11:00'},
+                                              {'polder': 'Atekpolder', 'type': 'ESF1', 'gebruiker': 'Analist John', 'datum': '1-02-2012 11:00'},
+                                              {'polder': 'Aetsveldsepolder Oost', 'type': 'ESF2', 'gebruiker': 'Analist Jojanneke', 'datum': '1-02-2012 11:00'},
+                                              {'polder': 'Aetsveldsepolder Oost', 'type': 'waterbalans', 'gebruiker': 'Analist Pieter', 'datum': '1-02-2012 11:00'}
+                                              ],
+                                          'count': 4}))
