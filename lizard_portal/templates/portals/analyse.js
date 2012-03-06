@@ -10,19 +10,22 @@
         items: [{
             title: 'Navigatie',
             flex:2,
-            xtype: 'appscreenportlet',
-            store: Ext.create('Lizard.store.AppScreen', {data: [
-                {slug: 'app1', name: 'N&S', description: 'app1 description',
-                 type: 'external', url: 'http://www.nelen-schuurmans.nl'},
-                {slug: 'app2', name: 'Lizard', description: 'app2 description',
-                 type: 'external', url: 'http://lizard.net'}
-            ] })
-        },{
-            xtype: 'availablelayersportlet',
-            store: Ext.data.StoreManager.lookup('Workspace')
+            xtype: 'tabpanel',
+            loadTab: function (tab_id) {
+                var tab = this.child(tab_id);
+                this.setActiveTab(tab);
+
+            },
+            items:[{
+                title: 'apps',
+                xtype: 'appscreenportlet',
+                start_appscreen_slug: 'krw-volg-en-stuursysteem',
+                store: Ext.create('Lizard.store.Apps'),
+                workspaceStore: Ext.data.StoreManager.lookup('WorkspaceItems')
+            }]
         },{
             xtype: 'workspaceportlet',
-            store: Ext.data.StoreManager.lookup('Workspace')
+            store: Ext.data.StoreManager.lookup('WorkspaceItems')
         }]
 
     },{
@@ -38,7 +41,7 @@
             initZoomOnRender: false,
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],
-            layers: Ext.data.StoreManager.lookup('Workspace'),
+            layers: Ext.data.StoreManager.lookup('WorkspaceItems'),
             onMapClick: function (event) {
 
                 layerlist = "here,there,everywhere";

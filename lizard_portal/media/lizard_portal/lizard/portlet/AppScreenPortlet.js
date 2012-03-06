@@ -1,7 +1,7 @@
 (function() {
 
   Ext.define('Lizard.portlet.AppScreenPortlet', {
-    extend: 'Lizard.portlet.Portlet',
+    extend: 'Ext.view.View',
     alias: 'widget.appscreenportlet',
     layout: {
       type: 'vboxscroll',
@@ -12,39 +12,55 @@
       height: 250
     },
     autoScroll: true,
-    initComponent: function() {
-      Ext.apply(this, {
-        items: {
-          xtype: 'dataview',
-          store: this.store,
-          tpl: new Ext.XTemplate('<tpl for=".">', '<div class="app_icon draggable"><a href="{url}" title="{description}">', '<img src="/static_media/lizard_portal/app_icons/metingen.png" ', 'id="app-{slug}" />', '<div>{name} ({type})</div>', '</a></div>', '</tpl>'),
-          itemSelector: 'div.apps-source',
-          listeners: {
-            render: function(v) {
-              return v.dragZone = Ext.create('Ext.dd.DragZone', v.getEl(), {
-                getDragData: function(e) {
-                  var d, sourceEl;
-                  sourceEl = e.getTarget(v.itemSelector, 10);
-                  if (sourceEl) {
-                    d = sourceEl.cloneNode(true);
-                    d.id = Ext.id();
-                    return v.dragData = {
-                      sourceEl: sourceEl,
-                      repairXY: Ext.fly(sourceEl).getXY(),
-                      ddel: d,
-                      patientData: v.getRecord(sourceEl).data
-                    };
-                  }
-                },
-                getRepairXY: function() {
-                  return this.dragData.repairXY;
-                }
-              });
+    tpl: new Ext.XTemplate('<tpl for=".">', '<div class="app_icon" >', '<img src="{icon}" ', 'id="app-{slug}" />', '<div>{name}</div>', '</div>', '</tpl>'),
+    itemSelector: 'div.app_icon',
+    onAppClick: function(view, record) {
+      var action_type, app, tab, tabpanel;
+      tabpanel = this.up('tabpanel');
+      tab = tabpanel.child('#app' + record.get('slug'));
+      if (tab) {
+        return tabpanel.setActiveTab(tab);
+      } else {
+        action_type = record.get('action_type');
+        if (action_type === 10) {
+          return this.store.load({
+            params: {
+              object_id: record.get('target_app_slug')
             }
-          }
+          });
+        } else if (action_type === 20) {
+          app = Ext.create('Lizard.portlet.AvailableLayersPortlet', {
+            store: Ext.create('Lizard.store.AvailableLayersStore', {
+              id: 'appst' + record.get('slug')
+            }),
+            root_map_slug: record.get('action_params').root_map,
+            title: record.get('name'),
+            id: 'app' + record.get('slug')
+          });
+          tab = tabpanel.add(app);
+          return tabpanel.setActiveTab(tab);
+        } else {
+          return alert('actiontype not yet supported: ' + action_type);
+        }
+      }
+    },
+    initComponent: function() {
+      var me;
+      me = this;
+      Ext.apply(this, {
+        listeners: {
+          itemclick: this.onAppClick
         }
       });
       return this.callParent(arguments);
+    },
+    afterRender: function() {
+      this.callParent(arguments);
+      return this.store.load({
+        params: {
+          object_id: this.start_appscreen_slug
+        }
+      });
     }
   });
 

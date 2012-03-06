@@ -1,11 +1,11 @@
 # A screen with (user selected) apps.
 Ext.define('Lizard.portlet.AppScreenPortlet', {
     # A specialized Ext.panel.Panel
-    extend: 'Lizard.portlet.Portlet'
+    extend: 'Ext.view.View'
     alias: 'widget.appscreenportlet'
-    # config:
-    #     context_manager: []
 
+    #store meegeven bij aanmaken
+    #start_appscreen_slug voor initiele laad van appscreen
 
     layout:
         type: 'vboxscroll'
@@ -16,77 +16,68 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
         height: 250
 
     autoScroll:true
-    # tbar: ['Apps:']
+
+    tpl: new Ext.XTemplate(
+        '<tpl for=".">',
+            '<div class="app_icon" >',
+                    '<img src="{icon}" ',
+                    'id="app-{slug}" />',
+                    '<div>{name}</div>',
+            '</div>',
+        '</tpl>'
+    )
+    itemSelector: 'div.app_icon',
+
+    onAppClick: (view, record) ->
+        tabpanel = @up('tabpanel')
+        tab = tabpanel.child('#app' + record.get('slug'))
+        #@workspacestore
+        #debugger
+        # Check if tab is already created.
+        if tab
+            tabpanel.setActiveTab(tab)
+        else
+            action_type = record.get('action_type')
+            if action_type == 10
+                @store.load({
+                    params:
+                        object_id: record.get('target_app_slug')
+                })
+            else if action_type == 20
+                # Open layer folders
+                app = Ext.create('Lizard.portlet.AvailableLayersPortlet',{
+                    store: Ext.create('Lizard.store.AvailableLayersStore', {id:'appst'+ record.get('slug')}),
+                    layerFolderId: record.get('action_params').root_map,
+                    title: record.get('name')
+                    id: 'app' + record.get('slug')
+                    workspaceStore: @workspaceStore
+                })
+
+                tab = tabpanel.add(app)
+                tabpanel.setActiveTab(tab)
+            else
+                alert('actiontype not yet supported: ' + action_type)
+
+
 
     initComponent: () ->
-        # me = @
+        me = @
         #console.log('Jack Init portlet')
         #
         # Apply the store to the items
-        Ext.apply(@, {
-            items: {
-                xtype: 'dataview',
-                store: @store,
-                tpl: new Ext.XTemplate(
-                    '<tpl for=".">',
-                        '<div class="app_icon draggable"><a href="{url}" title="{description}">',
-                                '<img src="/static_media/lizard_portal/app_icons/metingen.png" ',
-                                'id="app-{slug}" />',
-                                '<div>{name} ({type})</div>',
-                        '</a></div>',
-                    '</tpl>'
-                ),
-                itemSelector: 'div.apps-source',
-                # /*
-                #  * Here is where we "activate" the DataView.
-                #  * We have decided that each node with the class "patient-source" encapsulates a single draggable
-                #  * object.
-                #  *
-                #  * So we inject code into the DragZone which, when passed a mousedown event, interrogates
-                #  * the event to see if it was within an element with the class "patient-source". If so, we
-                #  * return non-null drag data.
-                #  *
-                #  * Returning non-null drag data indicates that the mousedown event has begun a dragging process.
-                #  * The data must contain a property called "ddel" which is a DOM element which provides an image
-                #  * of the data being dragged. The actual node clicked on is not dragged, a proxy element is dragged.
-                #  * We can insert any other data into the data object, and this will be used by a cooperating DropZone
-                #  * to perform the drop operation.
-                #  */
-                listeners: {
-                    render: (v) ->
-                        # console.log('Initialize drag')
-                        # console.log(v)
-                        # Initialize dragzone
-                        v.dragZone = Ext.create('Ext.dd.DragZone', v.getEl(), {
-
-                    #      On receipt of a mousedown event, see if it is within a draggable element.
-                    #      Return a drag data object if so. The data object can contain arbitrary application
-                    #      data, but it should also contain a DOM element in the ddel property to provide
-                    #      a proxy to drag.
-                            getDragData: (e) ->
-                                sourceEl = e.getTarget(v.itemSelector, 10)
-
-                                if (sourceEl)
-                                    d = sourceEl.cloneNode(true);
-                                    d.id = Ext.id();
-                                    return v.dragData = {
-                                        sourceEl: sourceEl,
-                                        repairXY: Ext.fly(sourceEl).getXY(),
-                                        ddel: d,
-                                        patientData: v.getRecord(sourceEl).data
-                                            }
-
-                    #      Provide coordinates for the proxy to slide back to on failed drag.
-                    #      This is the original XY coordinates of the draggable element.
-                            getRepairXY: ->
-                                return this.dragData.repairXY
-
-                        })
-                }
-            }
-        })
+        Ext.apply(@,
+            listeners:
+                itemclick: @onAppClick
+        )
 
         @callParent(arguments)
+
+    afterRender: () ->
+        @callParent(arguments)
+        @store.load({
+            params:
+                object_id: @start_appscreen_slug
+        })
 
 })
 

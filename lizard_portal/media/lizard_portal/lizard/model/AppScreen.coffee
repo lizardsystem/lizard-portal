@@ -2,15 +2,20 @@
 
 Ext.define('Lizard.model.AppScreen', {
     extend: 'Ext.data.Model',
+    idProperty: 'slug',
     fields: [
         {
-            name: 'id',
-            mapping: 'id',
+            name: 'slug',
+            mapping: 'slug',
             type: 'text'
         },{
             name: 'name',
             mapping: 'name',
             type: 'text'
+        },{
+            name: 'apps',
+            mapping: 'apps',
+            type: 'auto'
         }
     ],
 

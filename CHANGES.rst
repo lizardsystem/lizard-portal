@@ -2,8 +2,16 @@ Changelog of lizard-portal
 ==========================
 
 
-0.11.5 (unreleased)
--------------------
+0.13 (unreleased)
+-----------------
+
+- Nothing changed yet.
+
+
+0.12 (2012-03-06)
+-----------------
+
+- Updated AppScreen.
 
 - Add addslashes filter to context in js template.
 

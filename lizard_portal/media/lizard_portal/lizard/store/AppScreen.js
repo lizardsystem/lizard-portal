@@ -2,11 +2,13 @@
 
   Ext.define('Lizard.store.AppScreen', {
     extend: 'Ext.data.Store',
-    model: 'Lizard.model.App',
+    model: 'Lizard.model.AppScreen',
     proxy: {
-      type: 'memory',
+      type: 'ajax',
+      url: '/workspace/api/appscreen',
       reader: {
-        type: 'json'
+        type: 'json',
+        root: 'data'
       }
     }
   });

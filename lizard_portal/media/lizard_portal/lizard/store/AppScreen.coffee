@@ -2,15 +2,17 @@
 
 Ext.define('Lizard.store.AppScreen', {
     extend: 'Ext.data.Store',
-    model: 'Lizard.model.App',
+    model: 'Lizard.model.AppScreen',
     # data must be provided from outside
     # data: apps,
 
     # Apparently required
     proxy: {
-        type: 'memory',
+        type: 'ajax',
+        url: '/workspace/api/appscreen'
         reader: {
             type: 'json'
+            root: 'data'
         }
-    },
+    }
 });

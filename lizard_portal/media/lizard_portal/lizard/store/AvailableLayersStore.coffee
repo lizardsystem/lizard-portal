@@ -3,8 +3,10 @@ Ext.define('Lizard.store.AvailableLayersStore', {
     extend: 'Ext.data.TreeStore'
     # extend: 'GeoExt.data.LayerStore'
     alias: 'store.availablelayersstore'
-
+    #model: 'Lizard.model.AvailableLayersModel'
+    rootVisible: false,
     #storeId: 'WorkspaceStore'
+    #indexOf: Ext.emptyFn,
 
     # autoLoad: true
     # data: {
@@ -21,20 +23,16 @@ Ext.define('Lizard.store.AvailableLayersStore', {
     #     }
     # }
 
-    root: {
-        text: 'Title'
-        expanded: true,
-        id: 'root-id'
-    }
-    autoLoad: true
+    
+    autoLoad: false
     proxy: {
         type: 'ajax'
-        url: '/workspace/api/layer_view/'
+        url: '/workspace/api/app_layer_tree/'
         reader: {
             type: 'json'
-            root: 'data'
+            #root: 'data'
         }
     }
-    fields: ['id', 'text']
+
 
 })
