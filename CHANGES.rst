@@ -5,6 +5,8 @@ Changelog of lizard-portal
 0.11.5 (unreleased)
 -------------------
 
+- Updated AppScreen.
+
 - Add addslashes filter to context in js template.
 
 - Added fields into Bakjes table of wbconfiguration form.
