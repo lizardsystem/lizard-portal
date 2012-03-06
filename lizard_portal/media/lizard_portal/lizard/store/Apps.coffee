@@ -6,12 +6,8 @@ Ext.define('Lizard.store.Apps', {
     model: 'Lizard.model.App',
     # Must be provided from outside
     # data: apps,
+    autoLoad:false
 
     # Apparently required
-    proxy: {
-        type: 'memory',
-        reader: {
-            type: 'json'
-        }
-    },
+
 });

@@ -20,7 +20,8 @@ Ext.application({
         'Vss.model.AnnotationDescription',
         'Vss.model.TimeserieObject',
         'Lizard.model.Graph',
-        'Lizard.model.WorkspaceModel'
+        'Lizard.model.WorkspaceModel',
+        'Lizard.model.AvailableLayersModel'
     ],
     stores: [
         'Vss.store.Communique',
@@ -40,16 +41,6 @@ Ext.application({
     ],
     requires: [
         'Lizard.plugin.ApplyContext',
-        'Ext.Img',
-        'Ext.grid.*',
-        'Ext.grid.plugin.*',
-        'Ext.data.Model',
-        'Ext.data.StoreManager',
-        'Ext.data.*',
-        'Ext.tree.*',
-        'Ext.form.*',
-        'Ext.button.*',
-        'Ext.toolbar.*',
         'Lizard.ux.CheckColumn',
         'Lizard.ux.CheckColumnTree',
         'Lizard.ux.VBoxScroll',
@@ -114,7 +105,7 @@ Ext.application({
         // !Try! to initialize WorkspaceStore, does not work yet.
         // Ext.create(Lizard.store.WorkspaceStore, );
         Ext.create(Lizard.store.LayerStore, {storeId: 'Workspace'} );
-        Ext.create(Lizard.store.AvailableLayersStore, {storeId: 'AvailableLayers'} );
+
 
         var aan_afvoergebied_selection =
         {

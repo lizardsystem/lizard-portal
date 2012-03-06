@@ -1,23 +1,15 @@
 (function() {
-
   Ext.define('Lizard.store.AvailableLayersStore', {
     extend: 'Ext.data.TreeStore',
     alias: 'store.availablelayersstore',
-    root: {
-      text: 'Title',
-      expanded: true,
-      id: 'root-id'
-    },
-    autoLoad: true,
+    rootVisible: false,
+    autoLoad: false,
     proxy: {
       type: 'ajax',
-      url: '/workspace/api/layer_view/',
+      url: '/workspace/api/app_layer_tree/',
       reader: {
-        type: 'json',
-        root: 'data'
+        type: 'json'
       }
-    },
-    fields: ['id', 'text']
+    }
   });
-
 }).call(this);

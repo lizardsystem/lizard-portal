@@ -4,6 +4,23 @@
     overflow:  hidden;
 }
 
+.app_icon {
+    display:block;
+    width: 70px;
+    height: 80px;
+    
+    margin: 10px;
+    margin-right: 0;
+    margin-bottom: 0;
+    float: left;
+    font-size: 10px;
+    color: #6e6e6e;
+    overflow: hidden;
+    text-align: center;
+    cursor:pointer;
+    
+}
+
 
 .l-grid {
     font-size: 11px;

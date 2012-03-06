@@ -10,16 +10,20 @@
         items: [{
             title: 'Navigatie',
             flex:2,
-            xtype: 'appscreenportlet',
-            store: Ext.create('Lizard.store.AppScreen', {data: [
-                {slug: 'app1', name: 'N&S', description: 'app1 description',
-                 type: 'external', url: 'http://www.nelen-schuurmans.nl'},
-                {slug: 'app2', name: 'Lizard', description: 'app2 description',
-                 type: 'external', url: 'http://lizard.net'}
-            ] })
-        },{
-            xtype: 'availablelayersportlet',
-            store: Ext.data.StoreManager.lookup('Workspace')
+            xtype: 'tabpanel',
+            loadTab: function (tab_id) {
+                var tab = this.child(tab_id);
+                this.setActiveTab(tab);
+
+            },
+
+
+            items:[{
+                title: 'apps',
+                xtype: 'appscreenportlet',
+                start_appscreen_slug: 'krw-volg-en-stuursysteem',
+                store: Ext.create('Lizard.store.Apps')
+            }]
         },{
             xtype: 'workspaceportlet',
             store: Ext.data.StoreManager.lookup('Workspace')
