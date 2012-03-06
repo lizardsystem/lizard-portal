@@ -33,10 +33,12 @@ urlpatterns = patterns(
          'lizard_portal.views.application',
         name="application"),
 
-
     url(r'^configuration/',
         'lizard_portal.views.json_configuration',
         name="json_configuration"),
+    url(r'^validate/',
+        'lizard_portal.views.validate',
+        name="validate"),
     url(r'^example_portal.json',
         direct_to_template,
         {'template': 'example_portal1.json'},
