@@ -30,6 +30,10 @@ Ext.define('Lizard.model.App', {
             name: 'action_params',
             mapping: 'action_params',
             type: 'auto'
+        },{
+            name: 'target_app_slug',
+            mapping: 'target_app_slug',
+            type: 'auto'
         }
     ],
     proxy: {

@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.model.AvailableLayersModel', {
     extend: 'Ext.data.Model',
     fields: [
@@ -18,4 +19,5 @@
       }
     ]
   });
+
 }).call(this);

@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.portlet.AvailableLayersPortlet', {
     extend: 'Ext.tree.Panel',
     alias: 'widget.availablelayersportlet',
@@ -22,4 +23,5 @@
       });
     }
   });
+
 }).call(this);

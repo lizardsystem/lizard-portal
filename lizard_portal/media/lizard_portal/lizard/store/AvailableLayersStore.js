@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.store.AvailableLayersStore', {
     extend: 'Ext.data.TreeStore',
     alias: 'store.availablelayersstore',
@@ -12,4 +13,5 @@
       }
     }
   });
+
 }).call(this);

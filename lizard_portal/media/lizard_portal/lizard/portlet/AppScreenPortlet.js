@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.portlet.AppScreenPortlet', {
     extend: 'Ext.view.View',
     alias: 'widget.appscreenportlet',
@@ -14,13 +15,20 @@
     tpl: new Ext.XTemplate('<tpl for=".">', '<div class="app_icon" >', '<img src="{icon}" ', 'id="app-{slug}" />', '<div>{name}</div>', '</div>', '</tpl>'),
     itemSelector: 'div.app_icon',
     onAppClick: function(view, record) {
-      var app, tab, tabpanel;
+      var action_type, app, tab, tabpanel;
       tabpanel = this.up('tabpanel');
       tab = tabpanel.child('#app' + record.get('slug'));
       if (tab) {
         return tabpanel.setActiveTab(tab);
       } else {
-        if (record.get('action_type') === 20) {
+        action_type = record.get('action_type');
+        if (action_type === 10) {
+          return this.store.load({
+            params: {
+              object_id: record.get('target_app_slug')
+            }
+          });
+        } else if (action_type === 20) {
           app = Ext.create('Lizard.portlet.AvailableLayersPortlet', {
             store: Ext.create('Lizard.store.AvailableLayersStore', {
               id: 'appst' + record.get('slug')
@@ -32,7 +40,7 @@
           tab = tabpanel.add(app);
           return tabpanel.setActiveTab(tab);
         } else {
-          return alert('actiontype not yet supported');
+          return alert('actiontype not yet supported: ' + action_type);
         }
       }
     },
@@ -55,4 +63,5 @@
       });
     }
   });
+
 }).call(this);
