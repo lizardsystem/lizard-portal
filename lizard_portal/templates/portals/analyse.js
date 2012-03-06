@@ -16,17 +16,16 @@
                 this.setActiveTab(tab);
 
             },
-
-
             items:[{
                 title: 'apps',
                 xtype: 'appscreenportlet',
                 start_appscreen_slug: 'krw-volg-en-stuursysteem',
-                store: Ext.create('Lizard.store.Apps')
+                store: Ext.create('Lizard.store.Apps'),
+                workspaceStore: Ext.data.StoreManager.lookup('WorkspaceItems')
             }]
         },{
             xtype: 'workspaceportlet',
-            store: Ext.data.StoreManager.lookup('Workspace')
+            store: Ext.data.StoreManager.lookup('WorkspaceItems')
         }]
 
     },{
@@ -42,7 +41,7 @@
             initZoomOnRender: false,
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],
-            layers: Ext.data.StoreManager.lookup('Workspace'),
+            layers: Ext.data.StoreManager.lookup('WorkspaceItems'),
             onMapClick: function (event) {
 
                 layerlist = "here,there,everywhere";

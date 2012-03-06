@@ -1,3 +1,6 @@
+# Provide store (Lizard.portlet.AvailableLayersPortlet)
+# Provide layerFolderId: store will be fetched.
+# Provide workspaceStore
 Ext.define('Lizard.portlet.AvailableLayersPortlet', {
     extend: 'Ext.tree.Panel'
     # mixins: [
@@ -18,9 +21,21 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
     rootVisible: false
     autoLoad:false
 
+    onLayerClick: (view, record, item, index, event, eOpts) ->
+        arguments
+        if record.get('checked')
+            @workspaceStore.createWorkspaceItem()
+        else
+            @workspaceStore.deleteWorkspaceItem()
+        @workspaceStore.sync()
+        debugger
+
     initComponent: () ->
         me = @
-
+        Ext.apply(@,
+            listeners:
+                itemclick: @onLayerClick
+        )
         @callParent(arguments)
 
     afterRender: () ->
@@ -28,7 +43,7 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
         @callParent(arguments)
         @store.load({
             params:
-                object_id: @root_map_slug
+                object_id: @layerFolderId
         })
 
 

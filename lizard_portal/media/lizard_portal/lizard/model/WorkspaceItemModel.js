@@ -1,6 +1,6 @@
 (function() {
 
-  Ext.define('Lizard.model.LayerModel', {
+  Ext.define('Lizard.model.WorkspaceItemModel', {
     extend: 'Ext.data.Model',
     fields: [
       {

@@ -31,6 +31,9 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
     onAppClick: (view, record) ->
         tabpanel = @up('tabpanel')
         tab = tabpanel.child('#app' + record.get('slug'))
+        #@workspacestore
+        #debugger
+        # Check if tab is already created.
         if tab
             tabpanel.setActiveTab(tab)
         else
@@ -44,9 +47,10 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
                 # Open layer folders
                 app = Ext.create('Lizard.portlet.AvailableLayersPortlet',{
                     store: Ext.create('Lizard.store.AvailableLayersStore', {id:'appst'+ record.get('slug')}),
-                    root_map_slug: record.get('action_params').root_map,
+                    layerFolderId: record.get('action_params').root_map,
                     title: record.get('name')
                     id: 'app' + record.get('slug')
+                    workspaceStore: @workspaceStore
                 })
 
                 tab = tabpanel.add(app)
@@ -62,12 +66,8 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
         #
         # Apply the store to the items
         Ext.apply(@,
-
             listeners:
                 itemclick: @onAppClick
-
-
-
         )
 
         @callParent(arguments)

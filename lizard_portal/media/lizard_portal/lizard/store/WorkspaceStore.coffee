@@ -1,12 +1,10 @@
-# New and experimental. Not sure if this works... Bastiaan?
+# All workspaces
 Ext.define('Lizard.store.WorkspaceStore', {
     extend: 'Ext.data.Store'
     alias: 'store.workspacestore'
     model: 'Lizard.model.WorkspaceModel'
     autoLoad: false
     layerStore: null
-
-
 
 #    data: [
 #        new OpenLayers.Layer.OSM('Openstreetmap'),
