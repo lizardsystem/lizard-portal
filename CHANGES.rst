@@ -2,8 +2,8 @@ Changelog of lizard-portal
 ==========================
 
 
-0.11.5 (unreleased)
--------------------
+0.12 (2012-03-06)
+-----------------
 
 - Updated AppScreen.
 
