@@ -86,8 +86,8 @@ class ConfigurationFactoryTestSuite(TestCase):
 
     def test_a(self):
         factory = ConfigurationFactory(StubDescriptionParser())
-        description_file = Mock()
-        factory.get_description_file = (lambda s: description_file)
+        zip_file, description_file = Mock(), Mock()
+        factory.get_description_file = (lambda s: (zip_file, description_file))
         configuration = factory.create('mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
         self.assertEqual(configuration.zip_file, 'mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
         self.assertEqual(configuration.gebruiker, 'Pieter Swinkels')
@@ -95,10 +95,10 @@ class ConfigurationFactoryTestSuite(TestCase):
     def test_b(self):
         """Test the open description file is also closed."""
         factory = ConfigurationFactory(StubDescriptionParser())
-        description_file = Mock()
-        factory.get_description_file = (lambda s: description_file)
+        zip_file, description_file = Mock(), Mock()
+        factory.get_description_file = (lambda s: (zip_file, description_file))
         factory.create('hello.zip')
-        method, args, kwargs = description_file.method_calls[0]
+        method, args, kwargs = zip_file.method_calls[0]
         self.assertTrue('close' == method and () == args and {} == kwargs)
 
 
@@ -106,36 +106,34 @@ class ConfigurationFactoryTestSuite(TestCase):
 
 class DescriptionParserTestSuite(TestCase):
 
-    def create_parser(self, *lines):
-        parser = DescriptionParser()
-        parser.read_lines = Mock(return_value=lines)
-        return parser
+    def setup(self, *lines):
+        self.parser = DescriptionParser()
+        self.open_file = Mock()
+        self.open_file.readlines = Mock(return_value=lines)
 
     def test_a(self):
         """Test that an option value that contains a space is parsed."""
-        parser = self.create_parser('naam = nieuwe oppervlakte')
-        self.assertEqual({'naam': 'nieuwe oppervlakte'}, parser.as_dict('an open file'))
+        self.setup('naam = nieuwe oppervlakte')
+        description_dict = self.parser.as_dict(self.open_file)
+        self.assertEqual({'naam': 'nieuwe oppervlakte'}, description_dict)
 
     def test_b(self):
         """Test that multiple options are parsed."""
         lines = 'naam = nieuwe oppervlakte', 'gebruiker = Pieter Swinkels'
-        parser = self.create_parser(*lines)
-        description_dict = parser.as_dict('an open file')
+        self.setup(*lines)
+        description_dict = self.parser.as_dict(self.open_file)
         self.assertEqual(2, len(description_dict))
         self.assertEqual('nieuwe oppervlakte', description_dict['naam'])
         self.assertEqual('Pieter Swinkels', description_dict['gebruiker'])
 
     def test_c(self):
         """Test that trailing spaces of a value are removed."""
-        parser = self.create_parser('naam = nieuwe oppervlakte')
-        parser.read_lines = Mock(return_value=['naam = nieuwe oppervlakte  '])
-        description_dict = parser.as_dict('an open file')
+        self.setup('naam = nieuwe oppervlakte  ')
+        description_dict = self.parser.as_dict(self.open_file)
         self.assertEqual('nieuwe oppervlakte', description_dict['naam'])
 
     def test_d(self):
         """Test that an invalid option is not parsed."""
-        parser = self.create_parser('naam nieuwe oppervlakte')
-        parser.read_lines = Mock(return_value=['naam nieuwe oppervlakte'])
-        self.assertEqual({}, parser.as_dict('an open file'))
-
-
+        self.setup('naam nieuwe oppervlakte')
+        description_dict = self.parser.as_dict(self.open_file)
+        self.assertEqual({}, description_dict)

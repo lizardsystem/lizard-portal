@@ -8,6 +8,8 @@
 import os
 import re
 
+from zipfile import ZipFile
+
 from mock import Mock
 
 
@@ -88,27 +90,28 @@ class ConfigurationFactory(object):
     def __init__(self, description_parser):
         self.parser = description_parser
 
-    def create(self, zip_file):
+    def create(self, zip_file_name):
         """Return a Configuraton based on the information in the given ZIP file.
 
         """
         configuration = Configuration()
-        configuration.zip_file = zip_file
-        description_file = self.get_description_file(zip_file)
+        configuration.zip_file = zip_file_name
+        zip_file, description_file = self.get_description_file(zip_file_name)
         description_dict = self.parser.as_dict(description_file)
         for key, value in description_dict.items():
             setattr(configuration, key, value)
-        description_file.close()
+        zip_file.close()
         return configuration
 
     def get_description_file(self, zip_file_name):
-        """Return the file object to the description file in the given ZIP file.
+        """Return the file objects to ZIP file and the description file.
 
         Parameter:
           *zip_file_name* name of ZIP file that contains the description file
 
         """
-        pass
+        zip_file = ZipFile(zip_file_name)
+        return zip_file, zip_file.open('description.txt')
 
 
 class Configuration(object):
@@ -125,7 +128,7 @@ class DescriptionParser(object):
     def as_dict(self, open_file):
         """Return the dict of attribute settings in the given open file."""
         attributes = {}
-        for line in self.read_lines(open_file):
+        for line in open_file.readlines():
             match = self.regex.search(line)
             if match is not None:
                 option = self.regex.search(line).groups()
