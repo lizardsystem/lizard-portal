@@ -10,6 +10,9 @@ from mock import Mock
 
 class ConfigurationsRetriever(object):
 
+    def __init__(self, configuration_factory):
+        self.configuration_factory = configuration_factory
+
     def retrieve_as_list(self):
         configurations = self.retrieve_configurations()
         l = []
@@ -18,7 +21,19 @@ class ConfigurationsRetriever(object):
         return l
 
     def retrieve_configurations(self):
-        pass
+        configurations = []
+        for zip_file in self.retrieve_zip_files():
+            configuration = self.configuration_factory.create(zip_file)
+            configurations.append(configuration)
+        return configurations
+
+
+class ConfigurationFactory(object):
+
+    def create(self, zip_file):
+        configuration = Mock()
+        configuration.zip_file = zip_file
+        return configuration
 
 
 class MockConfig(object):
