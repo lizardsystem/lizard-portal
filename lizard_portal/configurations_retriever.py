@@ -30,11 +30,20 @@ class ConfigurationsRetriever(object):
 
 class ConfigurationFactory(object):
 
+    def __init__(self, description_parser):
+        self.parser = description_parser
+
     def create(self, zip_file):
         configuration = Mock()
         configuration.zip_file = zip_file
+        description_file = self.get_description_file(zip_file)
+        description_dict = self.parser.as_dict(description_file)
+        for key, value in description_dict.items():
+            setattr(configuration, key, value)
         return configuration
 
+    def get_description_file(self, zip_file):
+        pass
 
 class MockConfig(object):
 
