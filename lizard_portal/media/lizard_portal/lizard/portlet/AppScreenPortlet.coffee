@@ -50,7 +50,7 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
                     layerFolderId: record.get('action_params').root_map,
                     title: record.get('name')
                     id: 'app' + record.get('slug')
-                    workspaceStore: @workspaceStore
+                    workspaceItemStore: @workspaceItemStore
                 })
 
                 tab = tabpanel.add(app)
@@ -69,6 +69,7 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
             listeners:
                 itemclick: @onAppClick
         )
+        # Dit moet je volgens mij niet willen.
         if not @workspaceStore
             @workspaceStore = Ext.create(Lizard.store.WorkspaceStore, {layerStore: @workspaceItemStore})
 

@@ -1,4 +1,4 @@
-# Does not work yet.. see AvailableLayersPortlet
+# see AvailableLayersPortlet
 Ext.define('Lizard.store.AvailableLayersStore', {
     extend: 'Ext.data.TreeStore'
     # extend: 'GeoExt.data.LayerStore'
@@ -23,7 +23,7 @@ Ext.define('Lizard.store.AvailableLayersStore', {
     #     }
     # }
 
-    
+
     autoLoad: false
     proxy: {
         type: 'ajax'
