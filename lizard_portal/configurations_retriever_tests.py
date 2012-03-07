@@ -79,17 +79,29 @@ class ZipFileNameRetrieverTestSuite(TestCase):
 class StubDescriptionParser(object):
 
     def as_dict(self, description_file):
-        return {'name': 'Pieter Swinkels'}
+        return {'gebruiker': 'Pieter Swinkels'}
 
 
 class ConfigurationFactoryTestSuite(TestCase):
 
     def test_a(self):
         factory = ConfigurationFactory(StubDescriptionParser())
-        factory.get_description_file = (lambda s:'an open file')
+        description_file = Mock()
+        factory.get_description_file = (lambda s: description_file)
         configuration = factory.create('mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
         self.assertEqual(configuration.zip_file, 'mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
-        self.assertEqual(configuration.name, 'Pieter Swinkels')
+        self.assertEqual(configuration.gebruiker, 'Pieter Swinkels')
+
+    def test_b(self):
+        """Test the open description file is also closed."""
+        factory = ConfigurationFactory(StubDescriptionParser())
+        description_file = Mock()
+        factory.get_description_file = (lambda s: description_file)
+        factory.create('hello.zip')
+        method, args, kwargs = description_file.method_calls[0]
+        self.assertTrue('close' == method and () == args and {} == kwargs)
+
+
 
 
 class DescriptionParserTestSuite(TestCase):

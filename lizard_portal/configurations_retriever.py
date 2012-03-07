@@ -98,6 +98,7 @@ class ConfigurationFactory(object):
         description_dict = self.parser.as_dict(description_file)
         for key, value in description_dict.items():
             setattr(configuration, key, value)
+        description_file.close()
         return configuration
 
     def get_description_file(self, zip_file_name):
