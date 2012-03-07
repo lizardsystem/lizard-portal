@@ -9,21 +9,18 @@ from unittest import TestCase
 
 from mock import Mock
 
-from lizard_portal.configurations_retriever import Configuration
 from lizard_portal.configurations_retriever import ConfigurationFactory
 from lizard_portal.configurations_retriever import ConfigurationsRetriever
 from lizard_portal.configurations_retriever import DescriptionParser
+from lizard_portal.configurations_retriever import ZipFileNameRetriever
 from lizard_portal.configurations_retriever import MockConfig
 
 
 class ConfigurationsRetrieverTestSuite(TestCase):
 
-    def create_retriever(self):
-        return ConfigurationsRetriever(ConfigurationFactory(StubDescriptionParser()))
-
     def test_a(self):
         """Test the right configurations are retrieved."""
-        retriever = ConfigurationsRetriever(None)
+        retriever = ConfigurationsRetriever(None, None)
         configuration_list = ['config A', 'config B']
         retriever.retrieve_configurations = \
             (lambda : [MockConfig(config) for config in configuration_list])
@@ -31,38 +28,43 @@ class ConfigurationsRetrieverTestSuite(TestCase):
 
     def test_b(self):
         """Test no configurations are retrieved when there are no zip files."""
-        retriever = self.create_retriever()
-        retriever.retrieve_zip_files = (lambda : [])
+        file_name_retriever = Mock()
+        file_name_retriever.retrieve = Mock(return_value=[])
+        retriever = ConfigurationsRetriever(file_name_retriever, None)
         self.assertEqual([], retriever.retrieve_configurations_as_dict())
 
     def test_c(self):
         """Test a single configurations is retrieved when there is a single zip file."""
-        retriever = self.create_retriever()
-        retriever.retrieve_zip_files = (lambda : ['waterbalans_Waternet_20120228_141234.zip'])
+        file_name_retriever = Mock()
+        file_name_retriever.retrieve = Mock(return_value=['hello world.zip'])
+        description_file_parser = Mock()
+        description_file_parser.as_dict = Mock(return_value={})
+        configuration_factory = ConfigurationFactory(description_file_parser)
+        retriever = ConfigurationsRetriever(file_name_retriever, configuration_factory)
         configurations = retriever.retrieve_configurations()
         self.assertEqual(1, len(configurations))
-        self.assertEqual('waterbalans_Waternet_20120228_141234.zip', configurations[0].zip_file)
+        self.assertEqual('hello world.zip', configurations[0].zip_file)
 
 
-class ConfigurationsRetriever_retrieve_zip_files_TestSuite(TestCase):
+class ZipFileNameRetrieverTestSuite(TestCase):
 
     def test_a(self):
         """Test no files are returned when there are no files present."""
-        retriever = ConfigurationsRetriever(None)
+        retriever = ZipFileNameRetriever()
         retriever.retrieve_file_names = (lambda : [])
         file_names = retriever.retrieve_zip_files()
         self.assertEqual([], file_names)
 
     def test_b(self):
         """Test no files are returned when there are no zip files present."""
-        retriever = ConfigurationsRetriever(None)
+        retriever = ZipFileNameRetriever()
         retriever.retrieve_file_names = (lambda : ['hello.txt'])
         file_names = retriever.retrieve_zip_files()
         self.assertEqual([], file_names)
 
     def test_c(self):
         """Test the single zip file is returned."""
-        retriever = ConfigurationsRetriever(None)
+        retriever = ZipFileNameRetriever()
         retriever.retrieve_file_names = (lambda : ['hello.zip'])
         file_names = retriever.retrieve_zip_files()
         self.assertEqual(['hello.zip'], file_names)

@@ -13,7 +13,8 @@ from mock import Mock
 
 class ConfigurationsRetriever(object):
 
-    def __init__(self, configuration_factory):
+    def __init__(self, file_names_retriever, configuration_factory):
+        self.file_names_retriever = file_names_retriever
         self.configuration_factory = configuration_factory
 
     def retrieve_configurations_as_dict(self):
@@ -22,10 +23,13 @@ class ConfigurationsRetriever(object):
 
     def retrieve_configurations(self):
         configurations = []
-        for zip_file in self.retrieve_zip_files():
+        for zip_file in self.file_names_retriever.retrieve():
             configuration = self.configuration_factory.create(zip_file)
             configurations.append(configuration)
         return configurations
+
+
+class ZipFileNameRetriever(object):
 
     def retrieve_zip_files(self):
         zip_file_names = []
@@ -44,6 +48,7 @@ class ConfigurationsRetriever(object):
     @property
     def root_directory(self):
         return '/home/pieter/tmp'
+
 
 class ConfigurationFactory(object):
     """Implements the functionality to create a Configuration from a ZIP file.
