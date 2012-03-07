@@ -23,8 +23,8 @@ class ConfigurationsRetriever(object):
 
     def retrieve_configurations(self):
         configurations = []
-        for zip_file in self.file_names_retriever.retrieve():
-            configuration = self.configuration_factory.create(zip_file)
+        for file_name in self.file_names_retriever.retrieve():
+            configuration = self.configuration_factory.create(file_name)
             configurations.append(configuration)
         return configurations
 
