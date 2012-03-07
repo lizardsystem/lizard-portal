@@ -12,7 +12,21 @@ from mock import Mock
 
 
 class ConfigurationsRetriever(object):
+    """Implements the functionality to retrieve the list of configurations.
 
+    An object of this class depends on two other objects to retrieve the list
+    of configurations, namely an object to retrieve the names of the zip files
+    that specify the configurations and an object that creates a configuration
+    given a zip file name. The former object, a file names retriever should
+    support the method::
+
+        def retrieve(self)
+
+    and the latter object should support the method::
+
+        def create(self, file_name)
+
+    """
     def __init__(self, file_names_retriever, configuration_factory):
         self.file_names_retriever = file_names_retriever
         self.configuration_factory = configuration_factory
