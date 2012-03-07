@@ -9,6 +9,7 @@ from unittest import TestCase
 
 from mock import Mock
 
+from lizard_portal.configurations_retriever import Configuration
 from lizard_portal.configurations_retriever import ConfigurationFactory
 from lizard_portal.configurations_retriever import ConfigurationsRetriever
 from lizard_portal.configurations_retriever import DescriptionParser
@@ -22,17 +23,17 @@ class ConfigurationsRetrieverTestSuite(TestCase):
 
     def test_a(self):
         """Test the right configurations are retrieved."""
-        retriever = self.create_retriever()
+        retriever = ConfigurationsRetriever(None)
         configuration_list = ['config A', 'config B']
         retriever.retrieve_configurations = \
             (lambda : [MockConfig(config) for config in configuration_list])
-        self.assertEqual(configuration_list, retriever.retrieve_as_list())
+        self.assertEqual(configuration_list, retriever.retrieve_configurations_as_dict())
 
     def test_b(self):
         """Test no configurations are retrieved when there are no zip files."""
         retriever = self.create_retriever()
         retriever.retrieve_zip_files = (lambda : [])
-        self.assertEqual([], retriever.retrieve_as_list())
+        self.assertEqual([], retriever.retrieve_configurations_as_dict())
 
     def test_c(self):
         """Test a single configurations is retrieved when there is a single zip file."""
@@ -41,6 +42,30 @@ class ConfigurationsRetrieverTestSuite(TestCase):
         configurations = retriever.retrieve_configurations()
         self.assertEqual(1, len(configurations))
         self.assertEqual('waterbalans_Waternet_20120228_141234.zip', configurations[0].zip_file)
+
+
+class ConfigurationsRetriever_retrieve_zip_files_TestSuite(TestCase):
+
+    def test_a(self):
+        """Test no files are returned when there are no files present."""
+        retriever = ConfigurationsRetriever(None)
+        retriever.retrieve_file_names = (lambda : [])
+        file_names = retriever.retrieve_zip_files()
+        self.assertEqual([], file_names)
+
+    def test_b(self):
+        """Test no files are returned when there are no zip files present."""
+        retriever = ConfigurationsRetriever(None)
+        retriever.retrieve_file_names = (lambda : ['hello.txt'])
+        file_names = retriever.retrieve_zip_files()
+        self.assertEqual([], file_names)
+
+    def test_c(self):
+        """Test the single zip file is returned."""
+        retriever = ConfigurationsRetriever(None)
+        retriever.retrieve_file_names = (lambda : ['hello.zip'])
+        file_names = retriever.retrieve_zip_files()
+        self.assertEqual(['hello.zip'], file_names)
 
 
 class StubDescriptionParser(object):

@@ -5,6 +5,7 @@
 
 # Copyright (c) 2012 Nelen & Schuurmans.  GPL licensed, see LICENSE.rst.
 
+import os
 import re
 
 from mock import Mock
@@ -15,12 +16,9 @@ class ConfigurationsRetriever(object):
     def __init__(self, configuration_factory):
         self.configuration_factory = configuration_factory
 
-    def retrieve_as_list(self):
+    def retrieve_configurations_as_dict(self):
         configurations = self.retrieve_configurations()
-        l = []
-        for configuration in configurations:
-            l.append(configuration.as_dict())
-        return l
+        return [configuration.as_dict() for configuration in configurations]
 
     def retrieve_configurations(self):
         configurations = []
@@ -29,6 +27,23 @@ class ConfigurationsRetriever(object):
             configurations.append(configuration)
         return configurations
 
+    def retrieve_zip_files(self):
+        zip_file_names = []
+        for file_name in self.retrieve_file_names():
+            if file_name[-4:] == '.zip':
+                zip_file_names.append(file_name)
+        return zip_file_names
+
+    def retrieve_file_names(self):
+        result = []
+        for (dir_path, dir_names, file_names) in os.walk(self.root_directory):
+            for file_name in file_names:
+                result.append(os.path.join(dir_path, file_name))
+        return result
+
+    @property
+    def root_directory(self):
+        return '/home/pieter/tmp'
 
 class ConfigurationFactory(object):
     """Implements the functionality to create a Configuration from a ZIP file.
