@@ -37,13 +37,19 @@ class ConfigurationsRetrieverTestSuite(TestCase):
         """Test a single configurations is retrieved when there is a single zip file."""
         file_name_retriever = Mock()
         file_name_retriever.retrieve = Mock(return_value=['hello world.zip'])
-        description_file_parser = Mock()
-        description_file_parser.as_dict = Mock(return_value={})
-        configuration_factory = ConfigurationFactory(description_file_parser)
+        configuration_factory = StubConfigurationFactory()
         retriever = ConfigurationsRetriever(file_name_retriever, configuration_factory)
         configurations = retriever.retrieve_configurations()
         self.assertEqual(1, len(configurations))
         self.assertEqual('hello world.zip', configurations[0].zip_file)
+
+
+class StubConfigurationFactory(object):
+
+    def create(self, zip_file_name):
+        configuration = Mock()
+        configuration.zip_file = zip_file_name
+        return configuration
 
 
 class ZipFileNameRetrieverTestSuite(TestCase):
