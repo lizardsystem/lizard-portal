@@ -31,12 +31,17 @@ class ConfigurationsRetriever(object):
 
 
 class ConfigurationFactory(object):
+    """Implements the functionality to create a Configuration from a ZIP file.
 
+    """
     def __init__(self, description_parser):
         self.parser = description_parser
 
     def create(self, zip_file):
-        configuration = Mock()
+        """Return a Configuraton based on the information in the given ZIP file.
+
+        """
+        configuration = Configuration()
         configuration.zip_file = zip_file
         description_file = self.get_description_file(zip_file)
         description_dict = self.parser.as_dict(description_file)
@@ -52,6 +57,10 @@ class ConfigurationFactory(object):
 
         """
         pass
+
+
+class Configuration(object):
+    pass
 
 
 class DescriptionParser(object):
