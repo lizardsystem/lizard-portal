@@ -12,13 +12,13 @@ from mock import Mock
 
 
 class ConfigurationsRetriever(object):
-    """Implements the functionality to retrieve the list of configurations.
+    """Implements the functionality to retrieve the configurations.
 
-    An object of this class depends on two other objects to retrieve the list
-    of configurations, namely an object to retrieve the names of the zip files
-    that specify the configurations and an object that creates a configuration
-    given a zip file name. The former object, a file names retriever should
-    support the method::
+    A ConfigurationsRetriever depends on two other objects to retrieve the
+    configurations, namely one to retrieve the names of the zip files that
+    specify the configurations and one to a configuration given a zip file
+    name. The former object, a file names retriever, should support the
+    method::
 
         def retrieve(self)
 
@@ -36,6 +36,7 @@ class ConfigurationsRetriever(object):
         return [configuration.as_dict() for configuration in configurations]
 
     def retrieve_configurations(self):
+        """Return the list of configurations."""
         configurations = []
         for file_name in self.file_names_retriever.retrieve():
             configuration = self.configuration_factory.create(file_name)
@@ -44,8 +45,14 @@ class ConfigurationsRetriever(object):
 
 
 class ZipFileNameRetriever(object):
+    """Implements the functionality to retrieve the paths to the zip files.
 
-    def retrieve_zip_files(self):
+    The relevant zip files are stored in a directory tree whose root is
+    specified by property ``root_directory``.
+
+    """
+    def retrieve(self):
+        """Return the list of zip file names."""
         zip_file_names = []
         for file_name in self.retrieve_file_names():
             if file_name[-4:] == '.zip':
@@ -53,6 +60,7 @@ class ZipFileNameRetriever(object):
         return zip_file_names
 
     def retrieve_file_names(self):
+        """Return the list of all file names."""
         result = []
         for (dir_path, dir_names, file_names) in os.walk(self.root_directory):
             for file_name in file_names:
@@ -65,7 +73,16 @@ class ZipFileNameRetriever(object):
 
 
 class ConfigurationFactory(object):
-    """Implements the functionality to create a Configuration from a ZIP file.
+    """Implements the functionality to create a configuration from a ZIP file.
+
+    The configuration created is an object of class Configuration.
+
+    The ZIP file contains an INI style file that specifies the attributes of
+    the configuration. A configuration factory object depends on another object
+    to retrieve these attributes from that file. That other object, wich we
+    call a description parser, should support the method::
+
+        def as_dict(self, file)
 
     """
     def __init__(self, description_parser):
@@ -94,6 +111,7 @@ class ConfigurationFactory(object):
 
 
 class Configuration(object):
+    """Stores the attributes of a configuration."""
     pass
 
 

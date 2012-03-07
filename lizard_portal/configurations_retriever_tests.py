@@ -58,21 +58,21 @@ class ZipFileNameRetrieverTestSuite(TestCase):
         """Test no files are returned when there are no files present."""
         retriever = ZipFileNameRetriever()
         retriever.retrieve_file_names = (lambda : [])
-        file_names = retriever.retrieve_zip_files()
+        file_names = retriever.retrieve()
         self.assertEqual([], file_names)
 
     def test_b(self):
         """Test no files are returned when there are no zip files present."""
         retriever = ZipFileNameRetriever()
         retriever.retrieve_file_names = (lambda : ['hello.txt'])
-        file_names = retriever.retrieve_zip_files()
+        file_names = retriever.retrieve()
         self.assertEqual([], file_names)
 
     def test_c(self):
         """Test the single zip file is returned."""
         retriever = ZipFileNameRetriever()
         retriever.retrieve_file_names = (lambda : ['hello.zip'])
-        file_names = retriever.retrieve_zip_files()
+        file_names = retriever.retrieve()
         self.assertEqual(['hello.zip'], file_names)
 
 
