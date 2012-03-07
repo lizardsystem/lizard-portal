@@ -5,6 +5,8 @@
 
 # Copyright (c) 2012 Nelen & Schuurmans.  GPL licensed, see LICENSE.rst.
 
+import re
+
 from mock import Mock
 
 
@@ -42,8 +44,33 @@ class ConfigurationFactory(object):
             setattr(configuration, key, value)
         return configuration
 
-    def get_description_file(self, zip_file):
+    def get_description_file(self, zip_file_name):
+        """Return the file object to the description file in the given ZIP file.
+
+        Parameter:
+          *zip_file_name* name of ZIP file that contains the description file
+
+        """
         pass
+
+
+class DescriptionParser(object):
+    """Implements the functionality to parse a file with attribute settings."""
+
+    def __init__(self):
+        self.regex = re.compile('(\w*)\s*=\s*([\w ]*)')
+
+    def as_dict(self, open_file):
+        """Return the dict of attribute settings in the given open file."""
+        attributes = {}
+        for line in self.read_lines(open_file):
+            match = self.regex.search(line)
+            if match is not None:
+                option = self.regex.search(line).groups()
+                if option is not None and len(option) == 2:
+                    attributes[option[0]] = option[1].rstrip(' ')
+        return attributes
+
 
 class MockConfig(object):
 
