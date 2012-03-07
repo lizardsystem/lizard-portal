@@ -10,7 +10,10 @@ from django.template import Template
 from django.template.loader import get_template
 from django.utils import simplejson
 
+from lizard_portal.configurations_retriever import ConfigurationsRetriever
+from lizard_portal.configurations_retriever import MockConfig
 from lizard_portal.models import PortalConfiguration
+
 from lizard_registration.models import SessionContextStore, UserContextStore
 from lizard_registration.utils import auto_login
 from lizard_registration.utils import get_user_permissions_overall
@@ -124,12 +127,16 @@ def feature_info(request):
 
 
 def validate(request):
-    logger.warning('lizard_portal.views.validate')
-    return HttpResponse(simplejson.dumps({'data':
-                                          [
-                                              {'polder': 'Atekpolder', 'type': 'waterbalans', 'gebruiker': 'Analist John', 'datum': '1-02-2012 11:00'},
-                                              {'polder': 'Atekpolder', 'type': 'ESF1', 'gebruiker': 'Analist John', 'datum': '1-02-2012 11:00'},
-                                              {'polder': 'Aetsveldsepolder Oost', 'type': 'ESF2', 'gebruiker': 'Analist Jojanneke', 'datum': '1-02-2012 11:00'},
-                                              {'polder': 'Aetsveldsepolder Oost', 'type': 'waterbalans', 'gebruiker': 'Analist Pieter', 'datum': '1-02-2012 11:00'}
-                                              ],
-                                          'count': 4}))
+    logger.debug('lizard_portal.views.validate')
+    retriever = ConfigurationsRetriever()
+    configuration_list = [
+        {'polder': 'Atekpolder', 'type': 'waterbalans', 'gebruiker': 'Analist John', 'datum': '1-02-2012 11:00'},
+        {'polder': 'Atekpolder', 'type': 'ESF1', 'gebruiker': 'Analist John', 'datum': '1-02-2012 11:00'},
+        {'polder': 'Aetsveldsepolder Oost', 'type': 'ESF2', 'gebruiker': 'Analist Jojanneke', 'datum': '1-02-2012 11:00'},
+        {'polder': 'Aetsveldsepolder Oost', 'type': 'waterbalans', 'gebruiker': 'Analist Pieter', 'datum': '1-02-2012 11:00'},
+        ]
+    retriever.retrieve_configurations = \
+        (lambda : [MockConfig(config) for config in configuration_list])
+    configurations = retriever.retrieve_as_list()
+    json = simplejson.dumps({'data': configurations, 'count': len(configurations)})
+    return HttpResponse(json)
