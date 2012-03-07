@@ -1,6 +1,5 @@
 # (c) Nelen & Schuurmans.  GPL licensed, see LICENSE.txt.
 
-import json
 import logging
 
 from django.http import HttpResponse
@@ -25,8 +24,6 @@ def site(request, application_name, active_tab_name, only_portal=False):
     if not request.user.is_authenticated():
         auto_login(request)
 
-    app_javascript_file = get_template('application/'+application_name+'.js')
-    #django.template.TemplateDoesNotExist
     t = get_template('portal_pageframe.html')
     c = RequestContext(request, {
             'application': application_name,
