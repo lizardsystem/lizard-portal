@@ -26,7 +26,7 @@
         totalProperty: 'count'
       },
       afterRequest: function(request, success) {
-        debugger;        if (request.method === 'POST') {
+        if (request.method === 'POST') {
           if (success) {
             return Ext.MessageBox.alert('Opslaan gelukt');
           } else {

@@ -33,9 +33,10 @@
             store: Ext.create('Lizard.store.AvailableLayersStore', {
               id: 'appst' + record.get('slug')
             }),
-            root_map_slug: record.get('action_params').root_map,
+            layerFolderId: record.get('action_params').root_map,
             title: record.get('name'),
-            id: 'app' + record.get('slug')
+            id: 'app' + record.get('slug'),
+            workspaceItemStore: this.workspaceItemStore
           });
           tab = tabpanel.add(app);
           return tabpanel.setActiveTab(tab);
@@ -52,6 +53,11 @@
           itemclick: this.onAppClick
         }
       });
+      if (!this.workspaceStore) {
+        this.workspaceStore = Ext.create(Lizard.store.WorkspaceStore, {
+          layerStore: this.workspaceItemStore
+        });
+      }
       return this.callParent(arguments);
     },
     afterRender: function() {
