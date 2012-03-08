@@ -24,8 +24,8 @@
 			    dataConfig:[
 				{name: 'polder', title: 'Polder', editable: false, visible: true, width: 150, type: 'text'},
 				{name: 'type', title: 'Type', editable: false, visible: true, width: 150, type: 'text'},
-				{name: 'gebruiker', title: 'Gebruiker', editable: false, visible: true, width: 150, type: 'text'},
-				{name: 'datum', title: 'Datum', editable: false, visible: true, width: 150, type: 'text'}
+				{name: 'user', title: 'Gebruiker', editable: false, visible: true, width: 150, type: 'text'},
+				{name: 'date', title: 'Datum', editable: false, visible: true, width: 150, type: 'text'}
 			    ],
 			    proxyUrl: '/portal/validate',
 			    proxyParams: {

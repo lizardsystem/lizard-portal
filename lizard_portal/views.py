@@ -140,22 +140,22 @@ def create_configurations_retriever():
     retriever = \
         ConfigurationsRetriever(file_name_retriever, configuration_factory)
     configuration_list = [
-        {'polder':    'Atekpolder',
-         'type':      'waterbalans',
-         'gebruiker': 'Analist John',
-         'datum':     '1-02-2012 11:00'},
-        {'polder':    'Atekpolder',
-         'type':      'ESF_1',
-         'gebruiker': 'Analist John',
-         'datum':     '1-02-2012 11:00'},
-        {'polder':    'Aetsveldsepolder Oost',
-         'type':      'ESF_2',
-         'gebruiker': 'Analist Jojanneke',
-         'datum':     '1-02-2012 11:00'},
-        {'polder':    'Aetsveldsepolder Oost',
-         'type':      'waterbalans',
-         'gebruiker': 'Analist Pieter',
-         'datum':     '1-02-2012 11:00'},
+        {'polder': 'Atekpolder',
+         'type':   'waterbalans',
+         'user':   'Analist John',
+         'date':   '1-02-2012 11:00'},
+        {'polder': 'Atekpolder',
+         'type':   'ESF_1',
+         'user':   'Analist John',
+         'date':   '1-02-2012 11:00'},
+        {'polder': 'Aetsveldsepolder Oost',
+         'type':   'ESF_2',
+         'user':   'Analist Jojanneke',
+         'date':   '1-02-2012 11:00'},
+        {'polder': 'Aetsveldsepolder Oost',
+         'type':   'waterbalans',
+         'user':   'Analist Pieter',
+         'date':   '1-02-2012 11:00'},
         ]
     retriever.retrieve_configurations = \
         (lambda : [MockConfig(config) for config in configuration_list])
