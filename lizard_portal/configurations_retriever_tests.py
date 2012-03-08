@@ -117,6 +117,13 @@ class ConfigurationFactoryTestSuite(TestCase):
         method, args, kwargs = zip_file.method_calls[0]
         self.assertTrue('close' == method and () == args and {} == kwargs)
 
+    def test_e(self):
+        """Test the contents of the description file make up the meta info."""
+        factory = ConfigurationFactory(StubDescriptionParser())
+        zip_file, description_file = Mock(), Mock()
+        factory.get_description_file = (lambda s: (zip_file, description_file))
+        configuration = factory.create('mnt/vss-share/ESF_1_Waternet_20120228_141234.zip')
+        self.assertEqual(configuration.meta_info, 'gebruiker: Pieter Swinkels')
 
 class DescriptionParserTestSuite(TestCase):
 

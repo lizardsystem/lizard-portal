@@ -94,6 +94,7 @@ class ConfigurationFactory(object):
     def create(self, zip_file_path):
         """Return a Configuration from the given named zip file."""
         configuration = Configuration()
+        configuration.meta_info = ''
         configuration.polder = 'hard coded value'
         configuration.zip_file_path = zip_file_path
         self._set_attributes_from_file(configuration)
@@ -105,6 +106,7 @@ class ConfigurationFactory(object):
         description_dict = self.parser.as_dict(description_file)
         for key, value in description_dict.items():
             setattr(configuration, key, value)
+            configuration.meta_info += '%s: %s' % (key, value)
         zip_file.close()
 
     def get_description_file(self, zip_file_name):
@@ -157,3 +159,7 @@ class MockConfig(object):
 
     def __init__(self, as_dict):
         self.as_dict = Mock(return_value=as_dict)
+
+
+def create_configurations_retriever():
+    return ConfigurationsRetriever(ZipFileNameRetriever(), ConfigurationFactory(DescriptionParser()))
