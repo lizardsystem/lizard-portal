@@ -75,11 +75,11 @@ class ZipFileNameRetriever(object):
 
 
 class ConfigurationFactory(object):
-    """Implements the functionality to create a configuration from a ZIP file.
+    """Implements the functionality to create a configuration from a zip file.
 
     The configuration created is an object of class Configuration.
 
-    The ZIP file contains an INI style file that specifies the attributes of
+    The zip file contains an INI style file that specifies the attributes of
     the configuration. A configuration factory object depends on another object
     to retrieve these attributes from that file. That other object, wich we
     call a description parser, should support the method::
@@ -92,7 +92,7 @@ class ConfigurationFactory(object):
         self.regex = re.compile('^([\w\d]*)_[a-zA-Z]*_\d{8}_\d{6}.zip')
 
     def create(self, zip_file_name):
-        """Return a Configuraton based on the information in the given ZIP file.
+        """Return a Configuraton based on the information in the given zip file.
 
         """
         configuration = Configuration()
@@ -113,10 +113,10 @@ class ConfigurationFactory(object):
             return match.group(1)
 
     def get_description_file(self, zip_file_name):
-        """Return the file objects to ZIP file and the description file.
+        """Return the file objects to zip file and the description file.
 
         Parameter:
-          *zip_file_name* name of ZIP file that contains the description file
+          *zip_file_name* name of zip file that contains the description file
 
         """
         zip_file = ZipFile(zip_file_name)
