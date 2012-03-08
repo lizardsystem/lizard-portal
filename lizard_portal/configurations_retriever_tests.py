@@ -122,11 +122,14 @@ class ConfigurationFactoryTestSuite(TestCase):
 
     def test_e(self):
         """Test the contents of the description file make up the meta info."""
-        factory = self.create_factory({'gebruiker': 'Pieter Swinkels'})
+        factory = self.create_factory({
+            'naam':      'nieuwe oppervlakte',
+            'gebruiker': 'Pieter Swinkels'})
         zip_file, description_file = Mock(), Mock()
         factory.get_description_file = (lambda s: (zip_file, description_file))
         configuration = factory.create('mnt/vss-share/ESF_1_Waternet_20120228_141234.zip')
-        self.assertEqual(configuration.meta_info, 'gebruiker: Pieter Swinkels')
+        self.assertEqual(configuration.meta_info,
+            'naam: nieuwe oppervlakte; gebruiker: Pieter Swinkels')
 
 
 class DescriptionParserTestSuite(TestCase):

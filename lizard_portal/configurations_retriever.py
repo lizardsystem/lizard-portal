@@ -106,7 +106,8 @@ class ConfigurationFactory(object):
         description_dict = self.parser.as_dict(description_file)
         for key, value in description_dict.items():
             setattr(configuration, key, value)
-            configuration.meta_info += '%s: %s' % (key, value)
+            configuration.meta_info += '%s: %s; ' % (key, value)
+        configuration.meta_info = configuration.meta_info[:-2]
         zip_file.close()
 
     def get_description_file(self, zip_file_name):
