@@ -93,6 +93,22 @@ class ConfigurationFactoryTestSuite(TestCase):
         self.assertEqual(configuration.gebruiker, 'Pieter Swinkels')
 
     def test_b(self):
+        """Test the type of the water balance configuration is set."""
+        factory = ConfigurationFactory(StubDescriptionParser())
+        zip_file, description_file = Mock(), Mock()
+        factory.get_description_file = (lambda s: (zip_file, description_file))
+        configuration = factory.create('mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
+        self.assertEqual(configuration.type, 'waterbalans')
+
+    def test_c(self):
+        """Test the type of the ESF_1 configuration is set."""
+        factory = ConfigurationFactory(StubDescriptionParser())
+        zip_file, description_file = Mock(), Mock()
+        factory.get_description_file = (lambda s: (zip_file, description_file))
+        configuration = factory.create('mnt/vss-share/ESF_1_Waternet_20120228_141234.zip')
+        self.assertEqual(configuration.type, 'ESF_1')
+
+    def test_d(self):
         """Test the open description file is also closed."""
         factory = ConfigurationFactory(StubDescriptionParser())
         zip_file, description_file = Mock(), Mock()
@@ -100,8 +116,6 @@ class ConfigurationFactoryTestSuite(TestCase):
         factory.create('hello.zip')
         method, args, kwargs = zip_file.method_calls[0]
         self.assertTrue('close' == method and () == args and {} == kwargs)
-
-
 
 
 class DescriptionParserTestSuite(TestCase):

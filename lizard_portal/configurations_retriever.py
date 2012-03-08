@@ -89,19 +89,28 @@ class ConfigurationFactory(object):
     """
     def __init__(self, description_parser):
         self.parser = description_parser
+        self.regex = re.compile('^([\w\d]*)_[a-zA-Z]*_\d{8}_\d{6}.zip')
 
     def create(self, zip_file_name):
         """Return a Configuraton based on the information in the given ZIP file.
 
         """
         configuration = Configuration()
+        configuration.polder = 'hard coded value'
         configuration.zip_file = zip_file_name
+        configuration.type = self.get_type(zip_file_name)
         zip_file, description_file = self.get_description_file(zip_file_name)
         description_dict = self.parser.as_dict(description_file)
         for key, value in description_dict.items():
             setattr(configuration, key, value)
         zip_file.close()
         return configuration
+
+    def get_type(self, zip_file_name):
+        _, file_name = os.path.split(zip_file_name)
+        match = self.regex.search(file_name)
+        if match and len(match.groups()) == 1:
+            return match.group(1)
 
     def get_description_file(self, zip_file_name):
         """Return the file objects to ZIP file and the description file.
