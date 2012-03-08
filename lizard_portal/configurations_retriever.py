@@ -71,7 +71,7 @@ class ZipFileNameRetriever(object):
 
     @property
     def root_directory(self):
-        return '/home/pieter/tmp'
+        return '/tmp'
 
 
 class ConfigurationFactory(object):
