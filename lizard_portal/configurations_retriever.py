@@ -152,7 +152,7 @@ class DescriptionParser(object):
             if match is not None:
                 option = self.regex.search(line).groups()
                 if option is not None and len(option) == 2:
-                    attributes[option[0]] = option[1].rstrip(' ')
+                    attributes[option[0].lower()] = option[1].rstrip(' ')
         return attributes
 
 
