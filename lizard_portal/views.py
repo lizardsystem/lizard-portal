@@ -128,15 +128,35 @@ def feature_info(request):
 
 def validate(request):
     logger.debug('lizard_portal.views.validate')
-    retriever = ConfigurationsRetriever()
+    retriever = create_configurations_retriever()
+    configurations = retriever.retrieve_configurations_as_dict()
+    json = simplejson.dumps({'data': configurations, 'count': len(configurations)})
+    return HttpResponse(json)
+
+
+def create_configurations_retriever():
+    file_name_retriever = None
+    configuration_factory = None
+    retriever = \
+        ConfigurationsRetriever(file_name_retriever, configuration_factory)
     configuration_list = [
-        {'polder': 'Atekpolder', 'type': 'waterbalans', 'gebruiker': 'Analist John', 'datum': '1-02-2012 11:00'},
-        {'polder': 'Atekpolder', 'type': 'ESF1', 'gebruiker': 'Analist John', 'datum': '1-02-2012 11:00'},
-        {'polder': 'Aetsveldsepolder Oost', 'type': 'ESF2', 'gebruiker': 'Analist Jojanneke', 'datum': '1-02-2012 11:00'},
-        {'polder': 'Aetsveldsepolder Oost', 'type': 'waterbalans', 'gebruiker': 'Analist Pieter', 'datum': '1-02-2012 11:00'},
+        {'polder':    'Atekpolder',
+         'type':      'waterbalans',
+         'gebruiker': 'Analist John',
+         'datum':     '1-02-2012 11:00'},
+        {'polder':    'Atekpolder',
+         'type':      'ESF_1',
+         'gebruiker': 'Analist John',
+         'datum':     '1-02-2012 11:00'},
+        {'polder':    'Aetsveldsepolder Oost',
+         'type':      'ESF_2',
+         'gebruiker': 'Analist Jojanneke',
+         'datum':     '1-02-2012 11:00'},
+        {'polder':    'Aetsveldsepolder Oost',
+         'type':      'waterbalans',
+         'gebruiker': 'Analist Pieter',
+         'datum':     '1-02-2012 11:00'},
         ]
     retriever.retrieve_configurations = \
         (lambda : [MockConfig(config) for config in configuration_list])
-    configurations = retriever.retrieve_as_list()
-    json = simplejson.dumps({'data': configurations, 'count': len(configurations)})
-    return HttpResponse(json)
+    return retriever
