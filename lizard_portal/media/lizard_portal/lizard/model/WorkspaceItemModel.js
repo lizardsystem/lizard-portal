@@ -120,7 +120,8 @@
           transparent: !this.get('is_base_layer')
         }, {
           url: this.get('url'),
-          layers: this.get('layers')
+          layers: this.get('layers'),
+          cql_filter: this.get('filter')
         });
         options = Ext.merge({
           displayInLayerSwitcher: true,

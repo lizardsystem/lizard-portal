@@ -137,6 +137,7 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
                 {
                     url: @get('url'),
                     layers: @get('layers')
+                    cql_filter: @get('filter')
             })
             #todo: filter
 
