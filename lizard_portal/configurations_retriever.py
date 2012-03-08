@@ -96,7 +96,7 @@ class ConfigurationFactory(object):
         """Return a Configuration from the given named zip file."""
         configuration = Configuration()
         configuration.polder = 'hard coded value'
-        configuration.zip_file = zip_file_path
+        configuration.zip_file_path = zip_file_path
         configuration.type = self.get_type(zip_file_path)
         zip_file, description_file = self.get_description_file(zip_file_path)
         description_dict = self.parser.as_dict(description_file)
@@ -105,8 +105,11 @@ class ConfigurationFactory(object):
         zip_file.close()
         return configuration
 
-    def get_type(self, zip_file_name):
-        _, file_name = os.path.split(zip_file_name)
+    def get_type(self, zip_file_path):
+        """Return the configuration type using the name of the zip file.
+
+        """
+        _, file_name = os.path.split(zip_file_path)
         match = self.regex.search(file_name)
         if match and len(match.groups()) == 1:
             return match.group(1)

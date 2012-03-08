@@ -89,7 +89,7 @@ class ConfigurationFactoryTestSuite(TestCase):
         zip_file, description_file = Mock(), Mock()
         factory.get_description_file = (lambda s: (zip_file, description_file))
         configuration = factory.create('mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
-        self.assertEqual(configuration.zip_file, 'mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
+        self.assertEqual(configuration.zip_file_path, 'mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
         self.assertEqual(configuration.gebruiker, 'Pieter Swinkels')
 
     def test_b(self):
