@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.14 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Implement initial support to view and validate configurations (#21).
 
 
 0.13 (2012-03-08)
