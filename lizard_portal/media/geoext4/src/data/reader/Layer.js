@@ -47,7 +47,7 @@ Ext.define('GeoExt.data.reader.Layer', {
 		for (i = 0; i < length; i++) {
 			data[i] = {
 				layer:root[i],
-				name:root[i].name,
+				title:root[i].title ||root[i].name ||root[i].text,
                 visibility: root[i].visibility || false,
                 isbaselayer:  root[i].isBaseLayer || false
 			}

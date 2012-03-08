@@ -10,11 +10,14 @@
     rootVisible: false,
     autoLoad: false,
     onLayerClick: function(view, record, item, index, event, eOpts) {
+      var rec;
       if (record.dirty === true) {
         if (record.get('checked')) {
-          this.workspaceItemStore.createWorkspaceItem();
+          rec = record.raw;
+          rec.title = rec.text;
+          this.workspaceItemStore.createWorkspaceItem(record.raw);
         } else {
-          this.workspaceItemStore.deleteWorkspaceItem();
+          this.workspaceItemStore.deleteWorkspaceItem(record.raw);
         }
         this.workspaceItemStore.sync();
         return record.commit();
@@ -32,11 +35,12 @@
     },
     afterRender: function() {
       this.callParent(arguments);
-      return this.store.load({
+      this.store.load({
         params: {
           object_id: this.layerFolderId
         }
       });
+      if (this.workspaceItemStore) return this.store.bind(this.workspaceItemStore);
     }
   });
 

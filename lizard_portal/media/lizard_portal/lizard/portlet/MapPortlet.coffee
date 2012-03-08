@@ -9,8 +9,8 @@ Ext.define('Lizard.portlet.MapPortlet', {
 #    ]
     alias: 'widget.mapportlet'
     title: 'Map'
-    #store = LayerStore
-    #workspace store?
+    #layers = LayerStore
+    #layers = workspace store?
 
     tbar: [{
         xtype: 'button',
@@ -40,6 +40,82 @@ Ext.define('Lizard.portlet.MapPortlet', {
             }
         }
     }]
+
+    onMapClickCallback: (records, event, lonlat, xhr, request) ->
+        alert(records[0].data)
+
+
+    onMapClick: (event, lonlat, callback) ->
+        me=this;
+
+        debugger
+
+        layer = @layers.findRecord('clickable',true)
+        if not layer
+            alert('geen kaartlaag geselecteerd')
+            return
+
+
+        params = {
+            REQUEST: "GetFeatureInfo",
+            EXCEPTIONS: "application/vnd.ogc.se_xml",
+            BBOX: @map.getExtent().toBBOX(),
+            X: event.xy.x,
+            Y: event.xy.y,
+            INFO_FORMAT: 'application/vnd.ogc.gml',
+            QUERY_LAYERS: layer.layers #event.object.layers[1].params.LAYERS,
+            LAYERS: layer.layers,
+            FEATURE_COUNT: 1,
+            WIDTH: @map.size.w,
+            HEIGHT: @map.size.h,
+            SRS: @map.projection.projCode
+        }
+
+        if layer.get('url').contains('http')
+            #request through our server
+            url = layer.getFullRequestString(params, layer.url);
+
+            Ext.Ajax.request({
+                url: '/portal/getFeatureInfo/',
+                reader:{
+                    type: 'xml'
+                },
+                params: {
+                    request: Ext.JSON.encode(params)
+                }
+                method: 'GET',
+                success: (xhr, request) ->
+                     gml_text = xhr.responseText;
+                     format = new OpenLayers.Format.GML.v3();
+                     gml = format.read(gml_text);
+                     me.onMapClickCallback(gml, event, lonlat, xhr, request);
+
+                failure: (xhr) ->
+                     alert('failure');
+            })
+
+        else
+            #request direct
+            Ext.Ajax.request({
+                url: layer.url,
+                reader:{
+                    type: 'xml'
+                },
+                params: params
+                method: 'GET',
+                success: (xhr, request) ->
+                    gml_text = xhr.responseText;
+                    format = new OpenLayers.Format.GML.v3();
+                    gml = format.read(gml_text);
+                    me.onMapClickCallback(gml, event, lonlat, xhr, request);
+
+                failure: (xhr) ->
+                    alert('failure');
+            });
+
+
+
+
 
     initComponent: () ->
         me = @

@@ -16,6 +16,7 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
     #store: Ext.data.StoreManager.lookup('Workspace'),
 
 
+
     root_map_slug: null
     title: 'Layers'
     rootVisible: false
@@ -24,11 +25,16 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
     onLayerClick: (view, record, item, index, event, eOpts) ->
         if record.dirty == true
             if record.get('checked')
-                @workspaceItemStore.createWorkspaceItem()
+                rec = record.raw
+                rec.title = rec.text
+                @workspaceItemStore.createWorkspaceItem(record.raw)
             else
-                @workspaceItemStore.deleteWorkspaceItem()
+                @workspaceItemStore.deleteWorkspaceItem(record.raw)
             @workspaceItemStore.sync()
             record.commit()
+
+
+
 
     initComponent: () ->
         me = @
@@ -36,6 +42,9 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
             listeners:
                 itemclick: @onLayerClick
         )
+
+
+
         @callParent(arguments)
 
     afterRender: () ->
@@ -45,6 +54,8 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
             params:
                 object_id: @layerFolderId
         })
+        if @workspaceItemStore
+            @store.bind(@workspaceItemStore)
 
 
   })
