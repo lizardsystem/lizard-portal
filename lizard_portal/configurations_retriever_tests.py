@@ -76,16 +76,19 @@ class ZipFileNameRetrieverTestSuite(TestCase):
         self.assertEqual(['hello.zip'], file_names)
 
 
-class StubDescriptionParser(object):
+class StubParser(object):
 
-    def as_dict(self, description_file):
-        return {'gebruiker': 'Pieter Swinkels'}
+    def __init__(self, attributes_dict):
+        self.as_dict = Mock(return_value=attributes_dict)
 
 
 class ConfigurationFactoryTestSuite(TestCase):
 
+    def create_factory(self, attributes_dict):
+        return ConfigurationFactory(StubParser(attributes_dict))
+
     def test_a(self):
-        factory = ConfigurationFactory(StubDescriptionParser())
+        factory = self.create_factory({'gebruiker': 'Pieter Swinkels'})
         zip_file, description_file = Mock(), Mock()
         factory.get_description_file = (lambda s: (zip_file, description_file))
         configuration = factory.create('mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
@@ -94,7 +97,7 @@ class ConfigurationFactoryTestSuite(TestCase):
 
     def test_b(self):
         """Test the type of the water balance configuration is set."""
-        factory = ConfigurationFactory(StubDescriptionParser())
+        factory = self.create_factory({})
         zip_file, description_file = Mock(), Mock()
         factory.get_description_file = (lambda s: (zip_file, description_file))
         configuration = factory.create('mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
@@ -102,7 +105,7 @@ class ConfigurationFactoryTestSuite(TestCase):
 
     def test_c(self):
         """Test the type of the ESF_1 configuration is set."""
-        factory = ConfigurationFactory(StubDescriptionParser())
+        factory = self.create_factory({})
         zip_file, description_file = Mock(), Mock()
         factory.get_description_file = (lambda s: (zip_file, description_file))
         configuration = factory.create('mnt/vss-share/ESF_1_Waternet_20120228_141234.zip')
@@ -110,7 +113,7 @@ class ConfigurationFactoryTestSuite(TestCase):
 
     def test_d(self):
         """Test the open description file is also closed."""
-        factory = ConfigurationFactory(StubDescriptionParser())
+        factory = self.create_factory({})
         zip_file, description_file = Mock(), Mock()
         factory.get_description_file = (lambda s: (zip_file, description_file))
         factory.create('hello.zip')
@@ -119,11 +122,12 @@ class ConfigurationFactoryTestSuite(TestCase):
 
     def test_e(self):
         """Test the contents of the description file make up the meta info."""
-        factory = ConfigurationFactory(StubDescriptionParser())
+        factory = self.create_factory({'gebruiker': 'Pieter Swinkels'})
         zip_file, description_file = Mock(), Mock()
         factory.get_description_file = (lambda s: (zip_file, description_file))
         configuration = factory.create('mnt/vss-share/ESF_1_Waternet_20120228_141234.zip')
         self.assertEqual(configuration.meta_info, 'gebruiker: Pieter Swinkels')
+
 
 class DescriptionParserTestSuite(TestCase):
 
