@@ -90,29 +90,18 @@ class ConfigurationFactory(object):
     """
     def __init__(self, description_parser):
         self.parser = description_parser
-        self.regex = re.compile('^([\w\d]*)_[a-zA-Z]*_\d{8}_\d{6}.zip')
 
     def create(self, zip_file_path):
         """Return a Configuration from the given named zip file."""
         configuration = Configuration()
         configuration.polder = 'hard coded value'
         configuration.zip_file_path = zip_file_path
-        configuration.type = self.get_type(zip_file_path)
         zip_file, description_file = self.get_description_file(zip_file_path)
         description_dict = self.parser.as_dict(description_file)
         for key, value in description_dict.items():
             setattr(configuration, key, value)
         zip_file.close()
         return configuration
-
-    def get_type(self, zip_file_path):
-        """Return the configuration type using the name of the zip file.
-
-        """
-        _, file_name = os.path.split(zip_file_path)
-        match = self.regex.search(file_name)
-        if match and len(match.groups()) == 1:
-            return match.group(1)
 
     def get_description_file(self, zip_file_name):
         """Return the file objects to zip file and the description file.
@@ -127,7 +116,19 @@ class ConfigurationFactory(object):
 
 class Configuration(object):
     """Stores the attributes of a configuration."""
-    pass
+
+    def __init__(self):
+        self.regex = re.compile('^([\w\d]*)_[a-zA-Z]*_\d{8}_\d{6}.zip')
+
+    @property
+    def type(self):
+        """Return the configuration type using the name of the zip file.
+
+        """
+        _, file_name = os.path.split(self.zip_file_path)
+        match = self.regex.search(file_name)
+        if match and len(match.groups()) == 1:
+            return match.group(1)
 
 
 class DescriptionParser(object):
