@@ -10,6 +10,8 @@ import re
 
 from zipfile import ZipFile
 
+from django.conf import settings
+
 from mock import Mock
 
 
@@ -71,7 +73,7 @@ class ZipFileNameRetriever(object):
 
     @property
     def root_directory(self):
-        return '/tmp'
+        return settings.VALIDATION_ROOT
 
 
 class ConfigurationFactory(object):
