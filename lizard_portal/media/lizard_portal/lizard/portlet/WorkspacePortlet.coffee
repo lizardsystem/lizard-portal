@@ -11,10 +11,11 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
     title: 'Workspace'
     autoHeight: true,
     minHeight: 200,
+    multiSelect: true
 
 
     # store: Ext.data.StoreManager.lookup('Workspace'),
-    viewConfig: {
+    viewConfig:
         #Return CSS class to apply to rows depending upon data values
         getRowClass: (record, index)  ->
             c = record.get('is_base_layer');
@@ -22,7 +23,11 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
                 return 'l-hidden'
             else
                 return ''
-    }
+
+        plugins:
+            ptype: 'gridviewdragdrop',
+            dragGroup: 'workspaceitem',
+            dropGroup: 'workspaceitem'
 
 
     columns:[{
@@ -41,7 +46,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
         text: 'Naam',
         flex: 1,
         sortable: true,
-        dataIndex: 'name'
+        dataIndex: 'title'
     },{
         text: 'Achtergrond',
         flex: 1,
@@ -129,10 +134,6 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
                                     alert('laden mislukt')
                         })
 
-
-
-
-
                     dataConfig: [
                       {name: 'id', title: 'id', editable: false, visible: false, width: 50, type: 'number'}
                       {name: 'name', title: 'Naam', editable: true, visible: true, width: 150, type: 'text'}
@@ -147,7 +148,16 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
                 }]
             }).show()
 
-    }]
+    },
+      {
+        type: 'pin'
+        handler: (e, target, panelHeader, tool) ->
+          portlet = panelHeader.ownerCt;
+          debugger
+          records = portlet.getSelectionModel().selected.items
+          portlet.store.remove(records)
+
+      }]
 
     initComponent: () ->
         me = @
