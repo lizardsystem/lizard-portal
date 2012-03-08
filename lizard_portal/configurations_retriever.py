@@ -96,12 +96,16 @@ class ConfigurationFactory(object):
         configuration = Configuration()
         configuration.polder = 'hard coded value'
         configuration.zip_file_path = zip_file_path
+        self._set_attributes_from_file(configuration)
+        return configuration
+
+    def _set_attributes_from_file(self, configuration):
+        zip_file_path = configuration.zip_file_path
         zip_file, description_file = self.get_description_file(zip_file_path)
         description_dict = self.parser.as_dict(description_file)
         for key, value in description_dict.items():
             setattr(configuration, key, value)
         zip_file.close()
-        return configuration
 
     def get_description_file(self, zip_file_name):
         """Return the file objects to zip file and the description file.
