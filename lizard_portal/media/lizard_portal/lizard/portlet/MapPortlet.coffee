@@ -42,20 +42,59 @@ Ext.define('Lizard.portlet.MapPortlet', {
     }]
 
     onMapClickCallback: (records, event, lonlat, xhr, request) ->
-        alert(records[0].data)
+        # Records is a list of gml objects. They have the following properties:
+        # active: "true"
+        # fews_norm_source_id: "2"
+        # geo_ident: "MBP014"
+        # icon: "LizardIconRWZIZW.gif"
+        # id: "1952"
+        # mod_ident: "ESF2_Bewerkingen"
+        # name: "MBP014"
+        # par_ident: "Gloeirest.Efractie"
+        # qua_ident: "Zomer"
+        # shortname: "MBP014"
+        # stp_ident: "CTS_M_GMT+01:00"
+        # tooltip: "None"
+        if records.length > 0
+            # alert(records[0].data)
+            Ext.create('Ext.window.Window', {
+                title: 'locatie',
+                modal: true,
+
+                xtype: 'leditgrid'
+                itemId: 'map popup'
+
+                finish_edit_function: (updated_record) ->
+                    debugger
+
+                editpopup: true,
+                items: [{
+                    xtype: 'panel'
+                    width: 400
+                    height: 400
+                    html: 'some content ' + records[0].data.geo_ident
+                    bbar: [{
+                        text: 'Okee dan'
+                        handler: (btn, event) ->
+                            window = @up('window')
+                            window.close()
+                    }]
+                }]
+            }).show();
+        else
+            alert('nothing found')
 
 
     onMapClick: (event, lonlat, callback) ->
-        me=this;
-
-        debugger
-
+        me = @
+        # Find the first clickable layer
+        #debugger
         layer = @layers.findRecord('clickable',true)
         if not layer
             alert('geen kaartlaag geselecteerd')
             return
 
-
+        # Somehow layer.get('layers') is empty, so we use event.object... instead
         params = {
             REQUEST: "GetFeatureInfo",
             EXCEPTIONS: "application/vnd.ogc.se_xml",
@@ -63,41 +102,48 @@ Ext.define('Lizard.portlet.MapPortlet', {
             X: event.xy.x,
             Y: event.xy.y,
             INFO_FORMAT: 'application/vnd.ogc.gml',
-            QUERY_LAYERS: layer.layers #event.object.layers[1].params.LAYERS,
-            LAYERS: layer.layers,
+            QUERY_LAYERS:  event.object.layers[1].params.LAYERS,
+            LAYERS: event.object.layers[1].params.LAYERS,
             FEATURE_COUNT: 1,
             WIDTH: @map.size.w,
             HEIGHT: @map.size.h,
-            SRS: @map.projection.projCode
+            SRS: 'EPSG:900913' # @map.projection  it says EPSG:4326
         }
 
-        if layer.get('url').contains('http')
-            #request through our server
-            url = layer.getFullRequestString(params, layer.url);
+        # Check if url is from our server.
+        # if layer.get('url').contains('http')
+        #     #request external server through our server
+        #     # Does not work yet
+        #     url = layer.getFullRequestString(params, layer.url);
 
+        #     Ext.Ajax.request({
+        #         url: '/portal/getFeatureInfo/',
+        #         reader:{
+        #             type: 'xml'
+        #         },
+        #         params: {
+        #             request: Ext.JSON.encode(params)
+        #         }
+        #         method: 'GET',
+        #         success: (xhr, request) ->
+        #              gml_text = xhr.responseText;
+        #              format = new OpenLayers.Format.GML.v3();
+        #              gml = format.read(gml_text);
+        #              me.onMapClickCallback(gml, event, lonlat, xhr, request);
+
+        #         failure: (xhr) ->
+        #              alert('failure');
+        #     })
+
+        # else
+        if layer.get('url') == ''
+            alert('Test: Selecteer een andere kaartlaag als bovenste clickable')
+            return
+        if true
+            #request direct from lizard server
+            # Does not work yet
             Ext.Ajax.request({
-                url: '/portal/getFeatureInfo/',
-                reader:{
-                    type: 'xml'
-                },
-                params: {
-                    request: Ext.JSON.encode(params)
-                }
-                method: 'GET',
-                success: (xhr, request) ->
-                     gml_text = xhr.responseText;
-                     format = new OpenLayers.Format.GML.v3();
-                     gml = format.read(gml_text);
-                     me.onMapClickCallback(gml, event, lonlat, xhr, request);
-
-                failure: (xhr) ->
-                     alert('failure');
-            })
-
-        else
-            #request direct
-            Ext.Ajax.request({
-                url: layer.url,
+                url: layer.get('url'),
                 reader:{
                     type: 'xml'
                 },
@@ -107,8 +153,10 @@ Ext.define('Lizard.portlet.MapPortlet', {
                     gml_text = xhr.responseText;
                     format = new OpenLayers.Format.GML.v3();
                     gml = format.read(gml_text);
-                    me.onMapClickCallback(gml, event, lonlat, xhr, request);
-
+                    if gml.length > 0
+                        me.onMapClickCallback(gml, event, lonlat, xhr, request);
+                    else
+                        alert('Niks gevonden debug: ' + gml_text)
                 failure: (xhr) ->
                     alert('failure');
             });

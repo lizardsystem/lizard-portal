@@ -33,12 +33,42 @@
       }
     ],
     onMapClickCallback: function(records, event, lonlat, xhr, request) {
-      return alert(records[0].data);
+      if (records.length > 0) {
+        return Ext.create('Ext.window.Window', {
+          title: 'locatie',
+          modal: true,
+          xtype: 'leditgrid',
+          itemId: 'map popup',
+          finish_edit_function: function(updated_record) {
+            debugger;
+          },
+          editpopup: true,
+          items: [
+            {
+              xtype: 'panel',
+              width: 400,
+              height: 400,
+              html: 'some content ' + records[0].data.geo_ident,
+              bbar: [
+                {
+                  text: 'Okee dan',
+                  handler: function(btn, event) {
+                    var window;
+                    window = this.up('window');
+                    return window.close();
+                  }
+                }
+              ]
+            }
+          ]
+        }).show();
+      } else {
+        return alert('nothing found');
+      }
     },
     onMapClick: function(event, lonlat, callback) {
-      var layer, me, params, url;
+      var layer, me, params;
       me = this;
-      debugger;
       layer = this.layers.findRecord('clickable', true);
       if (!layer) {
         alert('geen kaartlaag geselecteerd');
@@ -51,38 +81,20 @@
         X: event.xy.x,
         Y: event.xy.y,
         INFO_FORMAT: 'application/vnd.ogc.gml',
-        QUERY_LAYERS: layer.layers,
-        LAYERS: layer.layers,
+        QUERY_LAYERS: event.object.layers[1].params.LAYERS,
+        LAYERS: event.object.layers[1].params.LAYERS,
         FEATURE_COUNT: 1,
         WIDTH: this.map.size.w,
         HEIGHT: this.map.size.h,
-        SRS: this.map.projection.projCode
+        SRS: 'EPSG:900913'
       };
-      if (layer.get('url').contains('http')) {
-        url = layer.getFullRequestString(params, layer.url);
+      if (layer.get('url') === '') {
+        alert('Test: Selecteer een andere kaartlaag als bovenste clickable');
+        return;
+      }
+      if (true) {
         return Ext.Ajax.request({
-          url: '/portal/getFeatureInfo/',
-          reader: {
-            type: 'xml'
-          },
-          params: {
-            request: Ext.JSON.encode(params)
-          },
-          method: 'GET',
-          success: function(xhr, request) {
-            var format, gml, gml_text;
-            gml_text = xhr.responseText;
-            format = new OpenLayers.Format.GML.v3();
-            gml = format.read(gml_text);
-            return me.onMapClickCallback(gml, event, lonlat, xhr, request);
-          },
-          failure: function(xhr) {
-            return alert('failure');
-          }
-        });
-      } else {
-        return Ext.Ajax.request({
-          url: layer.url,
+          url: layer.get('url'),
           reader: {
             type: 'xml'
           },
@@ -93,7 +105,11 @@
             gml_text = xhr.responseText;
             format = new OpenLayers.Format.GML.v3();
             gml = format.read(gml_text);
-            return me.onMapClickCallback(gml, event, lonlat, xhr, request);
+            if (gml.length > 0) {
+              return me.onMapClickCallback(gml, event, lonlat, xhr, request);
+            } else {
+              return alert('Niks gevonden debug: ' + gml_text);
+            }
           },
           failure: function(xhr) {
             return alert('failure');
