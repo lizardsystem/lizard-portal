@@ -75,14 +75,15 @@ class ZipFileNameRetriever(object):
 
 
 class ConfigurationFactory(object):
-    """Implements the functionality to create a configuration from a zip file.
+    """Implements the creation of a configuration from a named zip file.
 
-    The configuration created is an object of class Configuration.
+    The configuration that a ConfigurationFactory creates, is an object of
+    class Configuration.
 
-    The zip file contains an INI style file that specifies the attributes of
-    the configuration. A configuration factory object depends on another object
-    to retrieve these attributes from that file. That other object, wich we
-    call a description parser, should support the method::
+    The named zip file contains an INI style file that specifies the attributes
+    of the configuration. A ConfigurationFactory depends on another object, a
+    so-called description parser, to retrieve these attributes from that
+    file. That description parser, should support the method::
 
         def as_dict(self, file)
 
@@ -91,15 +92,13 @@ class ConfigurationFactory(object):
         self.parser = description_parser
         self.regex = re.compile('^([\w\d]*)_[a-zA-Z]*_\d{8}_\d{6}.zip')
 
-    def create(self, zip_file_name):
-        """Return a Configuraton based on the information in the given zip file.
-
-        """
+    def create(self, zip_file_path):
+        """Return a Configuration from the given named zip file."""
         configuration = Configuration()
         configuration.polder = 'hard coded value'
-        configuration.zip_file = zip_file_name
-        configuration.type = self.get_type(zip_file_name)
-        zip_file, description_file = self.get_description_file(zip_file_name)
+        configuration.zip_file = zip_file_path
+        configuration.type = self.get_type(zip_file_path)
+        zip_file, description_file = self.get_description_file(zip_file_path)
         description_dict = self.parser.as_dict(description_file)
         for key, value in description_dict.items():
             setattr(configuration, key, value)
