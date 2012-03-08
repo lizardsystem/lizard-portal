@@ -142,7 +142,7 @@ class DescriptionParser(object):
     """Implements the functionality to parse a file with attribute settings."""
 
     def __init__(self):
-        self.regex = re.compile('(\w*)\s*=\s*([\w ]*)')
+        self.regex = re.compile('(\w*)\s*=\s*(.*)')
 
     def as_dict(self, open_file):
         """Return the dict of attribute settings in the given open file."""
