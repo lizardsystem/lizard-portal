@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.13 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added first clickable layers in analysis screen. Still experimental.
 
 
 0.12 (2012-03-06)
