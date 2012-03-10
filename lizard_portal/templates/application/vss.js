@@ -57,10 +57,11 @@ Ext.application({
         'Lizard.grid.EditablePropertyGrid',
         'Lizard.form.ComboMultiSelect',
         'Lizard.form.WorkspaceSaveForm',
+        'Lizard.form.BackgroundLayerSelector',
         'Lizard.grid.EditableGrid',
         'Lizard.store.EditGridStore',
         'Lizard.store.AvailableLayersStore',
-        'Lizard.store.LayerStore',
+        'Lizard.store.WorkspaceItemStore',
         'Lizard.store.WorkspaceStore',  // Not yet used
         'Lizard.portlet.AppScreenPortlet',
         'Lizard.portlet.AppsPortlet',
@@ -104,7 +105,7 @@ Ext.application({
 
         // !Try! to initialize WorkspaceStore, does not work yet.
         // Ext.create(Lizard.store.WorkspaceStore, );
-        Ext.create(Lizard.store.LayerStore, {storeId: 'Workspace'} );
+        Ext.create(Lizard.store.WorkspaceItemStore, {storeId: 'WorkspaceItems'} );
 
 
         var aan_afvoergebied_selection =

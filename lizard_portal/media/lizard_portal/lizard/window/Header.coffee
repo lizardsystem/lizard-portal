@@ -356,6 +356,8 @@ Ext.define('Lizard.window.Header', {
         for perm in user.permissions
             output += '   ' + perm + '<br>'
 
+        if Lizard.CM.getContext().background_layer
+            output += 'Achtergrond: ' + Lizard.CM.getContext().background_layer.name + '<br>'
         Ext.MessageBox.alert('Gebruikers informatie', output)
 
 
