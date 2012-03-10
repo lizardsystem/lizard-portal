@@ -10,6 +10,8 @@ import re
 
 from zipfile import ZipFile
 
+from django.conf import settings
+
 from mock import Mock
 
 
@@ -71,7 +73,7 @@ class ZipFileNameRetriever(object):
 
     @property
     def root_directory(self):
-        return '/tmp'
+        return settings.VALIDATION_ROOT
 
 
 class ConfigurationFactory(object):
@@ -142,7 +144,7 @@ class DescriptionParser(object):
     """Implements the functionality to parse a file with attribute settings."""
 
     def __init__(self):
-        self.regex = re.compile('(\w*)\s*=\s*([\w ]*)')
+        self.regex = re.compile('(\w*)\s*=\s*(.*)')
 
     def as_dict(self, open_file):
         """Return the dict of attribute settings in the given open file."""
@@ -152,7 +154,7 @@ class DescriptionParser(object):
             if match is not None:
                 option = self.regex.search(line).groups()
                 if option is not None and len(option) == 2:
-                    attributes[option[0]] = option[1].rstrip(' ')
+                    attributes[option[0].lower()] = option[1].rstrip(' ')
         return attributes
 
 

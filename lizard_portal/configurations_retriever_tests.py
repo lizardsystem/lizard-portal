@@ -165,3 +165,16 @@ class DescriptionParserTestSuite(TestCase):
         self.setup('naam nieuwe oppervlakte')
         description_dict = self.parser.as_dict(self.open_file)
         self.assertEqual({}, description_dict)
+
+    def test_e(self):
+        """Test that an attribute name is lowercased."""
+        self.setup('Naam = nieuwe oppervlakte')
+        description_dict = self.parser.as_dict(self.open_file)
+        self.assertEqual('nieuwe oppervlakte', description_dict['naam'])
+
+    def test_f(self):
+        """Test that attribute values can contain non-alphanumeric characters.
+        """
+        self.setup('datum = 08-03-2012 20:13:00')
+        description_dict = self.parser.as_dict(self.open_file)
+        self.assertEqual('08-03-2012 20:13:00', description_dict['datum'])

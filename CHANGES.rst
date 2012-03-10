@@ -2,10 +2,22 @@ Changelog of lizard-portal
 ==========================
 
 
-0.13 (unreleased)
+0.15 (unreleased)
 -----------------
 
 - Nothing changed yet.
+
+
+0.14 (2012-03-08)
+-----------------
+
+- Implement initial support to view and validate configurations (#21).
+
+
+0.13 (2012-03-08)
+-----------------
+
+- Added first clickable layers in analysis screen. Still experimental.
 
 
 0.12 (2012-03-06)

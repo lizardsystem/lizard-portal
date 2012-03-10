@@ -95,6 +95,9 @@ STATIC_URL = '/static_media/'
 STATIC_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'static')
 STATICFILES_FINDERS = STATICFILES_FINDERS
 
+# Specify the root directory that houses the configurations that have to be
+# validated or that have been validated.
+VALIDATION_ROOT = '/tmp'
 
 try:
     # Import local settings that aren't stored in svn/git.
