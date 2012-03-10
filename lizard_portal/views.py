@@ -1,18 +1,24 @@
 # (c) Nelen & Schuurmans.  GPL licensed, see LICENSE.txt.
-import json
+
+import logging
+
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import RequestContext
 from django.template import TemplateDoesNotExist
 from django.template import Template
 from django.template.loader import get_template
-from lizard_registration.models import SessionContextStore, UserContextStore
+from django.utils import simplejson
 
-from lizard_registration.utils import auto_login
-
+from lizard_portal.configurations_retriever import ConfigurationsRetriever
+from lizard_portal.configurations_retriever import MockConfig
 from lizard_portal.models import PortalConfiguration
 
+from lizard_registration.models import SessionContextStore, UserContextStore
+from lizard_registration.utils import auto_login
 from lizard_registration.utils import get_user_permissions_overall
+
+logger = logging.getLogger(__name__)
 
 def site(request, application_name, active_tab_name, only_portal=False):
     """
@@ -21,8 +27,6 @@ def site(request, application_name, active_tab_name, only_portal=False):
     if not request.user.is_authenticated():
         auto_login(request)
 
-    app_javascript_file = get_template('application/'+application_name+'.js')
-    #django.template.TemplateDoesNotExist
     t = get_template('portal_pageframe.html')
     c = RequestContext(request, {
             'application': application_name,
@@ -120,3 +124,39 @@ def feature_info(request):
 
     content =  resp.read()
     return HttpResponse(content,  mimetype="text/plain")
+
+
+def validate(request):
+    logger.debug('lizard_portal.views.validate')
+    retriever = create_configurations_retriever()
+    configurations = retriever.retrieve_configurations_as_dict()
+    json = simplejson.dumps({'data': configurations, 'count': len(configurations)})
+    return HttpResponse(json)
+
+
+def create_configurations_retriever():
+    file_name_retriever = None
+    configuration_factory = None
+    retriever = \
+        ConfigurationsRetriever(file_name_retriever, configuration_factory)
+    configuration_list = [
+        {'polder': 'Atekpolder',
+         'type':   'waterbalans',
+         'user':   'Analist John',
+         'date':   '1-02-2012 11:00'},
+        {'polder': 'Atekpolder',
+         'type':   'ESF_1',
+         'user':   'Analist John',
+         'date':   '1-02-2012 11:00'},
+        {'polder': 'Aetsveldsepolder Oost',
+         'type':   'ESF_2',
+         'user':   'Analist Jojanneke',
+         'date':   '1-02-2012 11:00'},
+        {'polder': 'Aetsveldsepolder Oost',
+         'type':   'waterbalans',
+         'user':   'Analist Pieter',
+         'date':   '1-02-2012 11:00'},
+        ]
+    retriever.retrieve_configurations = \
+        (lambda : [MockConfig(config) for config in configuration_list])
+    return retriever

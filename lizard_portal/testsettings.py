@@ -6,6 +6,9 @@ from lizard_ui.settingshelper import STATICFILES_FINDERS
 DEBUG = True
 TEMPLATE_DEBUG = True
 
+# let the test runner use syncdb instead of migrate
+SOUTH_TESTS_MIGRATE = False
+
 # SETTINGS_DIR allows media paths and so to be relative to this settings file
 # instead of hardcoded to c:\only\on\my\computer.
 SETTINGS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -92,6 +95,9 @@ STATIC_URL = '/static_media/'
 STATIC_ROOT = os.path.join(BUILDOUT_DIR, 'var', 'static')
 STATICFILES_FINDERS = STATICFILES_FINDERS
 
+# Specify the root directory that houses the configurations that have to be
+# validated or that have been validated.
+VALIDATION_ROOT = '/tmp'
 
 try:
     # Import local settings that aren't stored in svn/git.

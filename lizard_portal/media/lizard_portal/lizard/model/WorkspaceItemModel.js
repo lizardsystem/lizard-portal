@@ -1,6 +1,6 @@
 (function() {
 
-  Ext.define('Lizard.model.LayerModel', {
+  Ext.define('Lizard.model.WorkspaceItemModel', {
     extend: 'Ext.data.Model',
     fields: [
       {
@@ -10,9 +10,22 @@
         name: "layer",
         persist: false
       }, {
-        name: "name",
+        name: 'plid',
+        mapping: 'plid',
+        type: 'auto'
+      }, {
+        name: 'checked',
+        type: 'boolean'
+      }, {
+        name: 'text',
+        type: 'string'
+      }, {
+        name: 'leaf',
+        type: 'boolean'
+      }, {
+        name: "title",
         type: "string",
-        mapping: "name"
+        mapping: "title"
       }, {
         name: "order",
         type: "number",
@@ -91,10 +104,8 @@
     getLayer: function() {
       var layer;
       layer = this.get("layer");
-      if (!layer) {
-        layer = this.createLayer();
-        this.setLayer(layer);
-      }
+      if (!layer) layer = this.createLayer();
+      this.data.layer = layer;
       return layer;
     },
     setLayer: function(layer) {
@@ -109,19 +120,21 @@
           transparent: !this.get('is_base_layer')
         }, {
           url: this.get('url'),
-          layers: this.get('layers')
+          layers: this.get('layers'),
+          cql_filter: this.get('filter')
         });
         options = Ext.merge({
-          displayInLayerSwitcher: this.get('is_base_layer'),
-          displayOutsideMaxExtent: true
+          displayInLayerSwitcher: true,
+          displayOutsideMaxExtent: true,
+          visibility: this.get('visibility') || true
         }, {
           isBaseLayer: this.get('is_base_layer'),
           singleTile: this.get('single_tile')
         });
         if (this.get('is_base_layer')) {
-          return new OpenLayers.Layer.WMS_baselayer(this.get('name'), params, options);
+          return new OpenLayers.Layer.WMS_baselayer(this.get('title'), this.get('url'), params, options);
         } else {
-          return new OpenLayers.Layer.WMS(this.get('name'), params, options);
+          return new OpenLayers.Layer.WMS(this.get('title'), this.get('url'), params, options);
         }
       } else if (ol_class === 'OpenLayers.Layer.OSM') {
         url = this.get('url');

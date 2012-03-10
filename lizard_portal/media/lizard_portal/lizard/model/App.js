@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.model.App', {
     extend: 'Ext.data.Model',
     idProperty: 'slug',
@@ -31,6 +32,10 @@
         name: 'action_params',
         mapping: 'action_params',
         type: 'auto'
+      }, {
+        name: 'target_app_slug',
+        mapping: 'target_app_slug',
+        type: 'auto'
       }
     ],
     proxy: {
@@ -42,4 +47,5 @@
       }
     }
   });
+
 }).call(this);

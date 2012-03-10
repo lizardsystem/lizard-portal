@@ -31,22 +31,32 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
     onAppClick: (view, record) ->
         tabpanel = @up('tabpanel')
         tab = tabpanel.child('#app' + record.get('slug'))
+        #@workspacestore
+        #debugger
+        # Check if tab is already created.
         if tab
             tabpanel.setActiveTab(tab)
         else
-            if record.get('action_type') == 20
+            action_type = record.get('action_type')
+            if action_type == 10
+                @store.load({
+                    params:
+                        object_id: record.get('target_app_slug')
+                })
+            else if action_type == 20
+                # Open layer folders
                 app = Ext.create('Lizard.portlet.AvailableLayersPortlet',{
                     store: Ext.create('Lizard.store.AvailableLayersStore', {id:'appst'+ record.get('slug')}),
-                    root_map_slug: record.get('action_params').root_map,
+                    layerFolderId: record.get('action_params').root_map,
                     title: record.get('name')
                     id: 'app' + record.get('slug')
+                    workspaceItemStore: @workspaceItemStore
                 })
 
                 tab = tabpanel.add(app)
                 tabpanel.setActiveTab(tab)
-
             else
-                alert('actiontype not yet supported')
+                alert('actiontype not yet supported: ' + action_type)
 
 
 
@@ -56,13 +66,12 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
         #
         # Apply the store to the items
         Ext.apply(@,
-
             listeners:
                 itemclick: @onAppClick
-
-
-
         )
+        # Dit moet je volgens mij niet willen.
+        if not @workspaceStore
+            @workspaceStore = Ext.create(Lizard.store.WorkspaceStore, {layerStore: @workspaceItemStore})
 
         @callParent(arguments)
 

@@ -1,4 +1,4 @@
-Ext.define('Lizard.model.LayerModel', {
+Ext.define('Lizard.model.WorkspaceItemModel', {
     extend : 'Ext.data.Model',
     #idProperty : "name",
     fields : [{
@@ -8,9 +8,22 @@ Ext.define('Lizard.model.LayerModel', {
         name : "layer",
         persist: false
     },{
-        name : "name",
+        name: 'plid',
+        mapping: 'plid',
+        type: 'auto'
+    },{
+        name: 'checked',
+        type: 'boolean'
+    },{
+        name: 'text',
+        type: 'string'
+    },{
+        name: 'leaf',
+        type: 'boolean'
+    },{
+        name : "title",
         type : "string",
-        mapping : "name"
+        mapping : "title"
     },{
         name : "order",
         type : "number",
@@ -89,7 +102,8 @@ Ext.define('Lizard.model.LayerModel', {
         layer = @get("layer")
         if not layer
             layer = @createLayer()
-            @setLayer(layer)
+        #without event
+        @data.layer = layer
 
         return layer
 
@@ -123,12 +137,14 @@ Ext.define('Lizard.model.LayerModel', {
                 {
                     url: @get('url'),
                     layers: @get('layers')
+                    cql_filter: @get('filter')
             })
             #todo: filter
 
             options = Ext.merge({
-                    displayInLayerSwitcher: @get('is_base_layer')
+                    displayInLayerSwitcher: true #@get('is_base_layer')
                     displayOutsideMaxExtent: true
+                    visibility: @get('visibility') || true
                 },
                 #@get('options'),
                 {
@@ -137,13 +153,15 @@ Ext.define('Lizard.model.LayerModel', {
             })
             if @get('is_base_layer')
                 return new OpenLayers.Layer.WMS_baselayer(
-                    @get('name'),
+                    @get('title'),
+                    @get('url'),
                     params,
                     options
                 )
             else
                 return new OpenLayers.Layer.WMS(
-                    @get('name'),
+                    @get('title'),
+                    @get('url'),
                     params,
                     options
                 )

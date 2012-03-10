@@ -1,4 +1,5 @@
 (function() {
+
   Ext.define('Lizard.portlet.AppScreenPortlet', {
     extend: 'Ext.view.View',
     alias: 'widget.appscreenportlet',
@@ -14,25 +15,33 @@
     tpl: new Ext.XTemplate('<tpl for=".">', '<div class="app_icon" >', '<img src="{icon}" ', 'id="app-{slug}" />', '<div>{name}</div>', '</div>', '</tpl>'),
     itemSelector: 'div.app_icon',
     onAppClick: function(view, record) {
-      var app, tab, tabpanel;
+      var action_type, app, tab, tabpanel;
       tabpanel = this.up('tabpanel');
       tab = tabpanel.child('#app' + record.get('slug'));
       if (tab) {
         return tabpanel.setActiveTab(tab);
       } else {
-        if (record.get('action_type') === 20) {
+        action_type = record.get('action_type');
+        if (action_type === 10) {
+          return this.store.load({
+            params: {
+              object_id: record.get('target_app_slug')
+            }
+          });
+        } else if (action_type === 20) {
           app = Ext.create('Lizard.portlet.AvailableLayersPortlet', {
             store: Ext.create('Lizard.store.AvailableLayersStore', {
               id: 'appst' + record.get('slug')
             }),
-            root_map_slug: record.get('action_params').root_map,
+            layerFolderId: record.get('action_params').root_map,
             title: record.get('name'),
-            id: 'app' + record.get('slug')
+            id: 'app' + record.get('slug'),
+            workspaceItemStore: this.workspaceItemStore
           });
           tab = tabpanel.add(app);
           return tabpanel.setActiveTab(tab);
         } else {
-          return alert('actiontype not yet supported');
+          return alert('actiontype not yet supported: ' + action_type);
         }
       }
     },
@@ -44,6 +53,11 @@
           itemclick: this.onAppClick
         }
       });
+      if (!this.workspaceStore) {
+        this.workspaceStore = Ext.create(Lizard.store.WorkspaceStore, {
+          layerStore: this.workspaceItemStore
+        });
+      }
       return this.callParent(arguments);
     },
     afterRender: function() {
@@ -55,4 +69,5 @@
       });
     }
   });
+
 }).call(this);

@@ -7,6 +7,7 @@
     title: 'Workspace',
     autoHeight: true,
     minHeight: 200,
+    multiSelect: true,
     viewConfig: {
       getRowClass: function(record, index) {
         var c;
@@ -16,6 +17,11 @@
         } else {
           return '';
         }
+      },
+      plugins: {
+        ptype: 'gridviewdragdrop',
+        dragGroup: 'workspaceitem',
+        dropGroup: 'workspaceitem'
       }
     },
     columns: [
@@ -35,7 +41,7 @@
         text: 'Naam',
         flex: 1,
         sortable: true,
-        dataIndex: 'name'
+        dataIndex: 'title'
       }, {
         text: 'Achtergrond',
         flex: 1,
@@ -191,6 +197,15 @@
               }
             ]
           }).show();
+        }
+      }, {
+        type: 'pin',
+        handler: function(e, target, panelHeader, tool) {
+          var portlet, records;
+          portlet = panelHeader.ownerCt;
+          debugger;
+          records = portlet.getSelectionModel().selected.items;
+          return portlet.store.remove(records);
         }
       }
     ],

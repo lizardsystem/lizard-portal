@@ -1,3 +1,6 @@
+{% load get_grid %}
+{% load get_portal_template %}
+
 {
     itemId: "valideer_configuraties",
     title: "Valideer configuraties",
@@ -10,24 +13,24 @@
                       name: "Valideer configuraties"
                   }],
     items: [{
-               flex: 1,
-               items: [{
-                           title: "Valideer",
-                           flex:1,
-                           autoScroll: true,
-                           bbar: [{
-				      xtype: "button",
-                                      text: "valideer",
-                                      handler: function(button){
-                                          Ext.Ajax.request({
-                                                  method:"POST",
-                                                  params: {test:"test"},
-                                                  reader: {type:"json", root: "data", successful: "successful"},
-                                                  success: function() {alert("gelukt");},
-                                                  failure: function() {alert("mislukt");}
-							   });
-                                      }
-                                  }]
-                       }]
-           }]
+		flex: 1,
+		items: [{
+			    title: 'Configuraties',
+			    xtype: 'leditgrid',
+			    storeAutoLoad: true,
+			    anchor: '100%',
+			    flex:1,
+			    columnLines: true,
+			    dataConfig:[
+				{name: 'polder', title: 'Polder', editable: false, visible: true, width: 150, type: 'text'},
+				{name: 'type', title: 'Type', editable: false, visible: true, width: 150, type: 'text'},
+				{name: 'user', title: 'Gebruiker', editable: false, visible: true, width: 150, type: 'text'},
+				{name: 'date', title: 'Datum', editable: false, visible: true, width: 150, type: 'text'}
+			    ],
+			    proxyUrl: '/portal/validate',
+			    proxyParams: {
+			    }
+			}]
+	    }]
 }
+
