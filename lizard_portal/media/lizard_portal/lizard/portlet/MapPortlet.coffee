@@ -73,7 +73,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
 
         if layer.get('url').contains('http')
             #request through our server
-            url = layer.getFullRequestString(params, layer.url);
+            url = layer.get('layer').getFullRequestString(params, layer.get('url'));
 
             Ext.Ajax.request({
                 url: '/portal/getFeatureInfo/',
@@ -97,7 +97,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
         else
             #request direct
             Ext.Ajax.request({
-                url: layer.url,
+                url: layer.get('url'),
                 reader:{
                     type: 'xml'
                 },

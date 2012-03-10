@@ -59,7 +59,7 @@
         SRS: this.map.projection.projCode
       };
       if (layer.get('url').contains('http')) {
-        url = layer.getFullRequestString(params, layer.url);
+        url = layer.get('layer').getFullRequestString(params, layer.get('url'));
         return Ext.Ajax.request({
           url: '/portal/getFeatureInfo/',
           reader: {
@@ -82,7 +82,7 @@
         });
       } else {
         return Ext.Ajax.request({
-          url: layer.url,
+          url: layer.get('url'),
           reader: {
             type: 'xml'
           },
