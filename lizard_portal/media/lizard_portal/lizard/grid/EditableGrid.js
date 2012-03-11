@@ -284,7 +284,7 @@
             val = value[_i];
             names.push(val.name);
           }
-          value = names.join(', ');
+          value = names.join(',<br>');
         } else if (col.choices) {
           list_choices = Ext.Array.filter(col.choices, function(val) {
             if (val.id === value) return true;
@@ -344,10 +344,14 @@
             handler: function(grid, rowIndex, colIndex) {
               var rec;
               rec = grid.getStore().getAt(rowIndex);
-              if (me.actionEditIcon) {
-                return me.actionEditIcon(rec);
+              if (me.read_only_field && rec.data[me.read_only_field] === true) {
+                return Ext.Msg.alert('melding', 'Dit record is read only.');
               } else {
-                return alert("Edit " + rec.get('id'));
+                if (me.actionEditIcon) {
+                  return me.actionEditIcon(rec);
+                } else {
+                  return alert("Edit " + rec.get('id'));
+                }
               }
             }
           });
@@ -359,7 +363,11 @@
             handler: function(grid, rowIndex, colIndex) {
               var rec;
               rec = grid.getStore().getAt(rowIndex);
-              return me.store.remove(rec);
+              if (me.read_only_field && rec.data[me.read_only_field] === true) {
+                return Ext.Msg.alert('melding', 'Dit record is read only.');
+              } else {
+                return me.store.remove(rec);
+              }
             }
           });
         }
@@ -445,6 +453,10 @@
           fields.push(getGridFieldSettings(field));
         }
       }
+      if (this.store) {
+        this.store.fields = fields;
+        return this.store;
+      }
       url = this.getProxyUrl();
       params = [];
       proxyparams = this.getProxyParams();
@@ -499,7 +511,7 @@
         if (!this.plugins) this.plugins = [];
         this.plugins.push(this.editing);
         if (this.useAddDeleteButtons) {
-          me.bbar.concat([
+          me.bbar = me.bbar.concat([
             {
               xtype: 'button',
               text: 'Toevoegen',

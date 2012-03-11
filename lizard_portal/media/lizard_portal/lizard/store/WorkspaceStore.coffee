@@ -5,40 +5,24 @@ Ext.define('Lizard.store.WorkspaceStore', {
     model: 'Lizard.model.WorkspaceModel'
     autoLoad: false
 
-    layerStore: null
+    workspaceItemStore: null
 
-    # createWorkspaceItem: () ->
-    #     debugger
-    #     alert('creating workspace item')
 
-    #     # Waarom werkt dit niet?
-    #     # workspace_item = Ext.create(@layerStore.model, {
-    #     #     ollayer_class: 'OpenLayers.Layer.OSM', name: 'just added', id: 5, layer: 4, order: 100,
-    #     #     clickable: true})
-    #     # @layerStore.add(workspace_item)
+    statics:
+        active_stores: {}
 
-    #     # @layerStore.create({ollayer_class: 'OpenLayers.Layer.OSM', name: 'just added'})
+        remove: (store) ->
+            if @active_stores[store.storeId]
+                delete @active_stores[store.storeId]
 
-    #     # TODO: plant some listener
-    #     # @data.new OpenLayers.Layer.OSM('Openstreetmap')
+        get_or_create: (storeId, config={}) ->
+            if not @active_stores[storeId]
+                config.storeId = storeId
+                config.workspaceItemStore = Ext.create('Lizard.store.WorkspaceItemStore', {})
+                @active_stores[storeId] = Ext.create('Lizard.store.WorkspaceStore', config)
 
-    # deleteWorkspaceItem: () ->
-    #     alert('deleting workspace item')
+            return @active_stores[storeId]
 
-#    data: [
-#        new OpenLayers.Layer.OSM('Openstreetmap'),
-#        new OpenLayers.Layer.WMS('Aan-afvoergebieden', 'http://maps.waterschapservices.nl/inspire/wms?namespace=inspire',{
-#                layers:['inspire:HY.PhysicalWaters.Catchments'],
-#                transparent: "true",
-#                format: "image/png"
-#            },{
-#                singleTile: false,
-#                displayOutsideMaxExtent: true,
-#                projection: new OpenLayers.Projection("EPSG:900913"),
-#                visibility: false
-#
-#            }
-#        )
-#    ],
+
 })
-# Ext.create(Lizard.store.WorkspaceStore)
+

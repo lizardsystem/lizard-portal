@@ -40,6 +40,7 @@ Ext.define 'Lizard.ContextManager',
             name: ''
             usergroups: ''
         base_url: 'portal/site/vss/'
+        background_layer: ''
 
     #////
     #  _setObjectOfType(object)
@@ -278,6 +279,7 @@ Ext.define 'Lizard.ContextManager',
                             start: Ext.Date.format(me.context.period.start, 'Y-m-d')
                             end: Ext.Date.format(me.context.period.end, 'Y-m-d')
                             type: me.context.period.type
+                        background_layer: me.context.background_layer
                 })
 
                 portalWindow = Ext.getCmp('portalWindow')

@@ -230,7 +230,6 @@ Ext.define 'Lizard.window.Screen',
 
     #?????
     showTabMainpage: (animate_navigation_expand=true, expand_navigation=true, show_portal_template=true) ->
-        debugger
         opmerking = 'wordt deze nog gebruikt'
         context = Lizard.ContextManager.getContext()
         ht = context.headertab

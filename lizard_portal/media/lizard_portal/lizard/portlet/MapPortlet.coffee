@@ -7,41 +7,127 @@ Ext.define('Lizard.portlet.MapPortlet', {
 #    mixins: [
 #        'Lizard.portlet.Portlet'
 #    ]
+
+    default_zoom: null
     alias: 'widget.mapportlet'
     title: 'Map'
-    #layers = LayerStore
-    #layers = workspace store?
+    plugins: [
+      'applycontext'
+    ],
+    autoLoadWorkspaceStore: null,
+    #workspaceStore = workspace store
+
+#  Button for returning to default zoom for area. use function below to load extends for area and set default_zoom for button
+#
+#  example function for storing default area zoom:
+#    onApplyParams: function(params) {
+#        var me = this;
+#        me.setLoading(true);
+#        Ext.Ajax.request({
+#            url: '/area/api/area_special/'+ params.object.id +'/',
+#            method: 'GET',
+#            params: {
+#                _accept: 'application/json'
+#            },
+#            success: function(xhr) {
+#                var area_data = Ext.JSON.decode(xhr.responseText).area;
+#                me.default_zoom = area_data.extent
+#                me.map.zoomToExtent(new OpenLayers.Bounds.fromArray(area_data.extent));
+#                return me.setLoading(false);
+#            },
+#            failure: function() {
+#                Ext.Msg.alert("portal creation failed", "Server communication failure");
+#                return me.setLoading(false);
+#            }
+#        });
+#    },
 
     tbar: [{
+
         xtype: 'button',
-        text: 'test'
+        text: 'Zoom gebied'
+        handler: (button, event) ->
+            panel = button.up('panel')
+            panel.map.zoomToExtent(new OpenLayers.Bounds.fromArray(panel.default_zoom))
+
+
     }
     '->'
     {
-        fieldLabel: 'Achtergrondkaart',
-        name: 'base_layer',
-        displayField: 'name',
-        valueField: 'id',
-        xtype: 'combo',
-        queryMode: 'remote',
-        typeAhead: false,
-        minChars:0,
-        forceSelection: true,
-        width: 200,
-        store: {
-            fields: ['id', 'name'],
-            proxy: {
-                type: 'ajax',
-                url: '/measure/api/organization/?_accept=application%2Fjson&size=id_name',
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
-            }
-        }
+        xtype: 'button',
+        text: 'achtergrond',
+        handler: (button, event) ->
+
+            config = {}
+            panel = button.up('panel')
+            index = panel.layers.find('is_base_layer', true)
+            if index >= 0
+                background = panel.layers.getAt(index)
+                config.init_background_id = background.get('id')
+
+            Lizard.form.BackgroundLayerSelector.show(config)
     }]
 
-    onMapClickCallback: (records, event, lonlat, xhr, request) ->
+    applyParams: (params) ->
+        me = @
+        if params.background_layer
+            @setBackgroundLayer(params.background_layer)
+
+        if params.object
+            @layers.each((record) ->
+
+                if record.get('use_location_filter') == true
+                    layer = record.getLayer()
+                    #try:
+                    filter = Ext.JSON.decode(record.get('location_filter'))
+                    if filter.tpl
+                        tpl = new Ext.Template(filter.tpl)
+                        value = tpl.apply(params.object)
+                    else
+                        value = params.object.id
+                    request_params={}
+                    request_params[filter.key] = value
+                    layer.mergeNewParams(request_params)
+                    #except:
+                    #    alert('error in filter function')
+            )
+
+
+
+
+        @onApplyParams(params)
+
+
+    onApplyParams: Ext.emptyFn
+
+
+
+    setBackgroundLayer: (config) ->
+        me = @
+
+        if config and @background_layer_id
+            if config.plid == @background_layer_id
+                return
+                #layer already active
+
+        existing_background_layers = @layers.queryBy((record, id) ->
+            if record.get('is_base_layer') == true
+                return true
+            else
+                return
+            )
+
+        item = @layers.createWorkspaceItem(config, 0)
+        @background_layer_id = config.plid
+        @background_layer = config
+
+        @map.setBaseLayer(item.getLayer())
+
+        existing_background_layers.each( (background_layer) ->
+            me.layers.remove(background_layer)
+        )
+
+    onMapClickCallback: (records, workspaceitem, event, lonlat, xhr, request) ->
         # Records is a list of gml objects. They have the following properties:
         # active: "true"
         # fews_norm_source_id: "2"
@@ -56,45 +142,82 @@ Ext.define('Lizard.portlet.MapPortlet', {
         # stp_ident: "CTS_M_GMT+01:00"
         # tooltip: "None"
 
-        dt_start = Ext.Date.format(Lizard.CM.getContext().period.start, 'Y-m-d H:i:s')
-        dt_end = Ext.Date.format(Lizard.CM.getContext().period.end, 'Y-m-d H:i:s')
-        if records.length > 0
-            #debugger
-            # http://localhost:8000/graph/?dt_start=2011-02-11%2000:00:00&dt_end=2011-11-11%2000:00:00&item={%22fews_norm_source_slug%22:%22waternet%22,%22location%22:%223201%22,%22parameter%22:%22Q_berekend.in.cumulatief%22,%22type%22:%22line%22,%22time_step%22:%22SETS1440TZ1%22}&dt_start=2005-01-01%2000:00:00&dt_end=2011-01-01%2000:00:00
-            record = records[0]
-            debugger
-            Ext.create('Ext.window.Window', {
-                title: 'locatie',
-                modal: true,
+        if true
+            if records.length > 0
+                #debugger
+                # http://localhost:8000/graph/?dt_start=2011-02-11%2000:00:00&dt_end=2011-11-11%2000:00:00&item={%22fews_norm_source_slug%22:%22waternet%22,%22location%22:%223201%22,%22parameter%22:%22Q_berekend.in.cumulatief%22,%22type%22:%22line%22,%22time_step%22:%22SETS1440TZ1%22}&dt_start=2005-01-01%2000:00:00&dt_end=2011-01-01%2000:00:00
+                record = records[0]
 
-                xtype: 'leditgrid'
-                itemId: 'map popup'
+                data = []
 
-                finish_edit_function: (updated_record) ->
-                    debugger
+                Ext.Object.each(record.data, (key, value)->
+                    data.push({key:key, value:value})
+                )
 
-                editpopup: true,
-                items: [{
-                    xtype: 'panel'
-                    width: 1050
-                    height: 550
-                    html: 'Grafiek voor ' + record.data.geo_ident + ' ' + record.data.par_ident + ' ' + record.data.mod_ident + ' ' + record.data.stp_ident + '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500&item={%22fews_norm_source_slug%22:%22waternet%22,%22location%22:%22' + record.data.geo_ident + '%22,%22parameter%22:%22' + record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + record.data.stp_ident + '%22,%22module%22:%22' + record.data.mod_ident + '%22}" />'
-                    tbar: [{
-                        text: 'Voeg toe aan collage'
-                        handler: (btn, event) ->
-                            window = @up('window')
-                            window.close()
+
+
+                tpl = new Ext.XTemplate(
+                    '<div class="lizard">'
+                    '<h2>Kaartlaag: {layer_name}</h2>',
+                    '<table>',
+                    '<tpl for="fields">',
+                    '<tr><td>{key}</td><td>{value}</td></tr>',
+                    '</tpl></table></div>'
+                );
+                html = tpl.applyTemplate({
+                    layer_name: workspaceitem.get('title'),
+                    fields:data
+                });
+
+                Ext.create('Ext.window.Window', {
+                    title: 'Info',
+                    popup_type: 'feature_info'
+                    items: [{
+                        xtype: 'panel'
+                        width: 400
+                        html: html
                     }]
-                }]
-            }).show();
+                }).show();
+
         else
-            alert('nothing found')
+
+            dt_start = Ext.Date.format(Lizard.CM.getContext().period.start, 'Y-m-d H:i:s')
+            dt_end = Ext.Date.format(Lizard.CM.getContext().period.end, 'Y-m-d H:i:s')
+            if records.length > 0
+                # http://localhost:8000/graph/?dt_start=2011-02-11%2000:00:00&dt_end=2011-11-11%2000:00:00&item={%22fews_norm_source_slug%22:%22waternet%22,%22location%22:%223201%22,%22parameter%22:%22Q_berekend.in.cumulatief%22,%22type%22:%22line%22,%22time_step%22:%22SETS1440TZ1%22}&dt_start=2005-01-01%2000:00:00&dt_end=2011-01-01%2000:00:00
+                record = records[0]
+
+                Ext.create('Ext.window.Window', {
+                    title: 'locatie',
+                    modal: true,
+
+                    xtype: 'leditgrid'
+                    itemId: 'map popup'
+
+                    finish_edit_function: (updated_record) ->
+                        #pass
+
+                    editpopup: true,
+                    items: [{
+                        xtype: 'panel'
+                        width: 1050
+                        height: 550
+                        html: 'Grafiek voor ' + record.data.geo_ident + ' ' + record.data.par_ident + ' ' + record.data.mod_ident + ' ' + record.data.stp_ident + '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500&item={%22fews_norm_source_slug%22:%22waternet%22,%22location%22:%22' + record.data.geo_ident + '%22,%22parameter%22:%22' + record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + record.data.stp_ident + '%22,%22module%22:%22' + record.data.mod_ident + '%22}" />'
+                        tbar: [{
+                            text: 'Voeg toe aan collage'
+                            handler: (btn, event) ->
+                                window = @up('window')
+                                window.close()
+                        }]
+                    }]
+                }).show();
+            else
+                alert('nothing found')
 
 
     onMapClick: (event, lonlat, callback) ->
         me = @
         # Find the first clickable layer
-        # debugger
         layer = @layers.findRecord('clickable',true)
         if not layer
             alert('geen kaartlaag geselecteerd')
@@ -105,11 +228,11 @@ Ext.define('Lizard.portlet.MapPortlet', {
             REQUEST: "GetFeatureInfo",
             EXCEPTIONS: "application/vnd.ogc.se_xml",
             BBOX: @map.getExtent().toBBOX(),
-            X: event.xy.x,
-            Y: event.xy.y,
+            X: Math.round(event.xy.x),
+            Y: Math.round(event.xy.y),
             INFO_FORMAT: 'application/vnd.ogc.gml',
-            QUERY_LAYERS: layer.layers #event.object.layers[1].params.LAYERS,
-            LAYERS: layer.layers,
+            QUERY_LAYERS: layer.get('layers') #event.object.layers[1].params.LAYERS,
+            LAYERS: layer.get('layers'),
             FEATURE_COUNT: 50,  # testing, should be a low number like 1
             WIDTH: @map.size.w,
             HEIGHT: @map.size.h,
@@ -122,7 +245,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
 
         else if layer.get('url').contains('http')
             #request through our server
-            url = layer.layer.getFullRequestString(params, layer.get('url'));
+            url = layer.get('layer').getFullRequestString(params, layer.get('url'));
 
             Ext.Ajax.request({
                 url: '/portal/getFeatureInfo/',
@@ -130,7 +253,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
                     type: 'xml'
                 },
                 params: {
-                    request: Ext.JSON.encode(params)
+                    request: Ext.JSON.encode(url)
                 }
                 method: 'GET',
                 success: (xhr, request) ->
@@ -138,7 +261,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
                      format = new OpenLayers.Format.GML.v3();
                      gml = format.read(gml_text);
                      if gml.length > 0
-                         me.onMapClickCallback(gml, event, lonlat, xhr, request);
+                         me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
                      else
                         alert('Niks gevonden debug: ' + gml_text)
                 failure: (xhr) ->
@@ -158,7 +281,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
                     format = new OpenLayers.Format.GML.v3();
                     gml = format.read(gml_text);
                     if gml.length > 0
-                        me.onMapClickCallback(gml, event, lonlat, xhr, request);
+                        me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
                     else
                         alert('Niks gevonden debug: ' + gml_text)
                 failure: (xhr) ->
@@ -169,9 +292,8 @@ Ext.define('Lizard.portlet.MapPortlet', {
     initComponent: () ->
         me = @
 
-#        if not @workspaceStore
-#            @workspaceStore = Ext.create(Lizard.store.WorkspaceStore, {layerStore: @store})
-
+        @layers = @workspaceStore.workspaceItemStore
         @callParent(arguments)
+
 })
 

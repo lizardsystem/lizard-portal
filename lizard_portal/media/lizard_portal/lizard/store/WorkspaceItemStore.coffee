@@ -11,14 +11,18 @@ Ext.define('Lizard.store.WorkspaceItemStore', {
         new OpenLayers.Layer.OSM('Openstreetmap')
     ]
 
-    createWorkspaceItem: (config) ->
+
+    createWorkspaceItem: (config, index=null) ->
         #alert('creating workspace item')
         record = @getById(config.plid)
 
         if record
             console.log('Warning: record already added')
+            return record
         else
-            config.id = config.plid
+            if config.plid
+                config.id = config.plid
+            #todo add clickable layer option
             config.clickable = true
             config.visible = true
 
@@ -26,12 +30,12 @@ Ext.define('Lizard.store.WorkspaceItemStore', {
             workspace_item.set('visibility', true)
             workspace_item.set('visible', true)
 
-            @add(workspace_item)
+            if index is not null
+                @insert(index, workspace_item)
+            else
+                @add(workspace_item)
 
-    #     # @layerStore.create({ollayer_class: 'OpenLayers.Layer.OSM', name: 'just added'})
-
-    #     # TODO: plant some listener
-    #     # @data.new OpenLayers.Layer.OSM('Openstreetmap')
+            return workspace_item
 
     deleteWorkspaceItem: (config) ->
         record = @getById(config.plid)

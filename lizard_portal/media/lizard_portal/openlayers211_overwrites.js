@@ -62,7 +62,7 @@ OpenLayers.Layer.WMS_baselayer = OpenLayers.Class(OpenLayers.Layer.WMS, {
     initialize: function(name, url, params, options) {
         var newArguments = [];
 
-        if (options.sphericalMercator == true && options.isBaseLayer == true) {
+        if (options.isBaseLayer == true && (options.init_900913 || options.sphericalMercator)) {
             options.maxExtent= new OpenLayers.Bounds(
                         -128 * 156543.03390625,
                         -128 * 156543.03390625,
@@ -72,6 +72,7 @@ OpenLayers.Layer.WMS_baselayer = OpenLayers.Class(OpenLayers.Layer.WMS, {
             options.maxResolution= 156543.03390625;
             options.numZoomLevels= 19;
             options.units= "m";
+            options.srid
 
         }
 

@@ -73,7 +73,8 @@
         name: '',
         usergroups: ''
       },
-      base_url: 'portal/site/vss/'
+      base_url: 'portal/site/vss/',
+      background_layer: ''
     },
     _setObjectOfType: function(object) {
       if (typeof object === 'string') {
@@ -98,10 +99,10 @@
           var _ref;
           if (!context_param || (_ref = !key, __indexOf.call(context_param, _ref) >= 0)) {
             updated = true;
-            return new_value[key] = value;
+            new_value[key] = value;
           } else if (value !== context_param[key]) {
             updated = true;
-            return new_value[key] = value;
+            new_value[key] = value;
           }
         });
       } else {
@@ -127,7 +128,7 @@
       Ext.Object.each(params, function(key, value) {
         var new_value;
         new_value = me._checkChangeAndUpdate(me.context[key], value);
-        if (new_value !== null) return changed_context[key] = new_value;
+        if (new_value !== null) changed_context[key] = new_value;
       });
       if (changed_context.headertab) changed_context.headertab = params.headertab;
       if (Ext.Object.getKeys(changed_context).length === 0) {
@@ -177,7 +178,7 @@
         }
         changed_elements = {};
         Ext.Object.each(changed_context, function(key, value) {
-          return changed_elements[key] = true;
+          changed_elements[key] = true;
         });
         new_context = this.getContext();
         if (!silent) {
@@ -262,7 +263,8 @@
                 start: Ext.Date.format(me.context.period.start, 'Y-m-d'),
                 end: Ext.Date.format(me.context.period.end, 'Y-m-d'),
                 type: me.context.period.type
-              }
+              },
+              background_layer: me.context.background_layer
             }
           });
           portalWindow = Ext.getCmp('portalWindow');

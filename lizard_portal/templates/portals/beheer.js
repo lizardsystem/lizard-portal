@@ -57,7 +57,7 @@
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
-                     handler: function() { Lizard.CM.setContext({portal_template:'area_link'}); }
+                     handler: function() { Lizard.CM.setContext({portal_template:'esfpattern-beheer'}); }
                 },
                 {
                    text: 'Valideer configuraties',

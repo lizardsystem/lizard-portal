@@ -22,139 +22,42 @@
             {% get_portal_template gebiedseigenschappen %},
             {% get_portal_template communique %},
         {
-            flex:2,
-			title: 'Kaartlagen',
-            xtype: 'grid',
-            columns:[{
-                    text: 'aan',
-                    width:35,
-                    dataIndex: 'visibility',
-                    xtype: 'checkcolumn',
-                    sortable: true
-                },{
-                    text: 'Naam',
-                    flex: 1,
-                    sortable: true,
-                    dataIndex: 'title'
-                }],
-            store: Ext.data.StoreManager.lookup('Layers')
-		}]
+            xtype: 'workspaceportlet',
+            workspaceStore: Lizard.store.WorkspaceStore.get_or_create('watersysteem'),
+            tools:[]
+        }]
 	},{
 		flex: 1,
 		items: [{
 			title: 'Watersysteemkaart',
-            id:'extmap',
-            plugins: [
-                'applycontext'
-            ],
             flex:1,
-            xtype: "gx_mappanel",
+            xtype: "mapportlet",
             initZoomOnRender: false,
+            autoLoadWorkspaceStore: {
+                id: 31
+            },
+            init_workspace: false,
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],
-            layers: Ext.data.StoreManager.lookup('Layers'),
-            onMapClick: function (event) {
-
-                layerlist = "here,there,everywhere";
-
-                var mouseLoc = this.map.getLonLatFromPixel(event.xy);
-                var layer_switcher = Ext.getCmp('kaartlagen')
-                var selected_layers  = layer_switcher.getSelectionModel().selected
-                if (selected_layers.length != 0) {
-                    var layer = selected_layers.first().data.layer;
-                    console.log(layer);
-
-                    var url = layer.getFullRequestString({
-                                namespace: 'inspire',
-                                REQUEST: "GetFeatureInfo",
-                                EXCEPTIONS: "application/vnd.ogc.se_xml",
-                                BBOX: this.map.getExtent().toBBOX(),
-                                X: event.xy.x,
-                                Y: event.xy.y,
-                                //X: mouseLoc.X,
-                                //Y: mouseLoc.Y,
-                                INFO_FORMAT: 'text/html',
-                                QUERY_LAYERS: layer.params.LAYERS[0],
-                                LAYERS: layer.params.LAYERS[0],
-                                FEATURE_COUNT: 1,
-                                WIDTH: this.map.size.w,
-                                HEIGHT: this.map.size.h
-                        },
-                                layer.url);
-
-                    console.log(url);
-
-                    var windows = Ext.WindowManager.getBy(function(obj) {
-                        if (obj.mappopup == true && obj.pin == false) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    });
-
-                    if (windows.length == 0) {
-
-                        Ext.create('Ext.window.Window', {
-                                title: 'object_info',
-                                width: 400,
-                                height: 300,
-                                collapsable: true,
-                                //TODO: move styling to CSS
-                                bodyStyle: {
-                                    background: '#ffffff',
-                                    padding: '10px'
-                                },
-                                mappopup: true,
-                                pin: false,
-                                //layout: 'fit',
-                                tools:[{
-                                    type: 'unpin',
-                                    handler: function(e, target, panelHeader, tool) {
-                                        var window = panelHeader.ownerCt;
-                                        if (tool.type == 'pin') {
-                                            tool.setType('unpin');
-                                            window.pin = false;
-
-                                        } else {
-                                            tool.setType('pin');
-                                            window.pin = true;
-                                        }
-                                    }
-                                }],
-                                autoScroll: true,
-                                loader:{
-                                    loadMask: true,
-                                    autoLoad: true,
-                                    url: '/portal/getFeatureInfo/',
-                                    ajaxOptions: {
-                                        method: 'GET'
-                                    },
-                                    params: {
-                                        request: Ext.JSON.encode(url)
-                                    },
-                                    renderer: 'html'
-                                }
-                            }
-                        ).show();
-                    } else {
-                        console.log('reuse window');
-                        windows[0].loader.params = {
-                                        request: Ext.JSON.encode(url)
-                                    }
-                        windows[0].loader.load();
-                        Ext.WindowManager.bringToFront(windows[0]);
-                    }
-                } else {
-                    Ext.MessageBox.show({
-                        title: 'Feature info',
-                        msg: 'Selecteer links eerst een kaartlaag door op de naam te klikken',
-                        buttons: Ext.MessageBox.OK
-                    });
-                }
-            },
-            applyParams: function(params) {
+            workspaceStore: Lizard.store.WorkspaceStore.get_or_create('watersysteem'),
+            onApplyParams: function(params) {
                 var me = this;
                 me.setLoading(true);
+                debugger
+                if (!this.init_workspace && this.autoLoadWorkspaceStore) {
+                    this.workspaceStore.load({
+                         params: this.autoLoadWorkspaceStore,
+                         callback: function(records) {
+
+                             if (records.length > 0) {
+                                 me.workspaceStore.workspaceItemStore.loadData(records[0].get('layers'))
+                             }
+                             debugger;
+                         }
+                    });
+                    this.init_workspace = true
+                }
+
                 Ext.Ajax.request({
                     url: '/area/api/area_special/'+ params.object.id +'/',
                     method: 'GET',
@@ -163,15 +66,13 @@
                     },
                     success: function(xhr) {
                         var area_data = Ext.JSON.decode(xhr.responseText).area;
-                        console.log(area_data)
-
+                        me.default_zoom = area_data.extent
                         me.map.zoomToExtent(new OpenLayers.Bounds.fromArray(area_data.extent));
-
-                        me.setLoading(false);
+                        return me.setLoading(false);
                     },
                     failure: function() {
                         Ext.Msg.alert("portal creation failed", "Server communication failure");
-                        me.setLoading(false);
+                        return me.setLoading(false);
                     }
                 });
             }
@@ -180,7 +81,6 @@
 		width: 200,
 		items: [{
             title: 'Links van dit gebied',
-
             layout: {
                 type: 'table',
                 columns:1
@@ -216,7 +116,6 @@
                    icon: '/static_media/vss/icons/toestand.png',
                    handler: function() { Lizard.CM.setContext({portal_template:'toestand-aan-afvoergebied'}); }
                 }
-
             ]
  		},
         {% get_portal_template esf-overzicht %},

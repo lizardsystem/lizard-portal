@@ -20,7 +20,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
         getRowClass: (record, index)  ->
             c = record.get('is_base_layer');
             if c == true
-                return 'l-hidden'
+                return 'l-grey'
             else
                 return ''
 
@@ -47,13 +47,18 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
         flex: 1,
         sortable: true,
         dataIndex: 'title'
-    },{
-        text: 'Achtergrond',
-        flex: 1,
-        visible: false,
-        sortable: true,
-        dataIndex: 'is_base_layer'
     }],
+
+    clear: () ->
+        index = @workspaceStore.workspaceItemStore.find('is_base_layer', true)
+        old_background = @workspaceStore.workspaceItemStore.getAt(index)
+        @workspaceStore.workspaceItemStore.removeAll()
+        @workspaceStore.removeAll()
+        background_pref = Lizard.CM.getContext().background_layer
+        if background_pref
+            @workspaceStore.workspaceItemStore.insert(0, background_pref)
+        else
+            @workspaceStore.workspaceItemStore.insert(0, old_background)
 
     loadWorkspace: (config) ->
         me = @
@@ -64,14 +69,32 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
             params:
                 object_id: params
             callback: (records, operation, success) ->
+                index = me.workspaceStore.workspaceItemStore.find('is_base_layer', true)
+                old_background = me.workspaceStore.workspaceItemStore.getAt(index)
 
-                if me.workspaceStore.layerStore
-                    me.workspaceStore.layerStore.loadData(records[0].get('layers'))
+                if me.workspaceStore.workspaceItemStore
+                    me.workspaceStore.workspaceItemStore.loadData(records[0].get('layers'))
+
+                background_index = me.workspaceStore.workspaceItemStore.find('is_base_layer', true)
+                if background_index < 0
+                    #add background from personal preferences or the previous backgroundlayer
+                    background_pref = Lizard.CM.getContext().background_layer
+                    if background_pref
+                        me.workspaceStore.workspaceItemStore.insert(0, background_pref)
+                    else
+                        me.workspaceStore.workspaceItemStore.insert(0, old_background)
 
                 if config.callback
-                   config.callback(records, operation, success)
+                    config.callback(records, operation, success)
         })
     tools: [{
+        type: 'unpin',  # Save
+        handler: (e, target, panelHeader, tool) ->
+            portlet = panelHeader.ownerCt;
+            portlet.clear()
+
+    }
+    {
         type: 'save',  # Save
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
@@ -79,18 +102,14 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
             Ext.create('Ext.window.Window', {
                 title: 'Bewaar workspace',
                 modal: true,
-
                 xtype: 'leditgrid'
-                itemId: 'save-workspace'
-
-                finish_edit_function: (updated_record) ->
-                    debugger
-
                 editpopup: true,
                 items: [{
                     xtype: 'workspacesaveform',
                     workspaceStore: portlet.workspaceStore
-                    layerStore: portlet.store
+                    layerStore: portlet.workspaceStore.workspaceItemStore
+                    save_callback: (record) ->
+                        #pass
                 }]
             }).show();
     }
@@ -123,12 +142,14 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
                     addEditIcon: true
                     addDeleteIcon: true
                     usePagination: false
+                    read_only_field: 'read_only',
                     actionEditIcon: (record) ->
                         portlet.loadWorkspace({
                             params:
                                 object_id:record.get('id')
                             callback: (records, operation, success) ->
                                 if success
+
                                     form_window.close()
                                 else
                                     alert('laden mislukt')
@@ -136,12 +157,13 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
 
                     dataConfig: [
                       {name: 'id', title: 'id', editable: false, visible: false, width: 50, type: 'number'}
-                      {name: 'name', title: 'Naam', editable: true, visible: true, width: 150, type: 'text'}
-                      {name: 'personal_category', title: 'persoonlijke tag', editable: true, visible: true, width: 150, type: 'text'}
-                      {name: 'category', title: 'Categorie', editable: true, visible: true, width: 150, type: 'gridcombobox', choices:[{id:1, name:'test'},{id:2, name:'testtest'}]}
-                      {name: 'owner_type', title: 'Type', editable: false, visible: true, width: 150, type: 'gridcombobox'}
+                      {name: 'name', title: 'Naam', editable: true, visible: true, width: 250, type: 'text'}
+                      {name: 'personal_category', title: 'persoonlijke tag', editable: true, visible: true, width: 200, type: 'text'}
+                      #{name: 'category', title: 'Categorie', editable: true, visible: true, width: 150, type: 'gridcombobox', choices:[{id:1, name:'test'},{id:2, name:'testtest'}]}
+                      {name: 'owner_type', title: 'Type', editable: false, visible: true, width: 60, type: 'gridcombobox'}
                       {name: 'data_set', title: 'Dataset', editable: false, visible: false, width: 150, type: 'gridcombobox'}
                       {name: 'owner', title: 'Eigenaar', editable: false, visible: false, width: 150, type: 'gridcombobox'}
+                      {name: 'read_only', title: 'alleen_lezen', editable: false, visible: false, width: 50, type: 'boolean'}
                       ]
                     storeAutoLoad: true
                     # How to reload store after a new item has been added?
@@ -153,7 +175,6 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
         type: 'pin'
         handler: (e, target, panelHeader, tool) ->
           portlet = panelHeader.ownerCt;
-          debugger
           records = portlet.getSelectionModel().selected.items
           portlet.store.remove(records)
 
@@ -162,8 +183,11 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
     initComponent: () ->
         me = @
 
-        if not @workspaceStore
-            @workspaceStore = Ext.create(Lizard.store.WorkspaceStore, {layerStore: @store})
+        @store = @workspaceStore.workspaceItemStore
+
+        #if not @workspaceStore
+        #if not @workspaceStore
+            #@workspaceStore = Ext.create(Lizard.store.WorkspaceStore, {layerStore: @store})
 
         @callParent(arguments)
 })

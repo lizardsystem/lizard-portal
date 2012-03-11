@@ -3,16 +3,26 @@ Ext.define('Lizard.form.BackgroundLayerSelector', {
     alias: 'widget.backgroundlayerselector'
 
     startValue: null,
-
+    bodyStyle: 'padding:5px 5px 0',
     defaults:
         anchor: '100%'
     width: 300,
+    init_background: null
+
+    statics:
+        show: (config={}) ->
+            Ext.create('Ext.window.Window', {
+                title: 'Achtergroundkaart selectie'
+                is_background_selection: true,
+                modal: true,
+                items: Ext.create('Lizard.form.BackgroundLayerSelector', config)
+            }).show()
 
     items: [{
         fieldLabel: 'Achtergrondkaart',
         name: 'base_layer',
-        displayField: 'name',
-        valueField: 'id',
+        displayField: 'title',
+        valueField: 'plid',
         xtype: 'combo',
         queryMode: 'local'
         autoSelect: true,
@@ -24,7 +34,7 @@ Ext.define('Lizard.form.BackgroundLayerSelector', {
         width: 200,
         store:
             pageSize: 10000
-            fields: ['id', 'name'],
+            model: 'Lizard.model.WorkspaceItemModel'
             proxy:
                 type: 'ajax',
                 url: '/workspace/api/layer_view/?_accept=application%2Fjson',
@@ -34,27 +44,27 @@ Ext.define('Lizard.form.BackgroundLayerSelector', {
                     type: 'json',
                     root: 'data'
     }],
-    bbar: [{
+    bbar: [
+        '->'
+    {
         text: 'Annuleren'
         handler: (btn, event) ->
             window = @up('window')
             window.close()
     }
     {
-        text: 'Opslaan'
+        text: 'OK'
         handler: (btn, event) ->
             form = @up('form').getForm()
             if form.isValid()
-                debugger
                 values=form.getValues()
-                base_layer = form.findField('base_layer').store.getById(values.base_layer).raw
-                Lizard.CM.setContext({background_layer: base_layer})
+                index = form.findField('base_layer').store.find('plid', values.base_layer)
+                base_layer = form.findField('base_layer').store.getAt(index)
+
+                Lizard.CM.setContext({background_layer: base_layer.raw})
 
                 window = @up('window')
                 window.close()
-                #todo: set workspaceStore on this item
-                #else
-                #    Ext.MessageBox.alert('Invoer fout', 'Begin datum moet voor eind datum zijn.')
 
             else
                 Ext.MessageBox.alert('Invoer fout', 'Kies geldige periode')
@@ -62,6 +72,11 @@ Ext.define('Lizard.form.BackgroundLayerSelector', {
     afterRender: () ->
         form = @getForm()
         form.findField('base_layer').store.load()
+
+        if @init_background_id is null
+            @init_background_id = Lizard.CM.getContext().background_layer.id
+        if @init_background_id
+            form.findField('base_layer').setValue(@init_background_id)
         #save_method = form.findField('save_method')
 
 })

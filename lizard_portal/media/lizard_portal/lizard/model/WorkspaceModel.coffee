@@ -34,5 +34,6 @@ Ext.define('Lizard.model.WorkspaceModel', {
             {name: 'name', type: 'string'},
             {name: 'personal_category', type: 'string'},
             {name: 'category', type: 'auto'},
+            {name: 'read_only', type: 'boolean'},
             {name: 'layers', type: 'auto'}]
 });

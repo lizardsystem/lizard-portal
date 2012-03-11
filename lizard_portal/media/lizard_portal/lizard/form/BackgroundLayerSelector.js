@@ -1,18 +1,32 @@
 (function() {
+
   Ext.define('Lizard.form.BackgroundLayerSelector', {
     extend: 'Ext.form.Panel',
     alias: 'widget.backgroundlayerselector',
     startValue: null,
+    bodyStyle: 'padding:5px 5px 0',
     defaults: {
       anchor: '100%'
     },
     width: 300,
+    init_background: null,
+    statics: {
+      show: function(config) {
+        if (config == null) config = {};
+        return Ext.create('Ext.window.Window', {
+          title: 'Achtergroundkaart selectie',
+          is_background_selection: true,
+          modal: true,
+          items: Ext.create('Lizard.form.BackgroundLayerSelector', config)
+        }).show();
+      }
+    },
     items: [
       {
         fieldLabel: 'Achtergrondkaart',
         name: 'base_layer',
-        displayField: 'name',
-        valueField: 'id',
+        displayField: 'title',
+        valueField: 'plid',
         xtype: 'combo',
         queryMode: 'local',
         autoSelect: true,
@@ -24,7 +38,7 @@
         width: 200,
         store: {
           pageSize: 10000,
-          fields: ['id', 'name'],
+          model: 'Lizard.model.WorkspaceItemModel',
           proxy: {
             type: 'ajax',
             url: '/workspace/api/layer_view/?_accept=application%2Fjson',
@@ -40,7 +54,7 @@
       }
     ],
     bbar: [
-      {
+      '->', {
         text: 'Annuleren',
         handler: function(btn, event) {
           var window;
@@ -48,16 +62,16 @@
           return window.close();
         }
       }, {
-        text: 'Opslaan',
+        text: 'OK',
         handler: function(btn, event) {
-          var base_layer, form, values, window;
+          var base_layer, form, index, values, window;
           form = this.up('form').getForm();
           if (form.isValid()) {
-            debugger;
             values = form.getValues();
-            base_layer = form.findField('base_layer').store.getById(values.base_layer).raw;
+            index = form.findField('base_layer').store.find('plid', values.base_layer);
+            base_layer = form.findField('base_layer').store.getAt(index);
             Lizard.CM.setContext({
-              background_layer: base_layer
+              background_layer: base_layer.raw
             });
             window = this.up('window');
             return window.close();
@@ -70,7 +84,14 @@
     afterRender: function() {
       var form;
       form = this.getForm();
-      return form.findField('base_layer').store.load();
+      form.findField('base_layer').store.load();
+      if (this.init_background_id === null) {
+        this.init_background_id = Lizard.CM.getContext().background_layer.id;
+      }
+      if (this.init_background_id) {
+        return form.findField('base_layer').setValue(this.init_background_id);
+      }
     }
   });
+
 }).call(this);

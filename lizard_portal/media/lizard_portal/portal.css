@@ -1,7 +1,5 @@
-.l-hidden {
-    visibility: hidden;
-    height: 1px;
-    overflow:  hidden;
+.l-grey {
+    color:#6e6e6e;
 }
 
 .app_icon {

@@ -107,6 +107,7 @@ Ext.application({
         // Ext.create(Lizard.store.WorkspaceStore, );
         Ext.create(Lizard.store.WorkspaceItemStore, {storeId: 'WorkspaceItems'} );
 
+        Lizard.store.WorkspaceStore.get_or_create('analyse')
 
         var aan_afvoergebied_selection =
         {

@@ -207,7 +207,6 @@ showNavigationPortalTemplate
       if (animate_navigation_expand == null) animate_navigation_expand = true;
       if (expand_navigation == null) expand_navigation = true;
       if (show_portal_template == null) show_portal_template = true;
-      debugger;
       opmerking = 'wordt deze nog gebruikt';
       context = Lizard.ContextManager.getContext();
       ht = context.headertab;

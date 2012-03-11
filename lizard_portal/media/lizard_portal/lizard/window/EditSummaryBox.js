@@ -6,7 +6,6 @@
         var a, args;
         a = Ext.create('Ext.window.MessageBox', {
           btnCallback: function(btn) {
-            debugger;
             var field, value;
             if (btn.itemId === 'ok') {
               field = this.textArea;

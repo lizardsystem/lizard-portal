@@ -13,7 +13,7 @@
         var c;
         c = record.get('is_base_layer');
         if (c === true) {
-          return 'l-hidden';
+          return 'l-grey';
         } else {
           return '';
         }
@@ -42,14 +42,21 @@
         flex: 1,
         sortable: true,
         dataIndex: 'title'
-      }, {
-        text: 'Achtergrond',
-        flex: 1,
-        visible: false,
-        sortable: true,
-        dataIndex: 'is_base_layer'
       }
     ],
+    clear: function() {
+      var background_pref, index, old_background;
+      index = this.workspaceStore.workspaceItemStore.find('is_base_layer', true);
+      old_background = this.workspaceStore.workspaceItemStore.getAt(index);
+      this.workspaceStore.workspaceItemStore.removeAll();
+      this.workspaceStore.removeAll();
+      background_pref = Lizard.CM.getContext().background_layer;
+      if (background_pref) {
+        return this.workspaceStore.workspaceItemStore.insert(0, background_pref);
+      } else {
+        return this.workspaceStore.workspaceItemStore.insert(0, old_background);
+      }
+    },
     loadWorkspace: function(config) {
       var me, params;
       me = this;
@@ -60,8 +67,20 @@
           object_id: params
         },
         callback: function(records, operation, success) {
-          if (me.workspaceStore.layerStore) {
-            me.workspaceStore.layerStore.loadData(records[0].get('layers'));
+          var background_index, background_pref, index, old_background;
+          index = me.workspaceStore.workspaceItemStore.find('is_base_layer', true);
+          old_background = me.workspaceStore.workspaceItemStore.getAt(index);
+          if (me.workspaceStore.workspaceItemStore) {
+            me.workspaceStore.workspaceItemStore.loadData(records[0].get('layers'));
+          }
+          background_index = me.workspaceStore.workspaceItemStore.find('is_base_layer', true);
+          if (background_index < 0) {
+            background_pref = Lizard.CM.getContext().background_layer;
+            if (background_pref) {
+              me.workspaceStore.workspaceItemStore.insert(0, background_pref);
+            } else {
+              me.workspaceStore.workspaceItemStore.insert(0, old_background);
+            }
           }
           if (config.callback) return config.callback(records, operation, success);
         }
@@ -69,6 +88,13 @@
     },
     tools: [
       {
+        type: 'unpin',
+        handler: function(e, target, panelHeader, tool) {
+          var portlet;
+          portlet = panelHeader.ownerCt;
+          return portlet.clear();
+        }
+      }, {
         type: 'save',
         handler: function(e, target, panelHeader, tool) {
           var portlet;
@@ -77,16 +103,13 @@
             title: 'Bewaar workspace',
             modal: true,
             xtype: 'leditgrid',
-            itemId: 'save-workspace',
-            finish_edit_function: function(updated_record) {
-              debugger;
-            },
             editpopup: true,
             items: [
               {
                 xtype: 'workspacesaveform',
                 workspaceStore: portlet.workspaceStore,
-                layerStore: portlet.store
+                layerStore: portlet.workspaceStore.workspaceItemStore,
+                save_callback: function(record) {}
               }
             ]
           }).show();
@@ -118,6 +141,7 @@
                 addEditIcon: true,
                 addDeleteIcon: true,
                 usePagination: false,
+                read_only_field: 'read_only',
                 actionEditIcon: function(record) {
                   return portlet.loadWorkspace({
                     params: {
@@ -145,37 +169,21 @@
                     title: 'Naam',
                     editable: true,
                     visible: true,
-                    width: 150,
+                    width: 250,
                     type: 'text'
                   }, {
                     name: 'personal_category',
                     title: 'persoonlijke tag',
                     editable: true,
                     visible: true,
-                    width: 150,
+                    width: 200,
                     type: 'text'
-                  }, {
-                    name: 'category',
-                    title: 'Categorie',
-                    editable: true,
-                    visible: true,
-                    width: 150,
-                    type: 'gridcombobox',
-                    choices: [
-                      {
-                        id: 1,
-                        name: 'test'
-                      }, {
-                        id: 2,
-                        name: 'testtest'
-                      }
-                    ]
                   }, {
                     name: 'owner_type',
                     title: 'Type',
                     editable: false,
                     visible: true,
-                    width: 150,
+                    width: 60,
                     type: 'gridcombobox'
                   }, {
                     name: 'data_set',
@@ -191,6 +199,13 @@
                     visible: false,
                     width: 150,
                     type: 'gridcombobox'
+                  }, {
+                    name: 'read_only',
+                    title: 'alleen_lezen',
+                    editable: false,
+                    visible: false,
+                    width: 50,
+                    type: 'boolean'
                   }
                 ],
                 storeAutoLoad: true
@@ -203,7 +218,6 @@
         handler: function(e, target, panelHeader, tool) {
           var portlet, records;
           portlet = panelHeader.ownerCt;
-          debugger;
           records = portlet.getSelectionModel().selected.items;
           return portlet.store.remove(records);
         }
@@ -212,11 +226,7 @@
     initComponent: function() {
       var me;
       me = this;
-      if (!this.workspaceStore) {
-        this.workspaceStore = Ext.create(Lizard.store.WorkspaceStore, {
-          layerStore: this.store
-        });
-      }
+      this.store = this.workspaceStore.workspaceItemStore;
       return this.callParent(arguments);
     }
   });

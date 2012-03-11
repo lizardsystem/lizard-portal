@@ -17,7 +17,6 @@ Ext.define 'Lizard.window.EditSummaryBox',
         show: (config) ->
             a = Ext.create('Ext.window.MessageBox',{
                   btnCallback: (btn) ->
-                      debugger
                       if (btn.itemId=='ok')
                           field = @textArea
                           value = field.getValue()

@@ -5,19 +5,26 @@
     alias: 'store.workspaceitemstore',
     model: 'Lizard.model.WorkspaceItemModel',
     data: [new OpenLayers.Layer.OSM('Openstreetmap')],
-    createWorkspaceItem: function(config) {
+    createWorkspaceItem: function(config, index) {
       var record, workspace_item;
+      if (index == null) index = null;
       record = this.getById(config.plid);
       if (record) {
-        return console.log('Warning: record already added');
+        console.log('Warning: record already added');
+        return record;
       } else {
-        config.id = config.plid;
+        if (config.plid) config.id = config.plid;
         config.clickable = true;
         config.visible = true;
         workspace_item = Ext.create('Lizard.model.WorkspaceItemModel', config);
         workspace_item.set('visibility', true);
         workspace_item.set('visible', true);
-        return this.add(workspace_item);
+        if (index === !null) {
+          this.insert(index, workspace_item);
+        } else {
+          this.add(workspace_item);
+        }
+        return workspace_item;
       }
     },
     deleteWorkspaceItem: function(config) {

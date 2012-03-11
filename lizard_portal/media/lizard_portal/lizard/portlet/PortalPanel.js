@@ -98,7 +98,6 @@ Ext.define('Lizard.portlet.PortalPanel', {
     },
     afterRender: function() {
         this.callParent(arguments);
-        console.log('afterRender');
         this.fireEvent("portalcontextchange", this.getParams());
     }
 });

@@ -357,7 +357,7 @@ Ext.define('Lizard.window.Header', {
             output += '   ' + perm + '<br>'
 
         if Lizard.CM.getContext().background_layer
-            output += 'Achtergrond: ' + Lizard.CM.getContext().background_layer.name + '<br>'
+            output += 'Achtergrond: ' + Lizard.CM.getContext().background_layer.title + '<br>'
         Ext.MessageBox.alert('Gebruikers informatie', output)
 
 

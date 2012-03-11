@@ -8,6 +8,9 @@ Ext.define('Lizard.form.WorkspaceSaveForm', {
     defaults:
         anchor: '100%'
     width: 400,
+    #save_callback: (updated_record) ->
+    #    debugger
+    save_callback: Ext.emptyFn
 
     items: [{
         xtype: 'radiogroup',
@@ -29,6 +32,12 @@ Ext.define('Lizard.form.WorkspaceSaveForm', {
         fieldLabel: 'Persoonlijk tag',
         name: 'personal_category',
         allowBlank: true
+    },
+    {
+        xtype: 'checkbox',
+        fieldLabel: 'met achtergrond',
+        name: 'including_background',
+        defaultValue: false
     }],
     bbar: [{
         text: 'Annuleren'
@@ -43,7 +52,8 @@ Ext.define('Lizard.form.WorkspaceSaveForm', {
             # Store the name in the workspace store and sync workspace store.
             # @items
             # @store.sync()
-            form = @up('form').getForm()
+            panel = @up('form')
+            form = panel.getForm()
             if form.isValid()
 
                 form_values = form.getValues()
@@ -63,14 +73,25 @@ Ext.define('Lizard.form.WorkspaceSaveForm', {
                 order_nr = 0
 
                 layers.each( (record) ->
+                    if not form_values.including_background and record.get('is_base_layer')
+                        return
+
                     record.order = order_nr
                     order_nr += 1
+                    record.save()
+
                     workspace_layers.push(record.store.proxy.writer.getRecordData(record))
                     return
                 )
                 workspace.set('layers', workspace_layers)
 
-                workspace.save()
+                workspace.save({
+                    callback: (record, operation) ->
+                        if operation.wasSuccessful()
+                            form.workspaceStore.removeAll()
+                            form.workspaceStore.add(record)
+                            panel.save_callback(record)
+                })
 
                 window = @up('window')
                 window.close()
@@ -85,7 +106,8 @@ Ext.define('Lizard.form.WorkspaceSaveForm', {
         form = @getForm()
         save_method = form.findField('save_method')
 
-        if  @workspaceStore.getTotalCount() > 0
+        if  @workspaceStore.count() > 0 and not @workspaceStore.first().get('read_only')
+            bla = @workspaceStore.first().get('read_only')
             save_method = form.findField('save_method')
             save_method.setValue({method:'update'})
             form.findField('name').setValue(@workspaceStore.first().get('name'))

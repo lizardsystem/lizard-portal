@@ -31,7 +31,8 @@
           itemclick: this.onLayerClick
         }
       });
-      return this.callParent(arguments);
+      this.callParent(arguments);
+      return this.workspaceItemStore = this.workspaceStore.workspaceItemStore;
     },
     afterRender: function() {
       this.callParent(arguments);

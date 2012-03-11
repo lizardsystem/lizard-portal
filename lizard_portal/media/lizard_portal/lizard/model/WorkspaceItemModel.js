@@ -112,7 +112,7 @@
       this.set("layer", layer);
     },
     createLayer: function() {
-      var ol_class, options, params, url;
+      var filter, obj, ol_class, options, params, tpl, url, value;
       ol_class = this.get('ollayer_class');
       if (ol_class === 'OpenLayers.Layer.WMS') {
         params = Ext.merge({
@@ -120,9 +120,25 @@
           transparent: !this.get('is_base_layer')
         }, {
           url: this.get('url'),
-          layers: this.get('layers'),
-          cql_filter: this.get('filter')
+          layers: this.get('layers')
         });
+        if (this.get('use_location_filter') === true) {
+          filter = Ext.JSON.decode(this.get('location_filter'));
+          obj = Lizard.CM.getContext().object;
+          if (filter.tpl) {
+            tpl = new Ext.Template(filter.tpl);
+            value = tpl.apply(obj);
+          } else {
+            value = obj.id;
+          }
+          params[filter.key] = value;
+        }
+        if (this.get('filter')) {
+          debugger;
+          ({
+            cql_filter: this.get('filter')
+          });
+        }
         options = Ext.merge({
           displayInLayerSwitcher: true,
           displayOutsideMaxExtent: true,
@@ -132,6 +148,8 @@
           singleTile: this.get('single_tile')
         });
         if (this.get('is_base_layer')) {
+          options.projection = new OpenLayers.Projection('EPSG:900913');
+          options.init_900913 = true;
           return new OpenLayers.Layer.WMS_baselayer(this.get('title'), this.get('url'), params, options);
         } else {
           return new OpenLayers.Layer.WMS(this.get('title'), this.get('url'), params, options);
@@ -145,7 +163,6 @@
       }
     },
     clean_copy: function() {
-      debugger;
       var layer;
       layer = this.getLayer().clone();
       delete layer.layer;

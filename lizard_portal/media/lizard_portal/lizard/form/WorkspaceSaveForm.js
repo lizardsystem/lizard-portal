@@ -9,6 +9,7 @@
       anchor: '100%'
     },
     width: 400,
+    save_callback: Ext.emptyFn,
     items: [
       {
         xtype: 'radiogroup',
@@ -35,6 +36,11 @@
         fieldLabel: 'Persoonlijk tag',
         name: 'personal_category',
         allowBlank: true
+      }, {
+        xtype: 'checkbox',
+        fieldLabel: 'met achtergrond',
+        name: 'including_background',
+        defaultValue: false
       }
     ],
     bbar: [
@@ -48,8 +54,9 @@
       }, {
         text: 'Opslaan',
         handler: function(btn, event) {
-          var form, form_values, layers, order_nr, window, workspace, workspace_layers;
-          form = this.up('form').getForm();
+          var form, form_values, layers, order_nr, panel, window, workspace, workspace_layers;
+          panel = this.up('form');
+          form = panel.getForm();
           if (form.isValid()) {
             form_values = form.getValues();
             if (form_values.method === 'update') {
@@ -63,12 +70,24 @@
             workspace_layers = [];
             order_nr = 0;
             layers.each(function(record) {
+              if (!form_values.including_background && record.get('is_base_layer')) {
+                return;
+              }
               record.order = order_nr;
               order_nr += 1;
+              record.save();
               workspace_layers.push(record.store.proxy.writer.getRecordData(record));
             });
             workspace.set('layers', workspace_layers);
-            workspace.save();
+            workspace.save({
+              callback: function(record, operation) {
+                if (operation.wasSuccessful()) {
+                  form.workspaceStore.removeAll();
+                  form.workspaceStore.add(record);
+                  return panel.save_callback(record);
+                }
+              }
+            });
             window = this.up('window');
             return window.close();
           } else {
@@ -78,10 +97,11 @@
       }
     ],
     afterRender: function() {
-      var form, save_method;
+      var bla, form, save_method;
       form = this.getForm();
       save_method = form.findField('save_method');
-      if (this.workspaceStore.getTotalCount() > 0) {
+      if (this.workspaceStore.count() > 0 && !this.workspaceStore.first().get('read_only')) {
+        bla = this.workspaceStore.first().get('read_only');
         save_method = form.findField('save_method');
         save_method.setValue({
           method: 'update'

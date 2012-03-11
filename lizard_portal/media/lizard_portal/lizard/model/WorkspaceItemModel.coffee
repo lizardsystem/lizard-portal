@@ -137,9 +137,23 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
                 {
                     url: @get('url'),
                     layers: @get('layers')
-                    cql_filter: @get('filter')
             })
-            #todo: filter
+            if @get('use_location_filter') == true
+                filter = Ext.JSON.decode(@get('location_filter'))
+                obj = Lizard.CM.getContext().object
+                if filter.tpl
+                    tpl = new Ext.Template(filter.tpl)
+                    value = tpl.apply(obj)
+                else
+                    value = obj.id
+                params[filter.key] = value
+                #todo: combine this filter with next filter
+
+            if @get('filter')
+                debugger
+                cql_filter: @get('filter')
+
+
 
             options = Ext.merge({
                     displayInLayerSwitcher: true #@get('is_base_layer')
@@ -151,7 +165,11 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
                     isBaseLayer: @get('is_base_layer'),
                     singleTile: @get('single_tile')
             })
+
+
             if @get('is_base_layer')
+                options.projection = new OpenLayers.Projection('EPSG:900913')
+                options.init_900913 = true
                 return new OpenLayers.Layer.WMS_baselayer(
                     @get('title'),
                     @get('url'),
@@ -178,7 +196,6 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
 
     #copy without layer
     clean_copy: () ->
-        debugger
         layer = @getLayer().clone()
         delete layer.layer
         return layer

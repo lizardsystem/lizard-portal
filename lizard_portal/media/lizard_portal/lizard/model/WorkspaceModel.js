@@ -50,6 +50,9 @@
         name: 'category',
         type: 'auto'
       }, {
+        name: 'read_only',
+        type: 'boolean'
+      }, {
         name: 'layers',
         type: 'auto'
       }

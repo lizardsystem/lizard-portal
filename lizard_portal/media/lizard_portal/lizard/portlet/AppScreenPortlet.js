@@ -36,7 +36,7 @@
             layerFolderId: record.get('action_params').root_map,
             title: record.get('name'),
             id: 'app' + record.get('slug'),
-            workspaceItemStore: this.workspaceItemStore
+            workspaceStore: this.workspaceStore
           });
           tab = tabpanel.add(app);
           return tabpanel.setActiveTab(tab);

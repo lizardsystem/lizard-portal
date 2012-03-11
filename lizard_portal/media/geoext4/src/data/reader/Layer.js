@@ -44,12 +44,14 @@ Ext.define('GeoExt.data.reader.Layer', {
 		var data=[],
 		length = root.length;
 
+
+
 		for (i = 0; i < length; i++) {
 			data[i] = {
 				layer:root[i],
 				title:root[i].title ||root[i].name ||root[i].text,
                 visibility: root[i].visibility || false,
-                isbaselayer:  root[i].isBaseLayer || false
+                is_base_layer:  root[i].isBaseLayer || false
 			}
 		}
 		return this.callParent([data]);

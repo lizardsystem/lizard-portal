@@ -43,9 +43,8 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
                 itemclick: @onLayerClick
         )
 
-
-
         @callParent(arguments)
+        @workspaceItemStore = @workspaceStore.workspaceItemStore
 
     afterRender: () ->
         # debugger

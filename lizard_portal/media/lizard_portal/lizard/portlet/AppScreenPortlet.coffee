@@ -50,7 +50,7 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
                     layerFolderId: record.get('action_params').root_map,
                     title: record.get('name')
                     id: 'app' + record.get('slug')
-                    workspaceItemStore: @workspaceItemStore
+                    workspaceStore: @workspaceStore
                 })
 
                 tab = tabpanel.add(app)

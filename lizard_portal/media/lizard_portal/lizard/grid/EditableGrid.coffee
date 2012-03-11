@@ -288,7 +288,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                 names = []
                 for val in value
                     names.push(val.name)
-                value = names.join(', ')
+                value = names.join(',<br>')
                 #else just the value
             else if col.choices
                 list_choices = Ext.Array.filter(col.choices, (val)->
@@ -366,10 +366,13 @@ Ext.define('Lizard.grid.EditableGrid', {
                         tooltip: 'Edit',
                         handler: (grid, rowIndex, colIndex) ->
                             rec = grid.getStore().getAt(rowIndex)
-                            if me.actionEditIcon
-                                me.actionEditIcon(rec)
+                            if me.read_only_field and rec.data[me.read_only_field] == true
+                                Ext.Msg.alert('melding', 'Dit record is read only.')
                             else
-                                alert("Edit " + rec.get('id'))
+                                if me.actionEditIcon
+                                    me.actionEditIcon(rec)
+                                else
+                                    alert("Edit " + rec.get('id'))
                     })
 
             if @addDeleteIcon
@@ -380,7 +383,10 @@ Ext.define('Lizard.grid.EditableGrid', {
                         tooltip: 'Delete',
                         handler: (grid, rowIndex, colIndex) ->
                             rec = grid.getStore().getAt(rowIndex)
-                            me.store.remove(rec)
+                            if me.read_only_field and rec.data[me.read_only_field] == true
+                                Ext.Msg.alert('melding', 'Dit record is read only.')
+                            else
+                                me.store.remove(rec)
                     })
             cols.push(colConfig)
 
@@ -431,6 +437,8 @@ Ext.define('Lizard.grid.EditableGrid', {
         fields = []
 
 
+
+
         getGridFieldSettings = (setting) ->
             field = {
                 name: setting.name
@@ -455,6 +463,10 @@ Ext.define('Lizard.grid.EditableGrid', {
             else
                 fields.push(getGridFieldSettings(field))
 
+        #when store is given, only add field defintion
+        if @store
+            @store.fields = fields
+            return @store
 
         url = @getProxyUrl()
 
@@ -519,16 +531,6 @@ Ext.define('Lizard.grid.EditableGrid', {
         me.columns = @getColumnConfig()
         me.store = Ext.create('Lizard.store.EditGridStore', @getStoreConfig())
         me.bbar = []
-        #for filtering
-#        me.features = [{
-#            ftype : 'filters',
-#            encode : true,
-#            local : false,
-#            filters : [{
-#                type : 'boolean',
-#                dataIndex : 'visible'
-#            }]
-#        }]
 
         me.bbar = []
 
@@ -543,7 +545,7 @@ Ext.define('Lizard.grid.EditableGrid', {
             @plugins.push(@editing)
 
             if @useAddDeleteButtons
-                me.bbar.concat([
+                me.bbar = me.bbar.concat([
                     {
                         xtype: 'button',
                         text: 'Toevoegen',
@@ -599,10 +601,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                     store: me.store,
                     displayInfo: true,
                     items: ['-'].concat(me.bbar)
-
                 }
-
-
 
 #grid - The grid
 #record - The record being edited

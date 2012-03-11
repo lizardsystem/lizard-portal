@@ -93,6 +93,8 @@ def json_configuration(request):
             return redirect('lizard_measure.measure_groupedit_portal')
         elif portal_template == 'organisatie-beheer':
             return redirect('lizard_measure.organization_groupedit_portal')
+        elif portal_template == 'stuurparameter-overzicht':
+            return redirect('lizard_measure.steerparameter_overview')
 
         try:
             t = get_template('portals/'+portal_template+'.js')
