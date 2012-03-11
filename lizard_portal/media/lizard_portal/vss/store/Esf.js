@@ -9,17 +9,13 @@
 Ext.override(Ext.data.proxy.Server,{
    destroy: function() {
 
-       if (arguments[0].url) {
-           return this.doRequest.apply(this, arguments);
-       } else {
+       if (arguments[2].$className == "Vss.model.Esf") {
            return true
+       } else {
+           return this.doRequest.apply(this, arguments);
        }
    }
 });
-
-
-
-
 
 Ext.define('Vss.store.Esf', {
     extend: 'Ext.data.TreeStore',

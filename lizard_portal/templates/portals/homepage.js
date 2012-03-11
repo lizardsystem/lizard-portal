@@ -43,7 +43,6 @@
             onApplyParams: function(params) {
                 var me = this;
                 me.setLoading(true);
-                debugger
                 if (!this.init_workspace && this.autoLoadWorkspaceStore) {
                     this.workspaceStore.load({
                          params: this.autoLoadWorkspaceStore,
@@ -52,7 +51,6 @@
                              if (records.length > 0) {
                                  me.workspaceStore.workspaceItemStore.loadData(records[0].get('layers'))
                              }
-                             debugger;
                          }
                     });
                     this.init_workspace = true
