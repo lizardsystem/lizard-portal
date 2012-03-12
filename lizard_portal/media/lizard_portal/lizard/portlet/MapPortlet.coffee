@@ -266,5 +266,10 @@ Ext.define('Lizard.portlet.MapPortlet', {
         @layers = @workspaceStore.workspaceItemStore
         @callParent(arguments)
 
+    afterRender: () ->
+        @callParent(arguments)
+
+
+
 })
 

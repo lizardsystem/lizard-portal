@@ -203,8 +203,8 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
             if not url
                 url = null
             return new OpenLayers.Layer.OSM(
-                @get('name'),
-                url
+                @get('name')
+                #url  -> url has some problems with context switches. removed for now
             )
         else
             console.error('dit type wordt niet ondersteund')

@@ -171,7 +171,7 @@
       } else if (ol_class === 'OpenLayers.Layer.OSM') {
         url = this.get('url');
         if (!url) url = null;
-        return new OpenLayers.Layer.OSM(this.get('name'), url);
+        return new OpenLayers.Layer.OSM(this.get('name'));
       } else {
         return console.error('dit type wordt niet ondersteund');
       }

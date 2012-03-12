@@ -174,6 +174,9 @@
       me = this;
       this.layers = this.workspaceStore.workspaceItemStore;
       return this.callParent(arguments);
+    },
+    afterRender: function() {
+      return this.callParent(arguments);
     }
   });
 

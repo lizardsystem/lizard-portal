@@ -69,20 +69,6 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
             params:
                 object_id: params
             callback: (records, operation, success) ->
-                index = me.workspaceStore.workspaceItemStore.find('is_base_layer', true)
-                old_background = me.workspaceStore.workspaceItemStore.getAt(index)
-
-                if me.workspaceStore.workspaceItemStore
-                    me.workspaceStore.workspaceItemStore.loadData(records[0].get('layers'))
-
-                background_index = me.workspaceStore.workspaceItemStore.find('is_base_layer', true)
-                if background_index < 0
-                    #add background from personal preferences or the previous backgroundlayer
-                    background_pref = Lizard.CM.getContext().background_layer
-                    if background_pref
-                        me.workspaceStore.workspaceItemStore.insert(0, background_pref)
-                    else
-                        me.workspaceStore.workspaceItemStore.insert(0, old_background)
 
                 if config.callback
                     config.callback(records, operation, success)

@@ -24,5 +24,29 @@ Ext.define('Lizard.store.WorkspaceStore', {
             return @active_stores[storeId]
 
 
+    listeners:
+        load:
+            fn:(store, records) ->
+                me = store
+                arguments
+                debugger
+
+                if records
+                    index = me.workspaceItemStore.find('is_base_layer', true)
+                    old_background = me.workspaceItemStore.getAt(index)
+
+                    if me.workspaceItemStore
+                        me.workspaceItemStore.loadData(records[0].get('layers'))
+
+                    background_index = me.workspaceItemStore.find('is_base_layer', true)
+                    if background_index < 0
+                    #add background from personal preferences or the previous backgroundlayer
+                        background_pref = Lizard.CM.getContext().background_layer
+                        if background_pref
+                            me.workspaceItemStore.insert(0, background_pref)
+                        else
+                            me.workspaceItemStore.insert(0, old_background)
+
+
 })
 
