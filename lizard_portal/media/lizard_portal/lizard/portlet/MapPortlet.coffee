@@ -230,6 +230,9 @@ Ext.define('Lizard.portlet.MapPortlet', {
             return
 
         # Somehow layer.get('layers') is empty, so we use event.object... instead
+
+        # SRS: "EPSG:900913" @map.projection.projCode should be 900913
+        # but is 4326 instead
         params = {
             REQUEST: "GetFeatureInfo",
             EXCEPTIONS: "application/vnd.ogc.se_xml",
@@ -242,14 +245,14 @@ Ext.define('Lizard.portlet.MapPortlet', {
             FEATURE_COUNT: 2,  # testing, should be a low number like 1
             WIDTH: @map.size.w,
             HEIGHT: @map.size.h,
-            SRS: @map.projection.projCode
+            SRS: "EPSG:900913"  # @map.projection.projCode
         }
 
         if layer.get('url') == ''
             alert('Test: Selecteer een andere kaartlaag als bovenste clickable')
             return
 
-        else if layer.get('url').contains('http')
+        else if not layer.get('is_local_server')
             #request through a proxy on our server
             url = layer.get('layer').getFullRequestString(params, layer.get('url'));
 

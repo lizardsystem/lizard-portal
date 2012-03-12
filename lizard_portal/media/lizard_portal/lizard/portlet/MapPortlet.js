@@ -163,11 +163,11 @@
         FEATURE_COUNT: 2,
         WIDTH: this.map.size.w,
         HEIGHT: this.map.size.h,
-        SRS: this.map.projection.projCode
+        SRS: "EPSG:900913"
       };
       if (layer.get('url') === '') {
         alert('Test: Selecteer een andere kaartlaag als bovenste clickable');
-      } else if (layer.get('url').contains('http')) {
+      } else if (!layer.get('is_local_server')) {
         url = layer.get('layer').getFullRequestString(params, layer.get('url'));
         return Ext.Ajax.request({
           url: '/portal/getFeatureInfo/',
