@@ -148,7 +148,7 @@
       me = this;
       layer = this.layers.findRecord('clickable', true);
       if (!layer) {
-        alert('geen kaartlaag geselecteerd');
+        Ext.Msg.alert('', 'geen kaartlaag geselecteerd');
         return;
       }
       params = {
@@ -160,7 +160,7 @@
         INFO_FORMAT: 'application/vnd.ogc.gml',
         QUERY_LAYERS: layer.get('layers'),
         LAYERS: layer.get('layers'),
-        FEATURE_COUNT: 50,
+        FEATURE_COUNT: 2,
         WIDTH: this.map.size.w,
         HEIGHT: this.map.size.h,
         SRS: this.map.projection.projCode

@@ -142,7 +142,13 @@ Ext.define('Lizard.portlet.MapPortlet', {
         # stp_ident: "CTS_M_GMT+01:00"
         # tooltip: "None"
 
+
+
         if records.length > 0
+
+            #workspaceitem.popup_class .show(records)
+
+
             if records[0].data.par_ident #temporary check if measure
 
                 dt_start = Ext.Date.format(Lizard.CM.getContext().period.start, 'Y-m-d H:i:s')
@@ -220,7 +226,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
         # Find the first clickable layer
         layer = @layers.findRecord('clickable',true)
         if not layer
-            alert('geen kaartlaag geselecteerd')
+            Ext.Msg.alert('', 'geen kaartlaag geselecteerd')
             return
 
         # Somehow layer.get('layers') is empty, so we use event.object... instead
@@ -233,7 +239,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
             INFO_FORMAT: 'application/vnd.ogc.gml',
             QUERY_LAYERS: layer.get('layers') #event.object.layers[1].params.LAYERS,
             LAYERS: layer.get('layers'),
-            FEATURE_COUNT: 50,  # testing, should be a low number like 1
+            FEATURE_COUNT: 2,  # testing, should be a low number like 1
             WIDTH: @map.size.w,
             HEIGHT: @map.size.h,
             SRS: @map.projection.projCode
@@ -244,7 +250,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
             return
 
         else if layer.get('url').contains('http')
-            #request through our server
+            #request through a proxy on our server
             url = layer.get('layer').getFullRequestString(params, layer.get('url'));
 
             Ext.Ajax.request({
