@@ -85,6 +85,7 @@ Ext.define 'Lizard.ContextManager',
                 else if value != context_param[key]
                     updated = true
                     new_value[key] = value
+                return
             )
         else
             if context_param != new_param
@@ -125,6 +126,8 @@ Ext.define 'Lizard.ContextManager',
             new_value = me._checkChangeAndUpdate(me.context[key], value)
             if new_value != null
                 changed_context[key] = new_value
+
+            return
         )
 
         if changed_context.headertab
@@ -178,6 +181,7 @@ Ext.define 'Lizard.ContextManager',
             changed_elements = {}
             Ext.Object.each(changed_context, (key, value) ->
                 changed_elements[key] = true
+                return
             )
 
             new_context = @getContext()

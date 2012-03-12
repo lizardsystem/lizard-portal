@@ -57,6 +57,7 @@ Ext.application({
         'Lizard.grid.EditablePropertyGrid',
         'Lizard.form.ComboMultiSelect',
         'Lizard.form.WorkspaceSaveForm',
+        'Lizard.form.BackgroundLayerSelector',
         'Lizard.grid.EditableGrid',
         'Lizard.store.EditGridStore',
         'Lizard.store.AvailableLayersStore',
