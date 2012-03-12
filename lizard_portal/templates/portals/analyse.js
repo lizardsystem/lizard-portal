@@ -23,6 +23,9 @@
         },{
             xtype: 'workspaceportlet',
             workspaceStore: Lizard.store.WorkspaceStore.get_or_create('analyse')
+        },{
+            xtype: 'collageportlet',
+            collageStore: Lizard.store.CollageStore.get_or_create('analyse')
         }]
     },{
 	    flex: 1,

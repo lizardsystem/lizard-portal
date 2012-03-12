@@ -20,6 +20,7 @@ Ext.application({
         'Vss.model.AnnotationDescription',
         'Vss.model.TimeserieObject',
         'Lizard.model.Graph',
+        'Lizard.model.CollageModel',
         'Lizard.model.WorkspaceModel',
         'Lizard.model.AvailableLayersModel'
     ],
@@ -57,10 +58,13 @@ Ext.application({
         'Lizard.grid.EditablePropertyGrid',
         'Lizard.form.ComboMultiSelect',
         'Lizard.form.WorkspaceSaveForm',
+        'Lizard.form.CollageSaveForm',
         'Lizard.form.BackgroundLayerSelector',
         'Lizard.grid.EditableGrid',
         'Lizard.store.EditGridStore',
         'Lizard.store.AvailableLayersStore',
+        'Lizard.store.CollageItemStore',
+        'Lizard.store.CollageStore',  // Not yet used
         'Lizard.store.WorkspaceItemStore',
         'Lizard.store.WorkspaceStore',  // Not yet used
         'Lizard.portlet.AppScreenPortlet',
@@ -73,6 +77,7 @@ Ext.application({
         'Lizard.portlet.GridPortlet',
         'Lizard.portlet.MultiGraph',
         'Lizard.portlet.MultiGraphStore',
+        'Lizard.portlet.CollagePortlet',
         'Lizard.portlet.WorkspacePortlet',
         'Lizard.popup.FeatureInfo',
         'Lizard.popup.TimeSeriesGraph',
@@ -108,8 +113,10 @@ Ext.application({
         // !Try! to initialize WorkspaceStore, does not work yet.
         // Ext.create(Lizard.store.WorkspaceStore, );
         Ext.create(Lizard.store.WorkspaceItemStore, {storeId: 'WorkspaceItems'} );
+        Ext.create(Lizard.store.CollageItemStore, {storeId: 'CollageItems'} );
 
         Lizard.store.WorkspaceStore.get_or_create('analyse')
+        Lizard.store.CollageStore.get_or_create('analyse')
 
         var aan_afvoergebied_selection =
         {

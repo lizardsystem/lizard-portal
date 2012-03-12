@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - Added popup class views for analysis: FeatureInfo, TimeSeriesGraph.
 
+- Added collages.
+
 
 0.15 (2012-03-12)
 -----------------
