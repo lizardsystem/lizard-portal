@@ -81,64 +81,15 @@
       });
     },
     onMapClickCallback: function(records, workspaceitem, event, lonlat, xhr, request) {
-      var data, dt_end, dt_start, html, record, tpl;
+      var popup_class, popup_class_name;
       if (records.length > 0) {
-        if (records[0].data.par_ident) {
-          dt_start = Ext.Date.format(Lizard.CM.getContext().period.start, 'Y-m-d H:i:s');
-          dt_end = Ext.Date.format(Lizard.CM.getContext().period.end, 'Y-m-d H:i:s');
-          record = records[0];
-          return Ext.create('Ext.window.Window', {
-            title: 'locatie',
-            modal: true,
-            xtype: 'leditgrid',
-            itemId: 'map popup',
-            finish_edit_function: function(updated_record) {},
-            editpopup: true,
-            items: [
-              {
-                xtype: 'panel',
-                width: 1050,
-                height: 550,
-                html: 'Grafiek voor ' + record.data.geo_ident + ' ' + record.data.par_ident + ' ' + record.data.mod_ident + ' ' + record.data.stp_ident + '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500&item={%22fews_norm_source_slug%22:%22waternet%22,%22location%22:%22' + record.data.geo_ident + '%22,%22parameter%22:%22' + record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + record.data.stp_ident + '%22,%22module%22:%22' + record.data.mod_ident + '%22}" />',
-                tbar: [
-                  {
-                    text: 'Voeg toe aan collage',
-                    handler: function(btn, event) {
-                      var window;
-                      window = this.up('window');
-                      return window.close();
-                    }
-                  }
-                ]
-              }
-            ]
-          }).show();
-        } else {
-          record = records[0];
-          data = [];
-          Ext.Object.each(record.data, function(key, value) {
-            return data.push({
-              key: key,
-              value: value
-            });
-          });
-          tpl = new Ext.XTemplate('<div class="lizard">', '<h2>Kaartlaag: {layer_name}</h2>', '<table>', '<tpl for="fields">', '<tr><td>{key}</td><td>{value}</td></tr>', '</tpl></table></div>');
-          html = tpl.applyTemplate({
-            layer_name: workspaceitem.get('title'),
-            fields: data
-          });
-          return Ext.create('Ext.window.Window', {
-            title: 'Info',
-            popup_type: 'feature_info',
-            items: [
-              {
-                xtype: 'panel',
-                width: 400,
-                html: html
-              }
-            ]
-          }).show();
+        popup_class_name = 'Lizard.popup.' + workspaceitem.get('js_popup_class');
+        popup_class = Ext.ClassManager.get(popup_class_name);
+        if (!popup_class) {
+          popup_class = Ext.ClassManager.get('Lizard.popup.FeatureInfo');
+          console.error("Cannot find popup class " + popup_class_name);
         }
+        return popup_class.show(records, workspaceitem);
       } else {
         return alert('nothing found');
       }
@@ -166,7 +117,7 @@
         SRS: "EPSG:900913"
       };
       if (layer.get('url') === '') {
-        alert('Test: Selecteer een andere kaartlaag als bovenste clickable');
+        return alert('Test: Selecteer een andere kaartlaag als bovenste clickable');
       } else if (!layer.get('is_local_server')) {
         url = layer.get('layer').getFullRequestString(params, layer.get('url'));
         return Ext.Ajax.request({
@@ -186,7 +137,7 @@
             if (gml.length > 0) {
               return me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
             } else {
-              return alert('Niks gevonden debug: ' + gml_text);
+              return alert('Niks gevonden proxy debug: ' + gml_text);
             }
           },
           failure: function(xhr) {

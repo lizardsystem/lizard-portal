@@ -74,6 +74,8 @@ Ext.application({
         'Lizard.portlet.MultiGraph',
         'Lizard.portlet.MultiGraphStore',
         'Lizard.portlet.WorkspacePortlet',
+        'Lizard.popup.FeatureInfo',
+        'Lizard.popup.TimeSeriesGraph',
         'Lizard.window.MapWindow',
         'Lizard.window.Header',
         'Vss.grid.Esf',

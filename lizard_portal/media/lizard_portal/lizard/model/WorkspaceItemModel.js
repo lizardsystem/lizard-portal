@@ -109,6 +109,11 @@
         type: "boolean",
         mapping: "is_clickable",
         persist: false
+      }, {
+        name: "js_popup_class",
+        type: "string",
+        mapping: "js_popup_class",
+        persist: false
       }
     ],
     getLayer: function() {

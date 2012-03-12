@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.16 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added popup class views for analysis: FeatureInfo, TimeSeriesGraph.
 
 
 0.15 (2012-03-12)

@@ -128,7 +128,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
         )
 
     onMapClickCallback: (records, workspaceitem, event, lonlat, xhr, request) ->
-        # Records is a list of gml objects. They have the following properties:
+        # Records is a list of gml objects with the following properties:
         # active: "true"
         # fews_norm_source_id: "2"
         # geo_ident: "MBP014"
@@ -142,88 +142,50 @@ Ext.define('Lizard.portlet.MapPortlet', {
         # stp_ident: "CTS_M_GMT+01:00"
         # tooltip: "None"
 
-
+        # Workspaceitem:
+        # checked: false
+        # clickable: true
+        # filter: "par_ident='CL' and mod_ident='Import_Reeksen' and stp_ident='NETS'"
+        # filter_string: ""
+        # id: 1234
+        # is_base_layer: false
+        # is_clickable: true
+        # is_local_server: true
+        # js_popup_class: false
+        # layer: OpenLayers.Layer.WMS.OpenLayers.Class.initialize
+        # layers: "vss:fews_locations"
+        # leaf: true
+        # location_filter: ""
+        # ollayer_class: "OpenLayers.Layer.WMS"
+        # opacity: 0
+        # options: "{}"
+        # order: 0
+        # plid: 1234
+        # request_params: "{}"
+        # single_tile: false
+        # text: "Chloride (NETS)"
+        # title: "Chloride (NETS)"
+        # url: "http://localhost:8000/layers/wms/"
+        # use_location_filter: false
+        # visibility: true
+        # visible: true
 
         if records.length > 0
-
-            #workspaceitem.popup_class .show(records)
-
-
-            if records[0].data.par_ident #temporary check if measure
-
-                dt_start = Ext.Date.format(Lizard.CM.getContext().period.start, 'Y-m-d H:i:s')
-                dt_end = Ext.Date.format(Lizard.CM.getContext().period.end, 'Y-m-d H:i:s')
-                # http://localhost:8000/graph/?dt_start=2011-02-11%2000:00:00&dt_end=2011-11-11%2000:00:00&item={%22fews_norm_source_slug%22:%22waternet%22,%22location%22:%223201%22,%22parameter%22:%22Q_berekend.in.cumulatief%22,%22type%22:%22line%22,%22time_step%22:%22SETS1440TZ1%22}&dt_start=2005-01-01%2000:00:00&dt_end=2011-01-01%2000:00:00
-                record = records[0]
-
-                Ext.create('Ext.window.Window', {
-                    title: 'locatie',
-                    modal: true,
-
-                    xtype: 'leditgrid'
-                    itemId: 'map popup'
-
-                    finish_edit_function: (updated_record) ->
-                    #pass
-
-                    editpopup: true,
-                    items: [{
-                        xtype: 'panel'
-                        width: 1050
-                        height: 550
-                        html: 'Grafiek voor ' + record.data.geo_ident + ' ' + record.data.par_ident + ' ' + record.data.mod_ident + ' ' + record.data.stp_ident + '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500&item={%22fews_norm_source_slug%22:%22waternet%22,%22location%22:%22' + record.data.geo_ident + '%22,%22parameter%22:%22' + record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + record.data.stp_ident + '%22,%22module%22:%22' + record.data.mod_ident + '%22}" />'
-                        tbar: [{
-                            text: 'Voeg toe aan collage'
-                            handler: (btn, event) ->
-                                window = @up('window')
-                                window.close()
-                        }]
-                    }]
-                }).show()
-
-
-            else
-
-                #debugger
-                # http://localhost:8000/graph/?dt_start=2011-02-11%2000:00:00&dt_end=2011-11-11%2000:00:00&item={%22fews_norm_source_slug%22:%22waternet%22,%22location%22:%223201%22,%22parameter%22:%22Q_berekend.in.cumulatief%22,%22type%22:%22line%22,%22time_step%22:%22SETS1440TZ1%22}&dt_start=2005-01-01%2000:00:00&dt_end=2011-01-01%2000:00:00
-                record = records[0]
-
-                data = []
-
-                Ext.Object.each(record.data, (key, value)->
-                    data.push({key:key, value:value})
-                )
-
-                tpl = new Ext.XTemplate(
-                    '<div class="lizard">'
-                    '<h2>Kaartlaag: {layer_name}</h2>',
-                    '<table>',
-                    '<tpl for="fields">',
-                    '<tr><td>{key}</td><td>{value}</td></tr>',
-                    '</tpl></table></div>'
-                );
-                html = tpl.applyTemplate({
-                    layer_name: workspaceitem.get('title'),
-                    fields:data
-                });
-
-                Ext.create('Ext.window.Window', {
-                    title: 'Info',
-                    popup_type: 'feature_info'
-                    items: [{
-                        xtype: 'panel'
-                        width: 400
-                        html: html
-                    }]
-                }).show()
-
+            # Find popup class and feed it with records.
+            popup_class_name = 'Lizard.popup.' + workspaceitem.get('js_popup_class')
+            popup_class = Ext.ClassManager.get(popup_class_name)
+            if not popup_class
+                # Default fall-back
+                popup_class = Ext.ClassManager.get('Lizard.popup.FeatureInfo')
+                console.error("Cannot find popup class " + popup_class_name)
+            popup_class.show(records, workspaceitem)
         else
             alert('nothing found')
 
 
     onMapClick: (event, lonlat, callback) ->
         me = @
-        # Find the first clickable layer
+        # Find the first clickable layer which is enabled as well.
         layer = @layers.findRecord('clickable',true)
         if not layer
             Ext.Msg.alert('', 'geen kaartlaag geselecteerd')
@@ -250,10 +212,9 @@ Ext.define('Lizard.portlet.MapPortlet', {
 
         if layer.get('url') == ''
             alert('Test: Selecteer een andere kaartlaag als bovenste clickable')
-            return
 
         else if not layer.get('is_local_server')
-            #request through a proxy on our server
+            # Request through a proxy on our server
             url = layer.get('layer').getFullRequestString(params, layer.get('url'));
 
             Ext.Ajax.request({
@@ -272,12 +233,13 @@ Ext.define('Lizard.portlet.MapPortlet', {
                      if gml.length > 0
                          me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
                      else
-                        alert('Niks gevonden debug: ' + gml_text)
+                        alert('Niks gevonden proxy debug: ' + gml_text)
                 failure: (xhr) ->
                     alert('failure');
             })
 
         else
+            # Direct request to local server.
             Ext.Ajax.request({
                 url: layer.get('url'),
                 reader:{
