@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.15 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Connects the view of configurations to the backend (#21).
 
 
 0.14 (2012-03-08)
