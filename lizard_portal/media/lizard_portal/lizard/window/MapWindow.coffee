@@ -43,7 +43,6 @@ Ext.define('Lizard.window.MapWindow',
 
 
 
-
     statics:
         show: (config={}) ->
             map_windows = []
@@ -69,14 +68,18 @@ Ext.define('Lizard.window.MapWindow',
     serialize: (feature) ->
 
         str = @format.write(feature);
-        alert str
+        return str
 
 
 
     deserialize: (features_string) ->
 
         features = @format.read(features_string);
-        @geometry_type = features.geometry.CLASS_NAME
+
+        if features.geometry
+            @geometry_type = features.geometry.CLASS_NAME
+        else if features[0].geometry
+            @geometry_type = features[0].geometry.CLASS_NAME
 
         if features
             if features.constructor != Array
@@ -138,8 +141,7 @@ Ext.define('Lizard.window.MapWindow',
         @active_editor = null
         @active_edit_layer = null
 
-        vlayer = new OpenLayers.Layer.WMS( "OpenLayers WMS",
-                        "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: 'basic'} );
+        vlayer = new OpenLayers.Layer.OSM()
 
         if @start_geometry
             @deserialize(@start_geometry)
@@ -214,16 +216,16 @@ Ext.define('Lizard.window.MapWindow',
                 xtype: 'button',
                 text: 'Undo',
                 handler: () ->
-                    if @active_editor.undo
-                        @active_editor.undo()
+                    if me.active_editor.undo
+                        me.active_editor.undo()
             }
-            {
-                xtype: 'button',
-                text: 'Cancel toevoegen',
-                handler: () ->
-                    if me.active_editor.cancel
-                        me.active_editor.cancel()
-            }
+#            {
+#                xtype: 'button',
+#                text: 'Cancel toevoegen',
+#                handler: () ->
+#                    if me.active_editor.cancel
+#                        me.active_editor.cancel()
+#            }
             {
                 xtype: 'button',
                 text: 'Verwijder',
@@ -235,11 +237,26 @@ Ext.define('Lizard.window.MapWindow',
                         me.active_editor.layer.destroyFeatures([feature])
             }]
 
+        if not @extent
+            @extent = new OpenLayers.Bounds(
+                Lizard.CM.getContext().init_zoom[0],
+                Lizard.CM.getContext().init_zoom[1],
+                Lizard.CM.getContext().init_zoom[2],
+                Lizard.CM.getContext().init_zoom[3]
+            )
+
+
         map = Ext.create(GeoExt.panel.Map,{
             flex:1,
             initZoomOnRender: true,
             controls: map_controls
             layers: layers
+            extent: @extent
+#            options: {
+#                projection: new OpenLayers.Projection("EPSG:900913"),
+#                units: "m"
+#            }
+
         })
 
         controls.drag = map.navigation
@@ -312,8 +329,12 @@ Ext.define('Lizard.window.MapWindow',
         config.bbar = {
             xtype: 'button',
             text: 'Klaar met bewerken',
-            handler: () ->
-                me.serialize(me.active_edit_layer.features)
+            handler: (button) ->
+                wkt = me.serialize(me.active_edit_layer.features)
+                if me.callback
+                    me.callback(wkt)
+                window = button.up('window')
+                window.close()
         }
 
 

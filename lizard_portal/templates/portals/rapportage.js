@@ -7,6 +7,7 @@
 		items: [{
 			title: 'Rapport',
             flex:1,
+            autoScroll: true,
             plugins: [
                 'applycontext'
             ],
@@ -17,8 +18,8 @@
                 var request_params = {}
 
                 Ext.Object.each(cm.objects, function(key, value) {
-                    if (value.object && value.object.id) {
-                        request_params['key'] = value.object.id
+                    if (value.type && value.id) {
+                        request_params[key] = value.id
                     }
                 })
 

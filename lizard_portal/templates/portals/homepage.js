@@ -34,7 +34,7 @@
             xtype: "mapportlet",
             initZoomOnRender: false,
             autoLoadWorkspaceStore: {
-                id: 31
+                id: 2
             },
             init_workspace: false,
             controls: [new OpenLayers.Control.LayerSwitcher()

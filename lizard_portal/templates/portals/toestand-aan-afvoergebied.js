@@ -16,8 +16,8 @@
     	width: 200,
 		items: [
             {% get_portal_template gebiedseigenschappen %},
-            {% get_portal_template communique %},
-            {% get_portal_template esf-overzicht %}
+            {% get_portal_template communique %}
+
         ]
     },{
 		flex: 1,
@@ -90,11 +90,11 @@
                 type: 'table',
                 columns:1
             },
-            height: 250,
+            height: 200,
             defaults:{
-                width:150,
+                width:160,
                 xtype:'button',
-                margin: 2
+                margin: 3
             },
             items:[{
                     text: 'Ecologische sleutelfactoren',
@@ -123,6 +123,7 @@
                 }
             ]
  		},
+        {% get_portal_template esf-overzicht %},
         {% get_portal_template gebieden_links %}
         ]
     }]

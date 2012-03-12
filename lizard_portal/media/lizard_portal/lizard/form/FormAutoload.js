@@ -4,7 +4,8 @@
     extend: 'Ext.form.Panel',
     alias: 'widget.formautoload',
     config: {
-      loadProxy: null
+      loadProxy: null,
+      loadData: null
     },
     constructor: function() {
       this.initConfig(arguments);
@@ -17,7 +18,11 @@
     },
     afterRender: function() {
       this.callParent(arguments);
-      if (this.getLoadProxy()) return this.load(this.getLoadProxy());
+      if (this.getLoadProxy()) {
+        return this.load(this.getLoadProxy());
+      } else if (this.getLoadData()) {
+        return this.form.setValues(this.getLoadData());
+      }
     }
   });
 

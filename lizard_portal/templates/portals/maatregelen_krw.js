@@ -53,6 +53,9 @@
                             loadMask: true,
                             autoLoad: true,
                             url: '/measure/measure_detailedit_portal/',
+                            baseParams: {
+                                area_id: Lizard.CM.getContext().object.id
+                            },
                             ajaxOptions: {
                                 method: 'GET'
                             },

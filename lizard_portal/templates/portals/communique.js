@@ -38,7 +38,6 @@
                     console.log(arguments)
                     var portlet = panelHeader.up('panel')
                     var communique_data = portlet.data.description;
-                    console.log(communique_data)
 
                     var form_window = Ext.create('Ext.window.Window', {
                         title: 'Bewerk communique',
@@ -85,14 +84,18 @@
                                     if (form.isValid()) {
                                         form.submit({
                                             success: function(form, action) {
+                                                debugger
                                                 console.log('Opslaan gelukt');
                                                 portlet.applyParams({
-                                                       object_id:Lizard.CM.getContext().object.id
+                                                       object: {
+                                                           id:Lizard.CM.getContext().object.id
+                                                       }
                                                 });
                                                 form.owner.up('window').close();
 
                                             },
                                             failure: function(form, action) {
+                                                debugger
                                                 Ext.Msg.alert('Failed', 'Opslaan mislukt');
                                             }
                                         });

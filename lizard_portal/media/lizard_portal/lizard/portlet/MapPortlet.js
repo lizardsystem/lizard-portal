@@ -82,37 +82,10 @@
     },
     onMapClickCallback: function(records, workspaceitem, event, lonlat, xhr, request) {
       var data, dt_end, dt_start, html, record, tpl;
-      if (true) {
-        if (records.length > 0) {
-          record = records[0];
-          data = [];
-          Ext.Object.each(record.data, function(key, value) {
-            return data.push({
-              key: key,
-              value: value
-            });
-          });
-          tpl = new Ext.XTemplate('<div class="lizard">', '<h2>Kaartlaag: {layer_name}</h2>', '<table>', '<tpl for="fields">', '<tr><td>{key}</td><td>{value}</td></tr>', '</tpl></table></div>');
-          html = tpl.applyTemplate({
-            layer_name: workspaceitem.get('title'),
-            fields: data
-          });
-          return Ext.create('Ext.window.Window', {
-            title: 'Info',
-            popup_type: 'feature_info',
-            items: [
-              {
-                xtype: 'panel',
-                width: 400,
-                html: html
-              }
-            ]
-          }).show();
-        }
-      } else {
-        dt_start = Ext.Date.format(Lizard.CM.getContext().period.start, 'Y-m-d H:i:s');
-        dt_end = Ext.Date.format(Lizard.CM.getContext().period.end, 'Y-m-d H:i:s');
-        if (records.length > 0) {
+      if (records.length > 0) {
+        if (records[0].data.par_ident) {
+          dt_start = Ext.Date.format(Lizard.CM.getContext().period.start, 'Y-m-d H:i:s');
+          dt_end = Ext.Date.format(Lizard.CM.getContext().period.end, 'Y-m-d H:i:s');
           record = records[0];
           return Ext.create('Ext.window.Window', {
             title: 'locatie',
@@ -141,8 +114,33 @@
             ]
           }).show();
         } else {
-          return alert('nothing found');
+          record = records[0];
+          data = [];
+          Ext.Object.each(record.data, function(key, value) {
+            return data.push({
+              key: key,
+              value: value
+            });
+          });
+          tpl = new Ext.XTemplate('<div class="lizard">', '<h2>Kaartlaag: {layer_name}</h2>', '<table>', '<tpl for="fields">', '<tr><td>{key}</td><td>{value}</td></tr>', '</tpl></table></div>');
+          html = tpl.applyTemplate({
+            layer_name: workspaceitem.get('title'),
+            fields: data
+          });
+          return Ext.create('Ext.window.Window', {
+            title: 'Info',
+            popup_type: 'feature_info',
+            items: [
+              {
+                xtype: 'panel',
+                width: 400,
+                html: html
+              }
+            ]
+          }).show();
         }
+      } else {
+        return alert('nothing found');
       }
     },
     onMapClick: function(event, lonlat, callback) {

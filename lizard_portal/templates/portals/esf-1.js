@@ -25,12 +25,12 @@
         {% else %}
             editable:false,
         {% endif %}
-            tools: [{
+            /*tools: [{
                 type: 'save',
                 handler: function() {
                     Lizard.window.MapWindow.show()
                 }
-            }]
+            }]*/
         }]
     },{
         flex:1,

@@ -40,19 +40,25 @@
             tools: [{
                 type: 'plus',
                 handler: function (e, target, panelHeader, tool) {
+                    panel = panelHeader.up('panel');
+
                     Ext.create('Ext.window.Window', {
                         title: 'Nieuwe maatregel toevoegen',
                         width: 800,
                         height: 600,
                         modal: true,
+
                         finish_edit_function: function (updated_record) {
-                            //todo
+                            panel.applyParams()
                         },
                         editpopup: true,
                         loader:{
                             loadMask: true,
                             autoLoad: true,
                             url: '/measure/measure_detailedit_portal/',
+                            baseParams: {
+                                area_id: Lizard.CM.getContext().object.id
+                            },
                             ajaxOptions: {
                                 method: 'GET'
                             },

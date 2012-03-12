@@ -39,12 +39,16 @@
     serialize: function(feature) {
       var str;
       str = this.format.write(feature);
-      return alert(str);
+      return str;
     },
     deserialize: function(features_string) {
       var bounds, elem, feature, features, final_features, geometry_type, _i, _j, _k, _len, _len2, _len3, _ref;
       features = this.format.read(features_string);
-      this.geometry_type = features.geometry.CLASS_NAME;
+      if (features.geometry) {
+        this.geometry_type = features.geometry.CLASS_NAME;
+      } else if (features[0].geometry) {
+        this.geometry_type = features[0].geometry.CLASS_NAME;
+      }
       if (features) {
         if (features.constructor !== Array) features = [features];
         final_features = [];
@@ -108,9 +112,7 @@
       this.active_editable_layer = null;
       this.active_editor = null;
       this.active_edit_layer = null;
-      vlayer = new OpenLayers.Layer.WMS("OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0", {
-        layers: 'basic'
-      });
+      vlayer = new OpenLayers.Layer.OSM();
       if (this.start_geometry) this.deserialize(this.start_geometry);
       layers = [vlayer, this.points, this.lines, this.polygons];
       map_controls = [new OpenLayers.Control.LayerSwitcher()];
@@ -174,13 +176,7 @@
             xtype: 'button',
             text: 'Undo',
             handler: function() {
-              if (this.active_editor.undo) return this.active_editor.undo();
-            }
-          }, {
-            xtype: 'button',
-            text: 'Cancel toevoegen',
-            handler: function() {
-              if (me.active_editor.cancel) return me.active_editor.cancel();
+              if (me.active_editor.undo) return me.active_editor.undo();
             }
           }, {
             xtype: 'button',
@@ -197,11 +193,15 @@
           }
         ];
       }
+      if (!this.extent) {
+        this.extent = new OpenLayers.Bounds(Lizard.CM.getContext().init_zoom[0], Lizard.CM.getContext().init_zoom[1], Lizard.CM.getContext().init_zoom[2], Lizard.CM.getContext().init_zoom[3]);
+      }
       map = Ext.create(GeoExt.panel.Map, {
         flex: 1,
         initZoomOnRender: true,
         controls: map_controls,
-        layers: layers
+        layers: layers,
+        extent: this.extent
       });
       controls.drag = map.navigation;
       items.push(map);
@@ -300,8 +300,12 @@
       config.bbar = {
         xtype: 'button',
         text: 'Klaar met bewerken',
-        handler: function() {
-          return me.serialize(me.active_edit_layer.features);
+        handler: function(button) {
+          var window, wkt;
+          wkt = me.serialize(me.active_edit_layer.features);
+          if (me.callback) me.callback(wkt);
+          window = button.up('window');
+          return window.close();
         }
       };
       Ext.apply(this, config);

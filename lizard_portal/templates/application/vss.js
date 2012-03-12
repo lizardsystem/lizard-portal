@@ -184,13 +184,13 @@ Ext.application({
                 name: 'overzicht',
                 popup_navigation: false,
                 popup_navigation_portal: false,
-                default_portal_template: 'krw-overzicht',
+                default_portal_template: 'themakaart',
                 menu: [{
                     text: 'Themakaart KRW',
-                    handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'krw-overzicht'}); }
+                    handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'themakaart'}); }
                 },{
                     text: 'Themakaart ESF',
-                    handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'krw-overzicht'}); }
+                    handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'themakaart'}); }
                 }]
             }),
             Ext.create('Lizard.window.HeaderTab', {
@@ -299,6 +299,7 @@ Ext.application({
                 base_url: '{% url portalpage %}',
                 period_start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5),
                 period_end: new Date(),
+                init_zoom: [500043, 6824175, 600557, 6871566],
                 period: {
                     start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5),
                     end: new Date(),

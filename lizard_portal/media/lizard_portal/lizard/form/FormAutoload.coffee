@@ -3,6 +3,7 @@ Ext.define('Lizard.form.FormAutoload', {
     alias: 'widget.formautoload'
     config:
         loadProxy: null
+        loadData:null
 
     
     constructor: () ->
@@ -20,4 +21,6 @@ Ext.define('Lizard.form.FormAutoload', {
         @callParent(arguments)
         if @getLoadProxy()
             @load(@getLoadProxy())
+        else if @getLoadData()
+            @form.setValues(@getLoadData())
 })
