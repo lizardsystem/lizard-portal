@@ -4,7 +4,6 @@
     extend: 'GeoExt.data.LayerStore',
     alias: 'store.collageitemstore',
     model: 'Lizard.model.CollageItemModel',
-    data: [new OpenLayers.Layer.OSM('Openstreetmap')],
     createWorkspaceItem: function(config, index) {
       var collage_item, record;
       if (index == null) index = null;
