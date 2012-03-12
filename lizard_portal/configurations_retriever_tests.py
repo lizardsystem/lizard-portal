@@ -178,3 +178,54 @@ class DescriptionParserTestSuite(TestCase):
         self.setup('datum = 08-03-2012 20:13:00')
         description_dict = self.parser.as_dict(self.open_file)
         self.assertEqual('08-03-2012 20:13:00', description_dict['datum'])
+
+class Self(object):
+
+    def get_self(self):
+        return self
+
+
+class OverrideSelf(object):
+
+    def get_self(self):
+        return self
+
+
+class OverrideSelfTestSuite(TestCase):
+
+    def test_a(self):
+        """Test replace a method by a method changes self."""
+        s = Self()
+        self.assertEqual(s, s.get_self())
+        o = OverrideSelf()
+        s.get_self = o.get_self
+        self.assertEqual(o, s.get_self())
+
+    def test_b(self):
+        """Test replace a method by a function with a self argument fails."""
+        s = Self()
+        self.assertEqual(s, s.get_self())
+        s.get_self = get_self
+        try:
+            self.assertEqual(s, s.get_self())
+            self.assertTrue(False)
+        except TypeError:
+            pass
+
+    def test_c(self):
+        """Test replace a method by a function with one self argument."""
+        s = Self()
+        self.assertEqual(s, s.get_self())
+        global global_s
+        global_s = s
+        s.get_self = get_self_c
+        self.assertEqual(s, s.get_self())
+
+
+def get_self(self):
+    return self
+
+global_s = None
+
+def get_self_c():
+    return global_s

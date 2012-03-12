@@ -11,6 +11,7 @@ from django.template.loader import get_template
 from django.utils import simplejson
 
 from lizard_portal.configurations_retriever import ConfigurationsRetriever
+from lizard_portal.configurations_retriever import create_configurations_retriever
 from lizard_portal.configurations_retriever import MockConfig
 from lizard_portal.models import PortalConfiguration
 
@@ -136,7 +137,7 @@ def validate(request):
     return HttpResponse(json)
 
 
-def create_configurations_retriever():
+def local_create_configurations_retriever():
     file_name_retriever = None
     configuration_factory = None
     retriever = \
