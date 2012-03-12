@@ -20,7 +20,42 @@
 		width: 300,
 		items: [
         {
-            html:'themakaart selectie'
+            title: 'Themakaart',
+            height: 300,
+            layout: {
+                type: 'table',
+                columns:1
+            },
+            defaults:{
+                width:160,
+                xtype:'button',
+                margin: 3
+            },
+            items: [{
+                xtype: 'button',
+                text: 'Themakaart EKR',
+                handler: function() {
+                    var store = Lizard.store.WorkspaceStore.get_or_create('themakaart');
+                    store.load({
+                         params: {
+                             object_slug: 'thema_kaart_ekr'
+                         }
+                    })
+                }
+            },{
+                xtype: 'button',
+                text: 'Themakaart ESF',
+                handler: function() {
+                    var store = Lizard.store.WorkspaceStore.get_or_create('themakaart');
+                    store.load({
+                        params: {
+                            object_slug: 'thema_kaart_esf'
+                        }
+                    })
+                }
+
+            }]
+
         },
         {
             xtype: 'workspaceportlet',
@@ -35,7 +70,7 @@
             xtype: "mapportlet",
             initZoomOnRender: false,
             autoLoadWorkspaceStore: {
-                id: 1
+                object_slug: 'thema_kaart_ekr'
             },
             init_workspace: false,
             controls: [new OpenLayers.Control.LayerSwitcher()
@@ -46,13 +81,7 @@
 
                 if (!this.init_workspace && this.autoLoadWorkspaceStore) {
                     this.workspaceStore.load({
-                         params: this.autoLoadWorkspaceStore,
-                         callback: function(records) {
-
-                             if (records.length > 0) {
-                                 me.workspaceStore.workspaceItemStore.loadData(records[0].get('layers'))
-                             }
-                         }
+                        params: me.autoLoadWorkspaceStore
                     });
                     this.init_workspace = true
                 }

@@ -34,7 +34,7 @@
             xtype: "mapportlet",
             initZoomOnRender: false,
             autoLoadWorkspaceStore: {
-                id: 2
+                object_slug: 'watersysteemkaart'
             },
             init_workspace: false,
             controls: [new OpenLayers.Control.LayerSwitcher()
@@ -45,7 +45,7 @@
                 me.setLoading(true);
                 if (!this.init_workspace && this.autoLoadWorkspaceStore) {
                     this.workspaceStore.load({
-                         params: this.autoLoadWorkspaceStore,
+                         params: me.autoLoadWorkspaceStore,
                          callback: function(records) {
 
                              if (records.length > 0) {

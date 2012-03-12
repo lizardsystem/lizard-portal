@@ -78,7 +78,7 @@ Ext.define('Lizard.form.WorkspaceSaveForm', {
 
                     record.order = order_nr
                     order_nr += 1
-                    record.save()
+                    record.commit()
 
                     workspace_layers.push(record.store.proxy.writer.getRecordData(record))
                     return
