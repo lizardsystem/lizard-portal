@@ -99,6 +99,16 @@
         name: "filter_string",
         type: "string",
         mapping: "filter_string"
+      }, {
+        name: "is_local_server",
+        type: "boolean",
+        mapping: "is_local_server",
+        persist: false
+      }, {
+        name: "is_clickable",
+        type: "boolean",
+        mapping: "is_clickable",
+        persist: false
       }
     ],
     getLayer: function() {
@@ -134,7 +144,6 @@
           params[filter.key] = value;
         }
         if (this.get('filter')) {
-          debugger;
           ({
             cql_filter: this.get('filter')
           });

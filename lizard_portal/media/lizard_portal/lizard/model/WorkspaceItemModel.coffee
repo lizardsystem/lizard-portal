@@ -97,6 +97,16 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
         name : "filter_string",
         type : "string",
         mapping : "filter_string"
+    },{
+        name : "is_local_server",
+        type : "boolean",
+        mapping : "is_local_server",
+        persist: false
+    },{
+        name : "is_clickable",
+        type : "boolean",
+        mapping : "is_clickable",
+        persist: false
     }],
     getLayer: () ->
         layer = @get("layer")
@@ -150,7 +160,7 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
                 #todo: combine this filter with next filter
 
             if @get('filter')
-                debugger
+                # debugger
                 cql_filter: @get('filter')
 
 
