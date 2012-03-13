@@ -232,8 +232,8 @@ Ext.define('Lizard.portlet.MapPortlet', {
                      gml = format.read(gml_text);
                      if gml.length > 0
                          me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
-                     else
-                        alert('Niks gevonden proxy debug: ' + gml_text)
+                     # else
+                     #    alert('Niks gevonden proxy debug: ' + gml_text)
                 failure: (xhr) ->
                     alert('failure');
             })
@@ -253,8 +253,8 @@ Ext.define('Lizard.portlet.MapPortlet', {
                     gml = format.read(gml_text);
                     if gml.length > 0
                         me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
-                    else
-                        alert('Niks gevonden debug: ' + gml_text)
+                    # else
+                    #     alert('Niks gevonden debug: ' + gml_text)
                 failure: (xhr) ->
                     alert('failure');
             });

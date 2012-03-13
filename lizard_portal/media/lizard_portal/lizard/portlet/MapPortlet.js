@@ -136,8 +136,6 @@
             gml = format.read(gml_text);
             if (gml.length > 0) {
               return me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
-            } else {
-              return alert('Niks gevonden proxy debug: ' + gml_text);
             }
           },
           failure: function(xhr) {
@@ -159,8 +157,6 @@
             gml = format.read(gml_text);
             if (gml.length > 0) {
               return me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
-            } else {
-              return alert('Niks gevonden debug: ' + gml_text);
             }
           },
           failure: function(xhr) {
