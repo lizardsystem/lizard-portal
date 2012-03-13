@@ -109,7 +109,7 @@ Ext.define('Lizard.portlet.CollagePortlet', {
                     xtype: 'leditgrid'
                     flex:1,
                     autoScroll: true
-                    proxyUrl: '/collage/api/collage_view/'
+                    proxyUrl: '/workspace/api/collage_view/'
                     proxyParams: {}
                     enterEditSummary: false
                     addEditIcon: true
