@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.18 (unreleased)
+0.18 (2012-03-13)
 -----------------
 
 - Removed debugging messages.
