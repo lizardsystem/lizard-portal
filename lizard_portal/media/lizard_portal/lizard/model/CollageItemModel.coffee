@@ -1,5 +1,15 @@
 Ext.define('Lizard.model.CollageItemModel', {
-    extend : 'Lizard.model.WorkspaceItemModel',
+    extend: 'Lizard.model.WorkspaceItemModel',
+    # fields: [{
+    #         name : "identifier"
+    #         type: "string"
+    # }]
+    # initComponent: () ->
+    #     # Extend field list, does it work?
+    #     @fields.extend({
+    #         name : "identifier"
+    #         type: "string"
+    #     })
 #     getLayer: () ->
 #         layer = @get("layer")
 #         if not layer

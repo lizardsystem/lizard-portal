@@ -34,8 +34,17 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                     tbar: [{
                         text: 'Voeg toe aan collage'
                         handler: (btn, event) ->
-                            window = @up('window')
-                            window.close()
+                            #window = @up('window')
+                            #window.close()
+                            # WorkspaceItem overnemen
+                            btn
+                            event
+                            debugger
+                            collage_store = Lizard.store.CollageStore.get_or_create('analyse')
+                            collage_store.collageItemStore.createCollageItem({
+                                title: 'collage-item'
+                                identifier: 'collage-item-identifier'
+                            })
                     }]
                 }]
             }).show()

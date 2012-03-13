@@ -1,4 +1,4 @@
-# Current layers in collage. Based on WorkspaceItemStore
+# Current layers in collage. Based on WorkspaceItemStore. Experimental.
 Ext.define('Lizard.store.CollageItemStore', {
     extend: 'GeoExt.data.LayerStore'
     alias: 'store.collageitemstore'
@@ -7,12 +7,17 @@ Ext.define('Lizard.store.CollageItemStore', {
 
     model: 'Lizard.model.CollageItemModel'
 
-    createWorkspaceItem: (config, index=null) ->
-        record = @getById(config.plid)
+    # Fake collage items.
+    data: [
+        new OpenLayers.Layer.OSM('Openstreetmap')
+    ]
 
-        if record
-            console.log('Warning: record already added')
-            return record
+    createCollageItem: (config, index=null) ->
+        collage_item = @getById(config.plid)
+
+        if collage_item
+            console.log('Warning: collage_item already added')
+            return collage_item
         else
             if config.plid
                 config.id = config.plid
@@ -23,6 +28,7 @@ Ext.define('Lizard.store.CollageItemStore', {
             collage_item = Ext.create('Lizard.model.CollageItemModel', config)
             collage_item.set('visibility', true)
             collage_item.set('visible', true)
+            #collage_item.set('identifier', 'id="3201"')
 
             if index is not null
                 @insert(index, collage_item)
@@ -31,12 +37,12 @@ Ext.define('Lizard.store.CollageItemStore', {
 
             return collage_item
 
-    deleteWorkspaceItem: (config) ->
+    deleteCollageItem: (config) ->
         record = @getById(config.plid)
 
         if record
             @remove(record)
         else
-            console.log('Warning: record already removed')
+            console.log('Warning: collage_item already removed')
 
 })

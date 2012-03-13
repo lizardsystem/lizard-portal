@@ -32,9 +32,15 @@
                 {
                   text: 'Voeg toe aan collage',
                   handler: function(btn, event) {
-                    var window;
-                    window = this.up('window');
-                    return window.close();
+                    btn;
+                    event;
+                    debugger;
+                    var collage_store;
+                    collage_store = Lizard.store.CollageStore.get_or_create('analyse');
+                    return collage_store.collageItemStore.createCollageItem({
+                      title: 'collage-item',
+                      identifier: 'collage-item-identifier'
+                    });
                   }
                 }
               ]

@@ -4,13 +4,14 @@
     extend: 'GeoExt.data.LayerStore',
     alias: 'store.collageitemstore',
     model: 'Lizard.model.CollageItemModel',
-    createWorkspaceItem: function(config, index) {
-      var collage_item, record;
+    data: [new OpenLayers.Layer.OSM('Openstreetmap')],
+    createCollageItem: function(config, index) {
+      var collage_item;
       if (index == null) index = null;
-      record = this.getById(config.plid);
-      if (record) {
-        console.log('Warning: record already added');
-        return record;
+      collage_item = this.getById(config.plid);
+      if (collage_item) {
+        console.log('Warning: collage_item already added');
+        return collage_item;
       } else {
         if (config.plid) config.id = config.plid;
         config.clickable = true;
@@ -26,13 +27,13 @@
         return collage_item;
       }
     },
-    deleteWorkspaceItem: function(config) {
+    deleteCollageItem: function(config) {
       var record;
       record = this.getById(config.plid);
       if (record) {
         return this.remove(record);
       } else {
-        return console.log('Warning: record already removed');
+        return console.log('Warning: collage_item already removed');
       }
     }
   });

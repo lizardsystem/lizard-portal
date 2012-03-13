@@ -36,11 +36,6 @@
         fieldLabel: 'Persoonlijk tag',
         name: 'personal_category',
         allowBlank: true
-      }, {
-        xtype: 'checkbox',
-        fieldLabel: 'met achtergrond',
-        name: 'including_background',
-        defaultValue: false
       }
     ],
     bbar: [
