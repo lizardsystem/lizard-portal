@@ -41,17 +41,8 @@
       }
     ],
     clear: function() {
-      var background_pref, index, old_background;
-      index = this.collageStore.workspaceItemStore.find('is_base_layer', true);
-      old_background = this.collageStore.workspaceItemStore.getAt(index);
-      this.collageStore.workspaceItemStore.removeAll();
-      this.collageStore.removeAll();
-      background_pref = Lizard.CM.getContext().background_layer;
-      if (background_pref) {
-        return this.collageStore.workspaceItemStore.insert(0, background_pref);
-      } else {
-        return this.collageStore.workspaceItemStore.insert(0, old_background);
-      }
+      this.collageStore.collageItemStore.removeAll();
+      return this.collageStore.removeAll();
     },
     loadCollage: function(config) {
       var me, params;
@@ -116,7 +107,7 @@
                 xtype: 'leditgrid',
                 flex: 1,
                 autoScroll: true,
-                proxyUrl: '/workspace/api/collage_view/',
+                proxyUrl: '/collage/api/collage_view/',
                 proxyParams: {},
                 enterEditSummary: false,
                 addEditIcon: true,

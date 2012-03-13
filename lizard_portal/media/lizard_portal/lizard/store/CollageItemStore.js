@@ -3,8 +3,8 @@
   Ext.define('Lizard.store.CollageItemStore', {
     extend: 'GeoExt.data.LayerStore',
     alias: 'store.collageitemstore',
+    storeId: 'CollageStore',
     model: 'Lizard.model.CollageItemModel',
-    data: [new OpenLayers.Layer.OSM('Openstreetmap')],
     createCollageItem: function(config, index) {
       var collage_item;
       if (index == null) index = null;

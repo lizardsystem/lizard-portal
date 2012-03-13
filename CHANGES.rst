@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.19 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Working on collage items.
 
 
 0.18 (2012-03-13)

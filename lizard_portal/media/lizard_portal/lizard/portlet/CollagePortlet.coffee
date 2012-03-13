@@ -44,15 +44,8 @@ Ext.define('Lizard.portlet.CollagePortlet', {
     }],
 
     clear: () ->
-        index = @collageStore.workspaceItemStore.find('is_base_layer', true)
-        old_background = @collageStore.workspaceItemStore.getAt(index)
-        @collageStore.workspaceItemStore.removeAll()
+        @collageStore.collageItemStore.removeAll()
         @collageStore.removeAll()
-        background_pref = Lizard.CM.getContext().background_layer
-        if background_pref
-            @collageStore.workspaceItemStore.insert(0, background_pref)
-        else
-            @collageStore.workspaceItemStore.insert(0, old_background)
 
     loadCollage: (config) ->
         me = @
@@ -116,7 +109,7 @@ Ext.define('Lizard.portlet.CollagePortlet', {
                     xtype: 'leditgrid'
                     flex:1,
                     autoScroll: true
-                    proxyUrl: '/workspace/api/collage_view/'
+                    proxyUrl: '/collage/api/collage_view/'
                     proxyParams: {}
                     enterEditSummary: false
                     addEditIcon: true

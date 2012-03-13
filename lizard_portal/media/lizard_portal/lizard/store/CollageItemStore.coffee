@@ -3,16 +3,18 @@ Ext.define('Lizard.store.CollageItemStore', {
     extend: 'GeoExt.data.LayerStore'
     alias: 'store.collageitemstore'
 
-    #storeId: 'WorkspaceStore'
+    storeId: 'CollageStore'  # There is only one globally
 
     model: 'Lizard.model.CollageItemModel'
 
     # Fake collage items.
-    data: [
-        new OpenLayers.Layer.OSM('Openstreetmap')
-    ]
+    # data: [
+    #     new OpenLayers.Layer.OSM('Openstreetmap')
+    # ]
 
     createCollageItem: (config, index=null) ->
+        # How can I get a 'plid' ? It is auto generated and unique for
+        # each possible collage item.
         collage_item = @getById(config.plid)
 
         if collage_item
