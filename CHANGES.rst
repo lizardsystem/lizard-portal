@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.17 (unreleased)
+0.17 (2012-03-13)
 -----------------
 
 - Updated collages, still under construction.
