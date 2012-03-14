@@ -13,12 +13,7 @@
         console.log('Warning: collage_item already added');
         return collage_item;
       } else {
-        if (config.plid) config.id = config.plid;
-        config.clickable = true;
-        config.visible = true;
         collage_item = Ext.create('Lizard.model.CollageItemModel', config);
-        collage_item.set('visibility', true);
-        collage_item.set('visible', true);
         if (index === !null) {
           this.insert(index, collage_item);
         } else {

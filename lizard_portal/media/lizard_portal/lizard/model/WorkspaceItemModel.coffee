@@ -7,7 +7,7 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
     }, {
         name : "layer",
         persist: false
-    },{
+    },{  # From Layer
         name: 'plid',
         mapping: 'plid',
         type: 'auto'
@@ -93,7 +93,7 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
         type : "string",
         mapping : "options",
         persist: false
-    },{
+    },{  # Not from Layer?
         name : "filter_string",
         type : "string",
         mapping : "filter_string"

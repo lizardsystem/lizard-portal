@@ -23,11 +23,10 @@
           mod_ident: record.data.mod_ident
         };
         collage_item_config = {
+          name: workspaceitem.get('text') + ' - ' + record.data.geo_ident,
           title: workspaceitem.get('text') + ' - ' + record.data.geo_ident,
-          identifier: collage_item_identifier,
-          ollayer_class: workspaceitem.get('ollayer_class'),
-          url: workspaceitem.get('url'),
-          filter: workspaceitem.get('filter')
+          plid: workspaceitem.get('plid'),
+          identifier: Ext.JSON.encode(collage_item_identifier)
         };
         return Ext.create('Ext.window.Window', {
           title: title,
