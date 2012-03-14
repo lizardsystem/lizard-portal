@@ -1,6 +1,10 @@
 Ext.define('Lizard.model.CollageItemModel', {
     # extend : 'Ext.data.Model',
+
+    # By extending WorkspaceItemModel, we get the functions getLayer,
+    # setLayer, createLayer, which can be handy.
     extend: 'Lizard.model.WorkspaceItemModel',
+
     fields: [{
         name : "name"
         type: "string"
