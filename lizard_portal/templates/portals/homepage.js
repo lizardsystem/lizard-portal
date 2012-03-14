@@ -45,13 +45,7 @@
                 me.setLoading(true);
                 if (!this.init_workspace && this.autoLoadWorkspaceStore) {
                     this.workspaceStore.load({
-                         params: me.autoLoadWorkspaceStore,
-                         callback: function(records) {
-
-                             if (records.length > 0) {
-                                 me.workspaceStore.workspaceItemStore.loadData(records[0].get('layers'))
-                             }
-                         }
+                         params: me.autoLoadWorkspaceStore
                     });
                     this.init_workspace = true
                 }

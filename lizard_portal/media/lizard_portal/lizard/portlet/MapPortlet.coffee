@@ -117,7 +117,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
                 return
             )
 
-        item = @layers.createWorkspaceItem(config, 0)
+        item = @layers.createWorkspaceItem(config, -1)
         @background_layer_id = config.plid
         @background_layer = config
 

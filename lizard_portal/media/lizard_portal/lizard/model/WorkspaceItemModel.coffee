@@ -94,7 +94,7 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
         mapping : "options",
         persist: false
     },{
-        name : "filter_string",
+        name : "filter_string",#filter string is extra filter from workspace. not implemented yet
         type : "string",
         mapping : "filter_string"
     },{
@@ -166,14 +166,14 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
 
             if @get('filter')
                 # debugger
-                cql_filter: @get('filter')
+                cql_filter = @get('filter')
 
 
 
             options = Ext.merge({
                     displayInLayerSwitcher: true #@get('is_base_layer')
                     displayOutsideMaxExtent: true
-                    visibility: @get('visibility') || true
+                    visibility: @get('visibility')
                 },
                 #@get('options'),
                 {

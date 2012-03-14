@@ -72,7 +72,7 @@
 
         }
       });
-      item = this.layers.createWorkspaceItem(config, 0);
+      item = this.layers.createWorkspaceItem(config, -1);
       this.background_layer_id = config.plid;
       this.background_layer = config;
       this.map.setBaseLayer(item.getLayer());

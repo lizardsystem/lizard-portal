@@ -14,13 +14,12 @@
         return record;
       } else {
         if (config.plid) config.id = config.plid;
-        config.clickable = true;
-        config.visible = true;
+        debugger;
         workspace_item = Ext.create('Lizard.model.WorkspaceItemModel', config);
-        workspace_item.set('visibility', true);
-        workspace_item.set('visible', true);
         if (index === !null) {
           this.insert(index, workspace_item);
+        } else if (index < 0) {
+          this.insert(this.getCount() + index, workspace_item);
         } else {
           this.add(workspace_item);
         }

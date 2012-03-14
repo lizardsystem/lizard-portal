@@ -127,7 +127,7 @@
       this.set("layer", layer);
     },
     createLayer: function() {
-      var filter, obj, ol_class, options, params, tpl, url, value;
+      var cql_filter, filter, obj, ol_class, options, params, tpl, url, value;
       ol_class = this.get('ollayer_class');
       if (ol_class === 'OpenLayers.Layer.WMS') {
         params = Ext.merge({
@@ -148,15 +148,11 @@
           }
           params[filter.key] = value;
         }
-        if (this.get('filter')) {
-          ({
-            cql_filter: this.get('filter')
-          });
-        }
+        if (this.get('filter')) cql_filter = this.get('filter');
         options = Ext.merge({
           displayInLayerSwitcher: true,
           displayOutsideMaxExtent: true,
-          visibility: this.get('visibility') || true
+          visibility: this.get('visibility')
         }, {
           isBaseLayer: this.get('is_base_layer'),
           singleTile: this.get('single_tile')

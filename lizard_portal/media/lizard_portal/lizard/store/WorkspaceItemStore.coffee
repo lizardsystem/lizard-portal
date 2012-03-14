@@ -23,15 +23,19 @@ Ext.define('Lizard.store.WorkspaceItemStore', {
             if config.plid
                 config.id = config.plid
             #todo add clickable layer option
-            config.clickable = true
-            config.visible = true
+            #config.clickable = true
+            #config.visible = true
+
+            debugger
 
             workspace_item = Ext.create('Lizard.model.WorkspaceItemModel', config)
-            workspace_item.set('visibility', true)
-            workspace_item.set('visible', true)
+            #workspace_item.set('visibility', true)
+            #workspace_item.set('visible', true)
 
             if index is not null
                 @insert(index, workspace_item)
+            else if index < 0
+                @insert(@getCount() + index, workspace_item)
             else
                 @add(workspace_item)
 
