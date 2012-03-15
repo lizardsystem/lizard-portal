@@ -172,6 +172,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
 
         if records.length > 0
             # Find popup class and feed it with records.
+            debugger
             popup_class_name = 'Lizard.popup.' + workspaceitem.get('js_popup_class')
             popup_class = Ext.ClassManager.get(popup_class_name)
             if not popup_class
@@ -209,6 +210,9 @@ Ext.define('Lizard.portlet.MapPortlet', {
             HEIGHT: @map.size.h,
             SRS: "EPSG:900913"  # @map.projection.projCode
         }
+        # Add CQL_FILTER if available.
+        if layer.get('filter')
+            params['CQL_FILTER'] = layer.get('filter')
 
         if layer.get('url') == ''
             alert('Test: Selecteer een andere kaartlaag als bovenste clickable')
@@ -257,7 +261,8 @@ Ext.define('Lizard.portlet.MapPortlet', {
                     # else
                     #     alert('Niks gevonden debug: ' + gml_text)
                 failure: (xhr) ->
-                    alert('failure');
+                    # alert('failure');
+                    console.error('Error requesting ajax call to local url ' + url);
             });
 
 
