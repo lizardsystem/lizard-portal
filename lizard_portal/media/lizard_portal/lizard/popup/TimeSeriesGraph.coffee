@@ -27,6 +27,7 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                 name: workspaceitem.get('text') + ' - ' + record.data.geo_ident
                 title: workspaceitem.get('text') + ' - ' + record.data.geo_ident  # Will appear on screen.. why?
                 plid: workspaceitem.get('plid')  # Layer.id
+                js_popup_class: workspaceitem.get('js_popup_class')  # Only for 'unsaved' collage items - needs refactoring.
                 identifier: Ext.JSON.encode(collage_item_identifier)
             }
             # CollageItem die bij de server aankomt:

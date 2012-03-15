@@ -26,6 +26,7 @@
           name: workspaceitem.get('text') + ' - ' + record.data.geo_ident,
           title: workspaceitem.get('text') + ' - ' + record.data.geo_ident,
           plid: workspaceitem.get('plid'),
+          js_popup_class: workspaceitem.get('js_popup_class'),
           identifier: Ext.JSON.encode(collage_item_identifier)
         };
         return Ext.create('Ext.window.Window', {
