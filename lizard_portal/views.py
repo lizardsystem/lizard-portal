@@ -25,6 +25,8 @@ def site(request, application_name, active_tab_name, only_portal=False):
     """
         returns html page which loads specified (ext-js) application
     """
+
+    # Why is this? It doesn't work?
     if not request.user.is_authenticated():
         auto_login(request)
 

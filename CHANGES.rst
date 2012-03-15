@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.20 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added comments to autologin.
 
 
 0.19 (2012-03-15)
