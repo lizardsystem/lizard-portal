@@ -5,6 +5,8 @@ Changelog of lizard-portal
 0.20 (unreleased)
 -----------------
 
+- First working collage popups.
+
 - Added comments to autologin.
 
 

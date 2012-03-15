@@ -195,10 +195,34 @@
         }
       }
     ],
+    onCollageItemClick: function(view, record, item, index, event, e0pts) {
+      var collage_item_identifier, popup_class, popup_class_name, workspaceitem;
+      collage_item_identifier = Ext.JSON.decode(record.get('identifier'));
+      record.set('geo_ident', collage_item_identifier['geo_ident']);
+      record.set('par_ident', collage_item_identifier['par_ident']);
+      record.set('stp_ident', collage_item_identifier['stp_ident']);
+      record.set('mod_ident', collage_item_identifier['mod_ident']);
+      popup_class_name = 'Lizard.popup.' + record.get('js_popup_class');
+      popup_class = Ext.ClassManager.get(popup_class_name);
+      if (!popup_class) {
+        popup_class = Ext.ClassManager.get('Lizard.popup.FeatureInfo');
+        console.error("Cannot find popup class " + popup_class_name + ", fallback to default.");
+      }
+      workspaceitem = Ext.create('Lizard.model.WorkspaceItemModel', {});
+      workspaceitem.set('text', record.get('text'));
+      workspaceitem.set('title', record.get('title'));
+      workspaceitem.set('plid', record.get('plid'));
+      return popup_class.show([record], workspaceitem);
+    },
     initComponent: function() {
       var me;
       me = this;
       this.store = this.collageStore.collageItemStore;
+      Ext.apply(this, {
+        listeners: {
+          itemclick: this.onCollageItemClick
+        }
+      });
       return this.callParent(arguments);
     }
   });

@@ -235,7 +235,8 @@ Ext.define('Lizard.portlet.MapPortlet', {
                      # else
                      #    alert('Niks gevonden proxy debug: ' + gml_text)
                 failure: (xhr) ->
-                    alert('failure');
+                    # alert('failure');
+                    console.error('Error requesting ajax call to remote url ' + url);
             })
 
         else

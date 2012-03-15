@@ -139,7 +139,7 @@
             }
           },
           failure: function(xhr) {
-            return alert('failure');
+            return console.error('Error requesting ajax call to remote url ' + url);
           }
         });
       } else {
