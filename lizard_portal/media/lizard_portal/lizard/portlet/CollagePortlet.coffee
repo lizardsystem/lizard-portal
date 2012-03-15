@@ -160,6 +160,9 @@ Ext.define('Lizard.portlet.CollagePortlet', {
         record.set('par_ident', collage_item_identifier['par_ident'])
         record.set('stp_ident', collage_item_identifier['stp_ident'])
         record.set('mod_ident', collage_item_identifier['mod_ident'])
+        record.set('qua_ident', collage_item_identifier['qua_ident'])
+        record.set('fews_norm_source_slug', collage_item_identifier['fews_norm_source_slug'])
+        record.set('is_collage_item', true)  # For showing "Voeg toe aan collage" yes/no
 
         popup_class_name = 'Lizard.popup.' + record.get('js_popup_class')
         popup_class = Ext.ClassManager.get(popup_class_name)
@@ -170,8 +173,8 @@ Ext.define('Lizard.portlet.CollagePortlet', {
         # Make fake workspace item
         workspaceitem = Ext.create('Lizard.model.WorkspaceItemModel', {})
         workspaceitem.set('text', record.get('text'))
-        workspaceitem.set('title', record.get('title'))
-        workspaceitem.set('plid', record.get('plid'))
+        #workspaceitem.set('title', record.get('title'))
+        #workspaceitem.set('plid', record.get('plid'))
         popup_class.show([record], workspaceitem)
 
     initComponent: () ->
