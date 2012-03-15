@@ -16,7 +16,6 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
             record = records[0]  # Take first search result
             title = workspaceitem.get('text') + ' - ' + record.data.geo_ident
 
-            debugger
             # Build info for "Voeg toe aan collage"
             collage_item_identifier = {
                 # record: record

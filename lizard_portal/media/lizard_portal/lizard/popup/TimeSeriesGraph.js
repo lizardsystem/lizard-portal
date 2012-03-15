@@ -16,7 +16,6 @@
         dt_end = Ext.Date.format(Lizard.CM.getContext().period.end, 'Y-m-d H:i:s');
         record = records[0];
         title = workspaceitem.get('text') + ' - ' + record.data.geo_ident;
-        debugger;
         collage_item_identifier = {
           geo_ident: record.data.geo_ident,
           par_ident: record.data.par_ident,
