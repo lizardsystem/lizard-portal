@@ -7,7 +7,7 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
     }, {
         name : "layer",
         persist: false
-    },{
+    },{  # From Layer
         name: 'plid',
         mapping: 'plid',
         type: 'auto'
@@ -33,11 +33,6 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
         type : "boolean",
         defaultValue: true,
         mapping : "visibility"
-    },{
-        name : "clickable",
-        type : "boolean",
-        defaultValue: true,
-        mapping : "clickable"
     },{
         name : "opacity",
         type : "number",
@@ -94,7 +89,7 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
         mapping : "options",
         persist: false
     },{
-        name : "filter_string",#filter string is extra filter from workspace. not implemented yet
+        name : "filter_string",#filter string is extra filter option from workspace. not implemented yet
         type : "string",
         mapping : "filter_string"
     },{
@@ -112,6 +107,16 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
         type : "string",
         mapping : "js_popup_class",
         persist: false
+    },{
+        name : "clickable",
+        type : "boolean",
+        defaultValue: true,
+        mapping : "clickable",
+        convert: (value, rec) ->
+            if rec.get('is_clickable') == true
+                return value
+            else
+                return null
     }],
     getLayer: () ->
         layer = @get("layer")
@@ -144,11 +149,18 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
     createLayer: () ->
         ol_class = @get('ollayer_class')
         if ol_class == 'OpenLayers.Layer.WMS'
+            try
+                request_params = Ext.JSON.decode(@get('request_params'))
+            catch e
+                debugger
+                request_params = {}
+
+
             params = Ext.merge({
                     format: 'image/png',
                     transparent: not @get('is_base_layer')
                 },
-                #@get('request_params'),
+                request_params,
                 {
                     url: @get('url'),
                     layers: @get('layers')
@@ -168,14 +180,18 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
                 # debugger
                 cql_filter = @get('filter')
 
-
+            try
+                options = Ext.JSON.decode(@get('options'))
+            catch e
+                debugger
+                options = {}
 
             options = Ext.merge({
                     displayInLayerSwitcher: true #@get('is_base_layer')
                     displayOutsideMaxExtent: true
                     visibility: @get('visibility')
                 },
-                #@get('options'),
+                options
                 {
                     isBaseLayer: @get('is_base_layer'),
                     singleTile: @get('single_tile')

@@ -86,6 +86,10 @@ Ext.define('Lizard.grid.EditableGrid', {
         addDeleteIcon: false
         actionEditIcon: null
         actionDeleteIcon: null
+        extraActionIcon: true
+        extraActionIconUrl: true
+        extraActionIconTooltip: '-'
+        actionExtraActionIcon: null #function with as imput the record
         usePagination: true
         read_only_field: null
         recordsPerPage:25
@@ -352,7 +356,7 @@ Ext.define('Lizard.grid.EditableGrid', {
         cols = []
 
 
-        if @addEditIcon or @addDeleteIcon
+        if @addEditIcon or @addDeleteIcon or @addExtraActionIcon
             colConfig = {
                 xtype:'actioncolumn',
                 width:50,
@@ -388,6 +392,19 @@ Ext.define('Lizard.grid.EditableGrid', {
                             else
                                 me.store.remove(rec)
                     })
+
+            if @addExtraActionIcon
+                colConfig.items.push({
+                     #todo: iconCls is better, but doesn't work
+                     icon: @extraActionIconUrl,
+                     #xtype: 'button'
+                     tooltip: @extraActionIconTooltip,
+                     handler: (grid, rowIndex, colIndex) ->
+                         rec = grid.getStore().getAt(rowIndex)
+                         me.actionExtraActionIcon(rec)
+
+                })
+
             cols.push(colConfig)
 
         for col in @dataConfig

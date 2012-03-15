@@ -13,23 +13,22 @@ Ext.define('Lizard.store.CollageItemStore', {
     # ]
 
     createCollageItem: (config, index=null) ->
-        # How can I get a 'plid' ? It is auto generated and unique for
-        # each possible collage item.
+        # TODO: new id
         collage_item = @getById(config.plid)
 
         if collage_item
             console.log('Warning: collage_item already added')
             return collage_item
         else
-            if config.plid
-                config.id = config.plid
+            # if config.plid
+            #     config.id = config.plid
             #todo add clickable layer option
-            config.clickable = true
-            config.visible = true
+            # config.clickable = true
+            # config.visible = true
 
             collage_item = Ext.create('Lizard.model.CollageItemModel', config)
-            collage_item.set('visibility', true)
-            collage_item.set('visible', true)
+            # collage_item.set('visibility', true)
+            # collage_item.set('visible', true)
             #collage_item.set('identifier', 'id="3201"')
 
             if index is not null

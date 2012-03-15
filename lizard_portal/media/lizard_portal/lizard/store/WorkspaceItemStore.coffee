@@ -26,8 +26,6 @@ Ext.define('Lizard.store.WorkspaceItemStore', {
             #config.clickable = true
             #config.visible = true
 
-            debugger
-
             workspace_item = Ext.create('Lizard.model.WorkspaceItemModel', config)
             #workspace_item.set('visibility', true)
             #workspace_item.set('visible', true)

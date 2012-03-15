@@ -59,7 +59,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                             button.graph.set('cumulative_period', button.value)
 
                     menu.push([
-                        '<b class="menu-title">Cumulatieve periode</b>',
+                        '<b class="menu-title">Aggregatie periode</b>',
                         {
                             text: 'Dag',
                             checked: period == 'day',
@@ -103,7 +103,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                             button.graph.set('reset_period', button.value)
 
                     menu.push([
-                        '<b class="menu-title">Reset periode</b>',
+                        '<b class="menu-title">Cumulatieve periode</b>',
                         {
                             text: 'Maand',
                             checked: period == 'month',

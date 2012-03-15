@@ -145,9 +145,9 @@ Ext.application({
             },
             store: 'Vss.store.CatchmentTree',
             bbar: [{
-                text: 'Selecteer op kaart -->',
+                text: 'Selecteer op overzichtskaart -->',
                 handler: function () {
-                    Ext.getCmp('portalWindow').showNavigationPortalTemplate();
+                    Ext.getCmp('portalWindow').showNavigation('select_aan_afvoergebied');
                 }
             }]
         }
@@ -180,9 +180,9 @@ Ext.application({
             },
             store: 'Vss.store.KrwGebiedenTree',
             bbar: [{
-                text: 'Selecteer op kaart -->',
+                text: 'Selecteer op overzichtskaart -->',
                 handler: function () {
-                    Ext.getCmp('portalWindow').showNavigationPortalTemplate();
+                    Ext.getCmp('portalWindow').showNavigation('select_krw_waterlichaam');
                 }
             }]
         }

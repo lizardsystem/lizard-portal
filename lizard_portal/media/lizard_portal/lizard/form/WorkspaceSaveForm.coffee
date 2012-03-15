@@ -70,14 +70,14 @@ Ext.define('Lizard.form.WorkspaceSaveForm', {
 
                 layers = form.layerStore
                 workspace_layers = []
-                order_nr = 0
+                order_nr = 100
 
                 layers.each( (record) ->
                     if not form_values.including_background and record.get('is_base_layer')
                         return
 
                     record.order = order_nr
-                    order_nr += 1
+                    order_nr -= 1
                     record.commit()
 
                     workspace_layers.push(record.store.proxy.writer.getRecordData(record))
@@ -85,16 +85,20 @@ Ext.define('Lizard.form.WorkspaceSaveForm', {
                 )
                 workspace.set('layers', workspace_layers)
 
+                panel.setLoading(true)
                 workspace.save({
                     callback: (record, operation) ->
                         if operation.wasSuccessful()
                             form.workspaceStore.removeAll()
                             form.workspaceStore.add(record)
-                            panel.save_callback(record)
+                            window = panel.up('window')
+                            window.close()
+
+                        panel.setLoading(true)
+                        panel.save_callback(record, operation)
                 })
 
-                window = @up('window')
-                window.close()
+
                 #todo: set workspaceStore on this item
                 #else
                 #    Ext.MessageBox.alert('Invoer fout', 'Begin datum moet voor eind datum zijn.')

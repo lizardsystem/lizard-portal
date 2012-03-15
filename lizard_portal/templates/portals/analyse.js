@@ -34,7 +34,6 @@
             flex: 1,
             xtype: "mapportlet",
             initZoomOnRender: false,
-            controls: [new OpenLayers.Control.LayerSwitcher()],
             workspaceStore: Lizard.store.WorkspaceStore.get_or_create('analyse'),
             onApplyParams: function(params) {
                 var me = this;

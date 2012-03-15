@@ -10,7 +10,7 @@ Ext.define('Vss.store.KrwGebiedenTree', {
     requires: 'Vss.model.ObjectTree',
     model: 'Vss.model.ObjectTree',
     root: {
-        text: 'krw gebieden'
+        text: 'KRW waterlichamen'
     },
     proxy: {
         type: 'rest',

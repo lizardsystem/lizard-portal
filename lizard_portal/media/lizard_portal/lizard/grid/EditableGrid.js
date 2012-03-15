@@ -77,6 +77,10 @@
       addDeleteIcon: false,
       actionEditIcon: null,
       actionDeleteIcon: null,
+      extraActionIcon: true,
+      extraActionIconUrl: true,
+      extraActionIconTooltip: '-',
+      actionExtraActionIcon: null,
       usePagination: true,
       read_only_field: null,
       recordsPerPage: 25
@@ -331,7 +335,7 @@
         return col_config;
       };
       cols = [];
-      if (this.addEditIcon || this.addDeleteIcon) {
+      if (this.addEditIcon || this.addDeleteIcon || this.addExtraActionIcon) {
         colConfig = {
           xtype: 'actioncolumn',
           width: 50,
@@ -368,6 +372,17 @@
               } else {
                 return me.store.remove(rec);
               }
+            }
+          });
+        }
+        if (this.addExtraActionIcon) {
+          colConfig.items.push({
+            icon: this.extraActionIconUrl,
+            tooltip: this.extraActionIconTooltip,
+            handler: function(grid, rowIndex, colIndex) {
+              var rec;
+              rec = grid.getStore().getAt(rowIndex);
+              return me.actionExtraActionIcon(rec);
             }
           });
         }

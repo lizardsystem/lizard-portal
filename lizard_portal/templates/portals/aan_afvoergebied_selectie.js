@@ -7,7 +7,7 @@
  */
 {
 	itemId: 'aan_afvoergebied_selectie',
-    title: 'Selectie aan/afvoergebied',
+    title: 'Overzicht aan/afvoergebied',
     xtype: 'portalpanel',
 	items: [{
 		flex: 1,

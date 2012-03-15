@@ -7,7 +7,7 @@
  */
 {
     itemId: 'krw_selectie',
-    title: 'KRW gebied selectie',
+    title: 'Overzichtskaart KRW waterlichamen',
 	xtype: 'portalpanel',
 	items: [{
 		flex: 1,

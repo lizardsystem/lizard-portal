@@ -54,7 +54,7 @@
       }, {
         text: 'Opslaan',
         handler: function(btn, event) {
-          var form, form_values, layers, order_nr, panel, window, workspace, workspace_layers;
+          var form, form_values, layers, order_nr, panel, workspace, workspace_layers;
           panel = this.up('form');
           form = panel.getForm();
           if (form.isValid()) {
@@ -68,28 +68,31 @@
             workspace.set('personal_category', form_values.personal_category);
             layers = form.layerStore;
             workspace_layers = [];
-            order_nr = 0;
+            order_nr = 100;
             layers.each(function(record) {
               if (!form_values.including_background && record.get('is_base_layer')) {
                 return;
               }
               record.order = order_nr;
-              order_nr += 1;
+              order_nr -= 1;
               record.commit();
               workspace_layers.push(record.store.proxy.writer.getRecordData(record));
             });
             workspace.set('layers', workspace_layers);
-            workspace.save({
+            panel.setLoading(true);
+            return workspace.save({
               callback: function(record, operation) {
+                var window;
                 if (operation.wasSuccessful()) {
                   form.workspaceStore.removeAll();
                   form.workspaceStore.add(record);
-                  return panel.save_callback(record);
+                  window = panel.up('window');
+                  window.close();
                 }
+                panel.setLoading(true);
+                return panel.save_callback(record, operation);
               }
             });
-            window = this.up('window');
-            return window.close();
           } else {
             return Ext.MessageBox.alert('Invoer fout', 'Kies geldige periode');
           }

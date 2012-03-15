@@ -14,7 +14,6 @@
         return record;
       } else {
         if (config.plid) config.id = config.plid;
-        debugger;
         workspace_item = Ext.create('Lizard.model.WorkspaceItemModel', config);
         if (index === !null) {
           this.insert(index, workspace_item);

@@ -30,17 +30,17 @@
         width: 35,
         dataIndex: 'visibility',
         xtype: 'checkcolumn',
-        sortable: true
+        sortable: false
       }, {
         text: 'sel',
         width: 35,
         dataIndex: 'clickable',
         xtype: 'checkcolumn',
-        sortable: true
+        sortable: false
       }, {
         text: 'Naam',
         flex: 1,
-        sortable: true,
+        sortable: false,
         dataIndex: 'title'
       }
     ],
@@ -123,11 +123,15 @@
                 proxyUrl: '/workspace/api/workspace_view/',
                 proxyParams: {},
                 enterEditSummary: false,
-                addEditIcon: true,
+                addEditIcon: false,
                 addDeleteIcon: true,
                 usePagination: false,
+                useAddDeleteButtons: false,
                 read_only_field: 'read_only',
-                actionEditIcon: function(record) {
+                addExtraActionIcon: true,
+                extraActionIconUrl: '/static_media/lizard_portal/images/hand.png',
+                extraActionIconTooltip: 'openen',
+                actionExtraActionIcon: function(record) {
                   return portlet.loadWorkspace({
                     params: {
                       object_id: record.get('id')

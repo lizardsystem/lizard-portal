@@ -37,8 +37,6 @@
                 object_slug: 'watersysteemkaart'
             },
             init_workspace: false,
-            controls: [new OpenLayers.Control.LayerSwitcher()
-            ],
             workspaceStore: Lizard.store.WorkspaceStore.get_or_create('watersysteem'),
             onApplyParams: function(params) {
                 var me = this;

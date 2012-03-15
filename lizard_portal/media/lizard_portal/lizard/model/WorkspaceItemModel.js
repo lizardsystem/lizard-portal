@@ -36,11 +36,6 @@
         defaultValue: true,
         mapping: "visibility"
       }, {
-        name: "clickable",
-        type: "boolean",
-        defaultValue: true,
-        mapping: "clickable"
-      }, {
         name: "opacity",
         type: "number",
         defaultValue: 0,
@@ -114,6 +109,18 @@
         type: "string",
         mapping: "js_popup_class",
         persist: false
+      }, {
+        name: "clickable",
+        type: "boolean",
+        defaultValue: true,
+        mapping: "clickable",
+        convert: function(value, rec) {
+          if (rec.get('is_clickable') === true) {
+            return value;
+          } else {
+            return null;
+          }
+        }
       }
     ],
     getLayer: function() {
@@ -127,13 +134,19 @@
       this.set("layer", layer);
     },
     createLayer: function() {
-      var cql_filter, filter, obj, ol_class, options, params, tpl, url, value;
+      var cql_filter, filter, obj, ol_class, options, params, request_params, tpl, url, value;
       ol_class = this.get('ollayer_class');
       if (ol_class === 'OpenLayers.Layer.WMS') {
+        try {
+          request_params = Ext.JSON.decode(this.get('request_params'));
+        } catch (e) {
+          debugger;
+          request_params = {};
+        }
         params = Ext.merge({
           format: 'image/png',
           transparent: !this.get('is_base_layer')
-        }, {
+        }, request_params, {
           url: this.get('url'),
           layers: this.get('layers')
         });
@@ -149,11 +162,17 @@
           params[filter.key] = value;
         }
         if (this.get('filter')) cql_filter = this.get('filter');
+        try {
+          options = Ext.JSON.decode(this.get('options'));
+        } catch (e) {
+          debugger;
+          options = {};
+        }
         options = Ext.merge({
           displayInLayerSwitcher: true,
           displayOutsideMaxExtent: true,
           visibility: this.get('visibility')
-        }, {
+        }, options, {
           isBaseLayer: this.get('is_base_layer'),
           singleTile: this.get('single_tile')
         });

@@ -79,16 +79,20 @@ Ext.define('Lizard.form.CollageSaveForm', {
                 )
                 collage.set('layers', collage_layers)
 
+                panel.setLoading(true)
                 collage.save({
                     callback: (record, operation) ->
                         if operation.wasSuccessful()
                             form.collageStore.removeAll()
                             form.collageStore.add(record)
                             panel.save_callback(record)
+
+                        panel.setLoading(false)
+                        window = panel.up('window')
+                        window.close()
                 })
 
-                window = @up('window')
-                window.close()
+
                 #todo: set workspaceStore on this item
                 #else
                 #    Ext.MessageBox.alert('Invoer fout', 'Begin datum moet voor eind datum zijn.')

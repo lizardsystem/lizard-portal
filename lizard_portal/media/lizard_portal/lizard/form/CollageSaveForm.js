@@ -49,7 +49,7 @@
       }, {
         text: 'Opslaan',
         handler: function(btn, event) {
-          var collage, collage_layers, form, form_values, layers, order_nr, panel, window;
+          var collage, collage_layers, form, form_values, layers, order_nr, panel;
           panel = this.up('form');
           form = panel.getForm();
           if (form.isValid()) {
@@ -71,17 +71,20 @@
               collage_layers.push(record.store.proxy.writer.getRecordData(record));
             });
             collage.set('layers', collage_layers);
-            collage.save({
+            panel.setLoading(true);
+            return collage.save({
               callback: function(record, operation) {
+                var window;
                 if (operation.wasSuccessful()) {
                   form.collageStore.removeAll();
                   form.collageStore.add(record);
-                  return panel.save_callback(record);
+                  panel.save_callback(record);
                 }
+                panel.setLoading(false);
+                window = panel.up('window');
+                return window.close();
               }
             });
-            window = this.up('window');
-            return window.close();
           } else {
             return Ext.MessageBox.alert('Invoer fout', 'Kies geldige periode');
           }
