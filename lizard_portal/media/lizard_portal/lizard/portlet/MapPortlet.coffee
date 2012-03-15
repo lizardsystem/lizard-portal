@@ -172,7 +172,6 @@ Ext.define('Lizard.portlet.MapPortlet', {
 
         if records.length > 0
             # Find popup class and feed it with records.
-            debugger
             popup_class_name = 'Lizard.popup.' + workspaceitem.get('js_popup_class')
             popup_class = Ext.ClassManager.get(popup_class_name)
             if not popup_class

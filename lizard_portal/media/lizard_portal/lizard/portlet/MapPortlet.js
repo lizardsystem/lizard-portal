@@ -83,7 +83,6 @@
     onMapClickCallback: function(records, workspaceitem, event, lonlat, xhr, request) {
       var popup_class, popup_class_name;
       if (records.length > 0) {
-        debugger;
         popup_class_name = 'Lizard.popup.' + workspaceitem.get('js_popup_class');
         popup_class = Ext.ClassManager.get(popup_class_name);
         if (!popup_class) {
