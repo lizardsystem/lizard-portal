@@ -9,6 +9,8 @@ Changelog of lizard-portal
 
 - Made graphs bigger in analyse popup.
 
+- Removed console logs.
+
 
 0.20 (2012-03-19)
 -----------------
