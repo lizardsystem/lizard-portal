@@ -142,8 +142,8 @@ Ext.define 'Lizard.window.Screen',
     #
     #////
     loadPortal:(params, area_selection_collapse=true, skip_animation=false, show_navigation=true) ->
-        console.log "load portal with portal template '#{params.portal_template}' and arguments:"
-        console.log arguments
+        #console.log "load portal with portal template '#{params.portal_template}' and arguments:"
+        #console.log arguments
 
         if show_navigation and params.object and (typeof(params.object.id) in ['null', 'undefined']) and params.headertab.navigation
             @showNavigation(params.headertab.navigation)
@@ -217,7 +217,7 @@ Ext.define 'Lizard.window.Screen',
             return false
         if navigation_id and navigation_tab
             @navigation.setActiveTab(navigation_id)
-            
+
             if expand_navigation
                 #animate option does not work in version
                 @navigation.expand(animate_navigation_expand)
@@ -277,7 +277,7 @@ Ext.define 'Lizard.window.Screen',
 
     initComponent: () ->
         me = @
-        
+
         if @showOnlyPortal
 
             @header = Ext.create('Lizard.window.Header'
@@ -364,7 +364,7 @@ Ext.define 'Lizard.window.Screen',
                             expand:
                                 fn: (panel) ->
                                     panel.doLayout()
-                            
+
                     }
                     {
                         region: 'center'
@@ -416,7 +416,7 @@ Ext.define 'Lizard.window.Screen',
             activetab = Lizard.CM.context.headertab
 
             if activetab.popup_navigation and not Lizard.CM.context.object.id
-                console.log('no object selected, show selection')
+                # console.log('no object selected, show selection')
                 #show navigation and selection
                 #false argument for animation doesn work in extjs 4.0.2, so set animCollapse setting before animation and
                 #reset to original value afterwards
