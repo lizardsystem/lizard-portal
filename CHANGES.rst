@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.20 (unreleased)
 -----------------
 
-- First working collage popups.
+- First working collage popups with multiple lines in a single graph.
 
 - Added comments to autologin.
 

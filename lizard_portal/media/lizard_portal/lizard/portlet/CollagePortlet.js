@@ -196,24 +196,34 @@
       }
     ],
     onCollageItemClick: function(view, record, item, index, event, e0pts) {
-      var collage_item_identifier, popup_class, popup_class_name, workspaceitem;
-      collage_item_identifier = Ext.JSON.decode(record.get('identifier'));
-      record.set('geo_ident', collage_item_identifier['geo_ident']);
-      record.set('par_ident', collage_item_identifier['par_ident']);
-      record.set('stp_ident', collage_item_identifier['stp_ident']);
-      record.set('mod_ident', collage_item_identifier['mod_ident']);
-      record.set('qua_ident', collage_item_identifier['qua_ident']);
-      record.set('fews_norm_source_slug', collage_item_identifier['fews_norm_source_slug']);
-      record.set('is_collage_item', true);
-      popup_class_name = 'Lizard.popup.' + record.get('js_popup_class');
+      var collage_item, collage_item_identifier, grouping_hint, js_popup_class, popup_class, popup_class_name, records, workspaceitem, _i, _len, _ref;
+      records = [];
+      js_popup_class = record.get('js_popup_class');
+      grouping_hint = record.get('grouping_hint');
+      _ref = this.store.data.items;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        collage_item = _ref[_i];
+        if (collage_item.get('grouping_hint') === grouping_hint) {
+          collage_item_identifier = Ext.JSON.decode(collage_item.get('identifier'));
+          collage_item.set('geo_ident', collage_item_identifier['geo_ident']);
+          collage_item.set('par_ident', collage_item_identifier['par_ident']);
+          collage_item.set('stp_ident', collage_item_identifier['stp_ident']);
+          collage_item.set('mod_ident', collage_item_identifier['mod_ident']);
+          collage_item.set('qua_ident', collage_item_identifier['qua_ident']);
+          collage_item.set('fews_norm_source_slug', collage_item_identifier['fews_norm_source_slug']);
+          collage_item.set('is_collage_item', true);
+          records.push(collage_item);
+        }
+      }
+      popup_class_name = 'Lizard.popup.' + js_popup_class;
       popup_class = Ext.ClassManager.get(popup_class_name);
       if (!popup_class) {
         popup_class = Ext.ClassManager.get('Lizard.popup.FeatureInfo');
         console.error("Cannot find popup class " + popup_class_name + ", fallback to default.");
       }
       workspaceitem = Ext.create('Lizard.model.WorkspaceItemModel', {});
-      workspaceitem.set('text', record.get('text'));
-      return popup_class.show([record], workspaceitem);
+      workspaceitem.set('title', record.get('title'));
+      return popup_class.show(records, workspaceitem);
     },
     initComponent: function() {
       var me;

@@ -13,8 +13,8 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
             dt_start = Ext.Date.format(Lizard.CM.getContext().period.start, 'Y-m-d H:i:s')
             dt_end = Ext.Date.format(Lizard.CM.getContext().period.end, 'Y-m-d H:i:s')
             # http://localhost:8000/graph/?dt_start=2011-02-11%2000:00:00&dt_end=2011-11-11%2000:00:00&item={%22fews_norm_source_slug%22:%22waternet%22,%22location%22:%223201%22,%22parameter%22:%22Q_berekend.in.cumulatief%22,%22type%22:%22line%22,%22time_step%22:%22SETS1440TZ1%22}&dt_start=2005-01-01%2000:00:00&dt_end=2011-01-01%2000:00:00
-            record = records[0]  # Take first search result
-            title = workspaceitem.get('text') + ' - ' + record.data.geo_ident
+
+            record = records[0]  # Take first search result as leading
 
             # Build info for "Voeg toe aan collage"
             collage_item_identifier = {
@@ -27,21 +27,21 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                 fews_norm_source_slug: record.data.fews_norm_source_slug
             }
             collage_item_config = {
-                name: workspaceitem.get('text') + ' - ' + record.data.geo_ident
-                title: workspaceitem.get('text') + ' - ' + record.data.geo_ident  # Will appear on screen.. why?
+                name: workspaceitem.get('title') + ' - ' + record.data.geo_ident
+                title: workspaceitem.get('title') + ' - ' + record.data.geo_ident  # Will appear on screen.. why?
                 plid: workspaceitem.get('plid')  # Layer.id
                 js_popup_class: workspaceitem.get('js_popup_class')  # Only for 'unsaved' collage items - needs refactoring.
                 identifier: Ext.JSON.encode(collage_item_identifier)
+                grouping_hint: 'tijdreeks ' + record.data.par_ident
             }
-            # CollageItem die bij de server aankomt:
-            # {"id":0,"name":"Naam","personal_category":"persoonlijk","category":"","read_only":false,"layers":[{"id":0,"plid":"","checked":false,"text":"","leaf":false,"title":"Chloride (NETS) - MBP005","order":0,"visibility":true,"clickable":true,"opacity":0,"filter_string":""}]}
 
-            # TODO: qua_ident and fews_norm_source_slug integration in html
-
-            # Button bar for popup.
+            graph_title = 'Grafiek voor ' + record.data.geo_ident + ' ' + record.data.par_ident + ' ' + record.data.mod_ident + ' ' + record.data.stp_ident
+            # Button bar for popup "Voeg to aan collage".
             if record.data.is_collage_item == true
+                title = 'Collage popup voor ' + record.data.grouping_hint
                 bbar = []
             else
+                title = workspaceitem.get('title') + ' - ' + record.data.geo_ident
                 bbar = [{
                     text: 'Voeg toe aan collage'
                     handler: (btn, event) ->
@@ -51,6 +51,17 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                         collage_store = Lizard.store.CollageStore.get_or_create('analyse')
                         collage_store.collageItemStore.createCollageItem(collage_item_config)
                 }]
+
+            # Add all graphs
+            graph_item_html = ''
+            for single_record in records
+                if single_record.data.qua_ident
+                    qua_ident_extra = '%22qua_ident%22:%22' + single_record.data.qua_ident + '%22'
+                else
+                    qua_ident_extra = ''
+                graph_item_html += '&item={%22fews_norm_source_slug%22:%22' + single_record.data.fews_norm_popup_slug + '%22,%22location%22:%22' + single_record.data.geo_ident + '%22,%22parameter%22:%22' + single_record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + single_record.data.stp_ident + '%22,%22module%22:%22' + single_record.data.mod_ident + '%22' + qua_ident_extra + '}'
+            img_html = '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500' + graph_item_html + '" />'
+            csv_html = '<a href="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + graph_item_html + '&format=csv" >csv downloaden</a>'
 
             Ext.create('Ext.window.Window', {
                 title: title,
@@ -67,7 +78,7 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                     xtype: 'panel'
                     width: 1050
                     height: 550
-                    html: 'Grafiek voor ' + record.data.geo_ident + ' ' + record.data.par_ident + ' ' + record.data.mod_ident + ' ' + record.data.stp_ident + '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500&item={%22fews_norm_source_slug%22:%22waternet%22,%22location%22:%22' + record.data.geo_ident + '%22,%22parameter%22:%22' + record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + record.data.stp_ident + '%22,%22module%22:%22' + record.data.mod_ident + '%22}" />'
+                    html: '<h3>' + graph_title + '</h3><br />' + img_html + '<br /> ' + csv_html
                     bbar: bbar
                 }]
             }).show()

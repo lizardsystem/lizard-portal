@@ -154,17 +154,26 @@ Ext.define('Lizard.portlet.CollagePortlet', {
       }]
 
     onCollageItemClick: (view, record, item, index, event, e0pts) ->
-        collage_item_identifier = Ext.JSON.decode(record.get('identifier'))
-        # Specific for time series
-        record.set('geo_ident', collage_item_identifier['geo_ident'])
-        record.set('par_ident', collage_item_identifier['par_ident'])
-        record.set('stp_ident', collage_item_identifier['stp_ident'])
-        record.set('mod_ident', collage_item_identifier['mod_ident'])
-        record.set('qua_ident', collage_item_identifier['qua_ident'])
-        record.set('fews_norm_source_slug', collage_item_identifier['fews_norm_source_slug'])
-        record.set('is_collage_item', true)  # For showing "Voeg toe aan collage" yes/no
+        # Put all records from the store that have the same
+        # popup_class_name as the selected record in the popup.
+        records = []
+        js_popup_class = record.get('js_popup_class')
+        grouping_hint = record.get('grouping_hint')
 
-        popup_class_name = 'Lizard.popup.' + record.get('js_popup_class')
+        for collage_item in @store.data.items
+            if collage_item.get('grouping_hint') == grouping_hint
+                collage_item_identifier = Ext.JSON.decode(collage_item.get('identifier'))
+                # Specific for time series
+                collage_item.set('geo_ident', collage_item_identifier['geo_ident'])
+                collage_item.set('par_ident', collage_item_identifier['par_ident'])
+                collage_item.set('stp_ident', collage_item_identifier['stp_ident'])
+                collage_item.set('mod_ident', collage_item_identifier['mod_ident'])
+                collage_item.set('qua_ident', collage_item_identifier['qua_ident'])
+                collage_item.set('fews_norm_source_slug', collage_item_identifier['fews_norm_source_slug'])
+                collage_item.set('is_collage_item', true)  # For showing "Voeg toe aan collage" yes/no
+                records.push(collage_item)
+
+        popup_class_name = 'Lizard.popup.' + js_popup_class
         popup_class = Ext.ClassManager.get(popup_class_name)
         if not popup_class
             # Default fall-back
@@ -172,10 +181,11 @@ Ext.define('Lizard.portlet.CollagePortlet', {
             console.error("Cannot find popup class " + popup_class_name + ", fallback to default.")
         # Make fake workspace item
         workspaceitem = Ext.create('Lizard.model.WorkspaceItemModel', {})
-        workspaceitem.set('text', record.get('text'))
-        #workspaceitem.set('title', record.get('title'))
-        #workspaceitem.set('plid', record.get('plid'))
-        popup_class.show([record], workspaceitem)
+        # workspaceitem.set('text', record.get('text'))
+        workspaceitem.set('title', record.get('title'))
+        # workspaceitem.set('plid', record.get('plid'))
+
+        popup_class.show(records, workspaceitem)
 
     initComponent: () ->
         me = @
