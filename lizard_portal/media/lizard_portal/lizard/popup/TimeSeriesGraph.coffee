@@ -35,12 +35,13 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                 grouping_hint: 'tijdreeks ' + record.data.par_ident
             }
 
-            graph_title = 'Grafiek voor ' + record.data.geo_ident + ' ' + record.data.par_ident + ' ' + record.data.mod_ident + ' ' + record.data.stp_ident
             # Button bar for popup "Voeg to aan collage".
             if record.data.is_collage_item == true
-                title = 'Collage popup voor ' + record.data.grouping_hint
+                graph_title = 'Collage popup voor ' + record.data.grouping_hint
+                title = record.data.grouping_hint
                 bbar = []
             else
+                graph_title = 'Grafiek voor ' + record.data.geo_ident + ' ' + record.data.par_ident + ' ' + record.data.mod_ident + ' ' + record.data.stp_ident
                 title = workspaceitem.get('title') + ' - ' + record.data.geo_ident
                 bbar = [{
                     text: 'Voeg toe aan collage'
@@ -60,7 +61,7 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                 else
                     qua_ident_extra = ''
                 graph_item_html += '&item={%22fews_norm_source_slug%22:%22' + single_record.data.fews_norm_popup_slug + '%22,%22location%22:%22' + single_record.data.geo_ident + '%22,%22parameter%22:%22' + single_record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + single_record.data.stp_ident + '%22,%22module%22:%22' + single_record.data.mod_ident + '%22' + qua_ident_extra + '}'
-            img_html = '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500' + graph_item_html + '" />'
+            img_html = '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500&legend-location=4' + graph_item_html + '" />'
             csv_html = '<a href="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + graph_item_html + '&format=csv" >csv downloaden</a>'
 
             Ext.create('Ext.window.Window', {
