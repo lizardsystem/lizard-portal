@@ -121,8 +121,6 @@
       var changed_context, changed_elements, headertab_name, me, new_context, obj_type, object, _i, _len, _ref;
       if (save_state == null) save_state = true;
       if (silent == null) silent = false;
-      console.log('new context params are:');
-      console.log(params);
       me = this;
       changed_context = {};
       Ext.Object.each(params, function(key, value) {
@@ -131,10 +129,7 @@
         if (new_value !== null) changed_context[key] = new_value;
       });
       if (changed_context.headertab) changed_context.headertab = params.headertab;
-      if (Ext.Object.getKeys(changed_context).length === 0) {
-        return console.log('context not changed');
-      } else {
-        console.log('contextchange');
+      if (Ext.Object.getKeys(changed_context).length !== 0) {
         if (changed_context['headertab'] && typeof changed_context.headertab === 'string') {
           changed_context.headertab = Ext.Array.filter(this.headertabs, function(element) {
             if (element.name === changed_context.headertab) return element;
@@ -157,18 +152,13 @@
           this._setObjectOfType(changed_context.object);
         }
         if (this.context.headertab) {
-          console.log('supported objecttypes are:');
-          console.log(this.context.headertab.object_types);
           object = {};
           _ref = this.context.headertab.object_types;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             obj_type = _ref[_i];
             if (me.objects[obj_type]) {
               if (me.objects[obj_type].id) {
-                console.log('found object of objecttype:');
                 object = Ext.Object.merge({}, this.objects[obj_type]);
-                console.log('found object of objecttype:');
-                console.log(changed_context.object);
                 break;
               }
             }

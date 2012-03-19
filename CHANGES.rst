@@ -5,6 +5,8 @@ Changelog of lizard-portal
 0.21 (unreleased)
 -----------------
 
+- Removed console logs from several coffee files.
+
 - Made graphs bigger in analyse popup.
 
 

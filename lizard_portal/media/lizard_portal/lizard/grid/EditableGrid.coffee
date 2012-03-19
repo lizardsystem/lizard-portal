@@ -58,8 +58,8 @@ Ext.override(Ext.data.Model, {
         else if Ext.isArray(a) and Ext.isArray(b)
             #array with dictionaries of related object
             #todo: works for longer arrays and all fields
-            console.log(a)
-            console.log(b)
+            #console.log(a)
+            #console.log(b)
             if a.length == 1 and b.length == 1
                 console.log(a[0].id == b[0].id)
                 return a[0].id == b[0].id
@@ -161,7 +161,7 @@ Ext.define('Lizard.grid.EditableGrid', {
 
         if typeof(col.editable) == 'undefined'
             col.editable = true
-            
+
         if !col.editable
             return false
 
@@ -627,12 +627,12 @@ Ext.define('Lizard.grid.EditableGrid', {
 #originalValue - The original value for the field, before the edit.
 #row - The grid table row
 #column - The grid Column defining the column that is being edited.
-        
+
         @callParent(arguments)
 
     afterRender: () ->
         if @storeAutoLoad
             @store.load()
 
-    
+
 })

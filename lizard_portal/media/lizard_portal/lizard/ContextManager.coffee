@@ -14,7 +14,7 @@ Ext.define 'Lizard.ContextManager',
         if params.context
             @context = Ext.Object.merge(@context, params.context)
             delete params.context
-            
+
         Ext.apply(@,params)
 
     objects: {}
@@ -115,8 +115,8 @@ Ext.define 'Lizard.ContextManager',
     #
     #////
     _setContext:(params, save_state=true, silent=false) ->
-        console.log('new context params are:')
-        console.log(params)
+        # console.log('new context params are:')
+        # console.log(params)
 
         me = @
 
@@ -134,11 +134,11 @@ Ext.define 'Lizard.ContextManager',
         if changed_context.headertab
             changed_context.headertab = params.headertab
 
-        if Ext.Object.getKeys(changed_context).length == 0
-            console.log('context not changed')
-        else
+        if Ext.Object.getKeys(changed_context).length != 0
+        #     console.log('context not changed')
+        # else
             #context is updated
-            console.log('contextchange')
+            # console.log('contextchange')
 
             if changed_context['headertab'] and typeof(changed_context.headertab) == 'string'
                 #get real headertab object based on string
@@ -165,16 +165,16 @@ Ext.define 'Lizard.ContextManager',
                 @_setObjectOfType(changed_context.object)
 
             if  @context.headertab
-                console.log('supported objecttypes are:')
-                console.log(@context.headertab.object_types)
+                # console.log('supported objecttypes are:')
+                # console.log(@context.headertab.object_types)
                 object = {}
                 for obj_type in @context.headertab.object_types
                     if me.objects[obj_type]
                         if me.objects[obj_type].id
-                            console.log('found object of objecttype:')
+                            # console.log('found object of objecttype:')
                             object = Ext.Object.merge({}, @objects[obj_type]) #copy object
-                            console.log('found object of objecttype:')
-                            console.log(changed_context.object)
+                            # console.log('found object of objecttype:')
+                            # console.log(changed_context.object)
                             break
                 @context.object = object
                 changed_context.object = object
@@ -254,7 +254,7 @@ Ext.define 'Lizard.ContextManager',
 
         if no_references
             console.log('is no_references support outside active really needed. not supported anymore')
-                    
+
         me = @
 
         output = @context

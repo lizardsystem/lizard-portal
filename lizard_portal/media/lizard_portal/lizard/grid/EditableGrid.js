@@ -49,8 +49,6 @@
       } else if (Ext.isObject(a) && Ext.isObject(b)) {
         return a.id === b.id;
       } else if (Ext.isArray(a) && Ext.isArray(b)) {
-        console.log(a);
-        console.log(b);
         if (a.length === 1 && b.length === 1) {
           console.log(a[0].id === b[0].id);
           return a[0].id === b[0].id;
