@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.20 (unreleased)
+0.20 (2012-03-19)
 -----------------
 
 - First working collage popups with multiple lines in a single graph.
