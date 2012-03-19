@@ -56,7 +56,7 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
             graph_item_html = ''
             for single_record in records
                 if single_record.data.qua_ident
-                    qua_ident_extra = '%22qua_ident%22:%22' + single_record.data.qua_ident + '%22'
+                    qua_ident_extra = ',%22qua_ident%22:%22' + single_record.data.qua_ident + '%22'
                 else
                     qua_ident_extra = ''
                 graph_item_html += '&item={%22fews_norm_source_slug%22:%22' + single_record.data.fews_norm_popup_slug + '%22,%22location%22:%22' + single_record.data.geo_ident + '%22,%22parameter%22:%22' + single_record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + single_record.data.stp_ident + '%22,%22module%22:%22' + single_record.data.mod_ident + '%22' + qua_ident_extra + '}'
@@ -77,7 +77,7 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                 items: [{
                     xtype: 'panel'
                     width: 1050
-                    height: 550
+                    height: 600
                     html: '<h3>' + graph_title + '</h3><br />' + img_html + '<br /> ' + csv_html
                     bbar: bbar
                 }]

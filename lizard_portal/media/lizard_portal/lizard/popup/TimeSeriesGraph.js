@@ -52,7 +52,7 @@
         for (_i = 0, _len = records.length; _i < _len; _i++) {
           single_record = records[_i];
           if (single_record.data.qua_ident) {
-            qua_ident_extra = '%22qua_ident%22:%22' + single_record.data.qua_ident + '%22';
+            qua_ident_extra = ',%22qua_ident%22:%22' + single_record.data.qua_ident + '%22';
           } else {
             qua_ident_extra = '';
           }
@@ -71,7 +71,7 @@
             {
               xtype: 'panel',
               width: 1050,
-              height: 550,
+              height: 600,
               html: '<h3>' + graph_title + '</h3><br />' + img_html + '<br /> ' + csv_html,
               bbar: bbar
             }
