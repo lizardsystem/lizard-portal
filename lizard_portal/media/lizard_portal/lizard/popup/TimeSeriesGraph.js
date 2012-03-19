@@ -11,7 +11,7 @@
     init_background: null,
     statics: {
       show: function(records, workspaceitem) {
-        var bbar, collage_item_config, collage_item_identifier, csv_html, dt_end, dt_start, graph_item_html, graph_title, img_html, qua_ident_extra, record, single_record, title, _i, _len;
+        var bbar, collage_item_config, collage_item_identifier, dt_end, dt_start, graph_item_html, graph_title, img_html, qua_ident_extra, record, single_record, title, _i, _len;
         dt_start = Ext.Date.format(Lizard.CM.getContext().period.start, 'Y-m-d H:i:s');
         dt_end = Ext.Date.format(Lizard.CM.getContext().period.end, 'Y-m-d H:i:s');
         record = records[0];
@@ -31,6 +31,17 @@
           identifier: Ext.JSON.encode(collage_item_identifier),
           grouping_hint: 'tijdreeks ' + record.data.par_ident
         };
+        graph_item_html = '';
+        for (_i = 0, _len = records.length; _i < _len; _i++) {
+          single_record = records[_i];
+          if (single_record.data.qua_ident) {
+            qua_ident_extra = ',%22qua_ident%22:%22' + single_record.data.qua_ident + '%22';
+          } else {
+            qua_ident_extra = '';
+          }
+          graph_item_html += '&item={%22fews_norm_source_slug%22:%22' + single_record.data.fews_norm_popup_slug + '%22,%22location%22:%22' + single_record.data.geo_ident + '%22,%22parameter%22:%22' + single_record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + single_record.data.stp_ident + '%22,%22module%22:%22' + single_record.data.mod_ident + '%22' + qua_ident_extra + '}';
+        }
+        img_html = '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500&legend-location=4' + graph_item_html + '" />';
         if (record.data.is_collage_item === true) {
           graph_title = 'Collage popup voor ' + record.data.grouping_hint;
           title = record.data.grouping_hint;
@@ -49,18 +60,13 @@
             }
           ];
         }
-        graph_item_html = '';
-        for (_i = 0, _len = records.length; _i < _len; _i++) {
-          single_record = records[_i];
-          if (single_record.data.qua_ident) {
-            qua_ident_extra = ',%22qua_ident%22:%22' + single_record.data.qua_ident + '%22';
-          } else {
-            qua_ident_extra = '';
+        bbar.push('->');
+        bbar.push({
+          text: 'Download csv',
+          handler: function(btn, event) {
+            return window.open('/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + graph_item_html + '&format=csv', 'download');
           }
-          graph_item_html += '&item={%22fews_norm_source_slug%22:%22' + single_record.data.fews_norm_popup_slug + '%22,%22location%22:%22' + single_record.data.geo_ident + '%22,%22parameter%22:%22' + single_record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + single_record.data.stp_ident + '%22,%22module%22:%22' + single_record.data.mod_ident + '%22' + qua_ident_extra + '}';
-        }
-        img_html = '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500&legend-location=4' + graph_item_html + '" />';
-        csv_html = '<a href="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + graph_item_html + '&format=csv" >csv downloaden</a>';
+        });
         return Ext.create('Ext.window.Window', {
           title: title,
           modal: true,
@@ -73,7 +79,7 @@
               xtype: 'panel',
               width: 1050,
               height: 600,
-              html: '<h3>' + graph_title + '</h3><br />' + img_html + '<br /> ' + csv_html,
+              html: graph_title + img_html,
               bbar: bbar
             }
           ]

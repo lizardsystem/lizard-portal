@@ -35,6 +35,16 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                 grouping_hint: 'tijdreeks ' + record.data.par_ident
             }
 
+            # Add all graphs
+            graph_item_html = ''
+            for single_record in records
+                if single_record.data.qua_ident
+                    qua_ident_extra = ',%22qua_ident%22:%22' + single_record.data.qua_ident + '%22'
+                else
+                    qua_ident_extra = ''
+                graph_item_html += '&item={%22fews_norm_source_slug%22:%22' + single_record.data.fews_norm_popup_slug + '%22,%22location%22:%22' + single_record.data.geo_ident + '%22,%22parameter%22:%22' + single_record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + single_record.data.stp_ident + '%22,%22module%22:%22' + single_record.data.mod_ident + '%22' + qua_ident_extra + '}'
+            img_html = '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500&legend-location=4' + graph_item_html + '" />'
+
             # Button bar for popup "Voeg to aan collage".
             if record.data.is_collage_item == true
                 graph_title = 'Collage popup voor ' + record.data.grouping_hint
@@ -53,16 +63,12 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                         collage_store.collageItemStore.createCollageItem(collage_item_config)
                 }]
 
-            # Add all graphs
-            graph_item_html = ''
-            for single_record in records
-                if single_record.data.qua_ident
-                    qua_ident_extra = ',%22qua_ident%22:%22' + single_record.data.qua_ident + '%22'
-                else
-                    qua_ident_extra = ''
-                graph_item_html += '&item={%22fews_norm_source_slug%22:%22' + single_record.data.fews_norm_popup_slug + '%22,%22location%22:%22' + single_record.data.geo_ident + '%22,%22parameter%22:%22' + single_record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + single_record.data.stp_ident + '%22,%22module%22:%22' + single_record.data.mod_ident + '%22' + qua_ident_extra + '}'
-            img_html = '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=500&legend-location=4' + graph_item_html + '" />'
-            csv_html = '<a href="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + graph_item_html + '&format=csv" >csv downloaden</a>'
+            bbar.push('->')
+            bbar.push({
+                text: 'Download csv'
+                handler: (btn, event) ->
+                    window.open('/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + graph_item_html + '&format=csv', 'download')
+            })
 
             Ext.create('Ext.window.Window', {
                 title: title,
@@ -79,7 +85,7 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                     xtype: 'panel'
                     width: 1050
                     height: 600
-                    html: '<h3>' + graph_title + '</h3><br />' + img_html + '<br /> ' + csv_html
+                    html: graph_title + img_html
                     bbar: bbar
                 }]
             }).show()
