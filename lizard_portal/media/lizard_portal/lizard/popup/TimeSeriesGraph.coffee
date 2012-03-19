@@ -9,6 +9,10 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
     init_background: null
 
     statics:
+        # There are currently 2 ways to come here: either after
+        # clicking on the map, or from a collage. If called from a
+        # collage, the property records[0].data.is_collage_item is set
+        # to true and the workspace item is artificially created.
         show: (records, workspaceitem) ->
             dt_start = Ext.Date.format(Lizard.CM.getContext().period.start, 'Y-m-d H:i:s')
             dt_end = Ext.Date.format(Lizard.CM.getContext().period.end, 'Y-m-d H:i:s')
