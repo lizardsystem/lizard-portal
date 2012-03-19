@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.21 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Made graphs bigger in analyse popup.
 
 
 0.20 (2012-03-19)
