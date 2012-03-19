@@ -29,8 +29,8 @@
 OpenLayers.ImgPath = "/static_media/themes/dark/";
 try {
     window.onpopstate = function(event) {
-        console.log('eventstate:');
-        console.log(event.state);
+        //console.log('eventstate:');
+        //console.log(event.state);
         if (event.state != null) {
             Ext.getCmp('portalWindow').linkTo(event.state, false);
         }
@@ -76,7 +76,7 @@ url = {
 
 {% block page %}
 
-    
+
 <div id="login-form-wrap" style="position:absolute; top:0px; left:0px; overflow:hidden;visibility:hidden;">
     <form id='loginform' method="POST" action="/user/login_redirect/" class="x-form">
     {%    csrf_token %}
