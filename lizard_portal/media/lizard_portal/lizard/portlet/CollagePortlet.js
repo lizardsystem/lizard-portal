@@ -110,11 +110,14 @@
                 proxyUrl: '/workspace/api/collage_view/',
                 proxyParams: {},
                 enterEditSummary: false,
-                addEditIcon: true,
+                addEditIcon: false,
                 addDeleteIcon: true,
                 usePagination: false,
                 read_only_field: 'read_only',
-                actionEditIcon: function(record) {
+                addExtraActionIcon: true,
+                extraActionIconUrl: '/static_media/lizard_portal/images/hand.png',
+                extraActionIconTooltip: 'openen',
+                actionExtraActionIcon: function(record) {
                   return portlet.loadCollage({
                     params: {
                       object_id: record.get('id')

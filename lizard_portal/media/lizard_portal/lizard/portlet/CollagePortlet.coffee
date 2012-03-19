@@ -112,11 +112,15 @@ Ext.define('Lizard.portlet.CollagePortlet', {
                     proxyUrl: '/workspace/api/collage_view/'
                     proxyParams: {}
                     enterEditSummary: false
-                    addEditIcon: true
+                    addEditIcon: false
                     addDeleteIcon: true
                     usePagination: false
                     read_only_field: 'read_only',
-                    actionEditIcon: (record) ->
+
+                    addExtraActionIcon: true
+                    extraActionIconUrl: '/static_media/lizard_portal/images/hand.png'
+                    extraActionIconTooltip: 'openen'
+                    actionExtraActionIcon: (record) ->
                         portlet.loadCollage({
                             params:
                                 object_id:record.get('id')
