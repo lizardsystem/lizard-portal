@@ -20,7 +20,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
 
     applyParams: (params) ->
         @updateGraphs(null, params)
-    
+
 
     itemSelector: 'div.thumb-wrap',
     emptyText: 'No graphs available',
@@ -256,11 +256,11 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                             '<tpl if="visible">',
                                 '{name}:   ',
                                     '<tpl if="detail_link">',
-                                         '<a href="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>',
+                                         '<a href="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>&nbsp;',
                                     '</tpl>',
                                     '<a href="javascript:',
                                     '{[this.get_function_for_graph_window(values)]}',
-                                    '"> groot</a>',
+                                    '">groot</a>',
                                 '<img src="',
                                 '{[this.get_url(values)]}',
                                 '" height={height} width={width} />',

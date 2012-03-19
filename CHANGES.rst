@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.22 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added space between "details" and "groot" in MultiGraphStore.
 
 
 0.21 (2012-03-19)
