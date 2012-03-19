@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.21 (unreleased)
+0.21 (2012-03-19)
 -----------------
 
 - Removed console logs from several coffee files.
