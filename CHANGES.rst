@@ -7,6 +7,10 @@ Changelog of lizard-portal
 
 - Added view for ekr scores (requires lizard-measure 1.11.2 or higher)
 
+- Separated maatregelen graph. The maatregelen view has the graph on
+  the upper side and the table on the lower side. The graph now has
+  the correct dt_start/dt_end.
+
 - Added space between "details" and "groot" in MultiGraphStore.
 
 
