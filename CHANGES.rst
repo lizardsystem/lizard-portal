@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.23 (unreleased)
+0.23 (2012-03-20)
 -----------------
 
 - Updates the drop-down menu labeled 'Beheer' (#88).
