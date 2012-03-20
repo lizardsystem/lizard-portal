@@ -5,6 +5,7 @@ Changelog of lizard-portal
 0.23 (unreleased)
 -----------------
 
+- Updates the drop-down menu labeled 'Beheer' (#88).
 - Updates:
   - lizard-registration to 0.1.3 (from 0.1)
 
