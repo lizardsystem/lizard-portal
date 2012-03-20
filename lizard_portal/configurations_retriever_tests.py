@@ -179,6 +179,12 @@ class DescriptionParserTestSuite(TestCase):
         description_dict = self.parser.as_dict(self.open_file)
         self.assertEqual('08-03-2012 20:13:00', description_dict['datum'])
 
+
+class NoSelf(object):
+
+    pass
+
+
 class Self(object):
 
     def get_self(self):
@@ -213,7 +219,17 @@ class OverrideSelfTestSuite(TestCase):
             pass
 
     def test_c(self):
-        """Test replace a method by a function with one self argument."""
+        """Test replace a method by a function with a self argument."""
+        NoSelf.get_self = get_self
+        s = NoSelf()
+        self.assertEqual(s, s.get_self())
+        print "type(s.get_self)", type(s.get_self)
+        print "s.get_self", s.get_self
+        print "s.__dict__", s.__dict__
+        self.assertEqual(s, s.get_self())
+
+    def test_d(self):
+        """Test replace a method by a function without a self argument."""
         s = Self()
         self.assertEqual(s, s.get_self())
         global global_s
