@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.23 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Updates:
+  - lizard-registration to 0.1.3 (from 0.1)
+
 
 
 0.22 (2012-03-20)
