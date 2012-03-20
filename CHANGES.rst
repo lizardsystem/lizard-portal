@@ -5,6 +5,8 @@ Changelog of lizard-portal
 0.22 (unreleased)
 -----------------
 
+- Added view for ekr scores (requires lizard-measure 1.11.2 or higher)
+
 - Added space between "details" and "groot" in MultiGraphStore.
 
 
