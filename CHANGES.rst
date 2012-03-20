@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.22 (unreleased)
+0.22 (2012-03-20)
 -----------------
 
 - Added view for ekr scores (requires lizard-measure 1.11.2 or higher)
