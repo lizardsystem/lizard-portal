@@ -5,13 +5,14 @@ Changelog of lizard-portal
 0.25 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added custom x-tool icons for empty workspace / collage and delete
+  workspace item / collage item.
 
 
 0.24 (2012-03-21)
 -----------------
 
-- Bugfix MultiGraphStore that sometimes the resizer tool would appear twice.
+- Bugfix MultiGraphStore that sometimes the resizer tool would appear twice.u
 
 
 0.23 (2012-03-20)
