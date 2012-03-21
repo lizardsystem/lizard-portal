@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.24 (unreleased)
+0.24 (2012-03-21)
 -----------------
 
 - Bugfix MultiGraphStore that sometimes the resizer tool would appear twice.
