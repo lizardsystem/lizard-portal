@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.25 (unreleased)
+0.25 (2012-03-21)
 -----------------
 
 - Added custom x-tool icons for empty workspace / collage and delete
