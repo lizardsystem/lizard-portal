@@ -74,7 +74,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
                     config.callback(records, operation, success)
         })
     tools: [{
-        type: 'unpin',  # Save
+        type: 'empty',
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
             portlet.clear()
@@ -163,7 +163,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
 
     },
       {
-        type: 'pin'
+        type: 'delete'
         handler: (e, target, panelHeader, tool) ->
           portlet = panelHeader.ownerCt;
           records = portlet.getSelectionModel().selected.items

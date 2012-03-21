@@ -6,7 +6,7 @@
     display:block;
     width: 70px;
     height: 80px;
-    
+
     margin: 10px;
     margin-right: 0;
     margin-bottom: 0;
@@ -16,7 +16,7 @@
     overflow: hidden;
     text-align: center;
     cursor:pointer;
-    
+
 }
 
 
@@ -161,6 +161,24 @@
 
 .x-grid-checkheader-editor .x-form-cb-wrap {
     text-align: center;
+}
+
+/* TODO: add border */
+.x-tool-over img.x-tool-empty {
+    background-image: url('x-tool-icons/x-tool-empty.png');
+}
+
+img.x-tool-empty  {
+    background-image: url('x-tool-icons/x-tool-empty.png');
+}
+
+/* TODO: add border */
+.x-tool-over img.x-tool-delete {
+    background-image: url('x-tool-icons/x-tool-delete.png');
+}
+
+img.x-tool-delete {
+    background-image: url('x-tool-icons/x-tool-delete.png');
 }
 
 .l-icon {

@@ -73,7 +73,7 @@
     },
     tools: [
       {
-        type: 'unpin',
+        type: 'empty',
         handler: function(e, target, panelHeader, tool) {
           var portlet;
           portlet = panelHeader.ownerCt;
@@ -203,7 +203,7 @@
           }).show();
         }
       }, {
-        type: 'pin',
+        type: 'delete',
         handler: function(e, target, panelHeader, tool) {
           var portlet, records;
           portlet = panelHeader.ownerCt;
