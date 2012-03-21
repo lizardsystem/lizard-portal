@@ -8,6 +8,8 @@ Changelog of lizard-portal
 - Added custom x-tool icons for empty workspace / collage and delete
   workspace item / collage item.
 
+- Added tooltips to workspace and collage portlet tools.
+
 
 0.24 (2012-03-21)
 -----------------

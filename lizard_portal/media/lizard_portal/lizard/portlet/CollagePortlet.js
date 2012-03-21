@@ -61,6 +61,7 @@
     tools: [
       {
         type: 'empty',
+        tooltip: 'Collage legen',
         handler: function(e, target, panelHeader, tool) {
           var portlet;
           portlet = panelHeader.ownerCt;
@@ -68,6 +69,7 @@
         }
       }, {
         type: 'save',
+        tooltip: 'Collage opslaan',
         handler: function(e, target, panelHeader, tool) {
           var portlet;
           portlet = panelHeader.ownerCt;
@@ -88,6 +90,7 @@
         }
       }, {
         type: 'gear',
+        tooltip: 'Collages beheren',
         handler: function(e, target, panelHeader, tool) {
           var a, form_window, portlet;
           portlet = panelHeader.ownerCt;
@@ -190,6 +193,7 @@
         }
       }, {
         type: 'delete',
+        tooltip: 'Collage item verwijderen (na selectie)',
         handler: function(e, target, panelHeader, tool) {
           var portlet, records;
           portlet = panelHeader.ownerCt;

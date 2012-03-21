@@ -75,6 +75,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
         })
     tools: [{
         type: 'empty',
+        tooltip: 'Workspace legen'
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
             portlet.clear()
@@ -82,6 +83,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
     }
     {
         type: 'save',  # Save
+        tooltip: 'Workspace opslaan'
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
 
@@ -101,6 +103,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
     }
     {
         type: 'gear',  # Manage
+        tooltip: 'Workspace beheer'
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
             a = portlet.html;
@@ -164,11 +167,11 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
     },
       {
         type: 'delete'
+        tooltip: 'Workspace item verwijderen (na selectie)'
         handler: (e, target, panelHeader, tool) ->
           portlet = panelHeader.ownerCt;
           records = portlet.getSelectionModel().selected.items
           portlet.store.remove(records)
-
       }]
 
     initComponent: () ->
