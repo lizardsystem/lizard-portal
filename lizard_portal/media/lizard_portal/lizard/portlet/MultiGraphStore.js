@@ -216,26 +216,36 @@
       return this.callParent(arguments);
     },
     initComponent: function() {
-      var buttonBarConfig, me;
+      var buttonBarConfig, me, resizer_index, resizer_tool, tool, _i, _len, _ref;
       me = this;
       buttonBarConfig = null;
       if (this.useGraphButtonBar) buttonBarConfig = this.getGraphButtonConfig();
-      me.tools.push([
-        {
-          type: 'plus',
-          handler: function(e, target, panelHeader, tool) {
-            var portlet;
-            portlet = panelHeader.ownerCt;
-            if (tool.type === 'plus') {
-              tool.setType('minus');
-              return me.setFitInPortal(false);
-            } else {
-              tool.setType('plus');
-              return me.setFitInPortal(true);
-            }
+      resizer_index = void 0;
+      _ref = me.tools;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tool = _ref[_i];
+        if (tool.name === 'resize-graph') resizer_index = me.tools.indexOf(tool);
+      }
+      resizer_tool = {
+        type: 'plus',
+        name: 'resize-graph',
+        handler: function(e, target, panelHeader, tool) {
+          var portlet;
+          portlet = panelHeader.ownerCt;
+          if (tool.type === 'plus') {
+            tool.setType('minus');
+            return me.setFitInPortal(false);
+          } else {
+            tool.setType('plus');
+            return me.setFitInPortal(true);
           }
         }
-      ]);
+      };
+      if (resizer_index === void 0) {
+        me.tools.push(resizer_tool);
+      } else {
+        me.tools[resizer_index] = resizer_tool;
+      }
       Ext.apply(this, {
         layout: {
           type: 'vboxscroll',
