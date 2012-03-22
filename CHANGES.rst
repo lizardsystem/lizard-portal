@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.26 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Legends in themakaart work in progress.
+
+- Updated ekr view, it now shows actual data per area.
 
 
 0.25 (2012-03-21)

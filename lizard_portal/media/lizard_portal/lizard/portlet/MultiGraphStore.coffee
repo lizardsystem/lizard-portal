@@ -281,7 +281,6 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                     '</tpl>',
                     {
                         get_url:(values) ->
-
                             if values.width > 0 and values.height >0 and values.dt_start and values.dt_end
                                 return Lizard.model.Graph.getGraphUrl(values)
                             else
