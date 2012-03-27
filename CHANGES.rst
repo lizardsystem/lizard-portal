@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.26 (unreleased)
+0.26 (2012-03-27)
 -----------------
 
 - Legends in themakaart work in progress: first working version (but
