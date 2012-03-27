@@ -10,6 +10,8 @@ Changelog of lizard-portal
 
 - Updated ekr view, it now shows actual data per area.
 
+- Added first working table in themakaart.
+
 
 0.25 (2012-03-21)
 -----------------
