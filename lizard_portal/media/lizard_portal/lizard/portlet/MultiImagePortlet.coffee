@@ -13,10 +13,6 @@ Ext.define('Lizard.portlet.MultiImagePortlet', {
         me = @
 
         Ext.apply(@, {
-            layout:
-                type: 'vboxscroll'
-                align: 'stretch'
-            autoScroll: true
             items: {
                 xtype: 'dataview'
                 store: @store

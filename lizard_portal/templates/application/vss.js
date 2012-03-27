@@ -38,7 +38,6 @@ Ext.application({
         'Vss.store.KrwToestandGraph',
         'Lizard.store.AppScreen',
         'Lizard.store.Graph'
-
     ],
     requires: [
         'Lizard.plugin.ApplyContext',

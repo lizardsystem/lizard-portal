@@ -12,11 +12,6 @@
       var me;
       me = this;
       Ext.apply(this, {
-        layout: {
-          type: 'vboxscroll',
-          align: 'stretch'
-        },
-        autoScroll: true,
         items: {
           xtype: 'dataview',
           store: this.store,

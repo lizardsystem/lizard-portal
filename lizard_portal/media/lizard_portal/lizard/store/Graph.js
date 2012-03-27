@@ -14,7 +14,6 @@
     },
     applyContext: function(changes, context) {
       var rec, _i, _len, _ref;
-      console.arguments;
       _ref = this.data.items;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         rec = _ref[_i];
