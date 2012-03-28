@@ -226,19 +226,29 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
         if @useGraphButtonBar
             buttonBarConfig = @getGraphButtonConfig()
 
-        me.tools.push([{
-                type: 'plus'
-                handler: (e, target, panelHeader, tool) ->
-                    portlet = panelHeader.ownerCt;
+        # Sometimes there are two pluses, different items on different
+        # screens are somehow identified as the same object.
+        resizer_index = undefined
+        for tool in me.tools
+            if tool.name == 'resize-graph'
+                resizer_index = me.tools.indexOf(tool)
+        resizer_tool = {
+            type: 'plus'
+            name: 'resize-graph'
+            handler: (e, target, panelHeader, tool) ->
+                portlet = panelHeader.ownerCt;
 
-                    if (tool.type == 'plus')
-                        tool.setType('minus')
-                        me.setFitInPortal(false)
-                    else
-                        tool.setType('plus')
-                        me.setFitInPortal(true)
-            }])
-
+                if (tool.type == 'plus')
+                    tool.setType('minus')
+                    me.setFitInPortal(false)
+                else
+                    tool.setType('plus')
+                    me.setFitInPortal(true)
+        }
+        if resizer_index == undefined
+            me.tools.push(resizer_tool)
+        else
+            me.tools[resizer_index] = resizer_tool
 
         Ext.apply(@, {
             layout:
@@ -271,7 +281,6 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                     '</tpl>',
                     {
                         get_url:(values) ->
-
                             if values.width > 0 and values.height >0 and values.dt_start and values.dt_end
                                 return Lizard.model.Graph.getGraphUrl(values)
                             else

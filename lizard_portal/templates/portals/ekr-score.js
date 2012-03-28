@@ -26,7 +26,7 @@
                     visible: 'true',
                     base_url: '/measure/bar/?legend_location=0',
                     use_context_location: false,
-                    location: '3201',  // Later: Lizard.CM.context.object.id
+                    location: Lizard.CM.context.object.id,
                     predefined_graph: 'ekr',
                     width: null,
                     height: null,
@@ -49,7 +49,9 @@
                 var me = this;
                 me.setLoading(true);
                 //var url = '/measure/summary/'+ Lizard.CM.context.object.id +'/krw_measures/';
-                var url = '/measure/summary/' + Lizard.CM.context.object.id + '/ekr_scores/';
+                // ekr-extended is the slug of the HorizontalBarGraph
+                // var url = '/measure/summary/' + Lizard.CM.context.object.id + '/ekr-scores/';
+                var url = '/measure/summary/' + Lizard.CM.context.object.id + '/tables/ekr-extended/';
                 me.loader.load({
                     url:url,
                     method: 'GET',

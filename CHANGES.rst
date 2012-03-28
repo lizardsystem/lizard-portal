@@ -2,10 +2,50 @@ Changelog of lizard-portal
 ==========================
 
 
-0.24 (unreleased)
+0.28 (unreleased)
 -----------------
 
 - Nothing changed yet.
+
+
+0.27.1 (2012-03-28)
+-------------------
+
+- Switched titles Legenda and EKR in themakaart.
+
+
+0.27 (2012-03-28)
+-----------------
+
+- Tweaked themakaart layout.
+
+- Fixed bug in MultiImagePortlet. Before the portlet crashed invisibly.
+
+
+0.26 (2012-03-27)
+-----------------
+
+- Legends in themakaart work in progress: first working version (but
+  with errors).
+
+- Updated ekr view, it now shows actual data per area.
+
+- Added first working table in themakaart.
+
+
+0.25 (2012-03-21)
+-----------------
+
+- Added custom x-tool icons for empty workspace / collage and delete
+  workspace item / collage item.
+
+- Added tooltips to workspace and collage portlet tools.
+
+
+0.24 (2012-03-21)
+-----------------
+
+- Bugfix MultiGraphStore that sometimes the resizer tool would appear twice.
 
 
 0.23 (2012-03-20)

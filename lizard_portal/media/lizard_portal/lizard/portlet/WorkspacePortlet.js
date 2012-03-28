@@ -73,7 +73,8 @@
     },
     tools: [
       {
-        type: 'unpin',
+        type: 'empty',
+        tooltip: 'Workspace legen',
         handler: function(e, target, panelHeader, tool) {
           var portlet;
           portlet = panelHeader.ownerCt;
@@ -81,6 +82,7 @@
         }
       }, {
         type: 'save',
+        tooltip: 'Workspace opslaan',
         handler: function(e, target, panelHeader, tool) {
           var portlet;
           portlet = panelHeader.ownerCt;
@@ -101,6 +103,7 @@
         }
       }, {
         type: 'gear',
+        tooltip: 'Workspace beheer',
         handler: function(e, target, panelHeader, tool) {
           var a, form_window, portlet;
           portlet = panelHeader.ownerCt;
@@ -203,7 +206,8 @@
           }).show();
         }
       }, {
-        type: 'pin',
+        type: 'delete',
+        tooltip: 'Workspace item verwijderen (na selectie)',
         handler: function(e, target, panelHeader, tool) {
           var portlet, records;
           portlet = panelHeader.ownerCt;

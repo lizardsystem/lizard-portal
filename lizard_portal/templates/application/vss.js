@@ -38,7 +38,6 @@ Ext.application({
         'Vss.store.KrwToestandGraph',
         'Lizard.store.AppScreen',
         'Lizard.store.Graph'
-
     ],
     requires: [
         'Lizard.plugin.ApplyContext',
@@ -77,6 +76,8 @@ Ext.application({
         'Lizard.portlet.GridPortlet',
         'Lizard.portlet.MultiGraph',
         'Lizard.portlet.MultiGraphStore',
+        'Lizard.portlet.MultiImagePortlet',
+        'Lizard.portlet.MultiLegendPortlet',
         'Lizard.portlet.CollagePortlet',
         'Lizard.portlet.WorkspacePortlet',
         'Lizard.popup.FeatureInfo',

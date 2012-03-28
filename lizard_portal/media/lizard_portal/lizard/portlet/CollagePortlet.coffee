@@ -61,7 +61,8 @@ Ext.define('Lizard.portlet.CollagePortlet', {
                     config.callback(records, operation, success)
         })
     tools: [{
-        type: 'unpin',  # Save
+        type: 'empty',
+        tooltip: 'Collage legen',
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
             portlet.clear()
@@ -69,6 +70,7 @@ Ext.define('Lizard.portlet.CollagePortlet', {
     }
     {
         type: 'save',  # Save
+        tooltip: 'Collage opslaan',
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
 
@@ -88,6 +90,7 @@ Ext.define('Lizard.portlet.CollagePortlet', {
     }
     {
         type: 'gear',  # Manage
+        tooltip: 'Collages beheren'
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
             a = portlet.html;
@@ -149,7 +152,8 @@ Ext.define('Lizard.portlet.CollagePortlet', {
 
     },
       {
-        type: 'pin'
+        type: 'delete'
+        tooltip: 'Collage item verwijderen (na selectie)'
         handler: (e, target, panelHeader, tool) ->
           portlet = panelHeader.ownerCt;
           records = portlet.getSelectionModel().selected.items
