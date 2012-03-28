@@ -133,7 +133,7 @@ def feature_info(request):
 
 def validate(request):
     logger.debug('lizard_portal.views.validate')
-    retriever = create_configurations_retriever()
+    retriever = local_create_configurations_retriever()
     configurations = retriever.retrieve_configurations_as_dict()
     json = simplejson.dumps({'data': configurations, 'count': len(configurations)})
     return HttpResponse(json)
@@ -148,19 +148,23 @@ def local_create_configurations_retriever():
         {'polder': 'Atekpolder',
          'type':   'waterbalans',
          'user':   'Analist John',
-         'date':   '1-02-2012 11:00'},
+         'date':   '1-02-2012 11:00',
+         'action': 'Bewaren'},
         {'polder': 'Atekpolder',
          'type':   'ESF_1',
          'user':   'Analist John',
-         'date':   '1-02-2012 11:00'},
+         'date':   '1-02-2012 11:00',
+         'action': 'Bewaren'},
         {'polder': 'Aetsveldsepolder Oost',
          'type':   'ESF_2',
          'user':   'Analist Jojanneke',
-         'date':   '1-02-2012 11:00'},
+         'date':   '1-02-2012 11:00',
+         'action': 'Bewaren'},
         {'polder': 'Aetsveldsepolder Oost',
          'type':   'waterbalans',
          'user':   'Analist Pieter',
-         'date':   '1-02-2012 11:00'},
+         'date':   '1-02-2012 11:00',
+         'action': 'Bewaren'}
         ]
     retriever.retrieve_configurations = \
         (lambda : [MockConfig(config) for config in configuration_list])

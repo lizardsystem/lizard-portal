@@ -22,10 +22,20 @@
 			    flex:1,
 			    columnLines: true,
 			    dataConfig:[
-				{name: 'polder', title: 'Polder', editable: false, visible: true, width: 150, type: 'text'},
-				{name: 'type', title: 'Type', editable: false, visible: true, width: 150, type: 'text'},
-				{name: 'user', title: 'Gebruiker', editable: false, visible: true, width: 150, type: 'text'},
-				{name: 'date', title: 'Datum', editable: false, visible: true, width: 150, type: 'text'}
+				{name: 'polder', title: 'Polder',
+				 editable: false, visible: true, width: 250,
+				 type: 'text'},
+				{name: 'type', title: 'Type', editable: false,
+				 visible: true, width: 100, type: 'text'},
+				{name: 'user', title: 'Gebruiker',
+				 editable: false, visible: true, width: 150,
+				 type: 'text'},
+				{name: 'date', title: 'Datum', editable: false,
+				 visible: true, width: 125, type: 'text'},
+				{name: 'action', title: 'Actie',
+				 editable: true, visible: true,
+				 width: 100, type: 'combo',
+				 choices: ['Bewaren', 'Valideren']}
 			    ],
 			    proxyUrl: '/portal/validate',
 			    proxyParams: {
@@ -33,4 +43,3 @@
 			}]
 	    }]
 }
-
