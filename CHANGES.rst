@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.27 (unreleased)
+0.27 (2012-03-28)
 -----------------
 
 - Tweaked themakaart layout.
