@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.27 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Tweaked themakaart layout.
+
+- Fixed bug in MultiImagePortlet. Before the portlet crashed invisibly.
 
 
 0.26 (2012-03-27)
@@ -31,7 +33,7 @@ Changelog of lizard-portal
 0.24 (2012-03-21)
 -----------------
 
-- Bugfix MultiGraphStore that sometimes the resizer tool would appear twice.u
+- Bugfix MultiGraphStore that sometimes the resizer tool would appear twice.
 
 
 0.23 (2012-03-20)

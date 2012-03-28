@@ -24,6 +24,8 @@ Ext.define('Lizard.portlet.MultiImagePortlet', {
                         '</div>',
                     '</tpl>'
                 )
+                # itemSelector is necessary, else your portlet will crash
+                itemSelector: 'div.thumb-wrap'
             }
         })
 

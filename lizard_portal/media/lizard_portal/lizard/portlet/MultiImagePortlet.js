@@ -15,7 +15,8 @@
         items: {
           xtype: 'dataview',
           store: this.store,
-          tpl: new Ext.XTemplate('<tpl for=".">', '<div class="thumb-wrap">', '<span>{name}</span><br />', '<img src="{base_url}" />', '</div>', '</tpl>')
+          tpl: new Ext.XTemplate('<tpl for=".">', '<div class="thumb-wrap">', '<span>{name}</span><br />', '<img src="{base_url}" />', '</div>', '</tpl>'),
+          itemSelector: 'div.thumb-wrap'
         }
       });
       return this.callParent(arguments);
