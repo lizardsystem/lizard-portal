@@ -133,7 +133,7 @@ def feature_info(request):
 
 def validate(request):
     logger.debug('lizard_portal.views.validate')
-    retriever = local_create_configurations_retriever()
+    retriever = create_configurations_retriever()
     configurations = retriever.retrieve_configurations_as_dict()
     json = simplejson.dumps({'data': configurations, 'count': len(configurations)})
     return HttpResponse(json)
