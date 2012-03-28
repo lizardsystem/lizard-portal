@@ -39,8 +39,8 @@ class ConfigurationToValidate(models.Model):
     VALIDATE = 1
 
     ACTIONS = (
-        (KEEP, _('Keep')),
-        (VALIDATE, _('Validate')),
+        (KEEP, _('Bewaren')),
+        (VALIDATE, _('Valideren')),
         )
 
     area = models.ForeignKey(Area, help_text='Link to the area')
