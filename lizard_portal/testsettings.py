@@ -42,7 +42,9 @@ DATABASES = {
     }
 SITE_ID = 1
 INSTALLED_APPS = [
+    'lizard_area',
     'lizard_portal',
+    'lizard_security',
     'lizard_ui',
     'staticfiles',
     'compressor',

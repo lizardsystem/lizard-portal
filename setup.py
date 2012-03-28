@@ -17,6 +17,7 @@ install_requires = [
     'pkginfo',
     'lizard-area',
     'lizard-registration',
+    'lizard-security',
     ],
 
 tests_require = [
