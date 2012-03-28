@@ -5,6 +5,7 @@
 
 # Copyright (c) 2012 Nelen & Schuurmans.  GPL licensed, see LICENSE.rst.
 
+from UserList import UserList
 from unittest import TestCase
 
 from mock import Mock
@@ -14,34 +15,86 @@ from lizard_portal.configurations_retriever import ConfigurationsRetriever
 from lizard_portal.configurations_retriever import DescriptionParser
 from lizard_portal.configurations_retriever import ZipFileNameRetriever
 from lizard_portal.configurations_retriever import MockConfig
+from lizard_portal.models import ConfigurationToValidate
 
+class MockQuerySet(UserList):
+
+    def __init__(*args, **kwargs):
+        UserList.__init__(*args, **kwargs)
+
+    def all(self):
+        return self.data
+
+    def filter(self, *args, **kwargs):
+        result = MockQuerySet()
+        for o in self.data:
+            print o.action
+            is_searched_object = True
+            for keyword, value in kwargs.items():
+                print keyword, value
+                is_searched_object = getattr(o, keyword) == value
+                if not is_searched_object:
+                    break
+            if is_searched_object:
+                result.append(o)
+        return result
+
+
+class MockDatabase(object):
+
+    def __init__(self):
+        self.configurations = MockQuerySet()
+
+    def ConfigurationToValidate(self):
+        config = Mock(ConfigurationToValidate)
+        config.save = lambda c=config: self.configurations.append(c)
+        return config
 
 class ConfigurationsRetrieverTestSuite(TestCase):
 
+    def setUp(self):
+        self.db = MockDatabase()
+
     def test_a(self):
-        """Test the right configurations are retrieved."""
-        retriever = ConfigurationsRetriever(None, None)
-        configuration_list = ['config A', 'config B']
-        retriever.retrieve_configurations = \
-            (lambda : [MockConfig(config) for config in configuration_list])
-        self.assertEqual(configuration_list, retriever.retrieve_configurations_as_dict())
+        """Test no configurations are retrieved.
+
+        There are no configurations to validate.
+
+        """
+        retriever = ConfigurationsRetriever(self.db)
+        self.assertEqual([], retriever.retrieve_configurations())
 
     def test_b(self):
-        """Test no configurations are retrieved when there are no zip files."""
-        file_name_retriever = Mock()
-        file_name_retriever.retrieve = Mock(return_value=[])
-        retriever = ConfigurationsRetriever(file_name_retriever, None)
-        self.assertEqual([], retriever.retrieve_configurations_as_dict())
+        """Test a single configuration is retrieved."""
+        config = self.db.ConfigurationToValidate()
+        config.save()
+        retriever = ConfigurationsRetriever(self.db)
+        self.assertEqual([config], retriever.retrieve_configurations())
 
-    def test_c(self):
-        """Test a single configurations is retrieved when there is a single zip file."""
-        file_name_retriever = Mock()
-        file_name_retriever.retrieve = Mock(return_value=['hello world.zip'])
-        configuration_factory = StubConfigurationFactory()
-        retriever = ConfigurationsRetriever(file_name_retriever, configuration_factory)
-        configurations = retriever.retrieve_configurations()
-        self.assertEqual(1, len(configurations))
-        self.assertEqual('hello world.zip', configurations[0].zip_file)
+    # def test_a(self):
+    #     """Test the right configurations are retrieved."""
+    #     retriever = ConfigurationsRetriever(None, None)
+    #     configuration_list = ['config A', 'config B']
+    #     retriever.retrieve_configurations = \
+    #         (lambda : [MockConfig(config) for config in configuration_list])
+    #     self.assertEqual(configuration_list, retriever.retrieve_configurations_as_dict())
+
+    # def test_b(self):
+    #     """Test no configurations are retrieved when there are no zip files."""
+    #     file_name_retriever = Mock()
+    #     file_name_retriever.retrieve = Mock(return_value=[])
+    #     retriever = ConfigurationsRetriever(file_name_retriever, None)
+    #     self.assertEqual([], retriever.retrieve_configurations_as_dict())
+
+    # def test_c(self):
+    #     """Test a single configurations is retrieved when there is a single zip file."""
+    #     file_name_retriever = Mock()
+    #     file_name_retriever.retrieve = Mock(return_value=['hello world.zip'])
+    #     configuration_factory = StubConfigurationFactory()
+    #     retriever = ConfigurationsRetriever(file_name_retriever, configuration_factory)
+    #     configurations = retriever.retrieve_configurations()
+    #     self.assertEqual(1, len(configurations))
+    #     self.assertEqual('hello world.zip', configurations[0].zip_file)
 
 
 class StubConfigurationFactory(object):

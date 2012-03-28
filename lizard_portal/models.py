@@ -73,5 +73,14 @@ class ConfigurationToValidate(models.Model):
         null=True, blank=True)
     objects = FilteredManager()
 
+    def as_dict(self):
+        return {
+            'polder': self.area.name,
+            'type':   self.config_type,
+            'user':   self.user_name,
+            'date':   self.date,
+            'action': self.get_action_display(),
+            }
+
     def __unicode__(self):
         return '%s %s %s' % (self.area, self.config_type, self.date)
