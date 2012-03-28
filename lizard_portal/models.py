@@ -56,7 +56,7 @@ class ConfigurationToValidate(models.Model):
         max_length=48)
     fews_meta_info = models.CharField(
         help_text='Meta info supplied with the configuration',
-        max_length=256)
+        null=True, blank=True, max_length=256)
     file_path = models.CharField(
         help_text='Path to the file that contains the configuration',
         max_length=256)
