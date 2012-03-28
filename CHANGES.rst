@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.28 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Switched titles Legenda and EKR in themakaart.
 
 
 0.27 (2012-03-28)
