@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.29 (unreleased)
+0.29 (2012-03-29)
 -----------------
 
 - Fixed projectplace #104: MultiGraphStore can now handle graphs that
