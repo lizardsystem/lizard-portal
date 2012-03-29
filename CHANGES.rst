@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.28 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Updated the validation backend to support multiple configurations per zip
+  file (nens/vss#96).
 
 
 0.27.1 (2012-03-28)
