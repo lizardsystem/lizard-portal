@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.28 (unreleased)
+0.28 (2012-03-29)
 -----------------
 
 - Updated the validation backend to support multiple configurations per zip
