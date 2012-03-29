@@ -26,9 +26,12 @@ def site(request, application_name, active_tab_name, only_portal=False):
         returns html page which loads specified (ext-js) application
     """
 
-    # Why is this? It doesn't work?
+    # Try to login based on ip range.
     if not request.user.is_authenticated():
-        auto_login(request)
+        try:
+            auto_login(request)
+        except AttributeError:
+            logger.exception('Could not auto_login')
 
     t = get_template('portal_pageframe.html')
     c = RequestContext(request, {

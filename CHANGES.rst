@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.30 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added try/except around auto_login. If it fails you are not logged
+  in instead of crash.
 
 
 0.29 (2012-03-29)
