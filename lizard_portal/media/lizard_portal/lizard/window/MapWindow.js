@@ -54,7 +54,6 @@
         final_features = [];
         for (_i = 0, _len = features.length; _i < _len; _i++) {
           feature = features[_i];
-          debugger;
           if (['OpenLayers.Geometry.MultiPoint', 'OpenLayers.Geometry.MultiLine', 'OpenLayers.Geometry.MultiPolygon'].indexOf(feature.geometry.CLASS_NAME) >= 0) {
             _ref = feature.geometry.components;
             for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
@@ -67,7 +66,6 @@
         }
         features = final_features;
         geometry_type = features[0].geometry.CLASS_NAME;
-        debugger;
         for (_k = 0, _len3 = features.length; _k < _len3; _k++) {
           feature = features[_k];
           if (!bounds) {
@@ -182,7 +180,6 @@
             xtype: 'button',
             text: 'Verwijder',
             handler: function() {
-              debugger;
               var feature;
               if (me.active_editor.feature) {
                 feature = me.active_editor.feature;
@@ -301,6 +298,7 @@
         xtype: 'button',
         text: 'Klaar met bewerken',
         handler: function(button) {
+          debugger;
           var window, wkt;
           wkt = me.serialize(me.active_edit_layer.features);
           if (me.callback) me.callback(wkt);

@@ -34,7 +34,7 @@
           graph: graph,
           handler: function(button) {
             button.graph.beginEdit();
-            if (button.pressed) {
+            if (button.pressed || (button.activated && button.checked)) {
               button.graph.set('visible', true);
             } else {
               button.graph.set('visible', false);
@@ -252,7 +252,14 @@
           align: 'stretch'
         },
         autoScroll: true,
-        tbar: buttonBarConfig,
+        dockedItems: [
+          {
+            xtype: 'toolbar',
+            dock: 'top',
+            enableOverflow: true,
+            items: buttonBarConfig
+          }
+        ],
         items: {
           xtype: 'dataview',
           store: this.store,

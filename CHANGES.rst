@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.29 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fixed projectplace #104: MultiGraphStore can now handle graphs that
+  do not fit in the topbar of the screen.
 
 
 0.28 (2012-03-29)

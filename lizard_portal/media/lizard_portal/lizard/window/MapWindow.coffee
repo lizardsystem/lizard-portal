@@ -87,7 +87,7 @@ Ext.define('Lizard.window.MapWindow',
 
             final_features = []
             for feature in features
-                debugger
+                # debugger
                 if ['OpenLayers.Geometry.MultiPoint', 'OpenLayers.Geometry.MultiLine', 'OpenLayers.Geometry.MultiPolygon'].indexOf(feature.geometry.CLASS_NAME) >= 0
                     for elem in feature.geometry.components
                         final_features = final_features.concat(new OpenLayers.Feature.Vector(elem))
@@ -97,7 +97,7 @@ Ext.define('Lizard.window.MapWindow',
 
 
             geometry_type = features[0].geometry.CLASS_NAME
-            debugger
+            # debugger
             for feature in features
                 if (!bounds)
                     bounds = feature.geometry.getBounds()
@@ -132,7 +132,6 @@ Ext.define('Lizard.window.MapWindow',
 
         @height = @height ||  (window.innerHeight - 200)
         @width = @width || 500
-
 
         @points = new OpenLayers.Layer.Vector( "Editable points", {geometryType: OpenLayers.Geometry.Point } );
         @lines = new OpenLayers.Layer.Vector( "Editable lines" , {geometryType: OpenLayers.Geometry.Line });
@@ -230,7 +229,7 @@ Ext.define('Lizard.window.MapWindow',
                 xtype: 'button',
                 text: 'Verwijder',
                 handler: () ->
-                    debugger
+                    # debugger
                     if me.active_editor.feature
                         feature =  me.active_editor.feature
                         me.active_editor.unselectFeature(feature)
@@ -252,6 +251,9 @@ Ext.define('Lizard.window.MapWindow',
             controls: map_controls
             layers: layers
             extent: @extent
+            # options: {
+            #     projection: new OpenLayers.Projection("EPSG:4326"),
+            # }
 #            options: {
 #                projection: new OpenLayers.Projection("EPSG:900913"),
 #                units: "m"
@@ -330,6 +332,7 @@ Ext.define('Lizard.window.MapWindow',
             xtype: 'button',
             text: 'Klaar met bewerken',
             handler: (button) ->
+                debugger
                 wkt = me.serialize(me.active_edit_layer.features)
                 if me.callback
                     me.callback(wkt)

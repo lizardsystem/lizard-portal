@@ -38,7 +38,10 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                 graph: graph,
                 handler: (button) ->
                     button.graph.beginEdit()
-                    if button.pressed
+                    # button.pressed for visible buttons
+                    # button.activated/checked for buttons in pull down
+                    # stupid extjs thing to have different properties
+                    if button.pressed or (button.activated and button.checked)
                         button.graph.set('visible', true)
                     else
                         button.graph.set('visible', false)
@@ -255,7 +258,16 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                 type: 'vboxscroll'
                 align: 'stretch'
             autoScroll:true
-            tbar: buttonBarConfig
+
+            # tbar: buttonBarConfig
+            dockedItems: [{
+                xtype: 'toolbar'
+                dock: 'top'
+                # autoScroll: true  # doesn't work
+                enableOverflow: true  # works, but click on item doesn't work yet
+                items: buttonBarConfig
+            }]
+
             items: {
                 xtype: 'dataview',
                 store: @store,
