@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.30 (unreleased)
+0.30 (2012-04-02)
 -----------------
 
 - Save context when selecting "Andere gebruiker", or "Log uit".
