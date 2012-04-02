@@ -236,48 +236,49 @@
       output.active_headertab = this.context.headertab;
       return output;
     },
+    saveContext: function() {
+      var context, portalWindow,
+        _this = this;
+      if (this.context.user.id) {
+        context = Ext.JSON.encode({
+          objects: this.objects,
+          context: {
+            period: {
+              start: Ext.Date.format(this.context.period.start, 'Y-m-d'),
+              end: Ext.Date.format(this.context.period.end, 'Y-m-d'),
+              type: this.context.period.type
+            },
+            background_layer: this.context.background_layer
+          }
+        });
+        portalWindow = Ext.getCmp('portalWindow');
+        portalWindow.setLoading('Opslaan gebruikersinstellingen');
+        return Ext.Ajax.request({
+          async: false,
+          url: '/manager/api/context/?_accept=application/json',
+          params: {
+            context: context
+          },
+          method: 'POST',
+          success: function(xhr) {
+            Ext.Msg.alert("Melding", "Context opgeslagen");
+            return portalWindow.setLoading(false);
+          },
+          failure: function(error) {
+            console.log(error);
+            Ext.Msg.alert("Fout", "Fout in ophalen van scherm. Error: " + error);
+            return portalWindow.setLoading(false);
+          }
+        });
+      }
+    },
     constructor: function(config) {
       var me;
       this.initConfig(config);
       this.callParent(arguments);
       this.addEvents(['contextchange']);
       me = this;
-      window.onunload = function() {
-        var context, portalWindow,
-          _this = this;
-        if (me.context.user.id) {
-          context = Ext.JSON.encode({
-            objects: me.objects,
-            context: {
-              period: {
-                start: Ext.Date.format(me.context.period.start, 'Y-m-d'),
-                end: Ext.Date.format(me.context.period.end, 'Y-m-d'),
-                type: me.context.period.type
-              },
-              background_layer: me.context.background_layer
-            }
-          });
-          portalWindow = Ext.getCmp('portalWindow');
-          portalWindow.setLoading('Opslaan gebruikersinstellingen');
-          return Ext.Ajax.request({
-            async: false,
-            url: '/manager/api/context/?_accept=application/json',
-            params: {
-              context: context
-            },
-            method: 'POST',
-            success: function(xhr) {
-              Ext.Msg.alert("Melding", "Context opgeslagen");
-              return portalWindow.setLoading(false);
-            },
-            failure: function(error) {
-              console.log(error);
-              Ext.Msg.alert("Fout", "Fout in ophalen van scherm. Error: " + error);
-              return portalWindow.setLoading(false);
-            }
-          });
-        }
-      };
+      window.onunload = this.saveContext;
       return true;
     },
     initComponent: function() {

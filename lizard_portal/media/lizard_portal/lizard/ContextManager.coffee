@@ -140,6 +140,7 @@ Ext.define 'Lizard.ContextManager',
             #context is updated
             # console.log('contextchange')
 
+            # TODO: change typeof to instanceof, basestring
             if changed_context['headertab'] and typeof(changed_context.headertab) == 'string'
                 #get real headertab object based on string
 
@@ -263,6 +264,35 @@ Ext.define 'Lizard.ContextManager',
         output.active_headertab = @context.headertab
         return output
 
+    # Save the context to the server
+    saveContext: () ->
+        if @context.user.id
+            context =  Ext.JSON.encode({
+                objects: @objects
+                context:
+                    period:
+                        start: Ext.Date.format(@context.period.start, 'Y-m-d')
+                        end: Ext.Date.format(@context.period.end, 'Y-m-d')
+                        type: @context.period.type
+                    background_layer: @context.background_layer
+            })
+
+            portalWindow = Ext.getCmp('portalWindow')
+            portalWindow.setLoading('Opslaan gebruikersinstellingen')
+            Ext.Ajax.request
+                async:false
+                url: '/manager/api/context/?_accept=application/json',
+                params:
+                    context: context
+                method: 'POST'
+                success: (xhr) =>
+                    Ext.Msg.alert("Melding", "Context opgeslagen")
+                    portalWindow.setLoading false
+
+                failure: (error) =>
+                    console.log(error)
+                    Ext.Msg.alert("Fout", "Fout in ophalen van scherm. Error: #{error}")
+                    portalWindow.setLoading false
 
     constructor: (config) ->
         @initConfig(config)
@@ -270,35 +300,9 @@ Ext.define 'Lizard.ContextManager',
         @addEvents(['contextchange'])
 
         me = @
-        window.onunload = ()->
-            if me.context.user.id
-                context =  Ext.JSON.encode({
-                    objects: me.objects
-                    context:
-                        period:
-                            start: Ext.Date.format(me.context.period.start, 'Y-m-d')
-                            end: Ext.Date.format(me.context.period.end, 'Y-m-d')
-                            type: me.context.period.type
-                        background_layer: me.context.background_layer
-                })
 
-                portalWindow = Ext.getCmp('portalWindow')
-                portalWindow.setLoading('Opslaan gebruikersinstellingen')
-                Ext.Ajax.request
-                    async:false
-                    url: '/manager/api/context/?_accept=application/json',
-                    params:
-                        context: context
-                    method: 'POST'
-                    success: (xhr) =>
-                        Ext.Msg.alert("Melding", "Context opgeslagen")
-                        portalWindow.setLoading false
-
-                    failure: (error) =>
-                        console.log(error)
-                        Ext.Msg.alert("Fout", "Fout in ophalen van scherm. Error: #{error}")
-                        portalWindow.setLoading false
-
+        # Bind the "save context" to the window.unload function.
+        window.onunload = @saveContext
         return true
 
     initComponent: () ->

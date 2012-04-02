@@ -5,6 +5,10 @@ Changelog of lizard-portal
 0.30 (unreleased)
 -----------------
 
+- Created function saveContext in ContextManager and put the save
+  context code in it (previously it was only in the window.onunload
+  part).
+
 - Added try/except around auto_login. If it fails you are not logged
   in instead of crash.
 
