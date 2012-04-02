@@ -5,6 +5,8 @@ Changelog of lizard-portal
 0.30 (unreleased)
 -----------------
 
+- Save context when selecting "Andere gebruiker", or "Log uit".
+
 - Created function saveContext in ContextManager and put the save
   context code in it (previously it was only in the window.onunload
   part).

@@ -87,7 +87,8 @@ Ext.define('Lizard.window.Header', {
     updateContextPeriodHeader: (context) ->
         html = ''
         html += Ext.Date.format(context.period.start, 'd-m-Y') + '-<br>' + Ext.Date.format(context.period.end, 'd-m-Y') + ' '
-        @contextheader_period.el.dom.innerHTML = html
+        if @contextheader_period
+            @contextheader_period.el.dom.innerHTML = html
 
     #////
     #  updateContextAreaHeader()
@@ -105,7 +106,7 @@ Ext.define('Lizard.window.Header', {
             html += obj_str
 
         html += '<br>'
-        
+
         if Lizard.CM.objects.aan_afvoergebied
             obj_str=  Lizard.CM.objects.aan_afvoergebied.name + ' (' + Lizard.CM.objects.aan_afvoergebied.id +  ')'
             if 'aan_afvoergebied' in Lizard.CM.getContext().headertab.object_types
@@ -439,12 +440,14 @@ Ext.define('Lizard.window.Header', {
                         {
                             text: 'Andere gebruiker'
                             handler: (button, event, eOpts) ->
+                                Lizard.CM.saveContext()
                                 me.login()
                         }
                         {
                             text: 'Log uit'
                             handler: (button, event, eOpts) ->
                                 me.logout()
+                                Lizard.CM.saveContext()
                         }
                     ]
                 }

@@ -266,7 +266,8 @@ Ext.define 'Lizard.ContextManager',
 
     # Save the context to the server
     saveContext: () ->
-        if @context.user.id
+        if @context and @context.user and @context.user.id
+            console.log('Jack says: saving context...')
             context =  Ext.JSON.encode({
                 objects: @objects
                 context:
@@ -286,7 +287,7 @@ Ext.define 'Lizard.ContextManager',
                     context: context
                 method: 'POST'
                 success: (xhr) =>
-                    Ext.Msg.alert("Melding", "Context opgeslagen")
+                    #Ext.Msg.alert("Melding", "Context opgeslagen")
                     portalWindow.setLoading false
 
                 failure: (error) =>

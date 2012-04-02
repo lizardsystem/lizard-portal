@@ -239,7 +239,8 @@
     saveContext: function() {
       var context, portalWindow,
         _this = this;
-      if (this.context.user.id) {
+      if (this.context && this.context.user && this.context.user.id) {
+        console.log('Jack says: saving context...');
         context = Ext.JSON.encode({
           objects: this.objects,
           context: {
@@ -261,7 +262,6 @@
           },
           method: 'POST',
           success: function(xhr) {
-            Ext.Msg.alert("Melding", "Context opgeslagen");
             return portalWindow.setLoading(false);
           },
           failure: function(error) {

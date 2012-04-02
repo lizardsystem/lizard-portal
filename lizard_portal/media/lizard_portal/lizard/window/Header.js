@@ -70,7 +70,9 @@
       var html;
       html = '';
       html += Ext.Date.format(context.period.start, 'd-m-Y') + '-<br>' + Ext.Date.format(context.period.end, 'd-m-Y') + ' ';
-      return this.contextheader_period.el.dom.innerHTML = html;
+      if (this.contextheader_period) {
+        return this.contextheader_period.el.dom.innerHTML = html;
+      }
     },
     updateContextAreaHeader: function(context) {
       var html, obj_str;
@@ -410,12 +412,14 @@
             }, '-', {
               text: 'Andere gebruiker',
               handler: function(button, event, eOpts) {
+                Lizard.CM.saveContext();
                 return me.login();
               }
             }, {
               text: 'Log uit',
               handler: function(button, event, eOpts) {
-                return me.logout();
+                me.logout();
+                return Lizard.CM.saveContext();
               }
             }
           ]
