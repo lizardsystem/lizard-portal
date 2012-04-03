@@ -267,7 +267,7 @@ Ext.define 'Lizard.ContextManager',
     # Save the context to the server
     saveContext: () ->
         if @context and @context.user and @context.user.id
-            console.log('Jack says: saving context...')
+            # console.log('Saving context...')
             context =  Ext.JSON.encode({
                 objects: @objects
                 context:

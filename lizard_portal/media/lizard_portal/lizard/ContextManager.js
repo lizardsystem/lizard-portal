@@ -240,7 +240,6 @@
       var context, portalWindow,
         _this = this;
       if (this.context && this.context.user && this.context.user.id) {
-        console.log('Jack says: saving context...');
         context = Ext.JSON.encode({
           objects: this.objects,
           context: {
