@@ -5,6 +5,9 @@ Changelog of lizard-portal
 0.31 (unreleased)
 -----------------
 
+- Added icons and style for ESF configuration tree: folder, main,
+  calculation, supportive.
+
 - Removed console log.
 
 

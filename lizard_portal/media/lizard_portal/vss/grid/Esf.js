@@ -139,8 +139,7 @@ Ext.define('Vss.grid.Esf', {
             if (record.data.config_type == 'parameter') {
                 cls.push(cssPrefix + 'grid-checkheader-setting');
                 return '<div class="' + cls.join(' ') + '">&#160;</div>';
-            }
-            else if (record.data.is_manual) {
+            } else if (record.data.is_manual) {
                 if (value==1) {
                     cls.push(cssPrefix + 'grid-checkheader-hand');
                 } else if (value==0) {
@@ -152,7 +151,6 @@ Ext.define('Vss.grid.Esf', {
                 return '<div class="' + cls.join(' ') + '">&#160;</div>';
             }
         }
-
 
         Ext.apply(this, {
             collapsible: false,

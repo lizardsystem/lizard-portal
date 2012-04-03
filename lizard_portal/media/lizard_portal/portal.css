@@ -163,6 +163,30 @@
     text-align: center;
 }
 
+/* ESF tree */
+.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-main {
+    background-image: url('../vss/icons/esf.png');
+}
+
+.x-tree-custom-main {
+    background-image: url('../vss/icons/esf.png');
+}
+
+.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-folder,
+.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-calculation {
+    background-image: url('x-grid-icons/folder-open-gray.png');
+}
+
+.x-tree-custom-folder,
+.x-tree-custom-calculation {
+    background-image: url('x-grid-icons/folder-gray.png');
+}
+
+.x-tree-custom-parameter,
+.x-tree-custom-supportive {
+    background-image: url('x-grid-icons/green-ball.png');
+}
+
 /* TODO: add border */
 .x-tool-over img.x-tool-empty {
     background-image: url('x-tool-icons/x-tool-empty.png');
