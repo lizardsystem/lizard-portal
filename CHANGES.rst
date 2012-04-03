@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.31 (unreleased)
+0.31 (2012-04-03)
 -----------------
 
 - Added icons and style for ESF configuration tree: folder, main,
