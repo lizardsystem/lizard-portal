@@ -6,7 +6,7 @@ Changelog of lizard-portal
 -----------------
 
 - Objects in Lizard.window.MapWindow now return objects in lon/lat
-  coordinates, before it was in google coordinates.
+  coordinates, before it was in google coordinates (Pp #142).
 
 
 0.31 (2012-04-03)
