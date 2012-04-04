@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.32 (unreleased)
+0.32 (2012-04-04)
 -----------------
 
 - Objects in Lizard.window.MapWindow now return objects in lon/lat
