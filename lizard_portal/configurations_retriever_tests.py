@@ -12,11 +12,11 @@ from unittest import TestCase
 
 from mock import Mock
 
+from lizard_area.models import Area
 from lizard_portal.configurations_retriever import ConfigurationFactory
 from lizard_portal.configurations_retriever import ConfigurationsRetriever
 from lizard_portal.configurations_retriever import DescriptionParser
 from lizard_portal.configurations_retriever import ZipFileNameRetriever
-from lizard_portal.configurations_retriever import MockConfig
 from lizard_portal.models import ConfigurationToValidate
 
 class MockQuerySet(UserList):
@@ -41,6 +41,21 @@ class MockQuerySet(UserList):
                 result.append(o)
         return result
 
+    def get(self, *args, **kwargs):
+        result = None
+        for o in self.data:
+            is_searched_object = True
+            for keyword, value in kwargs.items():
+                is_searched_object = getattr(o, keyword) == value
+                if not is_searched_object:
+                    break
+            if is_searched_object:
+                result = o
+                break
+        if result is None:
+            assert False
+        return result
+
     def count(self):
         return len(self.data)
 
@@ -48,12 +63,18 @@ class MockQuerySet(UserList):
 class MockDatabase(object):
 
     def __init__(self):
+        self.areas = MockQuerySet()
         self.configurations = MockQuerySet()
 
     def ConfigurationToValidate(self):
         config = Mock(ConfigurationToValidate)
         config.save = lambda c=config: self.configurations.append(c)
         return config
+
+    def Area(self):
+        area = Mock(Area)
+        area.save = lambda a=area: self.areas.append(a)
+        return area
 
 class ConfigurationsRetrieverTestSuite(TestCase):
 
@@ -314,8 +335,10 @@ class ConfigurationStore(object):
     def supply(self):
         config = self.db.ConfigurationToValidate()
         for zip_file_name in self.zip_file_name_retriever.retrieve():
-            config.file_path = os.path.join(self.dbf_directory, zip_file_name[:-4])
-            config.save()
+            for area_code in self.retrieve_area_codes(zip_file_name):
+                config.area = self.db.areas.get(code=area_code)
+                config.file_path = os.path.join(self.dbf_directory, zip_file_name[:-4])
+                config.save()
 
     @property
     def dbf_directory(self):
@@ -328,7 +351,11 @@ class ConfigurationStoreTestSuite(TestCase):
         self.db = MockDatabase()
         self.file_name_retriever = Mock()
         self.file_name_retriever.retrieve = (lambda : ['waterbalans_Waternet_04042012_081400.zip'])
+        area = self.db.Area()
+        area.code = '3201'
+        area.save()
         self.store = ConfigurationStore(self.db, self.file_name_retriever)
+        self.store.retrieve_area_codes = (lambda s: ['3201'])
 
     def test_a(self):
         """Test the supply of a single ConfigurationToValidate."""
@@ -340,3 +367,9 @@ class ConfigurationStoreTestSuite(TestCase):
         self.store.supply()
         config = self.db.configurations.all()[0]
         self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', config.file_path)
+
+    def test_c(self):
+        """Test the new ConfigurationToValidate points to the correct Area."""
+        self.store.supply()
+        config = self.db.configurations.all()[0]
+        self.assertEqual(self.db.areas.all()[0], config.area)
