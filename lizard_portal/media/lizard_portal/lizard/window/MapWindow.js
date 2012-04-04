@@ -36,9 +36,13 @@
     },
     start_geometry: 'MULTIPOINT(2 2, 3 3, 4 4)',
     format: new OpenLayers.Format.WKT(),
-    serialize: function(feature) {
-      var str;
-      str = this.format.write(feature);
+    serialize: function(features) {
+      var feature, str, _i, _len;
+      for (_i = 0, _len = features.length; _i < _len; _i++) {
+        feature = features[_i];
+        feature.geometry.transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
+      }
+      str = this.format.write(features);
       return str;
     },
     deserialize: function(features_string) {
@@ -54,6 +58,7 @@
         final_features = [];
         for (_i = 0, _len = features.length; _i < _len; _i++) {
           feature = features[_i];
+          feature.geometry.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
           if (['OpenLayers.Geometry.MultiPoint', 'OpenLayers.Geometry.MultiLine', 'OpenLayers.Geometry.MultiPolygon'].indexOf(feature.geometry.CLASS_NAME) >= 0) {
             _ref = feature.geometry.components;
             for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
@@ -298,7 +303,6 @@
         xtype: 'button',
         text: 'Klaar met bewerken',
         handler: function(button) {
-          debugger;
           var window, wkt;
           wkt = me.serialize(me.active_edit_layer.features);
           if (me.callback) me.callback(wkt);
