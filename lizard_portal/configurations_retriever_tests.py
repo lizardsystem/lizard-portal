@@ -307,14 +307,15 @@ def get_self_c():
 
 class ConfigurationStore(object):
 
-    def __init__(self, database):
+    def __init__(self, database, zip_file_name_retriever):
         self.db = database
+        self.zip_file_name_retriever = zip_file_name_retriever
 
     def supply(self):
         config = self.db.ConfigurationToValidate()
-        zip_file_name = 'waterbalans_Waternet_04042012_081400.zip'
-        config.file_path = os.path.join(self.dbf_directory, zip_file_name[:-4])
-        config.save()
+        for zip_file_name in self.zip_file_name_retriever.retrieve():
+            config.file_path = os.path.join(self.dbf_directory, zip_file_name[:-4])
+            config.save()
 
     @property
     def dbf_directory(self):
@@ -325,7 +326,9 @@ class ConfigurationStoreTestSuite(TestCase):
 
     def setUp(self):
         self.db = MockDatabase()
-        self.store = ConfigurationStore(self.db)
+        self.file_name_retriever = Mock()
+        self.file_name_retriever.retrieve = (lambda : ['waterbalans_Waternet_04042012_081400.zip'])
+        self.store = ConfigurationStore(self.db, self.file_name_retriever)
 
     def test_a(self):
         """Test the supply of a single ConfigurationToValidate."""
