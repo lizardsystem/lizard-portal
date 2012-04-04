@@ -386,16 +386,23 @@ class ConfigurationStoreTestSuite(TestCase):
 
 class ConfigurationSpecRetriever(object):
 
-    def retrieve(self, file_name):
-        return [{'area_code': '3201'}]
+    def retrieve(self, zip_file_name):
+        config_specs = []
+        for area_code in self.retrieve_area_codes():
+            config_spec = {'area_code': area_code}
+            config_specs.append(config_spec)
+        return config_specs
 
 
 class ConfigurationSpecRetrieverTestSuite(TestCase):
 
+    def setUp(self):
+        self.retriever = ConfigurationSpecRetriever()
+        self.retriever.retrieve_area_codes = lambda : ['3201']
+
     def test_a(self):
         """Test the construction of a single ConfigurationSpec."""
-        retriever = ConfigurationSpecRetriever()
         file_name = 'waterbalans_Waternet_04042012_081400.zip'
-        config_specs = retriever.retrieve(file_name)
+        config_specs = self.retriever.retrieve(file_name)
         self.assertEqual(1, len(config_specs))
         self.assertEqual('3201', config_specs[0]['area_code'])
