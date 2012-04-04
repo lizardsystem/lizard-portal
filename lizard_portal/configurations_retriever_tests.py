@@ -335,14 +335,14 @@ class ConfigurationStore(object):
     def supply(self):
         config = self.db.ConfigurationToValidate()
         for zip_name in self.retrieve_zip_names():
-            file_name, config_type = self.extract(zip_name)
-            for config_spec in self.retrieve_config_specs(file_name):
+            dir_name, config_type = self.extract(zip_name)
+            for config_spec in self.retrieve_config_specs(dir_name, config_type):
                 for key, value in config_spec.items():
                     if key == 'area_code':
                         config.area = self.db.areas.get(code=value)
                     else:
                         setattr(config, key, value)
-                config.file_path, _ = os.path.split(file_name)
+                config.file_path = dir_name
                 config.action = ConfigurationToValidate.KEEP
                 config.save()
 
@@ -356,7 +356,7 @@ class ConfigurationStoreTestSuite(TestCase):
         area.save()
         self.store = ConfigurationStore(self.db)
         self.store.retrieve_zip_names = lambda : ['waterbalans_Waternet_04042012_081400.zip']
-        self.store.retrieve_config_specs = lambda file_name: [{'area_code': '3201'}]
+        self.store.retrieve_config_specs = lambda dir_name, config_type: [{'area_code': '3201'}]
 
     def test_a(self):
         """Test the supply of a single ConfigurationToValidate."""
@@ -383,17 +383,18 @@ class ConfigurationStoreTestSuite(TestCase):
 
     def test_e(self):
         """Test retrieve_config_specs is called correctly."""
-        self.store.retrieve_config_specs = Mock(return_value=self.store.retrieve_config_specs("don't care"))
+        self.store.retrieve_config_specs = Mock(return_value=self.store.retrieve_config_specs("don't care", "don't care"))
         self.store.supply()
         args, kwargs = self.store.retrieve_config_specs.call_args
-        self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400/aanafvoergebieden.dbf', args[0])
+        self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', args[0])
+        self.assertEqual('waterbalans', args[1])
 
 
 class ConfigurationExtractor(object):
 
     def extract(self, zip_name):
         directory = os.path.join(self.dbf_directory, zip_name[:-4])
-        return os.path.join(directory, 'aanafvoergebieden.dbf'), 'waterbalans'
+        return directory, 'waterbalans'
 
     @property
     def dbf_directory(self):
