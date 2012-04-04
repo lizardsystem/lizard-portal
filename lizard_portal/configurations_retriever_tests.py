@@ -334,8 +334,8 @@ class ConfigurationStore(object):
 
     def supply(self):
         config = self.db.ConfigurationToValidate()
-        for zip_file_name in self.retrieve_file_names():
-            file_name, config_type = self.extract(zip_file_name)
+        for zip_name in self.retrieve_zip_names():
+            file_name, config_type = self.extract(zip_name)
             for config_spec in self.retrieve_config_specs(file_name):
                 for key, value in config_spec.items():
                     if key == 'area_code':
@@ -355,7 +355,7 @@ class ConfigurationStoreTestSuite(TestCase):
         area.code = '3201'
         area.save()
         self.store = ConfigurationStore(self.db)
-        self.store.retrieve_file_names = lambda : ['waterbalans_Waternet_04042012_081400.zip']
+        self.store.retrieve_zip_names = lambda : ['waterbalans_Waternet_04042012_081400.zip']
         self.store.retrieve_config_specs = lambda file_name: [{'area_code': '3201'}]
 
     def test_a(self):
