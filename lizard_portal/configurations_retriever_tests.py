@@ -335,8 +335,13 @@ class ConfigurationStore(object):
         config = self.db.ConfigurationToValidate()
         for zip_file_name in self.retrieve_file_names():
             for config_spec in self.retrieve_config_specs(zip_file_name):
-                config.area = self.db.areas.get(code=config_spec['area_code'])
+                for key, value in config_spec.items():
+                    if key == 'area_code':
+                        config.area = self.db.areas.get(code=value)
+                    else:
+                        setattr(config, key, value)
                 config.file_path = os.path.join(self.dbf_directory, zip_file_name[:-4])
+                config.action = ConfigurationToValidate.KEEP
                 config.save()
 
     @property
@@ -371,3 +376,26 @@ class ConfigurationStoreTestSuite(TestCase):
         self.store.supply()
         config = self.db.configurations.all()[0]
         self.assertEqual(self.db.areas.all()[0], config.area)
+
+    def test_d(self):
+        """Test the new ConfigurationToValidate should be kept."""
+        self.store.supply()
+        config = self.db.configurations.all()[0]
+        self.assertEqual(ConfigurationToValidate.KEEP, config.action)
+
+
+class ConfigurationSpecRetriever(object):
+
+    def retrieve(self, file_name):
+        return [{'area_code': '3201'}]
+
+
+class ConfigurationSpecRetrieverTestSuite(TestCase):
+
+    def test_a(self):
+        """Test the construction of a single ConfigurationSpec."""
+        retriever = ConfigurationSpecRetriever()
+        file_name = 'waterbalans_Waternet_04042012_081400.zip'
+        config_specs = retriever.retrieve(file_name)
+        self.assertEqual(1, len(config_specs))
+        self.assertEqual('3201', config_specs[0]['area_code'])
