@@ -5,6 +5,8 @@
 
 # Copyright (c) 2012 Nelen & Schuurmans.  GPL licensed, see LICENSE.rst.
 
+import os
+
 from UserList import UserList
 from unittest import TestCase
 
@@ -305,24 +307,33 @@ def get_self_c():
 
 class ConfigurationStore(object):
 
-    def __init__(self, database, zip_names_retriever):
+    def __init__(self, database):
         self.db = database
-        self.zip_names_retriever = zip_names_retriever
 
     def supply(self):
-        zip_names = self.zip_names_retriever.retrieve()
-        for zip_name in zip_names:
-            config = self.db.ConfigurationToValidate()
-            config.save()
+        config = self.db.ConfigurationToValidate()
+        zip_file_name = 'waterbalans_Waternet_04042012_081400.zip'
+        config.file_path = os.path.join(self.dbf_directory, zip_file_name[:-4])
+        config.save()
+
+    @property
+    def dbf_directory(self):
+        return '/tmp'
 
 
 class ConfigurationStoreTestSuite(TestCase):
 
+    def setUp(self):
+        self.db = MockDatabase()
+        self.store = ConfigurationStore(self.db)
+
     def test_a(self):
         """Test the supply of a single ConfigurationToValidate."""
-        db = MockDatabase()
-        zip_names_retriever = Mock()
-        zip_names_retriever.retrieve = Mock(return_value = ['/path-to/waterbalans.zip'])
-        store = ConfigurationStore(db, zip_names_retriever)
-        store.supply()
-        self.assertEqual(1, db.configurations.count())
+        self.store.supply()
+        self.assertEqual(1, self.db.configurations.count())
+
+    def test_b(self):
+        """Test the zip file name specifies the directory of a single ConfigurationToValidate."""
+        self.store.supply()
+        config = self.db.configurations.all()[0]
+        self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', config.file_path)
