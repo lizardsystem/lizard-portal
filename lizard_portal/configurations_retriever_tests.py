@@ -335,8 +335,8 @@ class ConfigurationStore(object):
     def supply(self):
         config = self.db.ConfigurationToValidate()
         for zip_file_name in self.zip_file_name_retriever.retrieve():
-            for area_code in self.retrieve_area_codes(zip_file_name):
-                config.area = self.db.areas.get(code=area_code)
+            for config_spec in self.retrieve_config_specs(zip_file_name):
+                config.area = self.db.areas.get(code=config_spec['area_code'])
                 config.file_path = os.path.join(self.dbf_directory, zip_file_name[:-4])
                 config.save()
 
@@ -355,7 +355,7 @@ class ConfigurationStoreTestSuite(TestCase):
         area.code = '3201'
         area.save()
         self.store = ConfigurationStore(self.db, self.file_name_retriever)
-        self.store.retrieve_area_codes = (lambda s: ['3201'])
+        self.store.retrieve_config_specs = lambda s: [{'area_code': '3201'}]
 
     def test_a(self):
         """Test the supply of a single ConfigurationToValidate."""
