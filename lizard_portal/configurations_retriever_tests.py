@@ -330,23 +330,21 @@ class ConfigurationStore(object):
 
     def __init__(self, database):
         self.db = database
+        self.extract = ConfigurationExtractor().extract
 
     def supply(self):
         config = self.db.ConfigurationToValidate()
         for zip_file_name in self.retrieve_file_names():
-            for config_spec in self.retrieve_config_specs(zip_file_name):
+            file_name, config_type = self.extract(zip_file_name)
+            for config_spec in self.retrieve_config_specs(file_name):
                 for key, value in config_spec.items():
                     if key == 'area_code':
                         config.area = self.db.areas.get(code=value)
                     else:
                         setattr(config, key, value)
-                config.file_path = os.path.join(self.dbf_directory, zip_file_name[:-4])
+                config.file_path, _ = os.path.split(file_name)
                 config.action = ConfigurationToValidate.KEEP
                 config.save()
-
-    @property
-    def dbf_directory(self):
-        return '/tmp'
 
 
 class ConfigurationStoreTestSuite(TestCase):
@@ -382,6 +380,24 @@ class ConfigurationStoreTestSuite(TestCase):
         self.store.supply()
         config = self.db.configurations.all()[0]
         self.assertEqual(ConfigurationToValidate.KEEP, config.action)
+
+    def test_e(self):
+        """Test retrieve_config_specs is called correctly."""
+        self.store.retrieve_config_specs = Mock(return_value=self.store.retrieve_config_specs("don't care"))
+        self.store.supply()
+        args, kwargs = self.store.retrieve_config_specs.call_args
+        self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400/aanafvoergebieden.dbf', args[0])
+
+
+class ConfigurationExtractor(object):
+
+    def extract(self, zip_name):
+        directory = os.path.join(self.dbf_directory, zip_name[:-4])
+        return os.path.join(directory, 'aanafvoergebieden.dbf'), 'waterbalans'
+
+    @property
+    def dbf_directory(self):
+        return '/tmp'
 
 
 class ConfigurationSpecRetriever(object):
