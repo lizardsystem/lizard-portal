@@ -65,12 +65,13 @@ Ext.define('Lizard.window.MapWindow',
 
     format: new OpenLayers.Format.WKT(),
 
-    serialize: (feature) ->
-
-        str = @format.write(feature);
+    serialize: (features) ->
+        for feature in features
+            feature.geometry.transform(
+                new OpenLayers.Projection("EPSG:900913"),
+                new OpenLayers.Projection("EPSG:4326"));
+        str = @format.write(features);
         return str
-
-
 
     deserialize: (features_string) ->
 
@@ -88,6 +89,9 @@ Ext.define('Lizard.window.MapWindow',
             final_features = []
             for feature in features
                 # debugger
+                feature.geometry.transform(
+                    new OpenLayers.Projection("EPSG:4326"),
+                    new OpenLayers.Projection("EPSG:900913"));
                 if ['OpenLayers.Geometry.MultiPoint', 'OpenLayers.Geometry.MultiLine', 'OpenLayers.Geometry.MultiPolygon'].indexOf(feature.geometry.CLASS_NAME) >= 0
                     for elem in feature.geometry.components
                         final_features = final_features.concat(new OpenLayers.Feature.Vector(elem))
@@ -127,9 +131,6 @@ Ext.define('Lizard.window.MapWindow',
     initComponent: () ->
         me = @
 
-
-
-
         @height = @height ||  (window.innerHeight - 200)
         @width = @width || 500
 
@@ -144,7 +145,6 @@ Ext.define('Lizard.window.MapWindow',
 
         if @start_geometry
             @deserialize(@start_geometry)
-
 
         layers = [vlayer, @points, @lines, @polygons]
         map_controls = [
@@ -251,14 +251,6 @@ Ext.define('Lizard.window.MapWindow',
             controls: map_controls
             layers: layers
             extent: @extent
-            # options: {
-            #     projection: new OpenLayers.Projection("EPSG:4326"),
-            # }
-#            options: {
-#                projection: new OpenLayers.Projection("EPSG:900913"),
-#                units: "m"
-#            }
-
         })
 
         controls.drag = map.navigation
@@ -332,7 +324,6 @@ Ext.define('Lizard.window.MapWindow',
             xtype: 'button',
             text: 'Klaar met bewerken',
             handler: (button) ->
-                debugger
                 wkt = me.serialize(me.active_edit_layer.features)
                 if me.callback
                     me.callback(wkt)
