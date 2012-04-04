@@ -39,6 +39,9 @@ class MockQuerySet(UserList):
                 result.append(o)
         return result
 
+    def count(self):
+        return len(self.data)
+
 
 class MockDatabase(object):
 
@@ -298,3 +301,28 @@ global_s = None
 
 def get_self_c():
     return global_s
+
+
+class ConfigurationStore(object):
+
+    def __init__(self, database, zip_names_retriever):
+        self.db = database
+        self.zip_names_retriever = zip_names_retriever
+
+    def supply(self):
+        zip_names = self.zip_names_retriever.retrieve()
+        for zip_name in zip_names:
+            config = self.db.ConfigurationToValidate()
+            config.save()
+
+
+class ConfigurationStoreTestSuite(TestCase):
+
+    def test_a(self):
+        """Test the supply of a single ConfigurationToValidate."""
+        db = MockDatabase()
+        zip_names_retriever = Mock()
+        zip_names_retriever.retrieve = Mock(return_value = ['/path-to/waterbalans.zip'])
+        store = ConfigurationStore(db, zip_names_retriever)
+        store.supply()
+        self.assertEqual(1, db.configurations.count())
