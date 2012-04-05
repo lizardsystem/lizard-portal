@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.34 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fixes the issue that a user with the right credentials could not access the
+  screen to manage the coupling of KRW water bodies and catchment areas (Pp
+  222).
 
 
 0.33 (2012-04-04)
