@@ -10,11 +10,11 @@ from django.template import Template
 from django.template.loader import get_template
 from django.utils import simplejson
 
+from lizard_area.models import Area
 from lizard_portal.configurations_retriever import ConfigurationsRetriever
 from lizard_portal.configurations_retriever import create_configurations_retriever
 from lizard_portal.configurations_retriever import MockConfig
 from lizard_portal.models import PortalConfiguration
-
 from lizard_registration.models import SessionContextStore, UserContextStore
 from lizard_registration.utils import auto_login
 from lizard_registration.utils import get_user_permissions_overall
@@ -101,12 +101,20 @@ def json_configuration(request):
             return redirect('lizard_measure.organization_groupedit_portal')
         elif portal_template == 'stuurparameter-overzicht':
             return redirect('lizard_measure.steerparameter_overview')
+        elif portal_template == 'area_link':
+            # We need the template that couples KRW water bodies and catchment
+            # areas which is only allowed if the user is an analyst. We cannot
+            # easily detect that in the template itself so we do that here.
+            if not request.user.has_perm('auth.is_analyst', Area):
+                t = get_template('portals/geen_toegang.js')
+                return HttpResponse(t.render(c),  mimetype="text/plain")
 
         try:
             t = get_template('portals/'+portal_template+'.js')
         except TemplateDoesNotExist, e:
             pc = PortalConfiguration.objects.filter(slug=portal_template)[0]
             t = Template(pc.configuration)
+
     else:
         t = get_template('portals/geen_toegang.js')
 
