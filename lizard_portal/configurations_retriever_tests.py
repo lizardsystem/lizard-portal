@@ -403,9 +403,9 @@ class ConfigurationExtractor(object):
 
 class ConfigurationSpecRetriever(object):
 
-    def retrieve(self, zip_file_name):
+    def retrieve(self, dir_name, config_type):
         config_specs = []
-        for area_code in self.retrieve_area_codes():
+        for area_code in self.retrieve_area_codes(dir_name, config_type):
             config_spec = {'area_code': area_code}
             config_specs.append(config_spec)
         return config_specs
@@ -415,11 +415,12 @@ class ConfigurationSpecRetrieverTestSuite(TestCase):
 
     def setUp(self):
         self.retriever = ConfigurationSpecRetriever()
-        self.retriever.retrieve_area_codes = lambda : ['3201']
+        self.retriever.retrieve_area_codes = lambda dir_name, config_type: ['3201']
 
     def test_a(self):
         """Test the construction of a single ConfigurationSpec."""
-        file_name = 'waterbalans_Waternet_04042012_081400.zip'
-        config_specs = self.retriever.retrieve(file_name)
+        dir_name = '/tmp/waterbalans_Waternet_04042012_081400'
+        config_type = 'waterbalans'
+        config_specs = self.retriever.retrieve(dir_name, config_type)
         self.assertEqual(1, len(config_specs))
         self.assertEqual('3201', config_specs[0]['area_code'])
