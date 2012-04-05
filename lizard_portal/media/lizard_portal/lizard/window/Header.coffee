@@ -429,7 +429,14 @@ Ext.define('Lizard.window.Header', {
                     menu: [{
                             text: 'Over deze versie'
                             handler: (button, event, eOpts) ->
-                                Ext.MessageBox.alert('Todo', 'todo')
+                                Ext.create('Ext.window.Window', {
+                                    title: 'VSS'
+                                    autoLoad:
+                                        url: '/version/'
+                                    width: 400,
+                                    height: 100,
+                                    modal: true,
+                                }).show();
                         },
                         {
                             text: 'Toon informatie gebruiker'

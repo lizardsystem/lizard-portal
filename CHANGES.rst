@@ -2,10 +2,16 @@ Changelog of lizard-portal
 ==========================
 
 
-0.33 (unreleased)
+0.34 (unreleased)
 -----------------
 
 - Nothing changed yet.
+
+
+0.33 (2012-04-04)
+-----------------
+
+- Added popup contents for 'Over deze versie' in header.coffee.
 
 
 0.32 (2012-04-04)

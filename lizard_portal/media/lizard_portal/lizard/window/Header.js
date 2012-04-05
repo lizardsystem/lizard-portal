@@ -402,7 +402,15 @@
             {
               text: 'Over deze versie',
               handler: function(button, event, eOpts) {
-                return Ext.MessageBox.alert('Todo', 'todo');
+                return Ext.create('Ext.window.Window', {
+                  title: 'VSS',
+                  autoLoad: {
+                    url: '/version/'
+                  },
+                  width: 400,
+                  height: 100,
+                  modal: true
+                }).show();
               }
             }, {
               text: 'Toon informatie gebruiker',
