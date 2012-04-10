@@ -346,6 +346,34 @@ class ConfigurationStore(object):
                 config.action = ConfigurationToValidate.KEEP
                 config.save()
 
+    def extract(self, zip_name):
+        """Extract the contents of the given zip file.
+
+        This method is not implemented here and should be set through
+        dependency injection. The method that is injected determines where the
+        contents of the zip file are stored.
+
+        """
+        assert False
+
+    def retrieve_config_specs(self, dir_name, config_type):
+        """Retrieve the list of configuration specifications.
+
+        A configuration specification is a dict that maps each attribute name
+        to its attribute value.
+
+        Parameters:
+          *dir_name*
+             directory with the configuration specs of a single water manager
+          *config_type*
+             string that specifies the type of the configuration
+
+        This method is not implemented here and should be set through
+        dependency injection.
+
+        """
+        assert False
+
 
 class ConfigurationStoreTestSuite(TestCase):
 
@@ -404,23 +432,44 @@ class ConfigurationExtractor(object):
 class ConfigurationSpecRetriever(object):
 
     def retrieve(self, dir_name, config_type):
+        dbf_name = os.path.join(dir_name, 'aanafvoer_%s.dbf' % config_type)
         config_specs = []
-        for area_code in self.retrieve_area_codes(dir_name, config_type):
+        for area_code in self.retrieve_area_codes(dbf_name):
             config_spec = {'area_code': area_code}
             config_specs.append(config_spec)
         return config_specs
+
+    def retrieve_area_codes(self, dbf_name):
+        return ['3201']
 
 
 class ConfigurationSpecRetrieverTestSuite(TestCase):
 
     def setUp(self):
         self.retriever = ConfigurationSpecRetriever()
-        self.retriever.retrieve_area_codes = lambda dir_name, config_type: ['3201']
 
     def test_a(self):
         """Test the construction of a single ConfigurationSpec."""
-        dir_name = '/tmp/waterbalans_Waternet_04042012_081400'
+        dir_name = '/path/to/configuration/directory'
         config_type = 'waterbalans'
         config_specs = self.retriever.retrieve(dir_name, config_type)
         self.assertEqual(1, len(config_specs))
         self.assertEqual('3201', config_specs[0]['area_code'])
+
+    def test_b(self):
+        """Test retrieve_area_codes_from_dbf is called correctly."""
+        self.retriever.retrieve_area_codes = Mock(return_value=['3201'])
+        dir_name = '/path/to/configuration/directory'
+        config_type = 'waterbalans'
+        self.retriever.retrieve(dir_name, config_type)
+        args, kwargs = self.retriever.retrieve_area_codes.call_args
+        self.assertEqual('/path/to/configuration/directory/aanafvoer_waterbalans.dbf', args[0])
+
+    def test_c(self):
+        """Test retrieve_area_codes_from_dbf is called correctly."""
+        self.retriever.retrieve_area_codes = Mock(return_value=['3201'])
+        dir_name = '/path/to/configuration/directory'
+        config_type = 'esf1'
+        self.retriever.retrieve(dir_name, config_type)
+        args, kwargs = self.retriever.retrieve_area_codes.call_args
+        self.assertEqual('/path/to/configuration/directory/aanafvoer_esf1.dbf', args[0])
