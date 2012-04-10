@@ -5,6 +5,7 @@
 
 # Copyright (c) 2012 Nelen & Schuurmans.  GPL licensed, see LICENSE.rst.
 
+import re
 import os
 
 from UserList import UserList
@@ -331,11 +332,14 @@ class ConfigurationStore(object):
     def __init__(self, database):
         self.db = database
         self.extract = ConfigurationExtractor().extract
+        self.retrieve_config_type = ConfigurationTypeRetriever().retrieve
+        self.retrieve_config_specs = ConfigurationSpecRetriever().retrieve
 
     def supply(self):
         config = self.db.ConfigurationToValidate()
         for zip_name in self.retrieve_zip_names():
-            dir_name, config_type = self.extract(zip_name)
+            dir_name = self.extract(zip_name)
+            config_type = self.retrieve_config_type(zip_name)
             for config_spec in self.retrieve_config_specs(dir_name, config_type):
                 for key, value in config_spec.items():
                     if key == 'area_code':
@@ -352,6 +356,15 @@ class ConfigurationStore(object):
         This method is not implemented here and should be set through
         dependency injection. The method that is injected determines where the
         contents of the zip file are stored.
+
+        """
+        assert False
+
+    def retrieve_config_type(self, zip_name):
+        """Return the configuration type using the name of the zip file.
+
+        This method is not implemented here and should be set through
+        dependency injection.
 
         """
         assert False
@@ -375,6 +388,35 @@ class ConfigurationStore(object):
         assert False
 
 
+class ConfigurationTypeRetriever(object):
+
+    def __init__(self):
+        self.regex = re.compile('^([\w\d]*)_[a-zA-Z]*_\d{8}_\d{6}.zip')
+
+    def retrieve(self, zip_name):
+        """Return the configuration type using the name of the zip file."""
+        _, file_name = os.path.split(zip_name)
+        match = self.regex.search(file_name)
+        if match and len(match.groups()) == 1:
+            matched_string = match.group(1)
+            return matched_string.lower().replace('_', '')
+
+
+class ConfigurationTypeRetrieverTestSuite(TestCase):
+
+    def test_a(self):
+        """Test the retrieval of configuration type 'waterbalans'."""
+        retriever = ConfigurationTypeRetriever()
+        config_type = retriever.retrieve('mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
+        self.assertEqual('waterbalans', config_type)
+
+    def test_b(self):
+        """Test the retrieval of configuration type 'esf1'."""
+        retriever = ConfigurationTypeRetriever()
+        config_type = retriever.retrieve('mnt/vss-share/ESF_1_Waternet_20120228_141234.zip')
+        self.assertEqual('esf1', config_type)
+
+
 class ConfigurationStoreTestSuite(TestCase):
 
     def setUp(self):
@@ -384,6 +426,7 @@ class ConfigurationStoreTestSuite(TestCase):
         area.save()
         self.store = ConfigurationStore(self.db)
         self.store.retrieve_zip_names = lambda : ['waterbalans_Waternet_04042012_081400.zip']
+        self.store.retrieve_config_type =  lambda zip_name: 'waterbalans'
         self.store.retrieve_config_specs = lambda dir_name, config_type: [{'area_code': '3201'}]
 
     def test_a(self):
@@ -421,8 +464,7 @@ class ConfigurationStoreTestSuite(TestCase):
 class ConfigurationExtractor(object):
 
     def extract(self, zip_name):
-        directory = os.path.join(self.dbf_directory, zip_name[:-4])
-        return directory, 'waterbalans'
+        return os.path.join(self.dbf_directory, zip_name[:-4])
 
     @property
     def dbf_directory(self):
