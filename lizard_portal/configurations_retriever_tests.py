@@ -481,12 +481,26 @@ class ConfigurationSpecRetriever(object):
         dbf_name = os.path.join(dir_name, 'aanafvoer_%s.dbf' % config_type)
         config_specs = []
         for area_code in self.retrieve_area_codes(dbf_name):
-            config_spec = {'area_code': area_code}
+            meta_info_name = os.path.join(dir_name, 'description.txt')
+            config_spec = self.retrieve_meta_info(meta_info_name)
+            config_spec['area_code'] = area_code
             config_specs.append(config_spec)
         return config_specs
 
     def retrieve_area_codes(self, dbf_name):
-        """Return the list of area code in the given dbf file.
+        """Return the list of area codes in the given dbf file.
+
+        This method is not implemented here and should be set through
+        dependency injection.
+
+        """
+        assert False
+
+    def retrieve_meta_info(self, meta_info_name):
+        """Return the meta info specified in the given file.
+
+        This method returns the meta info as a dict of attribute name to
+        attribute value.
 
         This method is not implemented here and should be set through
         dependency injection.
@@ -500,6 +514,7 @@ class ConfigurationSpecRetrieverTestSuite(TestCase):
     def setUp(self):
         self.retriever = ConfigurationSpecRetriever()
         self.retriever.retrieve_area_codes = Mock(return_value=['3201'])
+        self.retriever.retrieve_meta_info = Mock(return_value={'user': 'Pieter Swinkels'})
 
     def test_a(self):
         """Test the construction of a single ConfigurationSpec."""
@@ -524,3 +539,19 @@ class ConfigurationSpecRetrieverTestSuite(TestCase):
         self.retriever.retrieve(dir_name, config_type)
         args, kwargs = self.retriever.retrieve_area_codes.call_args
         self.assertEqual('/path/to/configuration/directory/aanafvoer_esf1.dbf', args[0])
+
+    def test_d(self):
+        """Test the retrieval of the 'user' attribute."""
+        dir_name = '/path/to/configuration/directory'
+        config_type = 'waterbalans'
+        config_specs = self.retriever.retrieve(dir_name, config_type)
+        self.assertEqual(1, len(config_specs))
+        self.assertEqual('Pieter Swinkels', config_specs[0]['user'])
+
+    def test_e(self):
+        """Test retrieva_meta_info receives the right parameters."""
+        dir_name = '/path/to/configuration/directory'
+        config_type = 'waterbalans'
+        self.retriever.retrieve(dir_name, config_type)
+        args, kwargs = self.retriever.retrieve_meta_info.call_args
+        self.assertEqual('/path/to/configuration/directory/description.txt', args[0])
