@@ -440,13 +440,20 @@ class ConfigurationSpecRetriever(object):
         return config_specs
 
     def retrieve_area_codes(self, dbf_name):
-        return ['3201']
+        """Return the list of area code in the given dbf file.
+
+        This method is not implemented here and should be set through
+        dependency injection.
+
+        """
+        assert False
 
 
 class ConfigurationSpecRetrieverTestSuite(TestCase):
 
     def setUp(self):
         self.retriever = ConfigurationSpecRetriever()
+        self.retriever.retrieve_area_codes = Mock(return_value=['3201'])
 
     def test_a(self):
         """Test the construction of a single ConfigurationSpec."""
@@ -458,7 +465,6 @@ class ConfigurationSpecRetrieverTestSuite(TestCase):
 
     def test_b(self):
         """Test retrieve_area_codes_from_dbf is called correctly."""
-        self.retriever.retrieve_area_codes = Mock(return_value=['3201'])
         dir_name = '/path/to/configuration/directory'
         config_type = 'waterbalans'
         self.retriever.retrieve(dir_name, config_type)
@@ -467,7 +473,6 @@ class ConfigurationSpecRetrieverTestSuite(TestCase):
 
     def test_c(self):
         """Test retrieve_area_codes_from_dbf is called correctly."""
-        self.retriever.retrieve_area_codes = Mock(return_value=['3201'])
         dir_name = '/path/to/configuration/directory'
         config_type = 'esf1'
         self.retriever.retrieve(dir_name, config_type)
