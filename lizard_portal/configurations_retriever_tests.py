@@ -363,6 +363,10 @@ class ConfigurationStore(object):
     def retrieve_config_type(self, zip_name):
         """Return the configuration type using the name of the zip file.
 
+        Parameters:
+          *zip_name*
+             path to the zip file with the configurations of a water manager
+
         This method is not implemented here and should be set through
         dependency injection.
 
