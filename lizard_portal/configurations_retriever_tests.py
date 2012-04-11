@@ -127,20 +127,21 @@ class DescriptionParserTestSuite(TestCase):
 
     def setup(self, *lines):
         self.parser = DescriptionParser()
-        self.open_file = Mock()
-        self.open_file.readlines = Mock(return_value=lines)
+        open_file = Mock()
+        open_file.readlines = Mock(return_value=lines)
+        self.parser.open = Mock(return_value=open_file)
 
     def test_a(self):
         """Test that an option value that contains a space is parsed."""
         self.setup('naam = nieuwe oppervlakte')
-        description_dict = self.parser.as_dict(self.open_file)
+        description_dict = self.parser.as_dict('/path/to/description.txt')
         self.assertEqual({'naam': 'nieuwe oppervlakte'}, description_dict)
 
     def test_b(self):
         """Test that multiple options are parsed."""
         lines = 'naam = nieuwe oppervlakte', 'gebruiker = Pieter Swinkels'
         self.setup(*lines)
-        description_dict = self.parser.as_dict(self.open_file)
+        description_dict = self.parser.as_dict('/path/to/description.txt')
         self.assertEqual(2, len(description_dict))
         self.assertEqual('nieuwe oppervlakte', description_dict['naam'])
         self.assertEqual('Pieter Swinkels', description_dict['gebruiker'])
@@ -148,26 +149,26 @@ class DescriptionParserTestSuite(TestCase):
     def test_c(self):
         """Test that trailing spaces of a value are removed."""
         self.setup('naam = nieuwe oppervlakte  ')
-        description_dict = self.parser.as_dict(self.open_file)
+        description_dict = self.parser.as_dict('/path/to/description.txt')
         self.assertEqual('nieuwe oppervlakte', description_dict['naam'])
 
     def test_d(self):
         """Test that an invalid option is not parsed."""
         self.setup('naam nieuwe oppervlakte')
-        description_dict = self.parser.as_dict(self.open_file)
+        description_dict = self.parser.as_dict('/path/to/description.txt')
         self.assertEqual({}, description_dict)
 
     def test_e(self):
         """Test that an attribute name is lowercased."""
         self.setup('Naam = nieuwe oppervlakte')
-        description_dict = self.parser.as_dict(self.open_file)
+        description_dict = self.parser.as_dict('/path/to/description.txt')
         self.assertEqual('nieuwe oppervlakte', description_dict['naam'])
 
     def test_f(self):
         """Test that attribute values can contain non-alphanumeric characters.
         """
         self.setup('datum = 08-03-2012 20:13:00')
-        description_dict = self.parser.as_dict(self.open_file)
+        description_dict = self.parser.as_dict('/path/to/description.txt')
         self.assertEqual('08-03-2012 20:13:00', description_dict['datum'])
 
 

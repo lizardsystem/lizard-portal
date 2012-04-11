@@ -142,6 +142,9 @@ class ConfigurationTypeRetriever(object):
 
 class ConfigurationSpecRetriever(object):
 
+    def __init__(self):
+        self.retrieve_meta_info = DescriptionParser().as_dict
+
     def retrieve(self, dir_name, config_type):
         dbf_name = os.path.join(dir_name, 'aanafvoer_%s.dbf' % config_type)
         config_specs = []
@@ -203,16 +206,21 @@ class DescriptionParser(object):
     def __init__(self):
         self.regex = re.compile('(\w*)\s*=\s*(.*)')
 
-    def as_dict(self, open_file):
+    def as_dict(self, file_name):
         """Return the dict of attribute settings in the given open file."""
         attributes = {}
+        open_file = self.open(file_name)
         for line in open_file.readlines():
             match = self.regex.search(line)
             if match is not None:
                 option = self.regex.search(line).groups()
                 if option is not None and len(option) == 2:
                     attributes[option[0].lower()] = option[1].rstrip(' ')
+        open_file.close()
         return attributes
+
+    def open(self, file_name):
+        return open(file_name)
 
 
 class MockConfig(object):
