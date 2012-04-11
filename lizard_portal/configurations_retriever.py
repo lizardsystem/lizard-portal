@@ -91,6 +91,7 @@ class ConfigurationStore(object):
                     else:
                         setattr(config, key, value)
                 if valid:
+                    config.config_type = config_type
                     config.file_path = dir_name
                     config.action = ConfigurationToValidate.KEEP
                     config.save()
