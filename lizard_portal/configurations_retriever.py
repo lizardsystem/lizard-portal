@@ -15,6 +15,7 @@ from django.conf import settings
 from dbfpy import dbf
 from mock import Mock
 
+from lizard_area.models import Area
 from lizard_portal.models import ConfigurationToValidate
 
 
@@ -22,8 +23,12 @@ class Database(object):
     """Provides a wrapper around the Django database."""
 
     @property
+    def areas(self):
+        return Area.objects
+
+    @property
     def configurations(self):
-        return ConfigurationToValidate.objects.all()
+        return ConfigurationToValidate.objects
 
     def ConfigurationToValidate(self):
         return ConfigurationToValidate()
