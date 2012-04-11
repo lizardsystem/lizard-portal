@@ -17,9 +17,11 @@ from mock import Mock
 from lizard_area.models import Area
 from lizard_portal.configurations_retriever import ConfigurationFactory
 from lizard_portal.configurations_retriever import ConfigurationsRetriever
+from lizard_portal.configurations_retriever import Database
 from lizard_portal.configurations_retriever import DescriptionParser
 from lizard_portal.configurations_retriever import ZipFileNameRetriever
 from lizard_portal.models import ConfigurationToValidate
+
 
 class MockQuerySet(UserList):
 
@@ -330,8 +332,8 @@ def get_self_c():
 
 class ConfigurationStore(object):
 
-    def __init__(self, database):
-        self.db = database
+    def __init__(self):
+        self.db = Database()
         self.retrieve_config_type = ConfigurationTypeRetriever().retrieve
         self.retrieve_config_specs = ConfigurationSpecRetriever().retrieve
 
@@ -430,7 +432,8 @@ class ConfigurationStoreTestSuite(TestCase):
         area = self.db.Area()
         area.code = '3201'
         area.save()
-        self.store = ConfigurationStore(self.db)
+        self.store = ConfigurationStore()
+        self.store.db = self.db
         self.store.extract = Mock()
         self.store.retrieve_zip_names = lambda : ['waterbalans_Waternet_04042012_081400.zip']
         self.store.retrieve_config_type =  lambda zip_name: 'waterbalans'
