@@ -18,6 +18,7 @@ from mock import Mock
 
 from lizard_area.models import Area
 from lizard_portal.models import ConfigurationToValidate
+from lizard_security.models import DataSet
 
 
 logger = logging.getLogger(__name__)
@@ -33,6 +34,10 @@ class Database(object):
     @property
     def configurations(self):
         return ConfigurationToValidate.objects
+
+    @property
+    def data_sets(self):
+        return DataSet.objects
 
     def ConfigurationToValidate(self):
         return ConfigurationToValidate()
@@ -73,27 +78,19 @@ class ConfigurationStore(object):
         self.retrieve_config_specs = ConfigurationSpecRetriever().retrieve
 
     def supply(self):
+        name_attr = {}
         for zip_name in self.retrieve_zip_names():
-            dir_name = self.retrieve_destination_dir(zip_name)
-            config_type = self.retrieve_config_type(zip_name)
-            self.extract(zip_name, dir_name)
-            for config_spec in self.retrieve_config_specs(dir_name, config_type):
+            name_attr['file_path'] = self.retrieve_destination_dir(zip_name)
+            name_attr['config_type'] = self.retrieve_config_type(zip_name)
+            name_attr['data_set'] = self.retrieve_data_set(zip_name)
+            self.extract(zip_name, name_attr['file_path'])
+            for config_spec in self.retrieve_config_specs(name_attr['file_path'], name_attr['config_type']):
                 config = self.db.ConfigurationToValidate()
-                valid = True
-                for key, value in config_spec.items():
-                    if key == 'area_code':
-                        try:
-                            config.area = self.db.areas.get(code=value)
-                        except Area.DoesNotExist:
-                            logger.warning('Cannot import %s configuration for area %s: area does not exist',
-                                          config_type, value)
-                            valid = False
-                    else:
-                        setattr(config, key, value)
-                if valid:
-                    config.config_type = config_type
-                    config.file_path = dir_name
-                    config.action = ConfigurationToValidate.KEEP
+                config.set_attributes(config_spec)
+                if config.area is not None:
+                    config.config_type = name_attr['config_type']
+                    config.file_path = name_attr['file_path']
+                    config.data_set = name_attr['data_set']
                     config.save()
             self.delete(zip_name)
 
@@ -130,6 +127,9 @@ class ConfigurationStore(object):
 
         """
         assert False
+
+    def retrieve_data_set(self, zip_name):
+        return self.db.data_sets.get(name='Waternet')
 
     def retrieve_config_specs(self, dir_name, config_type):
         """Retrieve the list of configuration specifications.

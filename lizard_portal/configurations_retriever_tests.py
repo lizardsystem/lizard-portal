@@ -18,6 +18,7 @@ from lizard_portal.configurations_retriever import ConfigurationTypeRetriever
 from lizard_portal.configurations_retriever import DescriptionParser
 from lizard_portal.configurations_retriever import ZipFileNameRetriever
 from lizard_portal.models import ConfigurationToValidate
+from lizard_security.models import DataSet
 
 
 class MockQuerySet(UserList):
@@ -66,16 +67,24 @@ class MockDatabase(object):
     def __init__(self):
         self.areas = MockQuerySet()
         self.configurations = MockQuerySet()
+        self.data_sets = MockQuerySet()
 
     def ConfigurationToValidate(self):
-        config = Mock(ConfigurationToValidate)
+        config = ConfigurationToValidate()
+        config.db = self
         config.save = lambda c=config: self.configurations.append(c)
         return config
 
     def Area(self):
-        area = Mock(Area)
+        area = Area()
         area.save = lambda a=area: self.areas.append(a)
         return area
+
+    def DataSet(self):
+        data_set = DataSet()
+        data_set.save = lambda d=data_set: self.data_sets.append(d)
+        return data_set
+
 
 class ConfigurationsRetrieverTestSuite(TestCase):
 
@@ -263,6 +272,9 @@ class ConfigurationStoreTestSuite(TestCase):
         area = self.db.Area()
         area.code = '3201'
         area.save()
+        data_set = self.db.DataSet()
+        data_set.name = 'Waternet'
+        data_set.save()
         self.store = ConfigurationStore()
         self.store.db = self.db
         self.store.extract = Mock()
@@ -295,11 +307,17 @@ class ConfigurationStoreTestSuite(TestCase):
         config = self.db.configurations.all()[0]
         self.assertEqual(self.db.areas.all()[0], config.area)
 
-    def test_da(self):
+    def test_ca(self):
         """Test the new ConfigurationToValidate has the right configuration type."""
         self.store.supply()
         config = self.db.configurations.all()[0]
         self.assertEqual('waterbalans', config.config_type)
+
+    def test_cb(self):
+        """Test the new ConfigurationToValidate has the right water manager."""
+        self.store.supply()
+        config = self.db.configurations.all()[0]
+        self.assertEqual('Waternet', config.data_set.name)
 
     def test_d(self):
         """Test the new ConfigurationToValidate should be kept."""

@@ -74,6 +74,16 @@ class ConfigurationToValidate(models.Model):
         null=True, blank=True)
     objects = FilteredManager()
 
+    def set_attributes(self, attribute_dict):
+        for key, value in attribute_dict.items():
+            if key == 'area_code':
+                try:
+                    self.area = self.db.areas.get(code=value)
+                except Area.DoesNotExist:
+                    pass
+            else:
+                setattr(self, key, value)
+
     @property
     def get_punpingstations_dbf(self):
         """Create a filepath."""
