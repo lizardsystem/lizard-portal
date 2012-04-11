@@ -281,7 +281,7 @@ class ConfigurationStoreTestSuite(TestCase):
         self.store.delete = Mock()
         self.store.retrieve_zip_names = lambda : ['waterbalans_Waternet_04042012_081400.zip']
         self.store.retrieve_config_type =  lambda zip_name: 'waterbalans'
-        self.store.retrieve_config_specs = lambda dir_name, config_type: [{'area_code': '3201'}]
+        self.store.retrieve_attrs_from_config = lambda dir_name, config_type: [{'area_code': '3201'}]
 
     def test_a(self):
         """Test the supply of a single ConfigurationToValidate."""
@@ -326,10 +326,10 @@ class ConfigurationStoreTestSuite(TestCase):
         self.assertEqual(ConfigurationToValidate.KEEP, config.action)
 
     def test_e(self):
-        """Test retrieve_config_specs is called correctly."""
-        self.store.retrieve_config_specs = Mock(return_value=self.store.retrieve_config_specs("don't care", "don't care"))
+        """Test retrieve_attrs_from_config is called correctly."""
+        self.store.retrieve_attrs_from_config = Mock(return_value=self.store.retrieve_attrs_from_config("don't care", "don't care"))
         self.store.supply()
-        args, kwargs = self.store.retrieve_config_specs.call_args
+        args, kwargs = self.store.retrieve_attrs_from_config.call_args
         self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', args[0])
         self.assertEqual('waterbalans', args[1])
 

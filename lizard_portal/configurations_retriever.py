@@ -75,22 +75,17 @@ class ConfigurationStore(object):
         self.db = Database()
         self.retrieve_zip_names = ZipFileNameRetriever().retrieve
         self.retrieve_config_type = ConfigurationTypeRetriever().retrieve
-        self.retrieve_config_specs = ConfigurationSpecRetriever().retrieve
+        self.retrieve_attrs_from_config = ConfigurationSpecRetriever().retrieve
 
     def supply(self):
-        name_attr = {}
         for zip_name in self.retrieve_zip_names():
-            name_attr['file_path'] = self.retrieve_destination_dir(zip_name)
-            name_attr['config_type'] = self.retrieve_config_type(zip_name)
-            name_attr['data_set'] = self.retrieve_data_set(zip_name)
-            self.extract(zip_name, name_attr['file_path'])
-            for config_spec in self.retrieve_config_specs(name_attr['file_path'], name_attr['config_type']):
+            attrs_from_name = self.retrieve_attrs_from_name(zip_name)
+            self.extract(zip_name, attrs_from_name['file_path'])
+            for attrs in self.retrieve_attrs_from_config(attrs_from_name['file_path'], attrs_from_name['config_type']):
                 config = self.db.ConfigurationToValidate()
-                config.set_attributes(config_spec)
+                config.set_attributes(attrs)
                 if config.area is not None:
-                    config.config_type = name_attr['config_type']
-                    config.file_path = name_attr['file_path']
-                    config.data_set = name_attr['data_set']
+                    config.set_attributes(attrs_from_name)
                     config.save()
             self.delete(zip_name)
 
@@ -102,6 +97,13 @@ class ConfigurationStore(object):
 
         """
         assert False
+
+    def retrieve_attrs_from_name(self, zip_name):
+        name_attr = {}
+        name_attr['file_path'] = self.retrieve_destination_dir(zip_name)
+        name_attr['config_type'] = self.retrieve_config_type(zip_name)
+        name_attr['data_set'] = self.retrieve_data_set(zip_name)
+        return name_attr
 
     def retrieve_destination_dir(self, zip_name):
         file_name = os.path.split(zip_name)[1]
@@ -131,7 +133,7 @@ class ConfigurationStore(object):
     def retrieve_data_set(self, zip_name):
         return self.db.data_sets.get(name='Waternet')
 
-    def retrieve_config_specs(self, dir_name, config_type):
+    def retrieve_attrs_from_config(self, dir_name, config_type):
         """Retrieve the list of configuration specifications.
 
         A configuration specification is a dict that maps each attribute name
