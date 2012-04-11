@@ -50,7 +50,13 @@ class ConfigurationsRetriever(object):
 
 
 class ConfigurationStore(object):
+    """Implements the functionality to create the configurations to validate.
 
+    Instance parameters:
+      *db*
+        interface to the database (implemented to ease unit testing)
+
+    """
     def __init__(self):
         self.db = Database()
         self.retrieve_zip_names = ZipFileNameRetriever().retrieve
