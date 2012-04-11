@@ -29,6 +29,18 @@ class PortalConfiguration(models.Model):
         return str(self.name)
 
 
+class Database(object):
+    """Provides a wrapper around the Django database."""
+
+    @property
+    def areas(self):
+        return Area.objects
+
+    @property
+    def data_sets(self):
+        return DataSet.objects
+
+
 class ConfigurationToValidate(models.Model):
 
     class Meta:
@@ -74,6 +86,10 @@ class ConfigurationToValidate(models.Model):
         null=True, blank=True)
     objects = FilteredManager()
 
+    def __init__(self):
+        models.Model.__init__(self)
+        self.db = Database()
+
     def set_attributes(self, attribute_dict):
         for key, value in attribute_dict.items():
             if key == 'area_code':
@@ -82,7 +98,7 @@ class ConfigurationToValidate(models.Model):
                 except Area.DoesNotExist:
                     pass
             elif key == 'data_set':
-                self.data_set = self.db.data_sets.get(name='Waternet')
+                self.data_set = self.db.data_sets.get(name=value)
             else:
                 setattr(self, key, value)
 

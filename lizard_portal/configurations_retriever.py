@@ -83,14 +83,50 @@ class ConfigurationStore(object):
             self.extract(zip_name, attrs_from_name['file_path'])
             for attrs in self.retrieve_attrs_from_config(attrs_from_name['file_path'], attrs_from_name['config_type']):
                 config = self.db.ConfigurationToValidate()
+                attrs.update(attrs_from_name)
                 config.set_attributes(attrs)
-                if config.area is not None:
-                    config.set_attributes(attrs_from_name)
-                    config.save()
+                config.save()
             self.delete(zip_name)
 
     def retrieve_zip_names(self):
-        """Retrieve the path to all the configuration zip files .
+        """Retrieve the path to all the configuration zip files.
+
+        This method is not implemented here and should be set through
+        dependency injection.
+
+        """
+        assert False
+
+    def retrieve_attrs_from_name(self, zip_name):
+        """Retrieve attributes of the new configuration from the given name.
+
+        The name of the zip file specifies the config type of the configuration
+        and the water manager and is also used to determine the directory to
+        which the zip file should be extracted. This method returns those
+        attributes in a dict with keys 'config_type', 'data_set' and
+        'file_path'.
+
+        Parameters:
+          *zip_name*
+             name of the zip file that contains the configurations
+
+        This method is not implemented here and should be set through
+        dependency injection.
+
+        """
+        assert False
+
+    def retrieve_attrs_from_config(self, dir_name, config_type):
+        """Retrieve the list of configuration attributes.
+
+        Each element of the list is a dict that maps each attribute name
+        to its attribute value for a single new configuration.
+
+        Parameters:
+          *dir_name*
+             directory with the configuration specs of a single water manager
+          *config_type*
+             string that specifies the type of the configuration
 
         This method is not implemented here and should be set through
         dependency injection.
@@ -105,24 +141,6 @@ class ConfigurationStore(object):
     def delete(self, file_name):
         """Delete the given file."""
         os.remove(file_name)
-
-    def retrieve_attrs_from_config(self, dir_name, config_type):
-        """Retrieve the list of configuration specifications.
-
-        A configuration specification is a dict that maps each attribute name
-        to its attribute value.
-
-        Parameters:
-          *dir_name*
-             directory with the configuration specs of a single water manager
-          *config_type*
-             string that specifies the type of the configuration
-
-        This method is not implemented here and should be set through
-        dependency injection.
-
-        """
-        assert False
 
 
 class AttributesFromNameRetriever(object):
