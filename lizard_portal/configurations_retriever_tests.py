@@ -12,6 +12,7 @@ from UserList import UserList
 from unittest import TestCase
 from zipfile import ZipFile
 
+from dbfpy import dbf
 from mock import Mock
 
 from lizard_area.models import Area
@@ -494,13 +495,8 @@ class ConfigurationSpecRetriever(object):
         return config_specs
 
     def retrieve_area_codes(self, dbf_name):
-        """Return the list of area codes in the given dbf file.
-
-        This method is not implemented here and should be set through
-        dependency injection.
-
-        """
-        assert False
+        """Return the list of area codes in the given dbf file."""
+        return [rec['GAFIDENT'] for rec in dbf.Dbf(dbf_name)]
 
     def retrieve_meta_info(self, meta_info_name):
         """Return the meta info specified in the given file.

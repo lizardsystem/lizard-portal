@@ -10,6 +10,7 @@ long_description = '\n\n'.join([
     ])
 
 install_requires = [
+    'dbfpy',
     'Django',
     'django-extensions',
     'django-nose',
