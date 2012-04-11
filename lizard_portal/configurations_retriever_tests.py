@@ -266,6 +266,7 @@ class ConfigurationStoreTestSuite(TestCase):
         self.store = ConfigurationStore()
         self.store.db = self.db
         self.store.extract = Mock()
+        self.store.delete = Mock()
         self.store.retrieve_zip_names = lambda : ['waterbalans_Waternet_04042012_081400.zip']
         self.store.retrieve_config_type =  lambda zip_name: 'waterbalans'
         self.store.retrieve_config_specs = lambda dir_name, config_type: [{'area_code': '3201'}]
@@ -301,6 +302,11 @@ class ConfigurationStoreTestSuite(TestCase):
         self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', args[0])
         self.assertEqual('waterbalans', args[1])
 
+    def test_f(self):
+        """Test the zip file is deleted as soon as it has been handled."""
+        self.store.supply()
+        args, kwargs = self.store.delete.call_args
+        self.assertEqual('waterbalans_Waternet_04042012_081400.zip', args[0])
 
 class ConfigurationSpecRetrieverTestSuite(TestCase):
 

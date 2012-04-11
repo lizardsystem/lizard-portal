@@ -78,6 +78,7 @@ class ConfigurationStore(object):
                 config.file_path = dir_name
                 config.action = ConfigurationToValidate.KEEP
                 config.save()
+            self.delete(zip_name)
 
     def retrieve_zip_names(self):
         """Retrieve the path to all the configuration zip files .
@@ -94,6 +95,10 @@ class ConfigurationStore(object):
     def extract(self, zip_name, destination_dir):
         """Extract the given zip file to the given destination dir."""
         ZipFile(zip_name).extractall(destination_dir)
+
+    def delete(self, file_name):
+        """Delete the given file."""
+        os.remove(file_name)
 
     def retrieve_config_type(self, zip_name):
         """Return the configuration type using the name of the zip file.
