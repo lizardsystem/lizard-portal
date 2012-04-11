@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.35 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added functionalities to create a filepath for dbf.
 
 
 0.34 (2012-04-05)
