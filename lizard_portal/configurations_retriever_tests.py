@@ -250,41 +250,6 @@ def get_self_c():
     return global_s
 
 
-class AttributesFromNameRetrieverTestSuite(TestCase):
-
-    def setUp(self):
-        self.zip_name = \
-            'mnt/vss-share/waterbalans_Waternet_20120228_141234.zip'
-
-    def test_a(self):
-        """Test the retrieval of the file_path."""
-        retriever = AttributesFromNameRetriever()
-        retriever.dbf_directory = '/tmp'
-        attrs = retriever.retrieve(self.zip_name)
-        self.assertEqual('/tmp/waterbalans_Waternet_20120228_141234',
-            attrs['file_path'])
-
-    def test_b(self):
-        """Test the retrieval of the configuration type."""
-        retriever = AttributesFromNameRetriever()
-        attrs = retriever.retrieve(self.zip_name)
-        self.assertEqual('waterbalans', attrs['config_type'])
-
-    def test_c(self):
-        """Test the retrieval of the configuration type."""
-        retriever = AttributesFromNameRetriever()
-        zip_name = 'mnt/vss-share/ESF_1_Waternet_20120228_141234.zip'
-        attrs = retriever.retrieve(zip_name)
-        self.assertEqual('esf1', attrs['config_type'])
-
-    def test_d(self):
-        """Test the retrieval of the water manager."""
-        retriever = AttributesFromNameRetriever()
-        zip_name = 'mnt/vss-share/ESF_1_Waternet_20120228_141234.zip'
-        attrs = retriever.retrieve(zip_name)
-        self.assertEqual('Waternet', attrs['data_set'])
-
-
 class ConfigurationStoreTestSuite(TestCase):
 
     def setUp(self):
@@ -365,6 +330,41 @@ class ConfigurationStoreTestSuite(TestCase):
         self.store.supply()
         args, kwargs = self.store.delete.call_args
         self.assertEqual('waterbalans_Waternet_04042012_081400.zip', args[0])
+
+
+class AttributesFromNameRetrieverTestSuite(TestCase):
+
+    def setUp(self):
+        self.zip_name = \
+            'mnt/vss-share/waterbalans_Waternet_20120228_141234.zip'
+
+    def test_a(self):
+        """Test the retrieval of the file_path."""
+        retriever = AttributesFromNameRetriever()
+        retriever.dbf_directory = '/tmp'
+        attrs = retriever.retrieve(self.zip_name)
+        self.assertEqual('/tmp/waterbalans_Waternet_20120228_141234',
+            attrs['file_path'])
+
+    def test_b(self):
+        """Test the retrieval of the configuration type."""
+        retriever = AttributesFromNameRetriever()
+        attrs = retriever.retrieve(self.zip_name)
+        self.assertEqual('waterbalans', attrs['config_type'])
+
+    def test_c(self):
+        """Test the retrieval of the configuration type."""
+        retriever = AttributesFromNameRetriever()
+        zip_name = 'mnt/vss-share/ESF_1_Waternet_20120228_141234.zip'
+        attrs = retriever.retrieve(zip_name)
+        self.assertEqual('esf1', attrs['config_type'])
+
+    def test_d(self):
+        """Test the retrieval of the water manager."""
+        retriever = AttributesFromNameRetriever()
+        zip_name = 'mnt/vss-share/ESF_1_Waternet_20120228_141234.zip'
+        attrs = retriever.retrieve(zip_name)
+        self.assertEqual('Waternet', attrs['data_set'])
 
 
 class ConfigurationSpecRetrieverTestSuite(TestCase):
