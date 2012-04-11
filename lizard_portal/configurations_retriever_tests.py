@@ -11,10 +11,10 @@ from unittest import TestCase
 from mock import Mock
 
 from lizard_area.models import Area
+from lizard_portal.configurations_retriever import AttributesFromNameRetriever
 from lizard_portal.configurations_retriever import ConfigurationsRetriever
 from lizard_portal.configurations_retriever import ConfigurationSpecRetriever
 from lizard_portal.configurations_retriever import ConfigurationStore
-from lizard_portal.configurations_retriever import ConfigurationTypeRetriever
 from lizard_portal.configurations_retriever import DescriptionParser
 from lizard_portal.configurations_retriever import ZipFileNameRetriever
 from lizard_portal.models import ConfigurationToValidate
@@ -250,19 +250,39 @@ def get_self_c():
     return global_s
 
 
-class ConfigurationTypeRetrieverTestSuite(TestCase):
+class AttributesFromNameRetrieverTestSuite(TestCase):
+
+    def setUp(self):
+        self.zip_name = \
+            'mnt/vss-share/waterbalans_Waternet_20120228_141234.zip'
 
     def test_a(self):
-        """Test the retrieval of configuration type 'waterbalans'."""
-        retriever = ConfigurationTypeRetriever()
-        config_type = retriever.retrieve('mnt/vss-share/waterbalans_Waternet_20120228_141234.zip')
-        self.assertEqual('waterbalans', config_type)
+        """Test the retrieval of the file_path."""
+        retriever = AttributesFromNameRetriever()
+        retriever.dbf_directory = '/tmp'
+        attrs = retriever.retrieve(self.zip_name)
+        self.assertEqual('/tmp/waterbalans_Waternet_20120228_141234',
+            attrs['file_path'])
 
     def test_b(self):
-        """Test the retrieval of configuration type 'esf1'."""
-        retriever = ConfigurationTypeRetriever()
-        config_type = retriever.retrieve('mnt/vss-share/ESF_1_Waternet_20120228_141234.zip')
-        self.assertEqual('esf1', config_type)
+        """Test the retrieval of the configuration type."""
+        retriever = AttributesFromNameRetriever()
+        attrs = retriever.retrieve(self.zip_name)
+        self.assertEqual('waterbalans', attrs['config_type'])
+
+    def test_c(self):
+        """Test the retrieval of the configuration type."""
+        retriever = AttributesFromNameRetriever()
+        zip_name = 'mnt/vss-share/ESF_1_Waternet_20120228_141234.zip'
+        attrs = retriever.retrieve(zip_name)
+        self.assertEqual('esf1', attrs['config_type'])
+
+    def test_d(self):
+        """Test the retrieval of the water manager."""
+        retriever = AttributesFromNameRetriever()
+        zip_name = 'mnt/vss-share/ESF_1_Waternet_20120228_141234.zip'
+        attrs = retriever.retrieve(zip_name)
+        self.assertEqual('Waternet', attrs['data_set'])
 
 
 class ConfigurationStoreTestSuite(TestCase):
@@ -280,52 +300,59 @@ class ConfigurationStoreTestSuite(TestCase):
         self.store.extract = Mock()
         self.store.delete = Mock()
         self.store.retrieve_zip_names = lambda : ['waterbalans_Waternet_04042012_081400.zip']
-        self.store.retrieve_config_type =  lambda zip_name: 'waterbalans'
         self.store.retrieve_attrs_from_config = lambda dir_name, config_type: [{'area_code': '3201'}]
 
     def test_a(self):
-        """Test the supply of a single ConfigurationToValidate."""
+        """Test the creation of a single ConfigurationToValidate."""
         self.store.supply()
         self.assertEqual(1, self.db.configurations.count())
 
     def test_b(self):
-        """Test the zip file name specifies the directory of a single ConfigurationToValidate."""
-        self.store.supply()
-        config = self.db.configurations.all()[0]
-        self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', config.file_path)
+        """Test the file path of the new ConfigurationToValidate is correct.
 
-    def test_ba(self):
-        """Test the zip file name specifies the directory of a single ConfigurationToValidate."""
-        self.store.retrieve_zip_names = lambda : ['/mnt/vss-shared/te-valideren-configuraties/waterbalans_Waternet_04042012_081400.zip']
+        The zip name does not contain a path.
+
+        """
         self.store.supply()
         config = self.db.configurations.all()[0]
         self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', config.file_path)
 
     def test_c(self):
-        """Test the new ConfigurationToValidate points to the correct Area."""
+        """Test the file path of the new ConfigurationToValidate is correct.
+
+        The zip name contains a path.
+
+        """
+        self.store.retrieve_zip_names = lambda : ['/mnt/vss-shared/te-valideren-configuraties/waterbalans_Waternet_04042012_081400.zip']
+        self.store.supply()
+        config = self.db.configurations.all()[0]
+        self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', config.file_path)
+
+    def test_d(self):
+        """Test the area of the new ConfigurationToValidate is correct."""
         self.store.supply()
         config = self.db.configurations.all()[0]
         self.assertEqual(self.db.areas.all()[0], config.area)
 
-    def test_ca(self):
-        """Test the new ConfigurationToValidate has the right configuration type."""
+    def test_e(self):
+        """Test the config type of the new ConfigurationToValidate is correct."""
         self.store.supply()
         config = self.db.configurations.all()[0]
         self.assertEqual('waterbalans', config.config_type)
 
-    def test_cb(self):
-        """Test the new ConfigurationToValidate has the right water manager."""
+    def test_f(self):
+        """Test the water manager of the new ConfigurationToValidate is correct."""
         self.store.supply()
         config = self.db.configurations.all()[0]
         self.assertEqual('Waternet', config.data_set.name)
 
-    def test_d(self):
-        """Test the new ConfigurationToValidate should be kept."""
+    def test_g(self):
+        """Test the action of the new ConfigurationToValidate is correct."""
         self.store.supply()
         config = self.db.configurations.all()[0]
         self.assertEqual(ConfigurationToValidate.KEEP, config.action)
 
-    def test_e(self):
+    def test_h(self):
         """Test retrieve_attrs_from_config is called correctly."""
         self.store.retrieve_attrs_from_config = Mock(return_value=self.store.retrieve_attrs_from_config("don't care", "don't care"))
         self.store.supply()
@@ -333,11 +360,12 @@ class ConfigurationStoreTestSuite(TestCase):
         self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', args[0])
         self.assertEqual('waterbalans', args[1])
 
-    def test_f(self):
+    def test_i(self):
         """Test the zip file is deleted as soon as it has been handled."""
         self.store.supply()
         args, kwargs = self.store.delete.call_args
         self.assertEqual('waterbalans_Waternet_04042012_081400.zip', args[0])
+
 
 class ConfigurationSpecRetrieverTestSuite(TestCase):
 

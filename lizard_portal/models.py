@@ -81,6 +81,8 @@ class ConfigurationToValidate(models.Model):
                     self.area = self.db.areas.get(code=value)
                 except Area.DoesNotExist:
                     pass
+            elif key == 'data_set':
+                self.data_set = self.db.data_sets.get(name='Waternet')
             else:
                 setattr(self, key, value)
 

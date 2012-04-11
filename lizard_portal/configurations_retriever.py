@@ -74,7 +74,7 @@ class ConfigurationStore(object):
     def __init__(self):
         self.db = Database()
         self.retrieve_zip_names = ZipFileNameRetriever().retrieve
-        self.retrieve_config_type = ConfigurationTypeRetriever().retrieve
+        self.retrieve_attrs_from_name = AttributesFromNameRetriever().retrieve
         self.retrieve_attrs_from_config = ConfigurationSpecRetriever().retrieve
 
     def supply(self):
@@ -98,17 +98,6 @@ class ConfigurationStore(object):
         """
         assert False
 
-    def retrieve_attrs_from_name(self, zip_name):
-        name_attr = {}
-        name_attr['file_path'] = self.retrieve_destination_dir(zip_name)
-        name_attr['config_type'] = self.retrieve_config_type(zip_name)
-        name_attr['data_set'] = self.retrieve_data_set(zip_name)
-        return name_attr
-
-    def retrieve_destination_dir(self, zip_name):
-        file_name = os.path.split(zip_name)[1]
-        return os.path.join(self.dbf_directory, file_name[:-4])
-
     def extract(self, zip_name, destination_dir):
         """Extract the given zip file to the given destination dir."""
         ZipFile(zip_name).extractall(path=destination_dir)
@@ -116,22 +105,6 @@ class ConfigurationStore(object):
     def delete(self, file_name):
         """Delete the given file."""
         os.remove(file_name)
-
-    def retrieve_config_type(self, zip_name):
-        """Return the configuration type using the name of the zip file.
-
-        Parameters:
-          *zip_name*
-             path to the zip file with the configurations of a water manager
-
-        This method is not implemented here and should be set through
-        dependency injection.
-
-        """
-        assert False
-
-    def retrieve_data_set(self, zip_name):
-        return self.db.data_sets.get(name='Waternet')
 
     def retrieve_attrs_from_config(self, dir_name, config_type):
         """Retrieve the list of configuration specifications.
@@ -151,23 +124,42 @@ class ConfigurationStore(object):
         """
         assert False
 
-    @property
-    def dbf_directory(self):
-        return '/tmp'
 
-
-class ConfigurationTypeRetriever(object):
+class AttributesFromNameRetriever(object):
 
     def __init__(self):
-        self.regex = re.compile('^([\w\d]*)_[a-zA-Z]*_\d{8}_\d{6}.zip')
+        self.dbf_directory = '/tmp'
+        self.regex = re.compile('^([\w\d]*)_([a-zA-Z]*)_\d{8}_\d{6}.zip')
 
     def retrieve(self, zip_name):
+        self.zip_name = zip_name
+        return { 'file_path':   self.file_path,
+                 'config_type': self.config_type,
+                 'data_set':    self.data_set }
+
+    @property
+    def file_path(self):
+        """Return the destination directory using the name of the zip file."""
+        _, file_name = os.path.split(self.zip_name)
+        return os.path.join(self.dbf_directory, file_name[:-4])
+
+    @property
+    def config_type(self):
         """Return the configuration type using the name of the zip file."""
-        _, file_name = os.path.split(zip_name)
+        _, file_name = os.path.split(self.zip_name)
         match = self.regex.search(file_name)
-        if match and len(match.groups()) == 1:
+        if match:
             matched_string = match.group(1)
             return matched_string.lower().replace('_', '')
+
+    @property
+    def data_set(self):
+        """Return the water manager name using the name of the zip file."""
+        _, file_name = os.path.split(self.zip_name)
+        match = self.regex.search(file_name)
+        if match:
+            matched_string = match.group(2)
+            return matched_string
 
 
 class ConfigurationSpecRetriever(object):
