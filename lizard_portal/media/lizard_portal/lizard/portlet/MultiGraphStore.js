@@ -34,7 +34,7 @@
           graph: graph,
           handler: function(button) {
             button.graph.beginEdit();
-            if (button.pressed) {
+            if (button.pressed || (button.activated && button.checked)) {
               button.graph.set('visible', true);
             } else {
               button.graph.set('visible', false);
@@ -216,37 +216,54 @@
       return this.callParent(arguments);
     },
     initComponent: function() {
-      var buttonBarConfig, me;
+      var buttonBarConfig, me, resizer_index, resizer_tool, tool, _i, _len, _ref;
       me = this;
       buttonBarConfig = null;
       if (this.useGraphButtonBar) buttonBarConfig = this.getGraphButtonConfig();
-      me.tools.push([
-        {
-          type: 'plus',
-          handler: function(e, target, panelHeader, tool) {
-            var portlet;
-            portlet = panelHeader.ownerCt;
-            if (tool.type === 'plus') {
-              tool.setType('minus');
-              return me.setFitInPortal(false);
-            } else {
-              tool.setType('plus');
-              return me.setFitInPortal(true);
-            }
+      resizer_index = void 0;
+      _ref = me.tools;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tool = _ref[_i];
+        if (tool.name === 'resize-graph') resizer_index = me.tools.indexOf(tool);
+      }
+      resizer_tool = {
+        type: 'plus',
+        name: 'resize-graph',
+        handler: function(e, target, panelHeader, tool) {
+          var portlet;
+          portlet = panelHeader.ownerCt;
+          if (tool.type === 'plus') {
+            tool.setType('minus');
+            return me.setFitInPortal(false);
+          } else {
+            tool.setType('plus');
+            return me.setFitInPortal(true);
           }
         }
-      ]);
+      };
+      if (resizer_index === void 0) {
+        me.tools.push(resizer_tool);
+      } else {
+        me.tools[resizer_index] = resizer_tool;
+      }
       Ext.apply(this, {
         layout: {
           type: 'vboxscroll',
           align: 'stretch'
         },
         autoScroll: true,
-        tbar: buttonBarConfig,
+        dockedItems: [
+          {
+            xtype: 'toolbar',
+            dock: 'top',
+            enableOverflow: true,
+            items: buttonBarConfig
+          }
+        ],
         items: {
           xtype: 'dataview',
           store: this.store,
-          tpl: new Ext.XTemplate('<tpl if="this.context_ready()">', '<tpl for=".">', '<div class="thumb-wrap">', '<tpl if="visible">', '{name}:   ', '<tpl if="detail_link">', '<a href="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>', '</tpl>', '<a href="javascript:', '{[this.get_function_for_graph_window(values)]}', '"> groot</a>', '<img src="', '{[this.get_url(values)]}', '" height={height} width={width} />', '</tpl>', '</div>', '</tpl>', '</tpl>', {
+          tpl: new Ext.XTemplate('<tpl if="this.context_ready()">', '<tpl for=".">', '<div class="thumb-wrap">', '<tpl if="visible">', '{name}:   ', '<tpl if="detail_link">', '<a href="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>&nbsp;', '</tpl>', '<a href="javascript:', '{[this.get_function_for_graph_window(values)]}', '">groot</a>', '<img src="', '{[this.get_url(values)]}', '" height={height} width={width} />', '</tpl>', '</div>', '</tpl>', '</tpl>', {
             get_url: function(values) {
               if (values.width > 0 && values.height > 0 && values.dt_start && values.dt_end) {
                 return Lizard.model.Graph.getGraphUrl(values);

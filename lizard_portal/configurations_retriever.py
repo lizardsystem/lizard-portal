@@ -14,6 +14,8 @@ from django.conf import settings
 
 from mock import Mock
 
+from lizard_portal.models import ConfigurationToValidate
+
 
 class ConfigurationsRetriever(object):
     """Implements the functionality to retrieve the configurations.
@@ -30,10 +32,13 @@ class ConfigurationsRetriever(object):
 
         def create(self, file_name)
 
+    Parameter:
+      *db*
+        interface to the database to ease unit testing
+
     """
-    def __init__(self, file_names_retriever, configuration_factory):
-        self.file_names_retriever = file_names_retriever
-        self.configuration_factory = configuration_factory
+    def __init__(self, database):
+        self.db = database
 
     def retrieve_configurations_as_dict(self):
         configurations = self.retrieve_configurations()
@@ -41,11 +46,18 @@ class ConfigurationsRetriever(object):
 
     def retrieve_configurations(self):
         """Return the list of configurations."""
-        configurations = []
-        for file_name in self.file_names_retriever.retrieve():
-            configuration = self.configuration_factory.create(file_name)
-            configurations.append(configuration)
-        return configurations
+        return self.db.configurations.all()
+
+
+class Database(object):
+    """Provides a wrapper around the Django database."""
+
+    @property
+    def configurations(self):
+        return ConfigurationToValidate.objects.all()
+
+    def ConfigurationToValidate(self):
+        return ConfigurationToValidate()
 
 
 class ZipFileNameRetriever(object):
@@ -165,4 +177,4 @@ class MockConfig(object):
 
 
 def create_configurations_retriever():
-    return ConfigurationsRetriever(ZipFileNameRetriever(), ConfigurationFactory(DescriptionParser()))
+    return ConfigurationsRetriever(Database())

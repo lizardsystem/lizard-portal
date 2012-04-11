@@ -21,7 +21,7 @@
 		items: [
         {
             title: 'Themakaart',
-            height: 300,
+            height: 100,
             layout: {
                 type: 'table',
                 columns:1
@@ -56,8 +56,49 @@
 
             }]
 
-        },
-        {
+        },{
+			title: 'EKR scores',
+            flex: 3,
+            autoScroll: true,
+            plugins: [
+                'applycontext'
+            ],
+            applyParams: function(params) {
+                var me = this;
+                me.setLoading(true);
+                //var url = '/measure/summary/'+ Lizard.CM.context.object.id +'/krw_measures/';
+                // ekr-extended is the slug of the HorizontalBarGraph
+                // var url = '/measure/summary/' + Lizard.CM.context.object.id + '/ekr-scores/';
+                var url = '/layers/value/';
+                me.loader.load({
+                    url:url,
+                    method: 'GET',
+                    success: function() {
+                      me.setLoading(false);
+                    },
+                    failure: function() {
+                      me.setLoading(false);
+                    }
+                });
+            },
+            loader:{
+                renderer: 'html'
+            }
+            //html: 'Wordt ingevuld zodra de gegevens beschikbaar zijn'
+		},{
+            title: 'Legenda',
+            height: 150,
+            xtype: 'multiimageportlet',
+            collapsible: true,
+            //collapsed: true,
+            store: Ext.create('Lizard.store.Graph',{
+            //store: Ext.create('Ext.data.Store',{
+                data: [{
+                    name: 'EKR',
+                    base_url: '/layers/wms/?FORMAT=image%2Fpng&TRANSPARENT=TRUE&STYLE=vss_ekr_value&CQL_FILTER=name%20%3D%20\'EKR-ONGUNSTIG\'&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&SRS=EPSG%3A900913&BBOX=460467.38252035,6800747.0720688,640132.61747965,6894993.9279312&LAYER=vss:vss_area_value&width=150&height=20'
+                }]
+            })
+        },{
             xtype: 'workspaceportlet',
             workspaceStore: Lizard.store.WorkspaceStore.get_or_create('themakaart'),
             tools:[]

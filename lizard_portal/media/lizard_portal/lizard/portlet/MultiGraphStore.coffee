@@ -20,7 +20,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
 
     applyParams: (params) ->
         @updateGraphs(null, params)
-    
+
 
     itemSelector: 'div.thumb-wrap',
     emptyText: 'No graphs available',
@@ -38,7 +38,10 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                 graph: graph,
                 handler: (button) ->
                     button.graph.beginEdit()
-                    if button.pressed
+                    # button.pressed for visible buttons
+                    # button.activated/checked for buttons in pull down
+                    # stupid extjs thing to have different properties
+                    if button.pressed or (button.activated and button.checked)
                         button.graph.set('visible', true)
                     else
                         button.graph.set('visible', false)
@@ -226,26 +229,45 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
         if @useGraphButtonBar
             buttonBarConfig = @getGraphButtonConfig()
 
-        me.tools.push([{
-                type: 'plus'
-                handler: (e, target, panelHeader, tool) ->
-                    portlet = panelHeader.ownerCt;
+        # Sometimes there are two pluses, different items on different
+        # screens are somehow identified as the same object.
+        resizer_index = undefined
+        for tool in me.tools
+            if tool.name == 'resize-graph'
+                resizer_index = me.tools.indexOf(tool)
+        resizer_tool = {
+            type: 'plus'
+            name: 'resize-graph'
+            handler: (e, target, panelHeader, tool) ->
+                portlet = panelHeader.ownerCt;
 
-                    if (tool.type == 'plus')
-                        tool.setType('minus')
-                        me.setFitInPortal(false)
-                    else
-                        tool.setType('plus')
-                        me.setFitInPortal(true)
-            }])
-
+                if (tool.type == 'plus')
+                    tool.setType('minus')
+                    me.setFitInPortal(false)
+                else
+                    tool.setType('plus')
+                    me.setFitInPortal(true)
+        }
+        if resizer_index == undefined
+            me.tools.push(resizer_tool)
+        else
+            me.tools[resizer_index] = resizer_tool
 
         Ext.apply(@, {
             layout:
                 type: 'vboxscroll'
                 align: 'stretch'
             autoScroll:true
-            tbar: buttonBarConfig
+
+            # tbar: buttonBarConfig
+            dockedItems: [{
+                xtype: 'toolbar'
+                dock: 'top'
+                # autoScroll: true  # doesn't work
+                enableOverflow: true  # works, but click on item doesn't work yet
+                items: buttonBarConfig
+            }]
+
             items: {
                 xtype: 'dataview',
                 store: @store,
@@ -256,11 +278,11 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                             '<tpl if="visible">',
                                 '{name}:   ',
                                     '<tpl if="detail_link">',
-                                         '<a href="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>',
+                                         '<a href="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>&nbsp;',
                                     '</tpl>',
                                     '<a href="javascript:',
                                     '{[this.get_function_for_graph_window(values)]}',
-                                    '"> groot</a>',
+                                    '">groot</a>',
                                 '<img src="',
                                 '{[this.get_url(values)]}',
                                 '" height={height} width={width} />',
@@ -271,7 +293,6 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                     '</tpl>',
                     {
                         get_url:(values) ->
-
                             if values.width > 0 and values.height >0 and values.dt_start and values.dt_end
                                 return Lizard.model.Graph.getGraphUrl(values)
                             else

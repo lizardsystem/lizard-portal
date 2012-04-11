@@ -10,11 +10,11 @@ from django.template import Template
 from django.template.loader import get_template
 from django.utils import simplejson
 
+from lizard_area.models import Area
 from lizard_portal.configurations_retriever import ConfigurationsRetriever
 from lizard_portal.configurations_retriever import create_configurations_retriever
 from lizard_portal.configurations_retriever import MockConfig
 from lizard_portal.models import PortalConfiguration
-
 from lizard_registration.models import SessionContextStore, UserContextStore
 from lizard_registration.utils import auto_login
 from lizard_registration.utils import get_user_permissions_overall
@@ -25,8 +25,13 @@ def site(request, application_name, active_tab_name, only_portal=False):
     """
         returns html page which loads specified (ext-js) application
     """
+
+    # Try to login based on ip range.
     if not request.user.is_authenticated():
-        auto_login(request)
+        try:
+            auto_login(request)
+        except AttributeError:
+            logger.exception('Could not auto_login')
 
     t = get_template('portal_pageframe.html')
     c = RequestContext(request, {
@@ -96,12 +101,20 @@ def json_configuration(request):
             return redirect('lizard_measure.organization_groupedit_portal')
         elif portal_template == 'stuurparameter-overzicht':
             return redirect('lizard_measure.steerparameter_overview')
+        elif portal_template == 'area_link':
+            # We need the template that couples KRW water bodies and catchment
+            # areas which is only allowed if the user is an analyst. We cannot
+            # easily detect that in the template itself so we do that here.
+            if not request.user.has_perm('auth.is_analyst', Area):
+                t = get_template('portals/geen_toegang.js')
+                return HttpResponse(t.render(c),  mimetype="text/plain")
 
         try:
             t = get_template('portals/'+portal_template+'.js')
         except TemplateDoesNotExist, e:
             pc = PortalConfiguration.objects.filter(slug=portal_template)[0]
             t = Template(pc.configuration)
+
     else:
         t = get_template('portals/geen_toegang.js')
 
@@ -146,19 +159,23 @@ def local_create_configurations_retriever():
         {'polder': 'Atekpolder',
          'type':   'waterbalans',
          'user':   'Analist John',
-         'date':   '1-02-2012 11:00'},
+         'date':   '1-02-2012 11:00',
+         'action': 'Bewaren'},
         {'polder': 'Atekpolder',
          'type':   'ESF_1',
          'user':   'Analist John',
-         'date':   '1-02-2012 11:00'},
+         'date':   '1-02-2012 11:00',
+         'action': 'Bewaren'},
         {'polder': 'Aetsveldsepolder Oost',
          'type':   'ESF_2',
          'user':   'Analist Jojanneke',
-         'date':   '1-02-2012 11:00'},
+         'date':   '1-02-2012 11:00',
+         'action': 'Bewaren'},
         {'polder': 'Aetsveldsepolder Oost',
          'type':   'waterbalans',
          'user':   'Analist Pieter',
-         'date':   '1-02-2012 11:00'},
+         'date':   '1-02-2012 11:00',
+         'action': 'Bewaren'}
         ]
     retriever.retrieve_configurations = \
         (lambda : [MockConfig(config) for config in configuration_list])

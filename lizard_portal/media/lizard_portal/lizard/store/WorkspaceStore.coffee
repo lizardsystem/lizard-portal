@@ -28,8 +28,8 @@ Ext.define('Lizard.store.WorkspaceStore', {
         load:
             fn:(store, records) ->
                 me = store
-                arguments
-                debugger
+                # arguments
+                # debugger
 
                 if records
                     index = me.workspaceItemStore.find('is_base_layer', true)

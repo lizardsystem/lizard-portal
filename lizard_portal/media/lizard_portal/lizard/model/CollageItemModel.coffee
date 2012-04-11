@@ -11,6 +11,9 @@ Ext.define('Lizard.model.CollageItemModel', {
     },{  # par, mod, stp, loc
         name : "identifier"
         type: "string"
+    },{
+        name : "grouping_hint"
+        type: "string"
     },{  # From here: properties from Layer object.
         name: "plid"
         type: "integer"

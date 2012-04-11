@@ -31,9 +31,9 @@ Ext.define('Lizard.portlet.PortalPanel', {
         console.log('context change portalpanel ' + this.id);
     },
     constructor: function(config) {
-        console.log('check');
+        //console.log('check');
         //this.initConfig(arguments);
-        console.log('check');
+        //console.log('check');
         this.callParent(arguments);
     },
 
@@ -45,9 +45,9 @@ Ext.define('Lizard.portlet.PortalPanel', {
             type : 'hbox',
             align: 'stretch'
         };
-        console.log('check');
+        //console.log('check');
         this.callParent();
-        console.log('check');
+        //console.log('check');
         this.addEvents({
             portalcontextchange: true,
             validatedrop: true,
@@ -63,7 +63,7 @@ Ext.define('Lizard.portlet.PortalPanel', {
         this.on('contextchange',
             this.contextChange,
             this);
-        console.log('check');
+        //console.log('check');
     },
 
     // Set columnWidth, and set first and last column classes to allow exact CSS targeting.

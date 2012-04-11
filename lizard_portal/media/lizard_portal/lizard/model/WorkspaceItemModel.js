@@ -134,7 +134,7 @@
       this.set("layer", layer);
     },
     createLayer: function() {
-      var cql_filter, filter, obj, ol_class, options, params, request_params, tpl, url, value;
+      var filter, obj, ol_class, options, params, request_params, tpl, url, value;
       ol_class = this.get('ollayer_class');
       if (ol_class === 'OpenLayers.Layer.WMS') {
         try {
@@ -161,7 +161,7 @@
           }
           params[filter.key] = value;
         }
-        if (this.get('filter')) cql_filter = this.get('filter');
+        if (this.get('filter')) params['cql_filter'] = this.get('filter');
         try {
           options = Ext.JSON.decode(this.get('options'));
         } catch (e) {

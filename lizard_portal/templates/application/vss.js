@@ -38,7 +38,6 @@ Ext.application({
         'Vss.store.KrwToestandGraph',
         'Lizard.store.AppScreen',
         'Lizard.store.Graph'
-
     ],
     requires: [
         'Lizard.plugin.ApplyContext',
@@ -77,6 +76,8 @@ Ext.application({
         'Lizard.portlet.GridPortlet',
         'Lizard.portlet.MultiGraph',
         'Lizard.portlet.MultiGraphStore',
+        'Lizard.portlet.MultiImagePortlet',
+        'Lizard.portlet.MultiLegendPortlet',
         'Lizard.portlet.CollagePortlet',
         'Lizard.portlet.WorkspacePortlet',
         'Lizard.popup.FeatureInfo',
@@ -244,59 +245,78 @@ Ext.application({
                 popup_navigation_portal: false,
                 default_portal_template: 'beheer',
                 menu: [
+		// keep these objects in sync with thos in ../portals/vss.js
                 {
-                     text: 'EKR - doelen overzicht',
+                     text: 'ESF overzicht',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
-                     handler: function() { Lizard.CM.setContext({headertab: 'beheer', portal_template:'doelen-beheer'}); }
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'unknown'}); }
                 },
-                '-',
                 {
-                     text: 'Maatregelen beheer',
+                     text: 'Stuurparameters',
                      {% if user.is_authenticated %}
-                     {% else %}
-                     disabled: true,
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'stuurparameter-overzicht'}); }
+                },
+                {
+                     text: 'EKR resultaten',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'doelen-beheer'}); }
+                },
+                {
+                     text: 'Maatregelen',
+                     {% if user.is_authenticated %}
+                     disabled: false,
                      {% endif %}
                      handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'maatregelen-beheer'}); }
                 },
                 {
-                     text: 'Organisatie beheer',
-                     {% if perms.is_beleidsmaker %}
-                     {% else %}
-                     disabled: true,
+                   text: 'Geschikte maatregelen',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'esfpattern-beheer'}); }
+                },
+                {
+                     text: 'Organisaties',
+                     {% if user.is_authenticated %}
+                     disabled: false,
                      {% endif %}
                      handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'organisatie-beheer'}); }
                 },
-                {
-                     text: 'Stuurparameter beheer',
-                     {% if user.is_analyst %}
-                     disabled: true,
-                     {% endif %}
-                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'stuurparameter-overzicht'}); }
-                },{
-                   text: 'Koppeling KRW en aan/afvoer gebieden',
+		{
+                   text: 'Koppeling KRW en aan/afvoergebieden',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
                      handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'area_link'}); }
                 },
                 {
-                   text: 'Geschikte maatregelen beheer',
+                   text: 'Waterbalans/ESF configuraties',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
-                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'area_link'}); }
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'valideer_configuraties'}); }
                 },
                 {
-                     text: 'Gebruikersbeheer',
+                     text: 'Gebruikers',
                      {% if user.is_authenticated %}
                          disabled: false,
                      {% endif %}
-
                      handler: function() { window.open('/manager/') }
-                }]
-
+                },
+                {
+                     text: 'Serverprocessen',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'unknown'}); }
+                }
+		]
             })
         ];
 

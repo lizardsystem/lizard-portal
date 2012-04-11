@@ -3,7 +3,7 @@ Ext.define('Lizard.store.Graph', {
     extend: 'Ext.data.Store',
     model: 'Lizard.model.Graph',
     config: {
-        context_ready:false #this flag prevent updates (and requests) of graph images. 
+        context_ready:false #this flag prevent updates (and requests) of graph images.
 
     }
     proxy: {
@@ -13,7 +13,7 @@ Ext.define('Lizard.store.Graph', {
         }
     },
     applyContext: (changes, context) ->
-        console.arguments
+        # console.arguments
 
         for rec in @data.items
             rec.beginEdit()

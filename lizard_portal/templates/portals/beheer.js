@@ -18,61 +18,76 @@
                  disabled:true
             },
             items: [
+		// keep these objects in sync with those in ../application/vss.js
                 {
-                     text: 'EKR - doelen overzicht',
+                     text: 'ESF overzicht',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({portal_template:'unknown'}); }
+                },
+                {
+                     text: 'Stuurparameters',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({portal_template:'stuurparameter-overzicht'}); }
+                },
+                {
+                     text: 'EKR resultaten',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
                      handler: function() { Lizard.CM.setContext({portal_template:'doelen-beheer'}); }
                 },
                 {
-                     text: 'Maatregelen beheer',
+                     text: 'Maatregelen',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
                      handler: function() { Lizard.CM.setContext({portal_template:'maatregelen-beheer'}); }
                 },
                 {
-                     text: 'Organisatie beheer',
-                     {% if user.is_authenticated %}
-                     disabled: false,
-                     {% endif %}
-                     handler: function() { Lizard.CM.setContext({portal_template:'organisatie-beheer'}); }
-                },
-                {
-                     text: 'Stuurparameter beheer',
-                     {% if user.is_authenticated %}
-                     disabled: false,
-                     {% endif %}
-                     handler: function() { Lizard.CM.setContext({portal_template:'stuurparameter-overzicht'}); }
-                },{
-                   text: 'Koppeling KRW en aan/afvoer gebieden',
-                     {% if user.is_authenticated %}
-                     disabled: false,
-                     {% endif %}
-                     handler: function() { Lizard.CM.setContext({portal_template:'area_link'}); }
-                },
-                {
-                   text: 'Geschikte maatregelen beheer',
+                   text: 'Geschikte maatregelen',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
                      handler: function() { Lizard.CM.setContext({portal_template:'esfpattern-beheer'}); }
                 },
                 {
-                   text: 'Valideer configuraties',
+                     text: 'Organisaties',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({portal_template:'organisatie-beheer'}); }
+                },
+		{
+                   text: 'Koppeling KRW en aan/afvoergebieden',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({portal_template:'area_link'}); }
+                },
+                {
+                   text: 'Waterbalans/ESF configuraties',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
                      handler: function() { Lizard.CM.setContext({portal_template:'valideer_configuraties'}); }
                 },
                 {
-                     text: 'Gebruikersbeheer',
+                     text: 'Gebruikers',
                      {% if user.is_authenticated %}
                          disabled: false,
                      {% endif %}
-
                      handler: function() { window.open('/manager/') }
+                },
+                {
+                     text: 'Serverprocessen',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { Lizard.CM.setContext({portal_template:'unknown'}); }
                 }
             ]
 		}]

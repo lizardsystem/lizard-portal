@@ -128,8 +128,6 @@ showNavigationPortalTemplate
       if (area_selection_collapse == null) area_selection_collapse = true;
       if (skip_animation == null) skip_animation = false;
       if (show_navigation == null) show_navigation = true;
-      console.log("load portal with portal template '" + params.portal_template + "' and arguments:");
-      console.log(arguments);
       if (show_navigation && params.object && ((_ref = typeof params.object.id) === 'null' || _ref === 'undefined') && params.headertab.navigation) {
         this.showNavigation(params.headertab.navigation);
         return true;
@@ -381,7 +379,6 @@ showNavigationPortalTemplate
       if (!this.showOnlyPortal) {
         activetab = Lizard.CM.context.headertab;
         if (activetab.popup_navigation && !Lizard.CM.context.object.id) {
-          console.log('no object selected, show selection');
           anim_setting = this.navigation.animCollapse;
           this.navigation.animCollapse = false;
           this.navigation.animCollapse = anim_setting;

@@ -10,6 +10,9 @@
         name: "identifier",
         type: "string"
       }, {
+        name: "grouping_hint",
+        type: "string"
+      }, {
         name: "plid",
         type: "integer"
       }, {

@@ -70,7 +70,9 @@
       var html;
       html = '';
       html += Ext.Date.format(context.period.start, 'd-m-Y') + '-<br>' + Ext.Date.format(context.period.end, 'd-m-Y') + ' ';
-      return this.contextheader_period.el.dom.innerHTML = html;
+      if (this.contextheader_period) {
+        return this.contextheader_period.el.dom.innerHTML = html;
+      }
     },
     updateContextAreaHeader: function(context) {
       var html, obj_str;
@@ -400,7 +402,15 @@
             {
               text: 'Over deze versie',
               handler: function(button, event, eOpts) {
-                return Ext.MessageBox.alert('Todo', 'todo');
+                return Ext.create('Ext.window.Window', {
+                  title: 'VSS',
+                  autoLoad: {
+                    url: '/version/'
+                  },
+                  width: 400,
+                  height: 100,
+                  modal: true
+                }).show();
               }
             }, {
               text: 'Toon informatie gebruiker',
@@ -410,12 +420,14 @@
             }, '-', {
               text: 'Andere gebruiker',
               handler: function(button, event, eOpts) {
+                Lizard.CM.saveContext();
                 return me.login();
               }
             }, {
               text: 'Log uit',
               handler: function(button, event, eOpts) {
-                return me.logout();
+                me.logout();
+                return Lizard.CM.saveContext();
               }
             }
           ]

@@ -20,7 +20,8 @@ Ext.define('Vss.model.Esf', {
             {name: 'comment', type: 'string'},
             {name: 'config_type', type: 'string'},
             {name: 'last_edit_by', type: 'string'},
-            {name: 'last_edit_date', type: 'string'}
+            {name: 'last_edit_date', type: 'string'},
+            {name: 'iconCls', type: 'string'}
             /*,
             {name: 'qtip', mapping: 'last_comment', type: 'string'}*/]
 });

@@ -116,6 +116,7 @@
         HEIGHT: this.map.size.h,
         SRS: "EPSG:900913"
       };
+      if (layer.get('filter')) params['CQL_FILTER'] = layer.get('filter');
       if (layer.get('url') === '') {
         return alert('Test: Selecteer een andere kaartlaag als bovenste clickable');
       } else if (!layer.get('is_local_server')) {
@@ -139,7 +140,7 @@
             }
           },
           failure: function(xhr) {
-            return alert('failure');
+            return console.error('Error requesting ajax call to remote url ' + url);
           }
         });
       } else {
@@ -160,7 +161,7 @@
             }
           },
           failure: function(xhr) {
-            return alert('failure');
+            return console.error('Error requesting ajax call to local url ' + url);
           }
         });
       }

@@ -178,7 +178,7 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
 
             if @get('filter')
                 # debugger
-                cql_filter = @get('filter')
+                params['cql_filter'] = @get('filter')
 
             try
                 options = Ext.JSON.decode(@get('options'))

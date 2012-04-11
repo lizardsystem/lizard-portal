@@ -209,6 +209,9 @@ Ext.define('Lizard.portlet.MapPortlet', {
             HEIGHT: @map.size.h,
             SRS: "EPSG:900913"  # @map.projection.projCode
         }
+        # Add CQL_FILTER if available.
+        if layer.get('filter')
+            params['CQL_FILTER'] = layer.get('filter')
 
         if layer.get('url') == ''
             alert('Test: Selecteer een andere kaartlaag als bovenste clickable')
@@ -235,7 +238,8 @@ Ext.define('Lizard.portlet.MapPortlet', {
                      # else
                      #    alert('Niks gevonden proxy debug: ' + gml_text)
                 failure: (xhr) ->
-                    alert('failure');
+                    # alert('failure');
+                    console.error('Error requesting ajax call to remote url ' + url);
             })
 
         else
@@ -256,7 +260,8 @@ Ext.define('Lizard.portlet.MapPortlet', {
                     # else
                     #     alert('Niks gevonden debug: ' + gml_text)
                 failure: (xhr) ->
-                    alert('failure');
+                    # alert('failure');
+                    console.error('Error requesting ajax call to local url ' + url);
             });
 
 

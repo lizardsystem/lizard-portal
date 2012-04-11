@@ -65,12 +65,13 @@ Ext.define('Lizard.window.MapWindow',
 
     format: new OpenLayers.Format.WKT(),
 
-    serialize: (feature) ->
-
-        str = @format.write(feature);
+    serialize: (features) ->
+        for feature in features
+            feature.geometry.transform(
+                new OpenLayers.Projection("EPSG:900913"),
+                new OpenLayers.Projection("EPSG:4326"));
+        str = @format.write(features);
         return str
-
-
 
     deserialize: (features_string) ->
 
@@ -87,7 +88,10 @@ Ext.define('Lizard.window.MapWindow',
 
             final_features = []
             for feature in features
-                debugger
+                # debugger
+                feature.geometry.transform(
+                    new OpenLayers.Projection("EPSG:4326"),
+                    new OpenLayers.Projection("EPSG:900913"));
                 if ['OpenLayers.Geometry.MultiPoint', 'OpenLayers.Geometry.MultiLine', 'OpenLayers.Geometry.MultiPolygon'].indexOf(feature.geometry.CLASS_NAME) >= 0
                     for elem in feature.geometry.components
                         final_features = final_features.concat(new OpenLayers.Feature.Vector(elem))
@@ -97,7 +101,7 @@ Ext.define('Lizard.window.MapWindow',
 
 
             geometry_type = features[0].geometry.CLASS_NAME
-            debugger
+            # debugger
             for feature in features
                 if (!bounds)
                     bounds = feature.geometry.getBounds()
@@ -127,12 +131,8 @@ Ext.define('Lizard.window.MapWindow',
     initComponent: () ->
         me = @
 
-
-
-
         @height = @height ||  (window.innerHeight - 200)
         @width = @width || 500
-
 
         @points = new OpenLayers.Layer.Vector( "Editable points", {geometryType: OpenLayers.Geometry.Point } );
         @lines = new OpenLayers.Layer.Vector( "Editable lines" , {geometryType: OpenLayers.Geometry.Line });
@@ -145,7 +145,6 @@ Ext.define('Lizard.window.MapWindow',
 
         if @start_geometry
             @deserialize(@start_geometry)
-
 
         layers = [vlayer, @points, @lines, @polygons]
         map_controls = [
@@ -230,7 +229,7 @@ Ext.define('Lizard.window.MapWindow',
                 xtype: 'button',
                 text: 'Verwijder',
                 handler: () ->
-                    debugger
+                    # debugger
                     if me.active_editor.feature
                         feature =  me.active_editor.feature
                         me.active_editor.unselectFeature(feature)
@@ -252,11 +251,6 @@ Ext.define('Lizard.window.MapWindow',
             controls: map_controls
             layers: layers
             extent: @extent
-#            options: {
-#                projection: new OpenLayers.Projection("EPSG:900913"),
-#                units: "m"
-#            }
-
         })
 
         controls.drag = map.navigation

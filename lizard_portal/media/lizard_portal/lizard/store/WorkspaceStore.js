@@ -28,8 +28,6 @@
         fn: function(store, records) {
           var background_index, background_pref, index, me, old_background;
           me = store;
-          arguments;
-          debugger;
           if (records) {
             index = me.workspaceItemStore.find('is_base_layer', true);
             old_background = me.workspaceItemStore.getAt(index);

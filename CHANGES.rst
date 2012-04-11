@@ -2,10 +2,146 @@ Changelog of lizard-portal
 ==========================
 
 
-0.20 (unreleased)
+0.35 (unreleased)
 -----------------
 
 - Nothing changed yet.
+
+
+0.34 (2012-04-05)
+-----------------
+
+- Fixes the issue that a user with the right credentials could not access the
+  screen to manage the coupling of KRW water bodies and catchment areas (Pp
+  222).
+
+
+0.33 (2012-04-04)
+-----------------
+
+- Added popup contents for 'Over deze versie' in header.coffee.
+
+
+0.32 (2012-04-04)
+-----------------
+
+- Objects in Lizard.window.MapWindow now return objects in lon/lat
+  coordinates, before it was in google coordinates (Pp #142).
+
+
+0.31 (2012-04-03)
+-----------------
+
+- Added icons and style for ESF configuration tree: folder, main,
+  calculation, supportive.
+
+- Removed console log.
+
+
+0.30 (2012-04-02)
+-----------------
+
+- Save context when selecting "Andere gebruiker", or "Log uit".
+
+- Created function saveContext in ContextManager and put the save
+  context code in it (previously it was only in the window.onunload
+  part).
+
+- Added try/except around auto_login. If it fails you are not logged
+  in instead of crash.
+
+
+0.29 (2012-03-29)
+-----------------
+
+- Fixed projectplace #104: MultiGraphStore can now handle graphs that
+  do not fit in the topbar of the screen.
+
+
+0.28 (2012-03-29)
+-----------------
+
+- Updated the validation backend to support multiple configurations per zip
+  file (nens/vss#96).
+
+
+0.27.1 (2012-03-28)
+-------------------
+
+- Switched titles Legenda and EKR in themakaart.
+
+
+0.27 (2012-03-28)
+-----------------
+
+- Tweaked themakaart layout.
+
+- Fixed bug in MultiImagePortlet. Before the portlet crashed invisibly.
+
+
+0.26 (2012-03-27)
+-----------------
+
+- Legends in themakaart work in progress: first working version (but
+  with errors).
+
+- Updated ekr view, it now shows actual data per area.
+
+- Added first working table in themakaart.
+
+
+0.25 (2012-03-21)
+-----------------
+
+- Added custom x-tool icons for empty workspace / collage and delete
+  workspace item / collage item.
+
+- Added tooltips to workspace and collage portlet tools.
+
+
+0.24 (2012-03-21)
+-----------------
+
+- Bugfix MultiGraphStore that sometimes the resizer tool would appear twice.
+
+
+0.23 (2012-03-20)
+-----------------
+
+- Updates the drop-down menu labeled 'Beheer' (#88).
+- Updates:
+  - lizard-registration to 0.1.3 (from 0.1)
+
+
+
+0.22 (2012-03-20)
+-----------------
+
+- Added view for ekr scores (requires lizard-measure 1.11.2 or higher)
+
+- Separated maatregelen graph. The maatregelen view has the graph on
+  the upper side and the table on the lower side. The graph now has
+  the correct dt_start/dt_end.
+
+- Added space between "details" and "groot" in MultiGraphStore.
+
+
+0.21 (2012-03-19)
+-----------------
+
+- Removed console logs from several coffee files.
+
+- Made graphs bigger in analyse popup.
+
+- Removed console logs.
+
+
+0.20 (2012-03-19)
+-----------------
+
+- First working collage popups with multiple lines in a single graph.
+
+- Added comments to autologin.
 
 
 0.19 (2012-03-15)

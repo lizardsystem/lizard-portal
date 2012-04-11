@@ -29,7 +29,6 @@ Ext.define('Lizard.store.AvailableLayersStore', {
     setChecks: (store, etc) ->
         me = @
 
-
         ids = []
         @workspaceStore.each((record) ->
           ids.push(record.get('id'))

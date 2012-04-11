@@ -61,7 +61,8 @@ Ext.define('Lizard.portlet.CollagePortlet', {
                     config.callback(records, operation, success)
         })
     tools: [{
-        type: 'unpin',  # Save
+        type: 'empty',
+        tooltip: 'Collage legen',
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
             portlet.clear()
@@ -69,6 +70,7 @@ Ext.define('Lizard.portlet.CollagePortlet', {
     }
     {
         type: 'save',  # Save
+        tooltip: 'Collage opslaan',
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
 
@@ -88,6 +90,7 @@ Ext.define('Lizard.portlet.CollagePortlet', {
     }
     {
         type: 'gear',  # Manage
+        tooltip: 'Collages beheren'
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
             a = portlet.html;
@@ -112,11 +115,15 @@ Ext.define('Lizard.portlet.CollagePortlet', {
                     proxyUrl: '/workspace/api/collage_view/'
                     proxyParams: {}
                     enterEditSummary: false
-                    addEditIcon: true
+                    addEditIcon: false
                     addDeleteIcon: true
                     usePagination: false
                     read_only_field: 'read_only',
-                    actionEditIcon: (record) ->
+
+                    addExtraActionIcon: true
+                    extraActionIconUrl: '/static_media/lizard_portal/images/hand.png'
+                    extraActionIconTooltip: 'openen'
+                    actionExtraActionIcon: (record) ->
                         portlet.loadCollage({
                             params:
                                 object_id:record.get('id')
@@ -145,7 +152,8 @@ Ext.define('Lizard.portlet.CollagePortlet', {
 
     },
       {
-        type: 'pin'
+        type: 'delete'
+        tooltip: 'Collage item verwijderen (na selectie)'
         handler: (e, target, panelHeader, tool) ->
           portlet = panelHeader.ownerCt;
           records = portlet.getSelectionModel().selected.items
@@ -153,10 +161,48 @@ Ext.define('Lizard.portlet.CollagePortlet', {
 
       }]
 
+    onCollageItemClick: (view, record, item, index, event, e0pts) ->
+        # Put all records from the store that have the same
+        # popup_class_name as the selected record in the popup.
+        records = []
+        js_popup_class = record.get('js_popup_class')
+        grouping_hint = record.get('grouping_hint')
+
+        for collage_item in @store.data.items
+            if collage_item.get('grouping_hint') == grouping_hint
+                collage_item_identifier = Ext.JSON.decode(collage_item.get('identifier'))
+                # Specific for time series
+                collage_item.set('geo_ident', collage_item_identifier['geo_ident'])
+                collage_item.set('par_ident', collage_item_identifier['par_ident'])
+                collage_item.set('stp_ident', collage_item_identifier['stp_ident'])
+                collage_item.set('mod_ident', collage_item_identifier['mod_ident'])
+                collage_item.set('qua_ident', collage_item_identifier['qua_ident'])
+                collage_item.set('fews_norm_source_slug', collage_item_identifier['fews_norm_source_slug'])
+                collage_item.set('is_collage_item', true)  # For showing "Voeg toe aan collage" yes/no
+                records.push(collage_item)
+
+        popup_class_name = 'Lizard.popup.' + js_popup_class
+        popup_class = Ext.ClassManager.get(popup_class_name)
+        if not popup_class
+            # Default fall-back
+            popup_class = Ext.ClassManager.get('Lizard.popup.FeatureInfo')
+            console.error("Cannot find popup class " + popup_class_name + ", fallback to default.")
+        # Make fake workspace item
+        workspaceitem = Ext.create('Lizard.model.WorkspaceItemModel', {})
+        # workspaceitem.set('text', record.get('text'))
+        workspaceitem.set('title', record.get('title'))
+        # workspaceitem.set('plid', record.get('plid'))
+
+        popup_class.show(records, workspaceitem)
+
     initComponent: () ->
         me = @
 
         @store = @collageStore.collageItemStore
+        Ext.apply(@,
+            listeners:
+                itemclick: @onCollageItemClick
+        )
 
         @callParent(arguments)
 })
