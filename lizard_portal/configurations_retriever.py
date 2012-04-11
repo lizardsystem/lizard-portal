@@ -64,12 +64,12 @@ class ConfigurationStore(object):
         self.retrieve_config_specs = ConfigurationSpecRetriever().retrieve
 
     def supply(self):
-        config = self.db.ConfigurationToValidate()
         for zip_name in self.retrieve_zip_names():
             dir_name = self.retrieve_destination_dir(zip_name)
             config_type = self.retrieve_config_type(zip_name)
             self.extract(zip_name, dir_name)
             for config_spec in self.retrieve_config_specs(dir_name, config_type):
+                config = self.db.ConfigurationToValidate()
                 for key, value in config_spec.items():
                     if key == 'area_code':
                         config.area = self.db.areas.get(code=value)
