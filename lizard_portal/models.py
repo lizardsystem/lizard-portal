@@ -1,5 +1,6 @@
 # (c) Nelen & Schuurmans.  GPL licensed, see LICENSE.txt.
 
+import os
 import logging
 
 from django.db import models
@@ -39,8 +40,8 @@ class ConfigurationToValidate(models.Model):
     VALIDATE = 1
 
     ACTIONS = (
-        (KEEP, _('Bewaren')),
-        (VALIDATE, _('Valideren')),
+        (KEEP, _('Keep')),
+        (VALIDATE, _('Validate')),
         )
 
     area = models.ForeignKey(Area, help_text='Link to the area')
@@ -50,7 +51,7 @@ class ConfigurationToValidate(models.Model):
     # allowed values for config_type are 'waterbalans', 'esf[n]' for n > 0
     user_name = models.CharField(
         help_text='User name supplied with the configuration',
-        max_length= 48)
+        max_length=48)
     date = models.CharField(
         help_text='Date supplied with the configuration',
         max_length=48)
@@ -58,7 +59,7 @@ class ConfigurationToValidate(models.Model):
         help_text='Meta info supplied with the configuration',
         null=True, blank=True, max_length=256)
     file_path = models.CharField(
-        help_text='Path to the file that contains the configuration',
+        help_text='Path to the directory that contains the configuration',
         max_length=256)
     action = models.IntegerField(
         help_text='Action to perform on the configuration',
@@ -73,14 +74,20 @@ class ConfigurationToValidate(models.Model):
         null=True, blank=True)
     objects = FilteredManager()
 
-    def as_dict(self):
-        return {
-            'polder': self.area.name,
-            'type':   self.config_type,
-            'user':   self.user_name,
-            'date':   self.date,
-            'action': self.get_action_display(),
-            }
+    @property
+    def get_punpingstations_dbf(self):
+        """Create a filepath."""
+        return os.path.join(self.file_path, 'pumpingstations.dbf')
+
+    @property
+    def get_grondwatergebieden_dbf(self):
+        """Create a filepath."""
+        return os.path.join(self.file_path, 'grondwatergebieden.dbf')
+
+    def get_area_dbf(self):
+        """Create a filepath for current configuration."""
+        return os.path.join(
+            self.file_path, 'aanafvoer_%s.dbf' % self.config_type)
 
     def __unicode__(self):
         return '%s %s %s' % (self.area, self.config_type, self.date)
