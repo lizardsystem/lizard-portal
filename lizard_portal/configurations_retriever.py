@@ -140,7 +140,6 @@ class ConfigurationTypeRetriever(object):
             return matched_string.lower().replace('_', '')
 
 
-
 class ConfigurationSpecRetriever(object):
 
     def retrieve(self, dir_name, config_type):
