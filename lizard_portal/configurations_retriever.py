@@ -21,18 +21,6 @@ from lizard_portal.models import ConfigurationToValidate
 class ConfigurationsRetriever(object):
     """Implements the functionality to retrieve the configurations.
 
-    A ConfigurationsRetriever depends on two other objects to retrieve the
-    configurations, namely one to retrieve the names of the zip files that
-    specify the configurations and one to a configuration given a zip file
-    name. The former object, a file names retriever, should support the
-    method::
-
-        def retrieve(self)
-
-    and the latter object should support the method::
-
-        def create(self, file_name)
-
     Parameter:
       *db*
         interface to the database to ease unit testing
