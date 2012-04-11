@@ -10,6 +10,7 @@ import os
 
 from UserList import UserList
 from unittest import TestCase
+from zipfile import ZipFile
 
 from mock import Mock
 
@@ -331,14 +332,13 @@ class ConfigurationStore(object):
 
     def __init__(self, database):
         self.db = database
-        self.extract = ConfigurationExtractor().extract
         self.retrieve_config_type = ConfigurationTypeRetriever().retrieve
         self.retrieve_config_specs = ConfigurationSpecRetriever().retrieve
 
     def supply(self):
         config = self.db.ConfigurationToValidate()
         for zip_name in self.retrieve_zip_names():
-            dir_name = self.extract(zip_name)
+            dir_name = self.retrieve_destination_dir(zip_name)
             config_type = self.retrieve_config_type(zip_name)
             for config_spec in self.retrieve_config_specs(dir_name, config_type):
                 for key, value in config_spec.items():
@@ -349,6 +349,9 @@ class ConfigurationStore(object):
                 config.file_path = dir_name
                 config.action = ConfigurationToValidate.KEEP
                 config.save()
+
+    def retrieve_destination_dir(self, zip_name):
+        return os.path.join(self.dbf_directory, zip_name[:-4])
 
     def extract(self, zip_name):
         """Extract the contents of the given zip file.
@@ -390,6 +393,10 @@ class ConfigurationStore(object):
 
         """
         assert False
+
+    @property
+    def dbf_directory(self):
+        return '/tmp'
 
 
 class ConfigurationTypeRetriever(object):
@@ -468,7 +475,8 @@ class ConfigurationStoreTestSuite(TestCase):
 class ConfigurationExtractor(object):
 
     def extract(self, zip_name):
-        return os.path.join(self.dbf_directory, zip_name[:-4])
+        destination_dir = os.path.join(self.dbf_directory, zip_name[:-4])
+        return destination_dir
 
     @property
     def dbf_directory(self):
