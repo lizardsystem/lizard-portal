@@ -88,14 +88,16 @@ class ConfigurationsRetrieverTestSuite(TestCase):
         There are no configurations to validate.
 
         """
-        retriever = ConfigurationsRetriever(self.db)
+        retriever = ConfigurationsRetriever()
+        retriever.db = self.db
         self.assertEqual([], retriever.retrieve_configurations())
 
     def test_b(self):
         """Test a single configuration is retrieved."""
         config = self.db.ConfigurationToValidate()
         config.save()
-        retriever = ConfigurationsRetriever(self.db)
+        retriever = ConfigurationsRetriever()
+        retriever.db = self.db
         self.assertEqual([config], retriever.retrieve_configurations())
 
 

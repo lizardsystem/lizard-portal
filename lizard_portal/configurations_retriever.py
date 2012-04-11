@@ -18,26 +18,6 @@ from mock import Mock
 from lizard_portal.models import ConfigurationToValidate
 
 
-class ConfigurationsRetriever(object):
-    """Implements the functionality to retrieve the configurations.
-
-    Parameter:
-      *db*
-        interface to the database to ease unit testing
-
-    """
-    def __init__(self, database):
-        self.db = database
-
-    def retrieve_configurations_as_dict(self):
-        configurations = self.retrieve_configurations()
-        return [configuration.as_dict() for configuration in configurations]
-
-    def retrieve_configurations(self):
-        """Return the list of configurations."""
-        return self.db.configurations.all()
-
-
 class Database(object):
     """Provides a wrapper around the Django database."""
 
@@ -48,6 +28,25 @@ class Database(object):
     def ConfigurationToValidate(self):
         return ConfigurationToValidate()
 
+
+class ConfigurationsRetriever(object):
+    """Implements the functionality to retrieve the configurations to validate.
+
+    Instance parameters:
+      *db*
+        interface to the database (implemented to ease unit testing)
+
+    """
+    def __init__(self):
+        self.db = Database()
+
+    def retrieve_configurations_as_dict(self):
+        configurations = self.retrieve_configurations()
+        return [configuration.as_dict() for configuration in configurations]
+
+    def retrieve_configurations(self):
+        """Return the list of configurations."""
+        return self.db.configurations.all()
 
 
 class ConfigurationStore(object):
