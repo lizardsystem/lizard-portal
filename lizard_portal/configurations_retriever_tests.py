@@ -334,6 +334,7 @@ class ConfigurationStore(object):
 
     def __init__(self):
         self.db = Database()
+        self.retrieve_zip_names = ZipFileNameRetriever().retrieve
         self.retrieve_config_type = ConfigurationTypeRetriever().retrieve
         self.retrieve_config_specs = ConfigurationSpecRetriever().retrieve
 
@@ -352,6 +353,15 @@ class ConfigurationStore(object):
                 config.file_path = dir_name
                 config.action = ConfigurationToValidate.KEEP
                 config.save()
+
+    def retrieve_zip_names(self):
+        """Retrieve the path to all the configuration zip files .
+
+        This method is not implemented here and should be set through
+        dependency injection.
+
+        """
+        assert False
 
     def retrieve_destination_dir(self, zip_name):
         return os.path.join(self.dbf_directory, zip_name[:-4])
