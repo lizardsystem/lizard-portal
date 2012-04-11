@@ -340,6 +340,7 @@ class ConfigurationStore(object):
         for zip_name in self.retrieve_zip_names():
             dir_name = self.retrieve_destination_dir(zip_name)
             config_type = self.retrieve_config_type(zip_name)
+            self.extract(zip_name, dir_name)
             for config_spec in self.retrieve_config_specs(dir_name, config_type):
                 for key, value in config_spec.items():
                     if key == 'area_code':
@@ -353,15 +354,9 @@ class ConfigurationStore(object):
     def retrieve_destination_dir(self, zip_name):
         return os.path.join(self.dbf_directory, zip_name[:-4])
 
-    def extract(self, zip_name):
-        """Extract the contents of the given zip file.
-
-        This method is not implemented here and should be set through
-        dependency injection. The method that is injected determines where the
-        contents of the zip file are stored.
-
-        """
-        assert False
+    def extract(self, zip_name, destination_dir):
+        """Extract the given zip file to the given destination dir."""
+        ZipFile(zip_name).extractall(destination_dir)
 
     def retrieve_config_type(self, zip_name):
         """Return the configuration type using the name of the zip file.
@@ -436,6 +431,7 @@ class ConfigurationStoreTestSuite(TestCase):
         area.code = '3201'
         area.save()
         self.store = ConfigurationStore(self.db)
+        self.store.extract = Mock()
         self.store.retrieve_zip_names = lambda : ['waterbalans_Waternet_04042012_081400.zip']
         self.store.retrieve_config_type =  lambda zip_name: 'waterbalans'
         self.store.retrieve_config_specs = lambda dir_name, config_type: [{'area_code': '3201'}]
@@ -470,17 +466,6 @@ class ConfigurationStoreTestSuite(TestCase):
         args, kwargs = self.store.retrieve_config_specs.call_args
         self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', args[0])
         self.assertEqual('waterbalans', args[1])
-
-
-class ConfigurationExtractor(object):
-
-    def extract(self, zip_name):
-        destination_dir = os.path.join(self.dbf_directory, zip_name[:-4])
-        return destination_dir
-
-    @property
-    def dbf_directory(self):
-        return '/tmp'
 
 
 class ConfigurationSpecRetriever(object):
