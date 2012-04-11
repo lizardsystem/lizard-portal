@@ -5,6 +5,7 @@
 
 # Copyright (c) 2012 Nelen & Schuurmans.  GPL licensed, see LICENSE.rst.
 
+import logging
 import re
 import os
 
@@ -17,6 +18,9 @@ from mock import Mock
 
 from lizard_area.models import Area
 from lizard_portal.models import ConfigurationToValidate
+
+
+logger = logging.getLogger(__name__)
 
 
 class Database(object):
@@ -75,14 +79,21 @@ class ConfigurationStore(object):
             self.extract(zip_name, dir_name)
             for config_spec in self.retrieve_config_specs(dir_name, config_type):
                 config = self.db.ConfigurationToValidate()
+                valid = True
                 for key, value in config_spec.items():
                     if key == 'area_code':
-                        config.area = self.db.areas.get(code=value)
+                        try:
+                            config.area = self.db.areas.get(code=value)
+                        except Area.DoesNotExist:
+                            logger.warning('Cannot import %s configuration for area %s: area does not exist',
+                                          config_type, value)
+                            valid = False
                     else:
                         setattr(config, key, value)
-                config.file_path = dir_name
-                config.action = ConfigurationToValidate.KEEP
-                config.save()
+                if valid:
+                    config.file_path = dir_name
+                    config.action = ConfigurationToValidate.KEEP
+                    config.save()
             self.delete(zip_name)
 
     def retrieve_zip_names(self):
@@ -95,11 +106,12 @@ class ConfigurationStore(object):
         assert False
 
     def retrieve_destination_dir(self, zip_name):
-        return os.path.join(self.dbf_directory, zip_name[:-4])
+        file_name = os.path.split(zip_name)[1]
+        return os.path.join(self.dbf_directory, file_name[:-4])
 
     def extract(self, zip_name, destination_dir):
         """Extract the given zip file to the given destination dir."""
-        ZipFile(zip_name).extractall(destination_dir)
+        ZipFile(zip_name).extractall(path=destination_dir)
 
     def delete(self, file_name):
         """Delete the given file."""

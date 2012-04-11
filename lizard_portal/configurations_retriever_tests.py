@@ -282,6 +282,13 @@ class ConfigurationStoreTestSuite(TestCase):
         config = self.db.configurations.all()[0]
         self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', config.file_path)
 
+    def test_bb(self):
+        """Test the zip file name specifies the directory of a single ConfigurationToValidate."""
+        self.store.retrieve_zip_names = lambda : ['/mnt/vss-shared/te-valideren-configuraties/waterbalans_Waternet_04042012_081400.zip']
+        self.store.supply()
+        config = self.db.configurations.all()[0]
+        self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', config.file_path)
+
     def test_c(self):
         """Test the new ConfigurationToValidate points to the correct Area."""
         self.store.supply()
