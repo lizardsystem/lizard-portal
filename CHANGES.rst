@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.35 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- improved saving of context (pp issue 108 en 102)
+
+- bugfix for organization name in user information (pp issue 139)
 
 
 0.34 (2012-04-05)
