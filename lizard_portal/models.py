@@ -107,16 +107,17 @@ class ConfigurationToValidate(models.Model):
                 setattr(self, key, value)
 
     @property
-    def get_punpingstations_dbf(self):
+    def pumpingstations_dbf(self):
         """Create a filepath."""
         return os.path.join(self.file_path, 'pumpingstations.dbf')
 
     @property
-    def get_grondwatergebieden_dbf(self):
+    def grondwatergebieden_dbf(self):
         """Create a filepath."""
         return os.path.join(self.file_path, 'grondwatergebieden.dbf')
 
-    def get_area_dbf(self):
+    @property
+    def area_dbf(self):
         """Create a filepath for current configuration."""
         return os.path.join(
             self.file_path, 'aanafvoer_%s.dbf' % self.config_type)
