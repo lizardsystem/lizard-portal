@@ -106,6 +106,15 @@ class ConfigurationToValidate(models.Model):
             elif key in ['file_path', 'config_type', 'date']:
                 setattr(self, key, value)
 
+    def as_dict(self):
+        return {
+            'polder': self.area.name,
+            'type':   self.config_type,
+            'user':   self.user_name,
+            'date':   self.date,
+            'action': self.get_action_display(),
+            }
+
     @property
     def pumpingstations_dbf(self):
         """Create a filepath."""
