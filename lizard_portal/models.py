@@ -91,6 +91,7 @@ class ConfigurationToValidate(models.Model):
         self.db = Database()
 
     def set_attributes(self, attribute_dict):
+        meta_info = ''
         for key, value in attribute_dict.items():
             if key == 'area_code':
                 try:
@@ -105,6 +106,9 @@ class ConfigurationToValidate(models.Model):
                     pass
             elif key in ['file_path', 'config_type', 'date', 'user']:
                 setattr(self, key, value)
+            else:
+                meta_info += '%s: %s; ' % (key, value)
+        self.fews_meta_info = meta_info
 
     def as_dict(self):
         return {
