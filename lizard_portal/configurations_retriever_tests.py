@@ -255,7 +255,7 @@ class ConfigurationStoreTestSuite(TestCase):
     def setUp(self):
         self.db = MockDatabase()
         area = self.db.Area()
-        area.code = '3201'
+        area.ident = '3201'
         area.save()
         data_set = self.db.DataSet()
         data_set.name = 'Waternet'

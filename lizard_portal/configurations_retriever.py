@@ -85,7 +85,11 @@ class ConfigurationStore(object):
                 config = self.db.ConfigurationToValidate()
                 attrs.update(attrs_from_name)
                 config.set_attributes(attrs)
-                config.save()
+                try:
+                    logger.info('Saving configuration %s', config)
+                    config.save()
+                except:
+                    logger.warning('Unable to save the configuration: probably it is incomplete')
             self.delete(zip_name)
 
     def retrieve_zip_names(self):

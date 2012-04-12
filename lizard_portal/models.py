@@ -94,12 +94,16 @@ class ConfigurationToValidate(models.Model):
         for key, value in attribute_dict.items():
             if key == 'area_code':
                 try:
-                    self.area = self.db.areas.get(code=value)
+                    self.area = self.db.areas.get(ident=value)
                 except Area.DoesNotExist:
-                    pass
+                    logger.warning("Unable to find the area with ident '%s'", value)
             elif key == 'data_set':
-                self.data_set = self.db.data_sets.get(name=value)
-            else:
+                try:
+                    self.data_set = self.db.data_sets.get(name=value)
+                    logger.warning("Unable to find the data set with name '%s'", value)
+                except DataSet.DoesNotExist:
+                    pass
+            elif key in ['file_path', 'config_type', 'date']:
                 setattr(self, key, value)
 
     @property
