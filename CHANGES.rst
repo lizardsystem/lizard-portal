@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.36 (unreleased)
+0.36 (2012-04-12)
 -----------------
 
 - Change the way annotations are displayed.
