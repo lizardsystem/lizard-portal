@@ -274,4 +274,4 @@ class MockConfig(object):
 
 
 def create_configurations_retriever():
-    return ConfigurationsRetriever(Database())
+    return ConfigurationsRetriever()
