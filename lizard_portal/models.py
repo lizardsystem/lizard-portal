@@ -61,7 +61,7 @@ class ConfigurationToValidate(models.Model):
         help_text='Type of the configuration',
         max_length=24)
     # allowed values for config_type are 'waterbalans', 'esf[n]' for n > 0
-    user_name = models.CharField(
+    user = models.CharField(
         help_text='User name supplied with the configuration',
         max_length=48)
     date = models.CharField(
@@ -103,14 +103,14 @@ class ConfigurationToValidate(models.Model):
                     logger.warning("Unable to find the data set with name '%s'", value)
                 except DataSet.DoesNotExist:
                     pass
-            elif key in ['file_path', 'config_type', 'date']:
+            elif key in ['file_path', 'config_type', 'date', 'user']:
                 setattr(self, key, value)
 
     def as_dict(self):
         return {
             'polder': self.area.name,
             'type':   self.config_type,
-            'user':   self.user_name,
+            'user':   self.user,
             'date':   self.date,
             'action': self.get_action_display(),
             }
