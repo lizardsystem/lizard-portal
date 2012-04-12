@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.37 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fixes several bugs related to the view of the configurations to validate.
+- Fixes a bug with the task to prepare the configurations.
 
 
 0.36 (2012-04-12)
