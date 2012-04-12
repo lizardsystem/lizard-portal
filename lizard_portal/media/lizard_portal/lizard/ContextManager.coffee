@@ -266,16 +266,18 @@ Ext.define 'Lizard.ContextManager',
 
     # Save the context to the server
     saveContext: () ->
-        if @context and @context.user and @context.user.id
-            # console.log('Saving context...')
+        #Ext.Msg.alert("debug",'try save_context')
+        me = Lizard.CM
+        if me.context and me.context.user and me.context.user.id
+            console.log('Saving context...')
             context =  Ext.JSON.encode({
-                objects: @objects
+                objects: me.objects
                 context:
                     period:
-                        start: Ext.Date.format(@context.period.start, 'Y-m-d')
-                        end: Ext.Date.format(@context.period.end, 'Y-m-d')
-                        type: @context.period.type
-                    background_layer: @context.background_layer
+                        start: Ext.Date.format(me.context.period.start, 'Y-m-d')
+                        end: Ext.Date.format(me.context.period.end, 'Y-m-d')
+                        type: me.context.period.type
+                    background_layer: me.context.background_layer
             })
 
             portalWindow = Ext.getCmp('portalWindow')
@@ -292,7 +294,7 @@ Ext.define 'Lizard.ContextManager',
 
                 failure: (error) =>
                     console.log(error)
-                    Ext.Msg.alert("Fout", "Fout in ophalen van scherm. Error: #{error}")
+                    Ext.Msg.alert("Fout", "Fout in het opslaan van de context. Error: #{error}")
                     portalWindow.setLoading false
 
     constructor: (config) ->
