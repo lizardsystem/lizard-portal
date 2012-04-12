@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.35 (unreleased)
 -----------------
 
-- Added functionalities to create a filepath for dbf.
+- Adds functionality to prepare the configurations that are specified by a set
+  of zip files for validation (nens/vss#96).
 
 
 0.34 (2012-04-05)
