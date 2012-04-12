@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.38 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Sets the meta info for each configuration
+- Sets the user name for each configuration
+- Uses the Dutch translations for configurations to 'Keep' or 'Validate'.
 
 
 0.37 (2012-04-12)
