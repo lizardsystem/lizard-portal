@@ -107,8 +107,6 @@ Ext.application({
             }
         });
 
-        {% get_portal_template watersysteem_layers %}
-
         // Globally create workspace layers
 
         // !Try! to initialize WorkspaceStore, does not work yet.
