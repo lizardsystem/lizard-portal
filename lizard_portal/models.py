@@ -86,8 +86,8 @@ class ConfigurationToValidate(models.Model):
         null=True, blank=True)
     objects = FilteredManager()
 
-    def __init__(self):
-        models.Model.__init__(self)
+    def __init__(self, *args, **kwargs):
+        models.Model.__init__(self, *args, **kwargs)
         self.db = Database()
 
     def set_attributes(self, attribute_dict):
