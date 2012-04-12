@@ -31,11 +31,36 @@
           itemclick: {
             fn: function(grid, record) {
               console.log(record);
-              Ext.getCmp('portalWindow').linkTo({
-                object:'analyse-interpretatie',
-                object_id:record.data.id,
-                portal_template:'analyse-interpretatie-details'
-              }) ;
+              Ext.getCmp('portalWindow').linkToPopup(
+                'Analyseinterpretatie: ' + record.data.title,
+                '/annotation/view/' + record.data.id,
+                {},
+                {
+                  save: [
+                    'Bewerken analyseinterpretatie: ' + record.data.title,
+                    '/annotation/annotation_detailedit_portal/',
+                    {annotation_id: record.data.id},
+                    null,
+                    false,
+                    'component',
+                    true
+                  ],
+                  search: [
+                    'Geschiedenis',
+                    '/annotation/history/1' + record.data.id,
+                    {},
+                    {},
+                    false,
+                    'html',
+                    false,
+                    false
+                  ]
+                },
+                false,
+                'html',
+                false,
+                true
+                );
             }
           }      
         },
