@@ -35,8 +35,11 @@
 				{name: 'action', title: 'Actie',
 				 editable: true, visible: true,
 				 width: 100, type: 'combo',
-				 choices: ['Bewaren', 'Valideren']}
+				 choices: [{id:0, name:'Bewaren'}, {id:1, name: 'Valideren'}]}
 			    ],
+			    useAddDeleteButtons: false,
+			    addDeleteIcon: true,
+			    addEditIcon: true,
 			    proxyUrl: '/portal/validate',
 			    proxyParams: {
 			    }
