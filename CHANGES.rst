@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.35 (unreleased)
+0.35 (2012-04-12)
 -----------------
 
 - Adds functionality to prepare the configurations that are specified by a set
