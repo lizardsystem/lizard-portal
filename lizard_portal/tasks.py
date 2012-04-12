@@ -5,6 +5,8 @@
 
 # Copyright (c) 2012 Nelen & Schuurmans.  GPL licensed, see LICENSE.rst.
 
+from celery.task import task
+
 from lizard_portal.configurations_retriever import ConfigurationStore
 
 @task()
