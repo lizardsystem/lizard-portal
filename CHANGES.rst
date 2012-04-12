@@ -2,6 +2,12 @@ Changelog of lizard-portal
 ==========================
 
 
+0.36 (unreleased)
+-----------------
+
+- Nothing changed yet.
+
+
 0.35 (2012-04-12)
 -----------------
 
