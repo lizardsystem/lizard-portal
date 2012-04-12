@@ -2,12 +2,40 @@ Changelog of lizard-portal
 ==========================
 
 
-0.35 (unreleased)
+0.39 (unreleased)
 -----------------
 
 - improved saving of context (pp issue 108 en 102)
 
 - bugfix for organization name in user information (pp issue 139)
+
+
+0.38 (2012-04-12)
+-----------------
+
+- Sets the meta info for each configuration
+- Sets the user name for each configuration
+- Uses the Dutch translations for configurations to 'Keep' or 'Validate'.
+
+
+0.37 (2012-04-12)
+-----------------
+
+- Fixes several bugs related to the view of the configurations to validate.
+- Fixes a bug with the task to prepare the configurations.
+
+
+0.36 (2012-04-12)
+-----------------
+
+- Change the way annotations are displayed.
+
+
+0.35 (2012-04-12)
+-----------------
+
+- Adds functionality to prepare the configurations that are specified by a set
+  of zip files for validation (nens/vss#96).
 
 
 0.34 (2012-04-05)

@@ -107,7 +107,6 @@ Ext.application({
             }
         });
 
-
         // Globally create workspace layers
 
         // !Try! to initialize WorkspaceStore, does not work yet.

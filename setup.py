@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = '0.35dev'
+version = '0.39dev'
 
 long_description = '\n\n'.join([
     open('README.rst').read(),
@@ -10,6 +10,7 @@ long_description = '\n\n'.join([
     ])
 
 install_requires = [
+    'dbfpy',
     'Django',
     'django-extensions',
     'django-nose',
