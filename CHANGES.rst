@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.38 (unreleased)
+0.38 (2012-04-12)
 -----------------
 
 - Sets the meta info for each configuration
