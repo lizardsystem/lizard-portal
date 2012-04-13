@@ -331,6 +331,12 @@ class ConfigurationStoreTestSuite(TestCase):
         args, kwargs = self.store.delete.call_args
         self.assertEqual('waterbalans_Waternet_04042012_081400.zip', args[0])
 
+    def test_j(self):
+        """Test a zip file that is named incorrectly, is skipped."""
+        self.store.retrieve_zip_names = lambda : ['incorrectly named.zip']
+        self.store.supply()
+        self.assertFalse(self.store.extract.called)
+
 
 class AttributesFromNameRetrieverTestSuite(TestCase):
 

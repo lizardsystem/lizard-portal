@@ -76,10 +76,14 @@ class ConfigurationStore(object):
         self.retrieve_zip_names = ZipFileNameRetriever().retrieve
         self.retrieve_attrs_from_name = AttributesFromNameRetriever().retrieve
         self.retrieve_attrs_from_config = ConfigurationSpecRetriever().retrieve
+        self.required_attrs = ['file_path', 'config_type', 'data_set']
 
     def supply(self):
         for zip_name in self.retrieve_zip_names():
             attrs_from_name = self.retrieve_attrs_from_name(zip_name)
+            if self.required_attrs_are_missing(attrs_from_name):
+                logger.warning("Unable to parse the name '%s': required info is missing", zip_name)
+                continue
             self.extract(zip_name, attrs_from_name['file_path'])
             for attrs in self.retrieve_attrs_from_config(attrs_from_name['file_path'], attrs_from_name['config_type']):
                 config = self.db.ConfigurationToValidate()
@@ -137,6 +141,18 @@ class ConfigurationStore(object):
 
         """
         assert False
+
+    def required_attrs_are_missing(self, attrs):
+        missing = False
+        for attr in self.required_attrs:
+            if attr in attrs.keys():
+                value = attrs[attr]
+                missing = value is None or value == ''
+            else:
+                missing = True
+            if missing:
+                break
+        return missing
 
     def extract(self, zip_name, destination_dir):
         """Extract the given zip file to the given destination dir."""
