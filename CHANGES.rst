@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.39 (unreleased)
+0.39 (2012-04-13)
 -----------------
 
 - improved saving of context (pp issue 108 en 102)
