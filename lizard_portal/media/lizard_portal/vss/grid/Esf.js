@@ -15,7 +15,7 @@ Ext.define('Vss.grid.Esf', {
         editable: true,
         autoLoad: false
     },
-    tools: [{
+    tools: [{//expand tree for extra lines
         type: 'right',
         handler: function (e, target, panelHeader, tool) {
             var portal_col = panelHeader.up('portalcolumn')
@@ -25,19 +25,12 @@ Ext.define('Vss.grid.Esf', {
             } else {
                 tool.setType('left');
                 portal_col.setWidth(700);
-
             }
-
         }
-
     }],
     applyParams: function(params) {
         var params = params|| {};
-        console.log('apply params');
-        console.log(params);
-
         if (this.store) {
-
             this.store.applyParams({object_id: params.object.id});
         }
     },
@@ -47,52 +40,100 @@ Ext.define('Vss.grid.Esf', {
         this.callParent(arguments);
     },
 
-    initComponent: function(arguments) {
-        var me = this;
 
-        var oordeel_editor =  Ext.create('Ext.grid.CellEditor', {
+    editors: {
+        oordeel_editor: Ext.create('Ext.grid.CellEditor', {
             field: Ext.create('Ext.form.field.ComboBox', {
                 editable: false,
                 store: [[ 2, 'OK' ], [1, 'Kritisch' ]]
             })
-        });
-        var number_editor = Ext.create('Ext.grid.CellEditor', {
-             field: {
+        }),
+        number_editor: Ext.create('Ext.grid.CellEditor', {
+            field: {
                 xtype: 'numberfield',
                 allowBlank: false
             }
-        });
-
-        var value_renderer = function(value, metaData, record) {
-            console.log(record)
-            var format = function(value, record) {
-                if (record.data.type == 'oordeel') {
-                    if (value == null){
-                        return '-'
-                    } else if (value < 0.1) {
-                        return '-'
-                    }
-                    else if (value < 1.1) {
-                        return '<span style="color:red;">Kritisch</span>';
-                    } else {
-                        return '<span style="color:green;">OK</span>';
-                    }
-                } else if (value == null){
-                    return '-'
-                } else {
-                    return value;
-                }
+        }),
+        text_editor: Ext.create('Ext.grid.CellEditor', {
+            field: {
+                xtype: 'textfield',
+                allowBlank: false
             }
-            if (record.data.manual > 0.1 && record.data.is_manual) {
-                return format(value, record) + ' (' + format(record.data.auto_value, record) + ')'
-            } else if (record.data.config_type == 'parameter') {
-                return format(value, record)
-            } else { //rekenresultaat
-                return format(record.data.auto_value, record)
+        })
+    },
+    value_renderer: function(value, metaData, record) {
+        /*
+            config_type: main_esf/expert_result/result/expert_setting/base_setting/folder
+            type: oordeel/number/text
+
+            manual_value
+            auto_value
+
+            add manual_text_value
+            add auto_text_value
+
+            manual/ is_manual ???
+            validated??
+
+
+         {name: 'id', mapping: 'id', type: 'auto'},
+         {name: 'config_id', type: 'auto'},
+         {name: 'name', type: 'string'},
+         {name: 'source_name', type: 'auto'},
+         {name: 'manual', type: 'int'},
+         {name: 'is_manual', type: 'boolean'},
+         {name: 'comment', type: 'string'},
+         {name: 'last_edit_by', type: 'string'},
+         {name: 'last_edit_date', type: 'string'},
+         {name: 'iconCls', type: 'string'}
+
+
+        */
+
+
+
+        console.log(record)
+        //function for formating 1 value
+        var format = function(value, record) {
+            if (record.data.type == 'oordeel') {
+                if (value == null){
+                    return '-'
+                } else if (value < 0.1) {
+                    return '-'
+                }
+                else if (value < 1.1) {
+                    return '<span style="color:red;">Kritisch</span>';
+                } else {
+                    return '<span style="color:green;">OK</span>';
+                }
+            } else if (value == null){
+                return '-'
+            } else {
+                return value;
             }
         }
 
+        if (record.data.manual > 0.1 && record.data.is_manual) {
+            return format(value, record) + ' (' + format(record.data.auto_value, record) + ')'
+        } else if (record.data.config_type == 'base_setting') {
+            return format(value, record)
+        } else if  (record.data.config_type == 'map') {
+            return ''
+        } else { //rekenresultaat
+            return format(record.data.auto_value, record)
+        }
+    },
+    get_choice_renderer: function () {
+
+    },
+
+
+    initComponent: function(arguments) {
+        var me = this;
+
+
         if (this.editable) {
+            //in case the user is allowed to edit
 
             var manual_editor = function(record) {
                 if (record.data.is_manual) {
@@ -117,9 +158,11 @@ Ext.define('Vss.grid.Esf', {
 
                 if ((record.data.is_manual && record.data.manual == 1) || (record.data.config_type == 'parameter')) {
                     if (record.data.type == 'oordeel') {
-                        return oordeel_editor;
+                        return this.editors.oordeel_editor;
+                    } else  if (record.data.type == 'text') {
+                        return this.editors.text_editor;
                     } else {
-                        return number_editor;
+                        return this.editors.number_editor;
                     }
                 } else {
                     return false;
@@ -136,6 +179,31 @@ Ext.define('Vss.grid.Esf', {
 
             var cssPrefix = Ext.baseCSSPrefix;
             var cls = [cssPrefix + 'grid-checkheader'];
+
+            var manual_class = 'grid-checkheader-hand';
+            var auto_class = 'grid-checkheader-unhand';
+
+            if (record.data.config_type == 'main_esf') {
+                //manual_class = 'grid-checkheader-hand'
+                //auto_class = ''
+
+            } else if (record.data.config_type == 'expert_result') {
+
+            } else if (record.data.config_type == 'result') {
+
+            } else if (record.data.config_type == 'expert_setting') {
+
+            } else if (record.data.config_type == 'base_setting') {
+
+            } else if (record.data.config_type == 'folder') {
+                manual_class = '';
+                auto_class = '';
+
+            } else {
+
+            }
+
+
             if (record.data.config_type == 'parameter') {
                 cls.push(cssPrefix + 'grid-checkheader-setting');
                 return '<div class="' + cls.join(' ') + '">&#160;</div>';
@@ -169,7 +237,7 @@ Ext.define('Vss.grid.Esf', {
                 sortable: true,
                 dataIndex: 'name'
             },{
-                text: 'Handm.',
+                text: 'Keuze',
                 width: 40,
                 dataIndex: 'manual',
                 renderer: manual_renderer,
@@ -181,7 +249,7 @@ Ext.define('Vss.grid.Esf', {
                 dataIndex: 'manual_value',
                 sortable: true,
                 getEditor: value_editor,
-                renderer: value_renderer,
+                renderer: this.value_renderer,
                 listeners: {
                       'mouseover': function(grid, component, row, col){
                           console.log(arguments);

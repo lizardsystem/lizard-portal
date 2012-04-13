@@ -22,6 +22,33 @@
     flex:1,
     items: [{
       title: 'Analyse interpretatie',
+      tools: [{
+          type: 'plus',
+          handler: function (e, target, panelHeader, tool) {
+              Ext.create('Ext.window.Window', {
+                  title: 'Nieuwe annotatie toevoegen',
+                  width: 800,
+                  height: 600,
+                  modal: true,
+                  finish_edit_function: function (updated_record) {
+                      //todo
+                  },
+                  editpopup: true,
+                  loader:{
+                      loadMask: true,
+                      autoLoad: true,
+                      url: '/annotation/annotation_detailedit_portal/',
+                      baseParams: {
+                          area_id: Lizard.CM.getContext().object.id
+                      },
+                      ajaxOptions: {
+                          method: 'GET'
+                      },
+                      renderer: 'component'
+                  }
+              }).show();
+          }
+      } ],
       flex:1,
       items: {
         xtype: 'grid',
@@ -80,24 +107,24 @@
         },{
           text: 'Categorie',
           flex: 1,
-          dataIndex: 'category',
+          dataIndex: 'annotation_category',
           sortable: true
         },{
           text: 'Begin periode',
           flex: 1,
           dataIndex: 'datetime_period_start',
-          sortable: true
-          //renderer: formatDate,
+          sortable: true,
+          renderer: Ext.util.Format.dateRenderer('d-m-Y')
         },{
           text: 'Eind periode',
           flex: 1,
           dataIndex: 'datetime_period_end',
-          sortable: true
-          //renderer: formatDate,
+          sortable: true,
+          renderer: Ext.util.Format.dateRenderer('d-m-Y')
         },{
           text: 'Status',
           flex: 1,
-          dataIndex: 'status',
+          dataIndex: 'annotation_status',
           sortable: true
         },{
           text: 'Auteur',
@@ -113,11 +140,11 @@
             extend: 'Ext.data.Model',
             fields: [
               {name: 'title', type: 'string'},
-              {name: 'category', type: 'string'},
+              {name: 'annotation_category', type: 'string'},
               {name: 'datetime_period_start', type: 'auto'},
               {name: 'datetime_period_end', type: 'auto'},
               {name: 'created_by', type: 'string'},
-              {name: 'status', type: 'string'},
+              {name: 'annotation_status', type: 'string'},
               {name: 'id', type: 'string'}
             ]
           }),

@@ -2,11 +2,23 @@ Changelog of lizard-portal
 ==========================
 
 
-0.39 (unreleased)
+0.40 (unreleased)
 -----------------
 
 - Provides a working user interface to the table that contains the
   configurations to validate (nens/vss#102).
+
+
+0.39 (2012-04-13)
+-----------------
+
+- improved saving of context (pp issue 108 en 102)
+
+- bugfix for organization name in user information (pp issue 139)
+
+- Improved analyse-interpretatie-grid
+
+- Add 'add' tool to analyse-interpretatie-grid
 
 
 0.38 (2012-04-12)

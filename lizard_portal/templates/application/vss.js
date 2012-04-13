@@ -335,7 +335,7 @@ Ext.application({
                 user: {
                     id: {{ user.id|default_if_none:"null" }},
                     name: '{{ user.get_full_name }}',
-                    organisation: '{% for profile in  user.userprofile_set.all %}{{profile.organization.name}}, {% endfor %}',
+                    organization: '{% for profile in  user.userprofile_set.all %}{{profile.organisation.name}} {% endfor %}',
                     permissions: [
 {% for perm in permission_list %}
 '{{perm.name}}',
