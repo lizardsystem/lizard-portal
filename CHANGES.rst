@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.40 (unreleased)
+0.40 (2012-04-13)
 -----------------
 
 - Provides a working user interface to the table that contains the
