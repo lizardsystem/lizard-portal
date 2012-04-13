@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.39 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Provides a working user interface to the table that contains the
+  configurations to validate (nens/vss#102).
 
 
 0.38 (2012-04-12)
