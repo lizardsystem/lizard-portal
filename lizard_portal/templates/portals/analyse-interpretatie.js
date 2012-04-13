@@ -22,6 +22,33 @@
     flex:1,
     items: [{
       title: 'Analyse interpretatie',
+      tools: [{
+          type: 'plus',
+          handler: function (e, target, panelHeader, tool) {
+              Ext.create('Ext.window.Window', {
+                  title: 'Nieuwe annotatie toevoegen',
+                  width: 800,
+                  height: 600,
+                  modal: true,
+                  finish_edit_function: function (updated_record) {
+                      //todo
+                  },
+                  editpopup: true,
+                  loader:{
+                      loadMask: true,
+                      autoLoad: true,
+                      url: '/annotation/annotation_detailedit_portal/',
+                      baseParams: {
+                          area_id: Lizard.CM.getContext().object.id
+                      },
+                      ajaxOptions: {
+                          method: 'GET'
+                      },
+                      renderer: 'component'
+                  }
+              }).show();
+          }
+      } ],
       flex:1,
       items: {
         xtype: 'grid',

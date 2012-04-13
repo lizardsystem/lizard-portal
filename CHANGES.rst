@@ -11,6 +11,8 @@ Changelog of lizard-portal
 
 - Improved analyse-interpretatie-grid
 
+- Add 'add' tool to analyse-interpretatie-grid
+
 
 0.38 (2012-04-12)
 -----------------
