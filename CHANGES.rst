@@ -9,6 +9,10 @@ Changelog of lizard-portal
 
 - bugfix for organization name in user information (pp issue 139)
 
+- Improved analyse-interpretatie-grid
+
+- Add 'add' tool to analyse-interpretatie-grid
+
 
 0.38 (2012-04-12)
 -----------------
