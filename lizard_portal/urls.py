@@ -13,6 +13,9 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     (r'^admin/', include(admin.site.urls)),
+
+    (r'^api/', include('lizard_portal.api.urls')),
+
     url(r'^$',
          'lizard_portal.views.site',
         {'application_name': 'vss',

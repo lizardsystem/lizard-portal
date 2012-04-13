@@ -22,6 +22,8 @@
 			    flex:1,
 			    columnLines: true,
 			    dataConfig:[
+				{name: 'id', title: 'id', editable: false, 
+				 visible: false, width: 30, type: 'number'},
 				{name: 'polder', title: 'Polder',
 				 editable: false, visible: true, width: 300,
 				 type: 'text'},
@@ -40,8 +42,11 @@
 			    useAddDeleteButtons: false,
 			    addDeleteIcon: true,
 			    addEditIcon: true,
-			    proxyUrl: '/portal/validate',
+			    proxyUrl: '/portal/api/configuration/',
 			    proxyParams: {
+				flat: false,
+				size: 'small',
+				include_geom: false
 			    }
 			}]
 	    }]
