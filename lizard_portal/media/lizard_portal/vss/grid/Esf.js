@@ -63,7 +63,7 @@ Ext.define('Vss.grid.Esf', {
     },
     value_renderer: function(value, metaData, record) {
         /*
-            config_type: main_esf/expert_result/result/expert_setting/base_setting/map
+            config_type: main_esf/expert_result/result/expert_setting/base_setting/folder
             type: oordeel/number/text
 
             manual_value
@@ -195,9 +195,9 @@ Ext.define('Vss.grid.Esf', {
 
             } else if (record.data.config_type == 'base_setting') {
 
-            } else if (record.data.config_type == 'map') {
-                manual_class =
-                auto_class =
+            } else if (record.data.config_type == 'folder') {
+                manual_class = '';
+                auto_class = '';
 
             } else {
 
