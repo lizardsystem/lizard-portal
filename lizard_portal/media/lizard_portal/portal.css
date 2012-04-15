@@ -155,6 +155,18 @@
     background-image: url('images/settings.png');
 }
 
+.x-grid-checkheader-hand-gray {
+    background-image: url('images/hand_grey.png');
+}
+
+.x-grid-checkheader-setting-gray {
+    background-image: url('images/settings_grey.png');
+}
+
+.x-grid-checkheader-setting-blue {
+    background-image: url('images/settings_blue.png');
+}
+
 .x-grid-checkheader-null{
     background-image: url('images/null.png');
 }
@@ -164,29 +176,30 @@
 }
 
 /* ESF tree */
-.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-main {
-    background-image: url('../vss/icons/esf.png');
-}
 
-.x-tree-custom-main {
-    background-image: url('../vss/icons/esf.png');
-}
-
-.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-folder,
-.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-calculation {
-    background-image: url('x-grid-icons/folder-open-gray.png');
-}
-
-.x-tree-custom-folder,
-.x-tree-custom-calculation {
-    background-image: url('x-grid-icons/folder-gray.png');
-}
-
-.x-tree-custom-parameter,
-.x-tree-custom-supportive {
+.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-main_esf,
+.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-expert_result,
+.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-result {
     background-image: url('x-grid-icons/green-ball.png');
 }
 
+.x-tree-custom-main_esf,
+.x-tree-custom-expert_result,
+.x-tree-custom-result {
+    background-image: url('x-grid-icons/green-ball.png');
+}
+
+.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-expert_setting,
+.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-base_setting,
+.x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-info_setting {
+    background-image: url('/static_media/extjs/resources/themes/images/gray/tree/leaf.gif');
+}
+
+.x-tree-custom-expert_setting,
+.x-tree-custom-base_setting,
+.x-tree-custom-info_setting {
+    background-image: url('/static_media/extjs/resources/themes/images/gray/tree/leaf.gif');
+}
 /* TODO: add border */
 .x-tool-over img.x-tool-empty {
     background-image: url('x-tool-icons/x-tool-empty.png');

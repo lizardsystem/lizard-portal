@@ -123,6 +123,54 @@ Ext.define('Vss.grid.Esf', {
             return format(record.data.auto_value, record)
         }
     },
+
+    manual_renderer: function(value, metaData, record) {
+
+        var cssPrefix = Ext.baseCSSPrefix;
+        var classes = [cssPrefix + 'grid-checkheader'];
+
+        var manual_class = 'grid-checkheader-hand';
+        var auto_class = 'grid-checkheader-setting';
+        var not_in_use = false;
+
+        if (record.data.config_type == 'main_esf') {
+            manual_class = 'grid-checkheader-hand';
+            auto_class = 'grid-checkheader-setting-blue';
+
+        } else if (record.data.config_type == 'expert_result') {
+            manual_class = 'grid-checkheader-hand-gray';
+            auto_class = 'grid-checkheader-setting-gray';
+
+        } else if (record.data.config_type == 'result') {
+            not_in_use = true;
+        } else if (record.data.config_type == 'expert_setting') {
+            manual_class = 'grid-checkheader-hand-gray';
+            auto_class = 'grid-checkheader-setting-gray';
+        } else if (record.data.config_type == 'base_setting') {
+            not_in_use = true;
+        } else if (record.data.config_type == 'folder') {
+            not_in_use = true;
+        } else {
+            not_in_use = true;
+        }
+
+        if (not_in_use) {
+            cls = 'grid-checkheader-null';
+        } else if (record.data.config_type == 'main_esf' && value < 0.9 && (record.data.auto_value == null || record.data.auto_value < 0.9)) {
+            cls = 'grid-checkheader-unhand';
+        } else {
+            if (value==1) {
+                cls = manual_class;
+            } else if (value==0) {
+                cls = auto_class;
+            }
+            else {
+                cls = 'grid-checkheader-null';
+            }
+        }
+        classes.push(cssPrefix + cls);
+        return '<div class="' + classes.join(' ') + '">&#160;</div>';
+    },
     get_choice_renderer: function () {
 
     },
@@ -136,7 +184,7 @@ Ext.define('Vss.grid.Esf', {
             //in case the user is allowed to edit
 
             var manual_editor = function(record) {
-                if (record.data.is_manual) {
+                if (['main_esf', 'expert_result', 'expert_setting'].indexOf(record.data.config_type)>=0) {
 
                     return {
                         xtype: 'combobox',
@@ -156,13 +204,14 @@ Ext.define('Vss.grid.Esf', {
 
             var value_editor = function(record) {
 
-                if ((record.data.is_manual && record.data.manual == 1) || (record.data.config_type == 'parameter')) {
+                if ((['main_esf', 'expert_result', 'expert_setting'].indexOf(record.data.config_type)>=0 && record.data.manual == 1) ||
+                        (['base_setting'].indexOf(record.data.config_type)>=0)) {
                     if (record.data.type == 'oordeel') {
-                        return this.editors.oordeel_editor;
+                        return me.editors.oordeel_editor;
                     } else  if (record.data.type == 'text') {
-                        return this.editors.text_editor;
+                        return me.editors.text_editor;
                     } else {
-                        return this.editors.number_editor;
+                        return me.editors.number_editor;
                     }
                 } else {
                     return false;
@@ -175,50 +224,7 @@ Ext.define('Vss.grid.Esf', {
 
         }
 
-        var manual_renderer = function(value, metaData, record) {
 
-            var cssPrefix = Ext.baseCSSPrefix;
-            var cls = [cssPrefix + 'grid-checkheader'];
-
-            var manual_class = 'grid-checkheader-hand';
-            var auto_class = 'grid-checkheader-unhand';
-
-            if (record.data.config_type == 'main_esf') {
-                //manual_class = 'grid-checkheader-hand'
-                //auto_class = ''
-
-            } else if (record.data.config_type == 'expert_result') {
-
-            } else if (record.data.config_type == 'result') {
-
-            } else if (record.data.config_type == 'expert_setting') {
-
-            } else if (record.data.config_type == 'base_setting') {
-
-            } else if (record.data.config_type == 'folder') {
-                manual_class = '';
-                auto_class = '';
-
-            } else {
-
-            }
-
-
-            if (record.data.config_type == 'parameter') {
-                cls.push(cssPrefix + 'grid-checkheader-setting');
-                return '<div class="' + cls.join(' ') + '">&#160;</div>';
-            } else if (record.data.is_manual) {
-                if (value==1) {
-                    cls.push(cssPrefix + 'grid-checkheader-hand');
-                } else if (value==0) {
-                    cls.push(cssPrefix + 'grid-checkheader-unhand');
-                }
-                else {
-                    cls.push(cssPrefix + 'grid-checkheader-null');
-                }
-                return '<div class="' + cls.join(' ') + '">&#160;</div>';
-            }
-        }
 
         Ext.apply(this, {
             collapsible: false,
@@ -240,7 +246,7 @@ Ext.define('Vss.grid.Esf', {
                 text: 'Keuze',
                 width: 40,
                 dataIndex: 'manual',
-                renderer: manual_renderer,
+                renderer: this.manual_renderer,
                 getEditor: manual_editor,
                 sortable: true
             },{
@@ -254,10 +260,17 @@ Ext.define('Vss.grid.Esf', {
                       'mouseover': function(grid, component, row, col){
                           console.log(arguments);
                           record = grid.store.getAt(row);
+                          var html = ''
+                          if (record.data.manual || ['base_setting'].indexOf(record.data.config_type) >= 0) {
+                              html = record.get('comment') + '<br><i>' + record.get('last_edit_by') + ', ' + record.get('last_edit_date') + '</i>';
+                          } else if (['result', 'expert_result', 'main_esf'].indexOf(record.data.config_type) >= 0 && record.get('auto_value_ts')) {
+                              html =  'automatische waarde van ' + record.get('auto_value_ts');
+                          }
+
                           //alert(record.get('name'))
                           Ext.create('Ext.tip.ToolTip', {
                               title: record.get('name'),
-                              html: record.get('comment') + '<br><i>' + record.get('last_edit_by') + ', ' + record.get('last_edit_date') + '</i>',
+                              html: html,
                               anchor: 'left',
                               width: 300,
                               target: component
