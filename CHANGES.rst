@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.42 (unreleased)
+0.42 (2012-04-16)
 -----------------
 
 - Improves the import of water manager configurations to validate: the check
