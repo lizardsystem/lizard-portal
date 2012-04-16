@@ -100,10 +100,9 @@ class ConfigurationToValidate(models.Model):
                     logger.warning("Unable to find the area with ident '%s'", value)
             elif key == 'data_set':
                 try:
-                    self.data_set = self.db.data_sets.get(name=value)
-                    logger.warning("Unable to find the data set with name '%s'", value)
+                    self.data_set = self.db.data_sets.get(name__iexact=value)
                 except DataSet.DoesNotExist:
-                    pass
+                    logger.warning("Unable to find the data set with name '%s'", value)
             elif key in ['file_path', 'config_type', 'date', 'user']:
                 setattr(self, key, value)
             else:
