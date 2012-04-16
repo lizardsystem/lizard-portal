@@ -110,12 +110,14 @@ class ConfigurationToValidate(models.Model):
         self.fews_meta_info = meta_info
 
     def as_dict(self):
+        logger.warning('ConfigurationToValidate.as_dict')
         return {
-            'polder': self.area.name,
-            'type':   self.config_type,
-            'user':   self.user,
-            'date':   self.date,
-            'action': self.get_action_display(),
+            'polder':     self.area.name,
+            'type':       self.config_type,
+            'user':       self.user,
+            'date':       self.date,
+            'action':     self.get_action_display(),
+            'action_log': self.action_log,
             }
 
     @property
