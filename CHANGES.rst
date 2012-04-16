@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.42 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Improves the import of water manager configurations to validate: the check
+  for the water manager is case-insensitive now
+- Shows the log of the latest validation action in the user interface.
 
 
 0.41 (2012-04-15)
