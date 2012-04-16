@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.42 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Change in context saving when log out and change user.
 
 
 0.41 (2012-04-15)

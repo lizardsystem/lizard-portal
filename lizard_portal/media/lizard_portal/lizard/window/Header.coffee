@@ -128,6 +128,7 @@ Ext.define('Lizard.window.Header', {
             'Weet u zeker dat u uit wil loggen?'
             (button) ->
                 if button == 'yes'
+                    window.onunload = null
                     location.replace('/user/logout_redirect/')
         )
 
@@ -156,6 +157,7 @@ Ext.define('Lizard.window.Header', {
                     check: true #send parameter check to just check username and password and not sign in
                 }
                 success: (form, action) ->
+                    window.onunload = null
                     result = Ext.JSON.decode(action.response.responseText)
                     if result.success
                         #when username and password are correct, login using the html form to prompt 'remember password'
@@ -453,8 +455,8 @@ Ext.define('Lizard.window.Header', {
                         {
                             text: 'Log uit'
                             handler: (button, event, eOpts) ->
-                                me.logout()
                                 Lizard.CM.saveContext()
+                                me.logout()
                         }
                     ]
                 }

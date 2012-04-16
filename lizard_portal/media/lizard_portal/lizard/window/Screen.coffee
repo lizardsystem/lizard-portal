@@ -389,9 +389,6 @@ Ext.define 'Lizard.window.Screen',
                 @navigation.add navig
         @portalContainer = Ext.getCmp('portalContainer')
 
-
-
-
         return @
 
     afterRender: ->
