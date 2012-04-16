@@ -48,7 +48,14 @@ class MockQuerySet(UserList):
         for o in self.data:
             is_searched_object = True
             for keyword, value in kwargs.items():
-                is_searched_object = getattr(o, keyword) == value
+                lookup = '__iexact'
+                length = len(lookup)
+                if keyword[-length:] == lookup:
+                    attribute_value = getattr(o, keyword[:-length]).lower()
+                    value = value.lower()
+                else:
+                    attribute_value = getattr(o, keyword)
+                is_searched_object = attribute_value == value
                 if not is_searched_object:
                     break
             if is_searched_object:
@@ -60,6 +67,52 @@ class MockQuerySet(UserList):
 
     def count(self):
         return len(self.data)
+
+
+class MockQuerySetTestSuite(TestCase):
+
+    def test_a(self):
+        """Test a case-sensitive call to MockQuerySet.get that is succeeds."""
+        data_set = DataSet()
+        data_set.name = 'Waternet'
+
+        query_set = MockQuerySet()
+        query_set.append(data_set)
+
+        found_data_set = query_set.get(name='Waternet')
+        self.assertEqual(found_data_set, data_set)
+
+    def test_b(self):
+        """Test a case-sensitive call to MockQuerySet.get that fails."""
+        data_set = DataSet()
+        data_set.name = 'Waternet'
+
+        query_set = MockQuerySet()
+        query_set.append(data_set)
+
+        self.assertRaises(AssertionError, query_set.get, name='waternet')
+
+    def test_c(self):
+        """Test a case-insensitive call to MockQuerySet.get that succeeds."""
+        data_set = DataSet()
+        data_set.name = 'Waternet'
+
+        query_set = MockQuerySet()
+        query_set.append(data_set)
+
+        found_data_set = query_set.get(name__iexact='waternet')
+        self.assertEqual(found_data_set, data_set)
+
+    def test_d(self):
+        """Test a case-insensitive call to MockQuerySet.get that succeeds."""
+        data_set = DataSet()
+        data_set.name = 'Waternet'
+
+        query_set = MockQuerySet()
+        query_set.append(data_set)
+
+        found_data_set = query_set.get(name__iexact='Waternet')
+        self.assertEqual(found_data_set, data_set)
 
 
 class MockDatabase(object):

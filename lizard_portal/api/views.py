@@ -20,12 +20,13 @@ class ConfigurationToValidateView(BaseApiView):
     name_field = 'configuration'
 
     field_mapping = {
-        'id': 'id',
-        'polder': 'area__name',
-        'type':   'config_type',
-        'user':   'user',
-        'date':   'date',
-        'action': 'action'
+        'id':         'id',
+        'polder':     'area__name',
+        'type':       'config_type',
+        'user':       'user',
+        'date':       'date',
+        'action':     'action',
+        'action_log': 'action_log'
         }
 
     read_only_fields = [
@@ -41,15 +42,15 @@ class ConfigurationToValidateView(BaseApiView):
         """
 
         output = {
-            'id':     config.id,
-            'polder': config.area.name,
-            'type':   config.config_type,
-            'user':   config.user,
-            'date':   config.date,
-            'action': self._get_choice(
-                    ConfigurationToValidate._meta.get_field('action'),
-                    config.action,
-                    flat),
+            'id':            config.id,
+            'polder':        config.area.name,
+            'type':          config.config_type,
+            'user':          config.user,
+            'date':          config.date,
+            'action':        self._get_choice(
+                ConfigurationToValidate._meta.get_field('action'),
+                config.action, flat),
+            'action_log':   config.action_log,
             }
 
         return output
