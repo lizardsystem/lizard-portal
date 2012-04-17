@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.43 (unreleased)
+0.43 (2012-04-17)
 -----------------
 
 - Change in context saving when log out and change user.
