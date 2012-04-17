@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.45 (unreleased)
+0.45 (2012-04-17)
 -----------------
 
 - Fix area selection by pointing to correct geoserver layer.
