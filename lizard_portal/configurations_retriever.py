@@ -166,7 +166,7 @@ class ConfigurationStore(object):
 class AttributesFromNameRetriever(object):
 
     def __init__(self):
-        self.dbf_directory = '/tmp'
+        self.dbf_directory = settings.DBF_ROOT
         self.regex = re.compile('^([\w\d]*)_([a-zA-Z]*)_\d{8}_\d{6}.zip')
 
     def retrieve(self, zip_name):

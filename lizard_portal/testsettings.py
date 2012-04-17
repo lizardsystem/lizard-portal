@@ -99,7 +99,10 @@ STATICFILES_FINDERS = STATICFILES_FINDERS
 
 # Specify the root directory that houses the configurations that have to be
 # validated or that have been validated.
-VALIDATION_ROOT = '/tmp'
+VALIDATION_ROOT = '/mnt/vss'
+
+# Specify the directory to copy the DBFs with the configurations to
+DBF_ROOT = '/tmp'
 
 try:
     # Import local settings that aren't stored in svn/git.
