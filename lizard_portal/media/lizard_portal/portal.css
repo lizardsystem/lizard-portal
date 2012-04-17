@@ -366,3 +366,7 @@ img.x-tool-delete {
 	border-left: 1px solid #CCC;
 	text-align: center;
 	}
+
+.wide table {
+    width: 100%;
+}
