@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.44 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added breadcrumbs for "geschikte maatregelen", advies.js.
 
 
 0.43 (2012-04-17)

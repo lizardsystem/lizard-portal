@@ -3,6 +3,15 @@
     itemId: 'advies',
     title: 'Advies',
     xtype: 'portalpanel',
+    breadcrumbs: [
+      {
+          name: 'watersysteemkaart',
+          link: 'homepage'
+      },
+      {
+          name: 'Geschikte maatregelen'
+      }
+    ],
     items:[{
                width: 300,
                items: [
