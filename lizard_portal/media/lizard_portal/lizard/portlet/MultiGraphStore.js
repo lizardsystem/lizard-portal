@@ -208,7 +208,6 @@
       return me = this;
     },
     constructor: function(config) {
-      console.log(config);
       this.initConfig(arguments);
       return this.callParent(arguments);
     },

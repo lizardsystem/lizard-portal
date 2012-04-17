@@ -218,7 +218,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
         me = @
 
     constructor: (config) ->
-        console.log(config)
+        #console.log(config)
         @initConfig(arguments)
         @callParent(arguments)
 
