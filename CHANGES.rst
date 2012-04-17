@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.46 (unreleased)
+0.46 (2012-04-17)
 -----------------
 
 - Uses a Django setting to specify the directory to copy the configuration DBFs
