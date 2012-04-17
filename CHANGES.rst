@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - Removed debugger statement in ContextManager.
 
+- Removed console.log from TableField.
+
 
 0.46 (2012-04-17)
 -----------------

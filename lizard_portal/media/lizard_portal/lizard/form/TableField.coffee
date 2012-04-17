@@ -28,8 +28,8 @@ Ext.define('Lizard.form.TableField', {
 
     #docs inherit from Mixin Field
     getValue: (jsonFormat=false) ->
-        console.log('getValue')
-        console.log this.store
+        #console.log('getValue')
+        #console.log this.store
         me = @
         values = []
         this.store.data.each((ref) ->
@@ -46,7 +46,7 @@ Ext.define('Lizard.form.TableField', {
         data = {}
         data[@.name] = @getValue()
         return data
-    
+
     constructor: () ->
         @initConfig(arguments)
         @callParent(arguments)
