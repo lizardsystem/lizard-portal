@@ -8,6 +8,10 @@
 from UserList import UserList
 from unittest import TestCase
 
+import os
+
+from django.conf import settings
+
 from mock import Mock
 
 from lizard_area.models import Area
@@ -320,6 +324,9 @@ class ConfigurationStoreTestSuite(TestCase):
         self.store.retrieve_zip_names = lambda : ['waterbalans_Waternet_04042012_081400.zip']
         self.store.retrieve_attrs_from_config = lambda dir_name, config_type: [{'area_code': '3201'}]
 
+    def get_file_path(self, zip_name):
+        return os.path.join(settings.DBF_ROOT, zip_name)
+
     def test_a(self):
         """Test the creation of a single ConfigurationToValidate."""
         self.store.supply()
@@ -333,7 +340,8 @@ class ConfigurationStoreTestSuite(TestCase):
         """
         self.store.supply()
         config = self.db.configurations.all()[0]
-        self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', config.file_path)
+        self.assertEqual(self.get_file_path('waterbalans_Waternet_04042012_081400'),
+            config.file_path)
 
     def test_c(self):
         """Test the file path of the new ConfigurationToValidate is correct.
@@ -344,7 +352,8 @@ class ConfigurationStoreTestSuite(TestCase):
         self.store.retrieve_zip_names = lambda : ['/mnt/vss-shared/te-valideren-configuraties/waterbalans_Waternet_04042012_081400.zip']
         self.store.supply()
         config = self.db.configurations.all()[0]
-        self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', config.file_path)
+        self.assertEqual(self.get_file_path('waterbalans_Waternet_04042012_081400'),
+            config.file_path)
 
     def test_d(self):
         """Test the area of the new ConfigurationToValidate is correct."""
@@ -375,7 +384,7 @@ class ConfigurationStoreTestSuite(TestCase):
         self.store.retrieve_attrs_from_config = Mock(return_value=self.store.retrieve_attrs_from_config("don't care", "don't care"))
         self.store.supply()
         args, kwargs = self.store.retrieve_attrs_from_config.call_args
-        self.assertEqual('/tmp/waterbalans_Waternet_04042012_081400', args[0])
+        self.assertEqual(self.get_file_path('waterbalans_Waternet_04042012_081400'), args[0])
         self.assertEqual('waterbalans', args[1])
 
     def test_i(self):
