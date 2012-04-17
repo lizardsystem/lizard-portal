@@ -33,8 +33,6 @@ showNavigationPortalTemplate
       if (save_state == null) save_state = true;
       if (area_selection_collapse == null) area_selection_collapse = true;
       if (skip_animation == null) skip_animation = false;
-      console.log('linkTo, with arguments:');
-      console.log(arguments);
       return Lizard.CM.setContext(params, save_state, false);
     },
     linkToNewWindow: function(params, save_state, area_selection_collapse, skip_animation) {
@@ -42,8 +40,6 @@ showNavigationPortalTemplate
       if (save_state == null) save_state = true;
       if (area_selection_collapse == null) area_selection_collapse = true;
       if (skip_animation == null) skip_animation = false;
-      console.log('linkToNewWindow, with arguments:');
-      console.log(arguments);
       args = Ext.Object.merge({}, this.context_manager.getContext(), params);
       href = '/portal/only_portal/#' + args.headertab.name + '/' + args.portal_template + '/' + args.object.type + '/' + args.object.id;
       return window.open(href, args.portal_template + ' ' + args.object.name, 'width=800,height=600,scrollbars=yes');
@@ -57,8 +53,6 @@ showNavigationPortalTemplate
       if (renderer == null) renderer = 'html';
       if (modal == null) modal = false;
       if (reloadme == null) reloadme = false;
-      console.log('linkTo, with arguments:');
-      console.log(arguments);
       me = this;
       if (add_active_object_to_request) {
         cont = Lizard.CM.getContext();

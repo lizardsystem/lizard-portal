@@ -11,6 +11,8 @@ Changelog of lizard-portal
 
 - Removed console.log from MultiGraphStore.
 
+- Removed console.log from Screen.
+
 
 0.46 (2012-04-17)
 -----------------

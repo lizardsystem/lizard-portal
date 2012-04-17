@@ -38,8 +38,8 @@ Ext.define 'Lizard.window.Screen',
     #
     #////
     linkTo:(params, save_state=true, area_selection_collapse=true, skip_animation=false) ->
-        console.log('linkTo, with arguments:')
-        console.log(arguments)
+        #console.log('linkTo, with arguments:')
+        #console.log(arguments)
 
         Lizard.CM.setContext(params, save_state, false)
 
@@ -54,8 +54,8 @@ Ext.define 'Lizard.window.Screen',
     #
     #////
     linkToNewWindow:(params, save_state=true, area_selection_collapse=true, skip_animation=false) ->
-        console.log('linkToNewWindow, with arguments:')
-        console.log(arguments)
+        #console.log('linkToNewWindow, with arguments:')
+        #console.log(arguments)
 
         args = Ext.Object.merge({}, @context_manager.getContext(), params)
         href = '/portal/only_portal/#'+args.headertab.name+'/'+args.portal_template+'/'+args.object.type + '/' + args.object.id
@@ -70,8 +70,8 @@ Ext.define 'Lizard.window.Screen',
     #
     #////
     linkToPopup: (title,url,params,window_options={},add_active_object_to_request=true,renderer='html',modal=false,reloadme=false) ->
-        console.log('linkTo, with arguments:')
-        console.log(arguments)
+        #console.log('linkTo, with arguments:')
+        #console.log(arguments)
 
         me = @
         if add_active_object_to_request
