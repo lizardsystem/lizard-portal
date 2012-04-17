@@ -13,6 +13,8 @@ Changelog of lizard-portal
 
 - Removed console.log from Screen.
 
+- Add css class for wide table
+
 
 0.46 (2012-04-17)
 -----------------

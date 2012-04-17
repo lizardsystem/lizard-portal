@@ -370,3 +370,7 @@ img.x-tool-delete {
 .wide table {
     width: 100%;
 }
+
+td.padleft {
+    padding-left: 3em;
+}
