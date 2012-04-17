@@ -82,6 +82,7 @@ Ext.define 'Lizard.window.Screen',
                     object_id: cont.object.id,
                     object_type: cont.object.type
                 })
+        # When is this success function ever called??
         if reloadme
             success = reloadGraphs
         else

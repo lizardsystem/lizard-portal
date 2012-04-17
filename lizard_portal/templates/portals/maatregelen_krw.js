@@ -73,7 +73,8 @@
                         height: 600,
                         modal: true,
                         finish_edit_function: function (updated_record) {
-                            //todo
+                            // TODO
+                            //console.log("TODO: maatregelen_krw finish_edit_function")
                         },
                         editpopup: true,
                         loader:{
