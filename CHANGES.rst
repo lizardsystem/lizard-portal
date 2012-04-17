@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.45 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Removed debugger statement in ContextManager.
 
 
 0.44 (2012-04-17)

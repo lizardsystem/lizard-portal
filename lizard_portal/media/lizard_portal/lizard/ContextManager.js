@@ -255,7 +255,7 @@
         });
         portalWindow = Ext.getCmp('portalWindow');
         portalWindow.setLoading('Opslaan gebruikersinstellingen');
-        Ext.Ajax.request({
+        return Ext.Ajax.request({
           async: false,
           url: '/manager/api/context/?_accept=application/json',
           params: {
@@ -271,7 +271,6 @@
             return portalWindow.setLoading(false);
           }
         });
-        debugger;
       }
     },
     constructor: function(config) {
