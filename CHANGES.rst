@@ -9,6 +9,8 @@ Changelog of lizard-portal
 
 - Removed console.log from TableField.
 
+- Removed console.log from MultiGraphStore.
+
 
 0.46 (2012-04-17)
 -----------------

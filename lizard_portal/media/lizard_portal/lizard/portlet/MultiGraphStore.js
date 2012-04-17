@@ -186,13 +186,10 @@
       return _results;
     },
     applyFitInPortal: function(value, something) {
-      console.log(arguments);
       if (this.body) this.calcHeights(null, null, value);
       return value;
     },
     updateGraphs: function(changes, new_context, context_manager, me) {
-      console.log('update graphs');
-      console.log(arguments);
       return this.store.applyContext(changes, new_context);
     },
     open_graph_window: function(graph_id) {

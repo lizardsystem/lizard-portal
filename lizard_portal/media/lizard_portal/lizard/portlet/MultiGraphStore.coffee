@@ -189,16 +189,16 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
 
 
     applyFitInPortal: (value, something) ->
-        console.log(arguments)
+        #console.log(arguments)
         if @body
             @calcHeights(null, null, value)
         return value
 
 
     updateGraphs: (changes, new_context, context_manager, me) ->
-        console.log('update graphs')
+        #console.log('update graphs')
 
-        console.log(arguments)
+        #console.log(arguments)
         @store.applyContext(changes, new_context)
 
     open_graph_window: (graph_id) ->
