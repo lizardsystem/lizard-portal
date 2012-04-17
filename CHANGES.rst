@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.47 (unreleased)
+0.47 (2012-04-17)
 -----------------
 
 - Removed debugger statement in ContextManager.
