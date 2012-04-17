@@ -98,7 +98,10 @@
       var me;
       me = this;
       return Ext.MessageBox.confirm('Loguit', 'Weet u zeker dat u uit wil loggen?', function(button) {
-        if (button === 'yes') return location.replace('/user/logout_redirect/');
+        if (button === 'yes') {
+          window.onunload = null;
+          return location.replace('/user/logout_redirect/');
+        }
       });
     },
     login: function() {
@@ -115,6 +118,7 @@
           },
           success: function(form, action) {
             var result;
+            window.onunload = null;
             result = Ext.JSON.decode(action.response.responseText);
             if (result.success) {
               Ext.get('username').dom.value = basic.findField('username').getValue();
@@ -426,8 +430,8 @@
             }, {
               text: 'Log uit',
               handler: function(button, event, eOpts) {
-                me.logout();
-                return Lizard.CM.saveContext();
+                Lizard.CM.saveContext();
+                return me.logout();
               }
             }
           ]

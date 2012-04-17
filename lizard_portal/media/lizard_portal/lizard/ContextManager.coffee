@@ -297,6 +297,8 @@ Ext.define 'Lizard.ContextManager',
                     Ext.Msg.alert("Fout", "Fout in het opslaan van de context. Error: #{error}")
                     portalWindow.setLoading false
 
+            debugger
+
     constructor: (config) ->
         @initConfig(config)
         @callParent(arguments)
