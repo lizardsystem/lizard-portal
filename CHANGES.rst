@@ -2,8 +2,8 @@ Changelog of lizard-portal
 ==========================
 
 
-0.48 (unreleased)
------------------
+0.47.1 (2012-04-18)
+-------------------
 
 - Modify annotation overview component layout.
 
