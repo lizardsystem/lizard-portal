@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.48 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Modify annotation overview component layout.
 
 
 0.47 (2012-04-17)

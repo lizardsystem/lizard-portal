@@ -104,34 +104,33 @@
           width:150,
           sortable: true,
           dataIndex: 'title'
-        },{
+        },
+        {
           text: 'Categorie',
           flex: 1,
           dataIndex: 'annotation_category',
           sortable: true
-        },{
-          text: 'Begin periode',
-          flex: 1,
-          dataIndex: 'datetime_period_start',
-          sortable: true,
-          renderer: Ext.util.Format.dateRenderer('d-m-Y')
-        },{
-          text: 'Eind periode',
-          flex: 1,
-          dataIndex: 'datetime_period_end',
-          sortable: true,
-          renderer: Ext.util.Format.dateRenderer('d-m-Y')
-        },{
+        },
+        {
           text: 'Status',
           flex: 1,
           dataIndex: 'annotation_status',
           sortable: true
-        },{
+        },
+        {
+          text: 'Datum laatste wijziging',
+          flex: 1,
+          dataIndex: 'date_modified',
+          sortable: true,
+          renderer: Ext.util.Format.dateRenderer('d-m-Y')
+        },
+        {
           text: 'Auteur',
           flex: 1,
           dataIndex: 'created_by',
           sortable: true
-        }],
+        }
+      ],
         store: {
           xtype: 'store',
           storeId: 'analyse_store',
@@ -139,13 +138,12 @@
           model: Ext.define('Analyse_interpretatie', {
             extend: 'Ext.data.Model',
             fields: [
+              {name: 'id', type: 'string'},
               {name: 'title', type: 'string'},
               {name: 'annotation_category', type: 'string'},
-              {name: 'datetime_period_start', type: 'auto'},
-              {name: 'datetime_period_end', type: 'auto'},
-              {name: 'created_by', type: 'string'},
               {name: 'annotation_status', type: 'string'},
-              {name: 'id', type: 'string'}
+              {name: 'date_modified', type: 'auto'},
+              {name: 'created_by', type: 'string'}
             ]
           }),
           proxy: {
