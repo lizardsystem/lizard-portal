@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.47.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Updated user info #139.
 
 
 0.47.2 (2012-04-19)

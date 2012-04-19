@@ -335,6 +335,11 @@ Ext.application({
                 user: {
                     id: {{ user.id|default_if_none:"null" }},
                     name: '{{ user.get_full_name }}',
+		    groups: [
+			{% for group in user.user_group_memberships.all %}
+			'{{ group.name }}',
+			{% endfor %}
+		    ],
                     organization: '{% for profile in  user.userprofile_set.all %}{{profile.organisation.name}} {% endfor %}',
                     permissions: [
 {% for perm in permission_list %}
