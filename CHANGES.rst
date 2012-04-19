@@ -5,8 +5,7 @@ Changelog of lizard-portal
 0.47.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- Changed security check on request of 'Koppeling KRW en aan/afvoergebieden' form.
 
 0.47.1 (2012-04-18)
 -------------------
