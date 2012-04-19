@@ -82,7 +82,7 @@
         if (!this.active_edit_layer) {
           if (geometry_type === 'OpenLayers.Geometry.Point') {
             this.active_edit_layer = this.points;
-          } else if (geometry_type === 'OpenLayers.Geometry.Line') {
+          } else if (geometry_type === 'OpenLayers.Geometry.LineString') {
             this.active_edit_layer = this.lines;
           } else if (geometry_type === 'OpenLayers.Geometry.Polygon') {
             this.active_edit_layer = this.polygons;

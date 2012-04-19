@@ -7,6 +7,9 @@ Changelog of lizard-portal
 
 - Changed security check on request of 'Koppeling KRW en aan/afvoergebieden' form.
 
+- Fix not being able to reedit linestrings.
+
+
 0.47.1 (2012-04-18)
 -------------------
 
