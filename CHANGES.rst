@@ -7,6 +7,12 @@ Changelog of lizard-portal
 
 - Updated user info #139.
 
+- Remove console logging from combomultiselect.  - Modify mapwindow
+  (That's the geometry editor) to produce only multigeometries,
+  but no geometrycollections anymore.
+- Make drawing mode on geometry editor show correct value when editing
+  existing geometry.
+
 
 0.47.2 (2012-04-19)
 -------------------
