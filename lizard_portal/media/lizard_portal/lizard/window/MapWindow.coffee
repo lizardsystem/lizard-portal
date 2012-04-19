@@ -11,9 +11,6 @@
 #    )
 #
 
-
-
-
 Ext.define('Lizard.window.MapWindow',
     extend:'Ext.window.Window'
     #alias: 'widget.mapwindow'
@@ -70,7 +67,22 @@ Ext.define('Lizard.window.MapWindow',
             feature.geometry.transform(
                 new OpenLayers.Projection("EPSG:900913"),
                 new OpenLayers.Projection("EPSG:4326"));
-        str = @format.write(features);
+        # Make a single feature out of the features, because we don't want
+        # the serializer to create geometrycollections. Geoserver / PostGis
+        # doesn't like them when doing feature requests.
+        if @active_edit_layer == @points
+            MultiGeometry = OpenLayers.Geometry.MultiPoint
+        if @active_edit_layer == @lines
+            MultiGeometry = OpenLayers.Geometry.MultiLineString
+        if @active_edit_layer == @polygons
+            MultiGeometry = OpenLayers.Geometry.MultiPolygon
+
+        single_feature = new OpenLayers.Feature.Vector(
+            new MultiGeometry(
+                f.geometry for f in features
+            )
+        )
+        str = @format.write single_feature
         return str
 
     deserialize: (features_string) ->
@@ -88,11 +100,14 @@ Ext.define('Lizard.window.MapWindow',
 
             final_features = []
             for feature in features
-                # debugger
                 feature.geometry.transform(
                     new OpenLayers.Projection("EPSG:4326"),
                     new OpenLayers.Projection("EPSG:900913"));
-                if ['OpenLayers.Geometry.MultiPoint', 'OpenLayers.Geometry.MultiLine', 'OpenLayers.Geometry.MultiPolygon'].indexOf(feature.geometry.CLASS_NAME) >= 0
+                if feature.geometry.CLASS_NAME in [
+                    'OpenLayers.Geometry.MultiPoint'
+                    'OpenLayers.Geometry.MultiLineString'
+                    'OpenLayers.Geometry.MultiPolygon'
+                ]
                     for elem in feature.geometry.components
                         final_features = final_features.concat(new OpenLayers.Feature.Vector(elem))
                 else
@@ -100,29 +115,33 @@ Ext.define('Lizard.window.MapWindow',
             features = final_features
 
 
-            geometry_type = features[0].geometry.CLASS_NAME
-            # debugger
+            # geometry_type = features[0].geometry.CLASS_NAME
             for feature in features
                 if (!bounds)
                     bounds = feature.geometry.getBounds()
                 else
                     bounds.extend(feature.geometry.getBounds())
-
-
-
             if not @active_edit_layer
-                if  geometry_type == 'OpenLayers.Geometry.Point'
+                if  @geometry_type in [ 
+                    'OpenLayers.Geometry.Point'
+                    'OpenLayers.Geometry.MultiPoint'
+                ]
                     @active_edit_layer = @points
-                else if  geometry_type == 'OpenLayers.Geometry.LineString'
+                else if @geometry_type in [
+                    'OpenLayers.Geometry.LineString'
+                    'OpenLayers.Geometry.MultiLineString'
+                ]
                     @active_edit_layer = @lines
-                else if  geometry_type == 'OpenLayers.Geometry.Polygon'
+                else if @geometry_type in [
+                    'OpenLayers.Geometry.Polygon'
+                    'OpenLayers.Geometry.MultiPolygon'
+                ]
                     @active_edit_layer = @polygons
                 else
                     alert('geometry type wordt niet ondersteund')
                     return false
 
-
-                @active_edit_layer.addFeatures(features);
+            @active_edit_layer.addFeatures(features);
 
     constructor: (config) ->
         @initConfig(config)
@@ -203,7 +222,6 @@ Ext.define('Lizard.window.MapWindow',
 
                     if editor == key
                         control.activate()
-                        console.log('activate contol ' + key )
                         me.active_editor = control
                         return null
                     else
@@ -229,7 +247,6 @@ Ext.define('Lizard.window.MapWindow',
                 xtype: 'button',
                 text: 'Verwijder',
                 handler: () ->
-                    # debugger
                     if me.active_editor.feature
                         feature =  me.active_editor.feature
                         me.active_editor.unselectFeature(feature)
@@ -289,6 +306,15 @@ Ext.define('Lizard.window.MapWindow',
                             if typeof(new_value.geometry) == 'string'
                                 form = field.up('form').getForm()
                                 toggleControl(form)
+                        render: (field) ->
+                            # Set the correct drawing mode in the form
+                            if me.active_edit_layer == me.points
+                                field.setValue geometry: 'point'
+                            else if me.active_edit_layer == me.lines
+                                field.setValue geometry: 'line'
+                            else if me.active_edit_layer == me.polygons
+                                field.setValue geometry: 'polygon'
+                            
                 }
                 {
                     xtype: 'radiogroup',
@@ -324,7 +350,10 @@ Ext.define('Lizard.window.MapWindow',
             xtype: 'button',
             text: 'Klaar met bewerken',
             handler: (button) ->
-                wkt = me.serialize(me.active_edit_layer.features)
+                if me.active_edit_layer
+                    wkt = me.serialize(me.active_edit_layer.features)
+                else
+                    wkt = ''
                 if me.callback
                     me.callback(wkt)
                 window = button.up('window')
