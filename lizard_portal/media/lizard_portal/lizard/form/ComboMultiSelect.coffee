@@ -31,8 +31,6 @@ Ext.define('Lizard.form.ComboMultiSelect', {
     #docs inherit from Mixin Field
     #todo: add extra fields
     getValue: (jsonFormat=false) ->
-        console.log('getValue')
-        console.log this.store
         me = @
         values = []
         this.store.data.each((ref) ->
