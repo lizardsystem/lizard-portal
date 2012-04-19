@@ -113,7 +113,7 @@ Ext.define('Lizard.window.MapWindow',
             if not @active_edit_layer
                 if  geometry_type == 'OpenLayers.Geometry.Point'
                     @active_edit_layer = @points
-                else if  geometry_type == 'OpenLayers.Geometry.Line'
+                else if  geometry_type == 'OpenLayers.Geometry.LineString'
                     @active_edit_layer = @lines
                 else if  geometry_type == 'OpenLayers.Geometry.Polygon'
                     @active_edit_layer = @polygons

@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.47.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix not being able to reedit linestrings.
 
 
 0.47.1 (2012-04-18)
