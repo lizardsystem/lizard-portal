@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.47.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add popup classes for measure and annotation.
 
 
 0.47.3 (2012-04-20)

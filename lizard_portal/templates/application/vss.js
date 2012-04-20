@@ -82,6 +82,8 @@ Ext.application({
         'Lizard.portlet.WorkspacePortlet',
         'Lizard.popup.FeatureInfo',
         'Lizard.popup.TimeSeriesGraph',
+        'Lizard.popup.AnnotationPopup',
+        'Lizard.popup.MeasurePopup',
         'Lizard.window.MapWindow',
         'Lizard.window.Header',
         'Vss.grid.Esf',
