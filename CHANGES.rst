@@ -5,6 +5,9 @@ Changelog of lizard-portal
 0.47 (unreleased)
 -----------------
 
+- Added legend_location as parameter for Lizard.model.Graph. Supports
+  lizard-graph 0.17.
+
 - Removed debugger statement in ContextManager.
 
 - Removed console.log from TableField.

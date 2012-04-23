@@ -89,6 +89,10 @@
         name: 'detail_link',
         mapping: 'detail_link',
         type: 'text'
+      }, {
+        name: 'legend_location',
+        mapping: 'legend_location',
+        type: 'int'
       }
     ],
     statics: {
@@ -108,6 +112,9 @@
         }
         if (values['has_cumulative_period'] && values['cumulative_period']) {
           params['aggregation-period'] = values['cumulative_period'];
+        }
+        if (values['legend_location']) {
+          params['legend-location'] = values['legend_location'];
         }
         if (values['extra_params']) {
           Ext.Object.each(values['extra_params'], function(key, value) {
