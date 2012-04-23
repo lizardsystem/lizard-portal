@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.48 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Fixed legend-location in maatregel detail screen (the option was
+  renamed from legend_location to legend-location).
 
 
 0.47.5 (2012-04-23)
