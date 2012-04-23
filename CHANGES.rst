@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.47.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Added legend_location as parameter for Lizard.model.Graph. Supports
+  lizard-graph 0.17.
 
 
 0.47.4 (2012-04-20)
@@ -42,9 +43,6 @@ Changelog of lizard-portal
 
 0.47 (2012-04-17)
 -----------------
-
-- Added legend_location as parameter for Lizard.model.Graph. Supports
-  lizard-graph 0.17.
 
 - Removed debugger statement in ContextManager.
 
