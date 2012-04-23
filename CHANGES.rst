@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.47.5 (unreleased)
+0.47.5 (2012-04-23)
 -------------------
 
 - Added legend_location as parameter for Lizard.model.Graph. Supports
