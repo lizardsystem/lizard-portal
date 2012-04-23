@@ -2,7 +2,45 @@ Changelog of lizard-portal
 ==========================
 
 
-0.47 (unreleased)
+0.47.5 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+0.47.4 (2012-04-20)
+-------------------
+
+- Add popup classes for measure and annotation.
+
+
+0.47.3 (2012-04-20)
+-------------------
+
+- Updated user info #139.
+
+- Remove console logging from combomultiselect.  - Modify mapwindow
+  (That's the geometry editor) to produce only multigeometries,
+  but no geometrycollections anymore.
+- Make drawing mode on geometry editor show correct value when editing
+  existing geometry.
+
+
+0.47.2 (2012-04-19)
+-------------------
+
+- Changed security check on request of 'Koppeling KRW en aan/afvoergebieden' form.
+
+- Fix not being able to reedit linestrings.
+
+
+0.47.1 (2012-04-18)
+-------------------
+
+- Modify annotation overview component layout.
+
+
+0.47 (2012-04-17)
 -----------------
 
 - Added legend_location as parameter for Lizard.model.Graph. Supports
@@ -15,6 +53,8 @@ Changelog of lizard-portal
 - Removed console.log from MultiGraphStore.
 
 - Removed console.log from Screen.
+
+- Add css class for wide table
 
 
 0.46 (2012-04-17)

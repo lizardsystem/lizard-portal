@@ -94,7 +94,6 @@ def json_configuration(request):
     portal_template = request.GET.get('portal_template', 'homepage')
 
     if request.user.is_authenticated():
-
         if portal_template == 'maatregelen-beheer':
             return redirect('lizard_measure.measure_groupedit_portal')
         elif portal_template == 'organisatie-beheer':
@@ -105,10 +104,11 @@ def json_configuration(request):
             # We need the template that couples KRW water bodies and catchment
             # areas which is only allowed if the user is an analyst. We cannot
             # easily detect that in the template itself so we do that here.
-            if not request.user.has_perm('auth.is_analyst', Area):
+            is_funct_beheerder = request.user.user_group_memberships.filter(
+                permission_mappers__permission_group__permissions__codename='is_funct_beheerder').exists()
+            if not is_funct_beheerder:
                 t = get_template('portals/geen_toegang.js')
                 return HttpResponse(t.render(c),  mimetype="text/plain")
-
         try:
             t = get_template('portals/'+portal_template+'.js')
         except TemplateDoesNotExist, e:

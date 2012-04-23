@@ -33,8 +33,6 @@
     getValue: function(jsonFormat) {
       var me, values;
       if (jsonFormat == null) jsonFormat = false;
-      console.log('getValue');
-      console.log(this.store);
       me = this;
       values = [];
       this.store.data.each(function(ref) {

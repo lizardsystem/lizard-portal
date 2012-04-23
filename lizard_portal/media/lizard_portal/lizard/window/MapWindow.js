@@ -37,16 +37,34 @@
     start_geometry: 'MULTIPOINT(2 2, 3 3, 4 4)',
     format: new OpenLayers.Format.WKT(),
     serialize: function(features) {
-      var feature, str, _i, _len;
+      var MultiGeometry, f, feature, single_feature, str, _i, _len;
       for (_i = 0, _len = features.length; _i < _len; _i++) {
         feature = features[_i];
         feature.geometry.transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
       }
-      str = this.format.write(features);
+      if (this.active_edit_layer === this.points) {
+        MultiGeometry = OpenLayers.Geometry.MultiPoint;
+      }
+      if (this.active_edit_layer === this.lines) {
+        MultiGeometry = OpenLayers.Geometry.MultiLineString;
+      }
+      if (this.active_edit_layer === this.polygons) {
+        MultiGeometry = OpenLayers.Geometry.MultiPolygon;
+      }
+      single_feature = new OpenLayers.Feature.Vector(new MultiGeometry((function() {
+        var _j, _len2, _results;
+        _results = [];
+        for (_j = 0, _len2 = features.length; _j < _len2; _j++) {
+          f = features[_j];
+          _results.push(f.geometry);
+        }
+        return _results;
+      })()));
+      str = this.format.write(single_feature);
       return str;
     },
     deserialize: function(features_string) {
-      var bounds, elem, feature, features, final_features, geometry_type, _i, _j, _k, _len, _len2, _len3, _ref;
+      var bounds, elem, feature, features, final_features, _i, _j, _k, _len, _len2, _len3, _ref, _ref2, _ref3, _ref4, _ref5;
       features = this.format.read(features_string);
       if (features.geometry) {
         this.geometry_type = features.geometry.CLASS_NAME;
@@ -59,10 +77,10 @@
         for (_i = 0, _len = features.length; _i < _len; _i++) {
           feature = features[_i];
           feature.geometry.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
-          if (['OpenLayers.Geometry.MultiPoint', 'OpenLayers.Geometry.MultiLine', 'OpenLayers.Geometry.MultiPolygon'].indexOf(feature.geometry.CLASS_NAME) >= 0) {
-            _ref = feature.geometry.components;
-            for (_j = 0, _len2 = _ref.length; _j < _len2; _j++) {
-              elem = _ref[_j];
+          if ((_ref = feature.geometry.CLASS_NAME) === 'OpenLayers.Geometry.MultiPoint' || _ref === 'OpenLayers.Geometry.MultiLineString' || _ref === 'OpenLayers.Geometry.MultiPolygon') {
+            _ref2 = feature.geometry.components;
+            for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+              elem = _ref2[_j];
               final_features = final_features.concat(new OpenLayers.Feature.Vector(elem));
             }
           } else {
@@ -70,7 +88,6 @@
           }
         }
         features = final_features;
-        geometry_type = features[0].geometry.CLASS_NAME;
         for (_k = 0, _len3 = features.length; _k < _len3; _k++) {
           feature = features[_k];
           if (!bounds) {
@@ -80,18 +97,18 @@
           }
         }
         if (!this.active_edit_layer) {
-          if (geometry_type === 'OpenLayers.Geometry.Point') {
+          if ((_ref3 = this.geometry_type) === 'OpenLayers.Geometry.Point' || _ref3 === 'OpenLayers.Geometry.MultiPoint') {
             this.active_edit_layer = this.points;
-          } else if (geometry_type === 'OpenLayers.Geometry.Line') {
+          } else if ((_ref4 = this.geometry_type) === 'OpenLayers.Geometry.LineString' || _ref4 === 'OpenLayers.Geometry.MultiLineString') {
             this.active_edit_layer = this.lines;
-          } else if (geometry_type === 'OpenLayers.Geometry.Polygon') {
+          } else if ((_ref5 = this.geometry_type) === 'OpenLayers.Geometry.Polygon' || _ref5 === 'OpenLayers.Geometry.MultiPolygon') {
             this.active_edit_layer = this.polygons;
           } else {
             alert('geometry type wordt niet ondersteund');
             return false;
           }
-          return this.active_edit_layer.addFeatures(features);
         }
+        return this.active_edit_layer.addFeatures(features);
       }
     },
     constructor: function(config) {
@@ -165,7 +182,6 @@
           return Ext.Object.each(controls, function(key, control) {
             if (editor === key) {
               control.activate();
-              console.log('activate contol ' + key);
               me.active_editor = control;
               return null;
             } else {
@@ -257,6 +273,21 @@
                     form = field.up('form').getForm();
                     return toggleControl(form);
                   }
+                },
+                render: function(field) {
+                  if (me.active_edit_layer === me.points) {
+                    return field.setValue({
+                      geometry: 'point'
+                    });
+                  } else if (me.active_edit_layer === me.lines) {
+                    return field.setValue({
+                      geometry: 'line'
+                    });
+                  } else if (me.active_edit_layer === me.polygons) {
+                    return field.setValue({
+                      geometry: 'polygon'
+                    });
+                  }
                 }
               }
             }, {
@@ -304,7 +335,11 @@
         text: 'Klaar met bewerken',
         handler: function(button) {
           var window, wkt;
-          wkt = me.serialize(me.active_edit_layer.features);
+          if (me.active_edit_layer) {
+            wkt = me.serialize(me.active_edit_layer.features);
+          } else {
+            wkt = '';
+          }
           if (me.callback) me.callback(wkt);
           window = button.up('window');
           return window.close();

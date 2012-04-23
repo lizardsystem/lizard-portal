@@ -322,16 +322,16 @@
       }
     },
     showContext: function() {
-      var output, perm, user, _i, _len, _ref;
+      var group, output, user, _i, _len, _ref;
       user = Lizard.CM.context.user;
       output = '';
       output += 'naam: ' + user.name + '<br>';
       output += 'organisatie: ' + user.organization + '<br>';
       output += 'rechten:<br>';
-      _ref = user.permissions;
+      _ref = user.groups;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        perm = _ref[_i];
-        output += '   ' + perm + '<br>';
+        group = _ref[_i];
+        output += '   ' + group + '<br>';
       }
       if (Lizard.CM.getContext().background_layer) {
         output += 'Achtergrond: ' + Lizard.CM.getContext().background_layer.title + '<br>';

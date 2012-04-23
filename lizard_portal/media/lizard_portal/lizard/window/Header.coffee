@@ -356,8 +356,8 @@ Ext.define('Lizard.window.Header', {
         output += 'naam: ' + user.name + '<br>';
         output += 'organisatie: ' + user.organization + '<br>';
         output += 'rechten:<br>'
-        for perm in user.permissions
-            output += '   ' + perm + '<br>'
+        for group in user.groups
+            output += '   ' + group + '<br>'
 
         if Lizard.CM.getContext().background_layer
             output += 'Achtergrond: ' + Lizard.CM.getContext().background_layer.title + '<br>'
