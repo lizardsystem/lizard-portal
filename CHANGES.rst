@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.47.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Created 'Informatie KRW-waterlichaam' view, issue #181.
 
 
 0.47.4 (2012-04-20)
