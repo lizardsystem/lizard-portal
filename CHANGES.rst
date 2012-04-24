@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.47.9 (unreleased)
+0.47.9 (2012-04-24)
 -------------------
 
 - Add collapsible to ekr score portlet.
