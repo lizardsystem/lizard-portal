@@ -6,6 +6,7 @@ Changelog of lizard-portal
 -------------------
 
 - Change alert message.
+- Remove debugger statement.
 
 
 0.47.6 (2012-04-23)
