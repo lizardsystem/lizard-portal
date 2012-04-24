@@ -262,7 +262,7 @@ Ext.application({
                      handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'stuurparameter-overzicht'}); }
                 },
                 {
-                     text: 'EKR resultaten',
+                     text: 'EKR overzicht',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}

@@ -309,6 +309,8 @@
                     params: post,
                     method: 'POST',
                     success: function(xhr) {
+                        var store = Ext.StoreManager.lookup('analyse_store')
+                        store.load();
                     },
                     failure: function(xhr) {
                         Ext.Msg.alert("portal creation failed", "Server communication failure");

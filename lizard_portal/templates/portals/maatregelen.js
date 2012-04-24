@@ -70,14 +70,11 @@
                     panel = panelHeader.up('panel');
 
                     Ext.create('Ext.window.Window', {
+                        measureScreen: true,
                         title: 'Nieuwe maatregel toevoegen',
                         width: 800,
                         height: 600,
                         modal: true,
-
-                        finish_edit_function: function (updated_record) {
-                            panel.applyParams()
-                        },
                         editpopup: true,
                         loader:{
                             loadMask: true,

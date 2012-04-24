@@ -68,14 +68,11 @@
                 type: 'plus',
                 handler: function (e, target, panelHeader, tool) {
                     Ext.create('Ext.window.Window', {
+                        measureScreen: true,
                         title: 'Nieuwe maatregel toevoegen',
                         width: 800,
                         height: 600,
                         modal: true,
-                        finish_edit_function: function (updated_record) {
-                            // TODO
-                            //console.log("TODO: maatregelen_krw finish_edit_function")
-                        },
                         editpopup: true,
                         loader:{
                             loadMask: true,

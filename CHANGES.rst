@@ -7,6 +7,9 @@ Changelog of lizard-portal
 
 - added graph reload after editing steeringparameter graphs (pp 294)
 
+- add analyse interpretation list refresh after add or edit (pp 302, pp 303)
+
+- changed name into 'EKR overzicht' (pp 189)
 
 
 0.47.9 (2012-04-24)
