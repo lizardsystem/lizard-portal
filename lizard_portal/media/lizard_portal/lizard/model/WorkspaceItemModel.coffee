@@ -177,7 +177,6 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
 
             if @get('filter')
                 params['cql_filter'] = @get('filter')
-
             try
                 options = Ext.JSON.decode(@get('options'))
             catch e
@@ -212,12 +211,17 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
                     options
                 )
         else if ol_class == 'OpenLayers.Layer.OSM'
+            try
+                options = Ext.JSON.decode(@get('options'))
+            catch e
+                options = {}
             url = @get('url')
             if not url
                 url = null
             return new OpenLayers.Layer.OSM(
                 @get('name')
-                #url  -> url has some problems with context switches. removed for now
+                null  # url  -> url has some problems with context switches. removed for now
+                options
             )
         else
             console.error('dit type wordt niet ondersteund')

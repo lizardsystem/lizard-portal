@@ -7,6 +7,7 @@ Changelog of lizard-portal
 
 - Change alert message.
 - Remove debugger statement.
+- Add option handling for osm.
 
 
 0.47.6 (2012-04-23)
