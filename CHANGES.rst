@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.47.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- added graph reload after editing steeringparameter graphs (pp 294)
+
 
 
 0.47.6 (2012-04-23)
