@@ -2,10 +2,32 @@ Changelog of lizard-portal
 ==========================
 
 
-0.47.5 (unreleased)
+0.47.8 (unreleased)
 -------------------
 
 - Created 'Informatie KRW-waterlichaam' view, issue #181.
+
+
+0.47.7 (2012-04-24)
+-------------------
+
+- Change alert message.
+- Remove debugger statement.
+- Add option handling for osm.
+
+
+0.47.6 (2012-04-23)
+-------------------
+
+- Fixed legend-location in maatregel detail screen (the option was
+  renamed from legend_location to legend-location).
+
+
+0.47.5 (2012-04-23)
+-------------------
+
+- Added legend_location as parameter for Lizard.model.Graph. Supports
+  lizard-graph 0.17.
 
 
 0.47.4 (2012-04-20)
