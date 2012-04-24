@@ -57,8 +57,9 @@
             }]
 
         },{
-			title: 'EKR scores',
-            flex: 3,
+            title: 'EKR scores',
+            collapsible: true,
+            height: 150,
             autoScroll: true,
             plugins: [
                 'applycontext'
