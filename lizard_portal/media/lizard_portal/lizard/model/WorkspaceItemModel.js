@@ -140,7 +140,6 @@
         try {
           request_params = Ext.JSON.decode(this.get('request_params'));
         } catch (e) {
-          debugger;
           request_params = {};
         }
         params = Ext.merge({
@@ -165,7 +164,6 @@
         try {
           options = Ext.JSON.decode(this.get('options'));
         } catch (e) {
-          debugger;
           options = {};
         }
         options = Ext.merge({
@@ -184,9 +182,14 @@
           return new OpenLayers.Layer.WMS(this.get('title'), this.get('url'), params, options);
         }
       } else if (ol_class === 'OpenLayers.Layer.OSM') {
+        try {
+          options = Ext.JSON.decode(this.get('options'));
+        } catch (e) {
+          options = {};
+        }
         url = this.get('url');
         if (!url) url = null;
-        return new OpenLayers.Layer.OSM(this.get('name'));
+        return new OpenLayers.Layer.OSM(this.get('name'), null, options);
       } else {
         return console.error('dit type wordt niet ondersteund');
       }

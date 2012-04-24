@@ -2,11 +2,31 @@ Changelog of lizard-portal
 ==========================
 
 
-0.47.7 (unreleased)
--------------------
+0.47.10 (unreleased)
+--------------------
 
 - added graph reload after editing steeringparameter graphs (pp 294)
 
+
+
+0.47.9 (2012-04-24)
+-------------------
+
+- Add collapsible to ekr score portlet.
+
+
+0.47.8 (2012-04-24)
+-------------------
+
+- Created 'Informatie KRW-waterlichaam' view, issue #181.
+
+
+0.47.7 (2012-04-24)
+-------------------
+
+- Change alert message.
+- Remove debugger statement.
+- Add option handling for osm.
 
 
 0.47.6 (2012-04-23)

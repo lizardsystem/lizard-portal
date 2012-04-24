@@ -152,7 +152,6 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
             try
                 request_params = Ext.JSON.decode(@get('request_params'))
             catch e
-                debugger
                 request_params = {}
 
 
@@ -177,13 +176,10 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
                 #todo: combine this filter with next filter
 
             if @get('filter')
-                # debugger
                 params['cql_filter'] = @get('filter')
-
             try
                 options = Ext.JSON.decode(@get('options'))
             catch e
-                debugger
                 options = {}
 
             options = Ext.merge({
@@ -215,12 +211,17 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
                     options
                 )
         else if ol_class == 'OpenLayers.Layer.OSM'
+            try
+                options = Ext.JSON.decode(@get('options'))
+            catch e
+                options = {}
             url = @get('url')
             if not url
                 url = null
             return new OpenLayers.Layer.OSM(
                 @get('name')
-                #url  -> url has some problems with context switches. removed for now
+                null  # url  -> url has some problems with context switches. removed for now
+                options
             )
         else
             console.error('dit type wordt niet ondersteund')

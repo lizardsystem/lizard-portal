@@ -6,7 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 {% load get_portal_template %}
-
 {
     itemId: 'krw-overzicht',
     title: 'KRW overzicht',
@@ -18,7 +17,7 @@
 	items:[{
 		width: 300,
 		items: [
-            {% get_portal_template gebiedseigenschappen %},
+            {% get_portal_template krw_waterlichaam_eigenschappen %},
             {% get_portal_template communique %},
             {% get_portal_template gebieden_links %}
         ]
