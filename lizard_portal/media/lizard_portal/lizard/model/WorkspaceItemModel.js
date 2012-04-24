@@ -140,7 +140,6 @@
         try {
           request_params = Ext.JSON.decode(this.get('request_params'));
         } catch (e) {
-          debugger;
           request_params = {};
         }
         params = Ext.merge({
@@ -165,7 +164,6 @@
         try {
           options = Ext.JSON.decode(this.get('options'));
         } catch (e) {
-          debugger;
           options = {};
         }
         options = Ext.merge({

@@ -60,14 +60,13 @@ Ext.define('Lizard.form.BackgroundLayerSelector', {
                 values=form.getValues()
                 index = form.findField('base_layer').store.find('plid', values.base_layer)
                 base_layer = form.findField('base_layer').store.getAt(index)
-
                 Lizard.CM.setContext({background_layer: base_layer.raw})
 
                 window = @up('window')
                 window.close()
 
             else
-                Ext.MessageBox.alert('Invoer fout', 'Kies geldige periode')
+                Ext.MessageBox.alert('Invoer fout', 'Ongeldige kaartlaag')
     }]
     afterRender: () ->
         form = @getForm()

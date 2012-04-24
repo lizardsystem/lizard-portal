@@ -76,7 +76,7 @@
             window = this.up('window');
             return window.close();
           } else {
-            return Ext.MessageBox.alert('Invoer fout', 'Kies geldige periode');
+            return Ext.MessageBox.alert('Invoer fout', 'Ongeldige kaartlaag');
           }
         }
       }

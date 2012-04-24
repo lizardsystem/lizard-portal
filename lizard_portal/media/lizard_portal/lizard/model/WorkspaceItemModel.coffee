@@ -152,7 +152,6 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
             try
                 request_params = Ext.JSON.decode(@get('request_params'))
             catch e
-                debugger
                 request_params = {}
 
 
@@ -177,13 +176,11 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
                 #todo: combine this filter with next filter
 
             if @get('filter')
-                # debugger
                 params['cql_filter'] = @get('filter')
 
             try
                 options = Ext.JSON.decode(@get('options'))
             catch e
-                debugger
                 options = {}
 
             options = Ext.merge({
