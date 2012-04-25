@@ -12,7 +12,7 @@
 	items:[{
 		flex: 1,
 		items: [{
-            title: 'Maatregelen voor ' + Lizard.CM.context.object.name + ' grafiek',
+            title: 'Maatregelen voor grafiek',
             flex: 1,
             xtype: 'multigraphstore',
             plugins: [
@@ -39,7 +39,7 @@
                 }]
             })
         },{
-			title: 'Maatregelen voor ' + Lizard.CM.context.object.name,
+			title: 'Maatregelen',
             flex:2,
             autoScroll: true,
             plugins: [
@@ -74,6 +74,7 @@
                         height: 600,
                         modal: true,
                         editpopup: true,
+                        constrain:true,
                         loader:{
                             loadMask: true,
                             autoLoad: true,
@@ -88,9 +89,7 @@
                         }
                     }).show();
                 }
-            } ]
-
-
+            }]
 		}]
 	}]
 }

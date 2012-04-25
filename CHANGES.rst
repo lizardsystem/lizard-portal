@@ -11,6 +11,8 @@ Changelog of lizard-portal
 
 - changed name into 'EKR overzicht' (pp 189)
 
+- communique default not collapsed (pp 321)
+
 
 0.47.9 (2012-04-24)
 -------------------
