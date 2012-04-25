@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.49 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Added feature optional save dialog:
+  EditableGrid.msgDeleteSelectedRecord.
 
 
 0.48 (2012-04-25)

@@ -433,7 +433,19 @@
         if (this.read_only_field && selection.data[this.read_only_field] === true) {
           return false;
         } else {
-          return this.store.remove(selection);
+          if (this.msgDeleteSelectedRecord) {
+            return Ext.Msg.show({
+              title: 'let op',
+              msg: this.msgDeleteSelectedRecord,
+              buttons: Ext.Msg.YESNO,
+              icon: Ext.Msg.QUESTION,
+              fn: function(buttonId, text, opt) {
+                if (buttonId === true) return this.store.remove(selection);
+              }
+            });
+          } else {
+            return this.store.remove(selection);
+          }
         }
       }
     },
