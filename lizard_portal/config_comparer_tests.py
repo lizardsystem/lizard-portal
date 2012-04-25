@@ -42,6 +42,9 @@ class Diff(object):
 
 class ConfigComparer(object):
 
+    def __init__(self):
+        self.get_candidate_config_as_dict = AreaConfigDbf().as_dict
+
     def compare(self, config):
         """Return the differences for the given configuration."""
         candidate = self.get_candidate_config_as_dict(self, config)
