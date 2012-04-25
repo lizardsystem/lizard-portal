@@ -29,7 +29,6 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
             dragGroup: 'workspaceitem',
             dropGroup: 'workspaceitem'
 
-
     columns:[{
         text: 'aan',
         width:35,
@@ -41,7 +40,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
         width:35,
         dataIndex: 'clickable',
         xtype: 'checkcolumn',
-        sortable: false
+        sortable: false,
     },{
         text: 'Naam',
         flex: 1,
@@ -174,6 +173,10 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
           portlet.store.remove(records)
       }]
 
+    onClick: (view, record, item, index, event, eOpts) ->
+        arguments
+        debugger
+
     initComponent: () ->
         me = @
 
@@ -182,6 +185,11 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
         #if not @workspaceStore
         #if not @workspaceStore
             #@workspaceStore = Ext.create(Lizard.store.WorkspaceStore, {layerStore: @store})
+        #@addListener('checkchange', onClick)
+        Ext.apply(@,
+            listeners:
+                itemclick: @onClick
+        )
 
         @callParent(arguments)
 })

@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.47.10 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Renamed popup title EditSummaryBox from 'Samenvatting' to
+  'Samenvatting wijzigingen'.
 
 
 0.47.9 (2012-04-24)
