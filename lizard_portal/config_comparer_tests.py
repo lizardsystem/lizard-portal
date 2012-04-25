@@ -5,6 +5,8 @@
 
 # Copyright (c) 2012 Nelen & Schuurmans.  GPL licensed, see LICENSE.rst.
 
+import logging
+
 from unittest import TestCase
 
 from mock import Mock
@@ -12,6 +14,10 @@ from mock import Mock
 from django.utils.translation import ugettext as tr
 
 from lizard_portal.configurations_retriever import ConfigurationToValidate
+
+
+logger = logging.getLogger(__name__)
+
 
 class Diff(object):
     """Describes the differences between new and current configurations.
@@ -142,7 +148,7 @@ class ConfigComparerTestSuite(TestCase):
         self.assertEqual(expected_diff, diff)
 
 
-class AreaDbf(object):
+class AreaConfigDbf(object):
     """Implements the retrieval of the area records of a configuration.
 
     Instance parameter:
@@ -161,7 +167,12 @@ class AreaDbf(object):
         result = {}
         self.record_store.open(config.area_dbf)
         for record in self.record_store.get_records():
-            result[record['GAFIDENT']] = record
+            try:
+                result[record['GAFIDENT']] = record
+            except KeyError:
+                logger.warning("area configuration file '%s' does not have a "
+                               "GAFIDENT field", config.area_dbf)
+                break
         self.record_store.close()
         return result
 
@@ -172,7 +183,7 @@ class AreaDbfTestSuite(TestCase):
         self.config = ConfigurationToValidate()
         self.config.config_type = 'esf1'
         self.config.file_path = '/tmp/waterbalans_Waternet_20120228_141234'
-        self.area_dbf = AreaDbf()
+        self.area_dbf = AreaConfigDbf()
         self.area_dbf.record_store = Mock()
         self.area_dbf.record_store.get_records = Mock(return_value=[{'GAFIDENT': '3201', 'DIEPTE': ' 1.17'}])
 
@@ -186,3 +197,9 @@ class AreaDbfTestSuite(TestCase):
         self.area_dbf.as_dict(self.config)
         args, kwargs = self.area_dbf.record_store.open.call_args
         self.assertEqual('/tmp/waterbalans_Waternet_20120228_141234/aanafvoer_esf1.dbf', args[0])
+
+    def test_c(self):
+        """Test the retrieval of records without a GAFIDENT field."""
+        self.area_dbf.record_store.get_records = Mock(return_value=[{'DIEPTE': ' 1.17'}])
+        area2attrs = self.area_dbf.as_dict(self.config)
+        self.assertEqual(0, len(area2attrs))
