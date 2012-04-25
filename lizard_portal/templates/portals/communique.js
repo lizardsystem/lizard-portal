@@ -9,10 +9,15 @@
                 'applycontext'
             ],
             tpl: new Ext.XTemplate(
-                '<p>{[transform_linebreak(description)]}</p><hr></hr><p><i>{edited_by}, {edited_at}</i></p>',
+                '<tpl for=".">',
+                '<p>',
+                '{[this.transform(values)]}',
+                '</p>',
+                '<hr></hr><p><i>{edited_by}, {edited_at}</i></p>',
+                '</tpl>',
                 {
-                    transform_linebreak: function(text) {
-                        return text.replace(/\n/g, '<br>')
+                    transform: function(values) {
+                        return values.description.replace(/\n/g, '<br>');
                     }
                 }
             ),
