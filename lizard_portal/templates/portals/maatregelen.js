@@ -26,7 +26,7 @@
                     visible: 'true',
                     base_url: '/measure/measure_graph/' + Lizard.CM.context.object.id + '/focus?legend-location=7&wide_left_ticks=true',
                     use_context_location: false,
-                    location: '3201',  // Later: Lizard.CM.context.object.id
+                    //location: '3201',  // Later: Lizard.CM.context.object.id  REMOVE?
                     predefined_graph: 'ekr',
                     width: null,
                     height: null,
