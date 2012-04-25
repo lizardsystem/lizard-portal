@@ -216,10 +216,18 @@
         }
       }
     ],
+    onClick: function(view, record, item, index, event, eOpts) {
+      arguments;      debugger;
+    },
     initComponent: function() {
       var me;
       me = this;
       this.store = this.workspaceStore.workspaceItemStore;
+      Ext.apply(this, {
+        listeners: {
+          itemclick: this.onClick
+        }
+      });
       return this.callParent(arguments);
     }
   });

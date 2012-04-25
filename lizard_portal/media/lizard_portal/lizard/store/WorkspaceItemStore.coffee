@@ -11,7 +11,6 @@ Ext.define('Lizard.store.WorkspaceItemStore', {
         new OpenLayers.Layer.OSM('Openstreetmap')
     ]
 
-
     createWorkspaceItem: (config, index=null) ->
         #alert('creating workspace item')
         record = @getById(config.plid)
@@ -22,13 +21,8 @@ Ext.define('Lizard.store.WorkspaceItemStore', {
         else
             if config.plid
                 config.id = config.plid
-            #todo add clickable layer option
-            #config.clickable = true
-            #config.visible = true
 
             workspace_item = Ext.create('Lizard.model.WorkspaceItemModel', config)
-            #workspace_item.set('visibility', true)
-            #workspace_item.set('visible', true)
 
             if index is not null
                 @insert(index, workspace_item)

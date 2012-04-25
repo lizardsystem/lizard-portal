@@ -27,7 +27,7 @@
         });
         args = Ext.merge({
           title: 'Wijzigingen opslaan',
-          msg: 'Samenvatting',
+          msg: 'Samenvatting wijzigingen',
           width: 300,
           multiline: true,
           buttons: Ext.MessageBox.OKCANCEL,
