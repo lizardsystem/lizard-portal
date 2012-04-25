@@ -69,10 +69,13 @@ class ConfigurationStore(object):
     Instance parameters:
       *db*
         interface to the database (implemented to ease unit testing)
+      *logger*
+        logger to use (so client code can supply the logger to use)
 
     """
     def __init__(self):
         self.db = Database()
+        self.logger = logger
         self.retrieve_zip_names = ZipFileNameRetriever().retrieve
         self.retrieve_attrs_from_name = AttributesFromNameRetriever().retrieve
         self.retrieve_attrs_from_config = ConfigurationSpecRetriever().retrieve
@@ -82,7 +85,7 @@ class ConfigurationStore(object):
         for zip_name in self.retrieve_zip_names():
             attrs_from_name = self.retrieve_attrs_from_name(zip_name)
             if self.required_attrs_are_missing(attrs_from_name):
-                logger.warning("Unable to parse the name '%s': required info is missing", zip_name)
+                self.logger.warning("Unable to parse the name '%s': required info is missing", zip_name)
                 continue
             self.extract(zip_name, attrs_from_name['file_path'])
             for attrs in self.retrieve_attrs_from_config(attrs_from_name['file_path'], attrs_from_name['config_type']):
@@ -90,10 +93,10 @@ class ConfigurationStore(object):
                 attrs.update(attrs_from_name)
                 config.set_attributes(attrs)
                 try:
-                    logger.info('Saving configuration %s', config)
+                    self.logger.info('Saving configuration %s', config)
                     config.save()
                 except:
-                    logger.warning('Unable to save the configuration: probably it is incomplete')
+                    self.logger.warning('Unable to save the configuration: probably it is incomplete')
             self.delete(zip_name)
 
     def retrieve_zip_names(self):

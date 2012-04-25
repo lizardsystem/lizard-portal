@@ -2,8 +2,8 @@ Changelog of lizard-portal
 ==========================
 
 
-0.47.10 (unreleased)
---------------------
+0.50 (unreleased)
+-----------------
 
 - added graph reload after editing steeringparameter graphs (pp 294)
 
@@ -12,6 +12,20 @@ Changelog of lizard-portal
 - changed name into 'EKR overzicht' (pp 189)
 
 - communique default not collapsed (pp 321)
+
+
+0.49 (2012-04-25)
+-----------------
+
+- Added feature optional save dialog:
+  EditableGrid.msgDeleteSelectedRecord.
+
+
+0.48 (2012-04-25)
+-----------------
+
+- Renamed popup title EditSummaryBox from 'Samenvatting' to
+  'Samenvatting wijzigingen'.
 
 
 0.47.9 (2012-04-24)
