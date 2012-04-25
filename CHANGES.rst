@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.49 (unreleased)
+0.49 (2012-04-25)
 -----------------
 
 - Added feature optional save dialog:
