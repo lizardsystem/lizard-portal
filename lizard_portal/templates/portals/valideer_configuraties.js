@@ -49,6 +49,47 @@
 				flat: false,
 				size: 'small',
 				include_geom: false
+			    },
+			    actionEditIcon: function(record) {
+				var me = this;
+				console.log(this.store.getNewRecords());
+				if (this.store.getNewRecords().length >0 ||
+				    this.store.getUpdatedRecords().length >0 ||
+				    this.store.getRemovedRecords().length >0) {
+
+				    Ext.Msg.alert("Let op", 'Sla eerst de bewerking(en) in het grid op, voordat een enkel record kan worden bewerkt');
+				    return;
+				}
+
+				console.log('edit record:');
+				console.log(record);
+
+				if (record) {
+				    params = {
+					measure_id: record.data.id
+				    };
+
+				} else {
+				    params = null;
+				}
+
+				Ext.create('Ext.window.Window', {
+					       title: 'Verschillen tussen configuraties',
+					       width: 800,
+					       height: 600,
+					       modal: true,
+					       editpopup: false,
+					       loader:{
+						   loadMask: true,
+						   autoLoad: true,
+						   url: '/portal/diff/' + record.data.polder,
+						   ajaxOptions: {
+						       method: 'GET'
+						   },
+						   params: params,
+						   renderer: 'html'
+					       }
+					   }).show();
 			    }
 			}]
 	    }]
