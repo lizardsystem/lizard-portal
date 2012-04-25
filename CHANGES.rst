@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.51 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- maatregelen and maatregelen_krw now have wider left ticks and the
+  legend on the right side.
 
 
 0.50 (2012-04-25)

@@ -24,7 +24,7 @@
                     id:1,
                     name: 'Maatregelen',
                     visible: 'true',
-                    base_url: '/measure/measure_graph/' + Lizard.CM.context.object.id + '/focus?legend-location=0',
+                    base_url: '/measure/measure_graph/' + Lizard.CM.context.object.id + '/focus?legend-location=7&wide_left_ticks=true',
                     use_context_location: false,
                     location: '3201',  // Later: Lizard.CM.context.object.id
                     predefined_graph: 'ekr',
