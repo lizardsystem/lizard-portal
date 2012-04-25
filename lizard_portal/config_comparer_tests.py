@@ -9,6 +9,7 @@ import logging
 
 from unittest import TestCase
 
+from dbfpy import dbf
 from mock import Mock
 
 from django.utils.translation import ugettext as tr
@@ -165,27 +166,33 @@ class AreaConfigDbf(object):
 
         """
         result = {}
-        self.record_store.open(config.area_dbf)
-        for record in self.record_store.get_records():
+        for record in self.retrieve_records(config.area_dbf):
             try:
                 result[record['GAFIDENT']] = record
             except KeyError:
                 logger.warning("area configuration file '%s' does not have a "
                                "GAFIDENT field", config.area_dbf)
                 break
-        self.record_store.close()
         return result
 
+    def retrieve_records(self, dbf_name):
+        """Return the list of records from the given file.
 
-class AreaDbfTestSuite(TestCase):
+        Each record is specified as a dict from attribute name to attribute
+        value.
+
+        """
+        return [rec for rec in dbf.Dbf(dbf_name)]
+
+class AreaConfigDbfTestSuite(TestCase):
 
     def setUp(self):
         self.config = ConfigurationToValidate()
         self.config.config_type = 'esf1'
-        self.config.file_path = '/tmp/waterbalans_Waternet_20120228_141234'
+        self.config.file_path = '/path'
         self.area_dbf = AreaConfigDbf()
-        self.area_dbf.record_store = Mock()
-        self.area_dbf.record_store.get_records = Mock(return_value=[{'GAFIDENT': '3201', 'DIEPTE': ' 1.17'}])
+        record = {'GAFIDENT': '3201', 'DIEPTE': ' 1.17'}
+        self.area_dbf.retrieve_records = Mock(return_value=[record])
 
     def test_a(self):
         """Test the retrieval of a single record."""
@@ -193,13 +200,13 @@ class AreaDbfTestSuite(TestCase):
         self.assertEqual({'3201': {'GAFIDENT': '3201', 'DIEPTE': ' 1.17'}}, area2attrs)
 
     def test_b(self):
-        """Test the record store is asked to open the right file."""
+        """Test the records are retrieved from the right file."""
         self.area_dbf.as_dict(self.config)
-        args, kwargs = self.area_dbf.record_store.open.call_args
-        self.assertEqual('/tmp/waterbalans_Waternet_20120228_141234/aanafvoer_esf1.dbf', args[0])
+        args, kwargs = self.area_dbf.retrieve_records.call_args
+        self.assertEqual('/path/aanafvoer_esf1.dbf', args[0])
 
     def test_c(self):
         """Test the retrieval of records without a GAFIDENT field."""
-        self.area_dbf.record_store.get_records = Mock(return_value=[{'DIEPTE': ' 1.17'}])
+        self.area_dbf.retrieve_records = Mock(return_value=[{'DIEPTE': ' 1.17'}])
         area2attrs = self.area_dbf.as_dict(self.config)
         self.assertEqual(0, len(area2attrs))
