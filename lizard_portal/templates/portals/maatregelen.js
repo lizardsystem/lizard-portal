@@ -66,6 +66,7 @@
             },
             tools: [{
                 type: 'plus',
+                tooltip: 'Nieuwe maatregel toevoegen',
                 handler: function (e, target, panelHeader, tool) {
                     panel = panelHeader.up('panel');
 
