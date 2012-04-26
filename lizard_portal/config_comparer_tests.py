@@ -9,65 +9,18 @@ import logging
 
 from unittest import TestCase
 
-from dbfpy import dbf
-from mock import Mock
-
 from django.utils.translation import ugettext as tr
 
+from mock import Mock
+
 from lizard_portal.configurations_retriever import ConfigurationToValidate
+from lizard_portal.config_comparer import AreaConfigDbf
+from lizard_portal.config_comparer import ConfigComparer
+from lizard_portal.config_comparer import Diff
 
 
 logger = logging.getLogger(__name__)
 
-
-class Diff(object):
-    """Describes the differences between new and current configurations.
-
-    Instance parameters:
-      *new_areas*
-         list of area identifications only specified in the new configurations
-      *changed_areas*
-         dict of area identification to attribute name to tuple of new and
-         current attribute values
-
-    """
-    def __init__(self):
-        self.new_areas = []
-        self.changed_areas = {}
-
-    def __eq__(self, other):
-        return self.new_areas == other.new_areas and \
-            self.changed_areas == other.changed_areas
-
-
-class ConfigComparer(object):
-
-    def __init__(self):
-        self.get_candidate_config_as_dict = AreaConfigDbf().as_dict
-
-    def compare(self, config):
-        """Return the differences for the given configuration."""
-        candidate = self.get_candidate_config_as_dict(self, config)
-        current = self.get_current_config_as_dict(self, config)
-        diff = Diff()
-        for area_ident, area_attrs in candidate.items():
-            try:
-                current_attrs = current[area_ident]
-            except KeyError:
-                diff.new_areas.append(area_ident)
-                continue
-            for attr_name, attr_value in area_attrs.items():
-                current_attr_value = current_attrs.get(attr_name, tr('not present'))
-                if attr_value != current_attr_value:
-                    diff_for_key = diff.changed_areas.setdefault(area_ident, {})
-                    diff_for_key[attr_name] = (attr_value, current_attr_value)
-        return diff
-
-    def get_candidate_config_as_dict(self, config):
-        pass
-
-    def get_current_config_as_dict(self, config):
-        pass
 
 class ConfigComparerTestSuite(TestCase):
 
@@ -152,41 +105,6 @@ class ConfigComparerTestSuite(TestCase):
         self.assertEqual(expected_diff, diff)
 
 
-class AreaConfigDbf(object):
-    """Implements the retrieval of the area records of a configuration.
-
-    Instance parameter:
-      *record_store*
-        interface to the Dbf file
-
-    """
-
-    def as_dict(self, config):
-        """Return the dict of area records from the given configuration.
-
-        The dict maps the value of the GAFIDENT field of each area record to
-        each record.
-
-        """
-        result = {}
-        for record in self.retrieve_records(config.area_dbf):
-            try:
-                result[record['GAFIDENT']] = record
-            except KeyError:
-                logger.warning("area configuration file '%s' does not have a "
-                               "GAFIDENT field", config.area_dbf)
-                break
-        return result
-
-    def retrieve_records(self, dbf_name):
-        """Return the list of records from the given file.
-
-        Each record is specified as a dict from attribute name to attribute
-        value.
-
-        """
-        return [rec for rec in dbf.Dbf(dbf_name)]
-
 class AreaConfigDbfTestSuite(TestCase):
 
     def setUp(self):
@@ -206,7 +124,7 @@ class AreaConfigDbfTestSuite(TestCase):
         """Test the records are retrieved from the right file."""
         self.area_dbf.as_dict(self.config)
         args, kwargs = self.area_dbf.retrieve_records.call_args
-        self.assertEqual('/path/aanafvoer_esf1.dbf', args[0])
+        self.assertEqual(self.config, args[0])
 
     def test_c(self):
         """Test the retrieval of records without a GAFIDENT field."""
