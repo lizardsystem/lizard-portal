@@ -22,9 +22,11 @@
             }]
         },{
             xtype: 'workspaceportlet',
+            maxHeight: 300,
             workspaceStore: Lizard.store.WorkspaceStore.get_or_create('analyse')
         },{
             xtype: 'collageportlet',
+            maxHeight: 200,
             collageStore: Lizard.store.CollageStore.get_or_create('analyse')
         }]
     },{

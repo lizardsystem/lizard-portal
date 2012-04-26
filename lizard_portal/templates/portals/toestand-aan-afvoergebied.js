@@ -37,6 +37,7 @@
                 'applycontext'
             ],
             store: Ext.create('Lizard.store.Graph',{
+                storeId: 'toestand_store',
                 context_ready: true,
                 proxy: {
                     type: 'ajax',
@@ -60,11 +61,13 @@
                         width: 800,
                         height: 600,
                         modal: true,
-                        finish_edit_function: function (updated_record) {
-                            //todo
+                        listeners: {
+                            close: function() {
+                                var store = Ext.StoreManager.lookup('toestand_store');
+                                store.load();
+                            }
                         },
                         editpopup: true,
-
                         loader:{
                             loadMask: true,
                             autoLoad: true,

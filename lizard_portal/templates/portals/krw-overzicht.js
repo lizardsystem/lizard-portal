@@ -39,6 +39,7 @@
                 'applycontext'
             ],
             store: Ext.create('Lizard.store.Graph',{
+                storeId: 'krw_overzicht_store',
                 context_ready: true,
                 proxy: {
                     type: 'ajax',
@@ -62,11 +63,13 @@
                         width: 800,
                         height: 600,
                         modal: true,
-                        finish_edit_function: function (updated_record) {
-                            //todo
-                        },
                         editpopup: true,
-
+                        listeners: {
+                            close: function() {
+                                var store = Ext.StoreManager.lookup('krw_overzicht_store');
+                                store.load();
+                            }
+                        },
                         loader:{
                             loadMask: true,
                             autoLoad: true,

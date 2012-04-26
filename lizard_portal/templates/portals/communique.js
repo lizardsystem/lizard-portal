@@ -2,14 +2,24 @@
 			title: 'Communique',
             bodyCls: 'l-grid',
             height: 150,
-            collapsed: true,
+            collapsed: false,
             collapsible: true,
             autoScroll: true,
             plugins: [
                 'applycontext'
             ],
-            tpl: new Ext.Template(
-                '<p>{description}</p><hr></hr><p><i>{edited_by}, {edited_at}</i></p>'
+            tpl: new Ext.XTemplate(
+                '<tpl for=".">',
+                '<p>',
+                '{[this.transform(values)]}',
+                '</p>',
+                '<hr></hr><p><i>{edited_by}, {edited_at}</i></p>',
+                '</tpl>',
+                {
+                    transform: function(values) {
+                        return values.description.replace(/\n/g, '<br>');
+                    }
+                }
             ),
             loader: {
                 ajaxOptions: {
@@ -43,6 +53,7 @@
                         title: 'Bewerk communique',
                         width: 400,
                         height: 300,
+                        constrain: true,
                         items: {
                             xtype: 'form',
                             url: '/area/api/area_communique/',

@@ -2,10 +2,32 @@ Changelog of lizard-portal
 ==========================
 
 
-0.49 (unreleased)
+0.51 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- maatregelen and maatregelen_krw now have wider left ticks and the
+  legend on the right side.
+
+- fixed communique (including support for an enter)
+
+
+0.50 (2012-04-25)
+-----------------
+
+- added graph reload after editing steeringparameter graphs (pp 294)
+
+- add analyse interpretation list refresh after add or edit (pp 302, pp 303)
+
+- changed name into 'EKR overzicht' (pp 189)
+
+- communique default not collapsed (pp 321)
+
+
+0.49 (2012-04-25)
+-----------------
+
+- Added feature optional save dialog:
+  EditableGrid.msgDeleteSelectedRecord.
 
 
 0.48 (2012-04-25)

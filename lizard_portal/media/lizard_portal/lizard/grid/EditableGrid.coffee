@@ -442,13 +442,22 @@ Ext.define('Lizard.grid.EditableGrid', {
     deleteSelectedRecord: () ->
         selection = @getView().getSelectionModel().getSelection()[0]
 
-
         if selection
             if @read_only_field and selection.data[@read_only_field] == true
                 return false
             else
-                @store.remove(selection)
-
+                if @msgDeleteSelectedRecord
+                    Ext.Msg.show({
+                        title:'let op',
+                        msg: @msgDeleteSelectedRecord,
+                        buttons: Ext.Msg.YESNO,
+                        icon: Ext.Msg.QUESTION,
+                        fn: (buttonId, text, opt) ->
+                            if buttonId == yes
+                                @store.remove(selection)
+                    })
+                else
+                    @store.remove(selection)
 
     getStoreConfig: () ->
         fields = []

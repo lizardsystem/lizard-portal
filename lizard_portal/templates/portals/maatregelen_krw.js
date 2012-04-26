@@ -12,7 +12,7 @@
 	items:[{
 		flex: 1,
 		items: [{
-            title: 'Maatregelen voor ' + Lizard.CM.context.object.name + ' grafiek',
+            title: 'Maatregelengrafiek',
             flex: 1,
             xtype: 'multigraphstore',
             plugins: [
@@ -24,9 +24,9 @@
                     id:1,
                     name: 'Maatregelen',
                     visible: 'true',
-                    base_url: '/measure/measure_graph/' + Lizard.CM.context.object.id + '/focus?legend-location=0',
+                    base_url: '/measure/measure_graph/' + Lizard.CM.context.object.id + '/focus?legend-location=7&wide_left_ticks=true',
                     use_context_location: false,
-                    location: '3201',  // Later: Lizard.CM.context.object.id
+                    //location: '3201',  // Later: Lizard.CM.context.object.id  REMOVE?
                     predefined_graph: 'ekr',
                     width: null,
                     height: null,
@@ -39,7 +39,7 @@
                 }]
             })
         },{
-			title: 'Maatregelen voor ' + Lizard.CM.context.object.name,
+			title: 'Maatregelen',
             flex:2,
             autoScroll: true,
             plugins: [
@@ -68,15 +68,13 @@
                 type: 'plus',
                 handler: function (e, target, panelHeader, tool) {
                     Ext.create('Ext.window.Window', {
+                        measureScreen: true,
                         title: 'Nieuwe maatregel toevoegen',
                         width: 800,
                         height: 600,
                         modal: true,
-                        finish_edit_function: function (updated_record) {
-                            // TODO
-                            //console.log("TODO: maatregelen_krw finish_edit_function")
-                        },
                         editpopup: true,
+                        constrain:true,
                         loader:{
                             loadMask: true,
                             autoLoad: true,
@@ -91,9 +89,7 @@
                         }
                     }).show();
                 }
-            } ]
-
-
+            }]
 		}]
 	}]
 }
