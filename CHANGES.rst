@@ -5,6 +5,8 @@ Changelog of lizard-portal
 0.51 (unreleased)
 -----------------
 
+- Added tooltips for Lizard.screen.linkToPopup tools.
+
 - Added tooltip for "Nieuwe maatregel toevoegen" (2x).
 
 - maatregelen and maatregelen_krw now have wider left ticks and the
