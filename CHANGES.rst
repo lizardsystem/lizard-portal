@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.51 (unreleased)
+0.51 (2012-04-26)
 -----------------
 
 - Added tooltips for Lizard.screen.linkToPopup tools.
