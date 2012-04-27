@@ -180,13 +180,13 @@
 .x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-main_esf,
 .x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-expert_result,
 .x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-result {
-    background-image: url('x-grid-icons/green-ball.png');
+    background-image: url('x-grid-icons/blue-ball.png');
 }
 
 .x-tree-custom-main_esf,
 .x-tree-custom-expert_result,
 .x-tree-custom-result {
-    background-image: url('x-grid-icons/green-ball.png');
+    background-image: url('x-grid-icons/blue-ball.png');
 }
 
 .x-grid-tree-node-expanded .x-tree-icon-parent.x-tree-custom-expert_setting,
