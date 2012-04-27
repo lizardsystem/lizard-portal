@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.53 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Removes the functionality to view ESF configuration diffs - this
+  functionality has been moved to lizard-validation.
 
 
 0.52 (2012-04-27)
