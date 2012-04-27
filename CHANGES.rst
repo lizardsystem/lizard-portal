@@ -10,6 +10,8 @@ Changelog of lizard-portal
 
 - fixed communique (including support for an enter)
 
+- Make geometry editor zoom to geom & active object
+
 
 0.50 (2012-04-25)
 -----------------
