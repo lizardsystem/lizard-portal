@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.52 (unreleased)
+0.52 (2012-04-27)
 -----------------
 
 - Changed green esf icons to blue.
