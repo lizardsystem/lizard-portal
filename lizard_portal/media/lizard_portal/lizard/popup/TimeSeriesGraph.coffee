@@ -85,6 +85,7 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
                 #pass
 
                 editpopup: true,
+                constrainHeader: true,
                 items: [{
                     xtype: 'panel'
                     width: 1050

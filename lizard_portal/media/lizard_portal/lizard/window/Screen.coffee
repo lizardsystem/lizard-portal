@@ -91,7 +91,8 @@ Ext.define 'Lizard.window.Screen',
         window_settings = {
             title: title,
             width: 800,
-            height: 500,
+            height: 600,
+            constrainHeader: true,
             autoScroll: true,
             bodyStyle:
                 background: 'white'
