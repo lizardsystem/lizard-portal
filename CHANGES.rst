@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.54 (unreleased)
+0.54 (2012-04-27)
 -----------------
 
 - Added 'constrainHeader: true' to all popup windows.
