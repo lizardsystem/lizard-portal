@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.53 (unreleased)
+0.53 (2012-04-27)
 -----------------
 
 - Removes the functionality to view ESF configuration diffs - this
