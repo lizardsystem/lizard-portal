@@ -74,22 +74,23 @@
 				}
 
 				Ext.create('Ext.window.Window', {
-					       title: 'Verschillen tussen configuraties',
-					       width: 800,
-					       height: 600,
-					       modal: true,
-					       editpopup: false,
-					       loader:{
-						   loadMask: true,
-						   autoLoad: true,
-						   url: '/portal/diff/' + record.data.polder,
-						   ajaxOptions: {
-						       method: 'GET'
-						   },
-						   params: params,
-						   renderer: 'html'
-					       }
-					   }).show();
+				    title: 'Verschillen tussen configuraties',
+				    width: 800,
+				    height: 600,
+				    modal: true,
+				    editpopup: false,
+				    constrainHeader: true,
+				    loader:{
+					loadMask: true,
+					autoLoad: true,
+					url: '/portal/diff/' + record.data.polder,
+					ajaxOptions: {
+					    method: 'GET'
+					},
+					params: params,
+					renderer: 'html'
+				    }
+				}).show();
 			    }
 			}]
 	    }]

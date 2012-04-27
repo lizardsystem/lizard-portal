@@ -61,6 +61,7 @@
                         width: 800,
                         height: 600,
                         modal: true,
+			constrainHeader: true,
                         listeners: {
                             close: function() {
                                 var store = Ext.StoreManager.lookup('toestand_store');
