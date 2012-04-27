@@ -79,10 +79,11 @@
 					       height: 600,
 					       modal: true,
 					       editpopup: false,
+				               constrainHeader: true,
 					       loader:{
 						   loadMask: true,
 						   autoLoad: true,
-						   url: '/portal/diff/' + record.data.polder,
+						   url: '/validation/diff/' + record.data.polder + '/' + record.data.type,
 						   ajaxOptions: {
 						       method: 'GET'
 						   },

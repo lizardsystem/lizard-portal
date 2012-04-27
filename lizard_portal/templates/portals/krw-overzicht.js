@@ -64,6 +64,7 @@
                         height: 600,
                         modal: true,
                         editpopup: true,
+			constrainHeader: true,
                         listeners: {
                             close: function() {
                                 var store = Ext.StoreManager.lookup('krw_overzicht_store');

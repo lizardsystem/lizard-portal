@@ -40,6 +40,7 @@
                     title: title,
                     width: 600,
                     height: 600,
+		    constrainHeader: true,
                     layout: {
                         type: 'vbox',
                         align: 'stretch'
