@@ -183,13 +183,3 @@ def local_create_configurations_retriever():
     retriever.retrieve_configurations = \
         (lambda : [MockConfig(config) for config in configuration_list])
     return retriever
-
-def view_config_diff(request, area_name,
-                            template='lizard_portal/config_diff.html'):
-    logger.debug('lizard_portal.views.view_config_diff')
-    logger.debug('look for ConfigurationToValidate for Area with name: %s', area_name)
-    get_object_or_404(ConfigurationToValidate, area__name=area_name)
-    return render_to_response(
-        template,
-        {},
-        context_instance=RequestContext(request))

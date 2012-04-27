@@ -2,10 +2,23 @@ Changelog of lizard-portal
 ==========================
 
 
-0.52 (unreleased)
+0.54 (unreleased)
 -----------------
 
 - Added 'constrainHeader: true' to all popup windows.
+
+
+0.53 (2012-04-27)
+-----------------
+
+- Removes the functionality to view ESF configuration diffs - this
+  functionality has been moved to lizard-validation.
+
+
+0.52 (2012-04-27)
+-----------------
+
+- Changed green esf icons to blue.
 
 
 0.51 (2012-04-26)
