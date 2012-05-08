@@ -75,8 +75,10 @@
 
 				Ext.create('Ext.window.Window', {
 					       title: 'Verschillen tussen configuraties',
+					       autoHeight: false,
+					       height: Ext.getBody().getViewSize().height * .50,
+					       autoScroll: true,
 					       width: 800,
-					       height: 600,
 					       modal: true,
 					       editpopup: false,
 				               constrainHeader: true,
