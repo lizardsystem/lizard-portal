@@ -10,5 +10,5 @@ Ext.define('Vss.store.WaterbalanceAreaConfig', {
         reader: {
             type: 'json'
         }
-    },
+    }
 });

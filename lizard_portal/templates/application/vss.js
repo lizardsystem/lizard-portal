@@ -4,6 +4,11 @@ Ext.Loader.setPath('Lizard', '{{ STATIC_URL }}lizard_portal/lizard');
 Ext.Loader.setPath('Vss', '{{ STATIC_URL }}lizard_portal/vss');
 Ext.Loader.setPath('GeoExt', '{{ STATIC_URL }}geoext4/src');
 
+if (typeof(console)=='undefined') {
+    console = {
+        log: function() {}
+    }
+}
 
 Ext.application({
     name: 'KRW_vss',
@@ -37,7 +42,8 @@ Ext.application({
         'Vss.store.AnnotationDescription',
         'Vss.store.KrwToestandGraph',
         'Lizard.store.AppScreen',
-        'Lizard.store.Graph'
+        'Lizard.store.Graph',
+        'Vss.store.TimeserieObject'
     ],
     requires: [
         'Lizard.plugin.ApplyContext',
