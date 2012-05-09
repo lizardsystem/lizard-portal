@@ -25,15 +25,13 @@ def prepare_configurations():
     ConfigurationStore().supply()
 
 @task()
-def prepare_configurations_as_task(taskname, levelno=20):
+def prepare_configurations_as_task(taskname, levelno=20, username=None):
     """Prepare the configurations for validation.
 
     This task has the same functionality as function ``prepare_configurations``
-
-
     """
     logger = logging.getLogger(taskname)
-    handler = get_handler(taskname, username=None)
+    handler = get_handler(taskname=taskname, username=None)
     logger.addHandler(handler)
     logger.setLevel(levelno)
 

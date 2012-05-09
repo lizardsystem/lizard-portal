@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.56 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Updated tasks to work with lizard-task 0.4.
 
 
 0.55 (2012-05-09)
