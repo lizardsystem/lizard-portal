@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.55 (unreleased)
+0.55 (2012-05-09)
 -----------------
 
 - Removed fields in 'waterbalans-configuratie' form, issue #105.
