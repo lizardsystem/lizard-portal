@@ -11,12 +11,6 @@ Ext.define('Lizard.portlet.CollagePortlet', {
     # store: Ext.data.StoreManager.lookup('Workspace'),
     viewConfig:
         #Return CSS class to apply to rows depending upon data values
-        getRowClass: (record, index)  ->
-            c = record.get('is_base_layer');
-            if c == true
-                return 'l-grey'
-            else
-                return ''
 
         plugins:
             ptype: 'gridviewdragdrop',

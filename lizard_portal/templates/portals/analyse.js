@@ -7,7 +7,7 @@
 	    width: 300,
         items: [{
             title: 'Navigatie',
-            flex:2,
+            flex:5,
             xtype: 'tabpanel',
             loadTab: function (tab_id) {
                 var tab = this.child(tab_id);
@@ -22,11 +22,11 @@
             }]
         },{
             xtype: 'workspaceportlet',
-            maxHeight: 300,
+            flex:3,
             workspaceStore: Lizard.store.WorkspaceStore.get_or_create('analyse')
         },{
             xtype: 'collageportlet',
-            maxHeight: 200,
+            flex:2,
             collageStore: Lizard.store.CollageStore.get_or_create('analyse')
         }]
     },{

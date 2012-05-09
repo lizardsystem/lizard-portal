@@ -9,11 +9,9 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
     ]
     alias: 'widget.workspaceportlet'
     title: 'Workspace'
-    autoHeight: true,
-    minHeight: 200,
-    multiSelect: true
-
-
+    #minHeight: 100, #todo: does not work
+    #maxHeight: 200, #todo: does not work
+    multiSelect: true,
     # store: Ext.data.StoreManager.lookup('Workspace'),
     viewConfig:
         #Return CSS class to apply to rows depending upon data values
@@ -31,18 +29,18 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
 
     columns:[{
         text: 'aan',
-        width:35,
+        width: 35,
         dataIndex: 'visibility',
         xtype: 'checkcolumn',
         sortable: false
     },{
-        text: 'sel',
-        width:35,
+        text: 'selecteerbaar',
+        width: 35,
         dataIndex: 'clickable',
         xtype: 'checkcolumn',
         sortable: false,
     },{
-        text: 'Naam',
+        text: 'naam',
         flex: 1,
         sortable: false,
         dataIndex: 'title'

@@ -10,6 +10,9 @@ Changelog of lizard-portal
 
 - fixed communique (including support for an enter)
 
+- changed layout for analyses screen (pp 253)
+
+
 
 0.50 (2012-04-25)
 -----------------

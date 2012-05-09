@@ -5,8 +5,6 @@
     mixins: ['Lizard.portlet.Portlet'],
     alias: 'widget.workspaceportlet',
     title: 'Workspace',
-    autoHeight: true,
-    minHeight: 200,
     multiSelect: true,
     viewConfig: {
       getRowClass: function(record, index) {
@@ -32,13 +30,13 @@
         xtype: 'checkcolumn',
         sortable: false
       }, {
-        text: 'sel',
+        text: 'selecteerbaar',
         width: 35,
         dataIndex: 'clickable',
         xtype: 'checkcolumn',
         sortable: false
       }, {
-        text: 'Naam',
+        text: 'naam',
         flex: 1,
         sortable: false,
         dataIndex: 'title'

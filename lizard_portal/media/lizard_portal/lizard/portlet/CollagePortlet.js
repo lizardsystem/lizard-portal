@@ -5,15 +5,6 @@
     alias: 'widget.collageportlet',
     title: 'Collage',
     viewConfig: {
-      getRowClass: function(record, index) {
-        var c;
-        c = record.get('is_base_layer');
-        if (c === true) {
-          return 'l-grey';
-        } else {
-          return '';
-        }
-      },
       plugins: {
         ptype: 'gridviewdragdrop',
         dragGroup: 'collageitem',
