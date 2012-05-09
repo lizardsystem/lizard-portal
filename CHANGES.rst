@@ -11,6 +11,8 @@ Changelog of lizard-portal
 
 - fixed support for IE en firefox (still some layout issues on IE)
 
+- Makes the configuration diff window scrollable
+
 
 0.54 (2012-04-27)
 -----------------
