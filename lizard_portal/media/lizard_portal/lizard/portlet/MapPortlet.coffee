@@ -177,10 +177,33 @@ Ext.define('Lizard.portlet.MapPortlet', {
             if not popup_class
                 # Default fall-back
                 popup_class = Ext.ClassManager.get('Lizard.popup.FeatureInfo')
-                console.error("Cannot find popup class " + popup_class_name)
+                console.info("Cannot find popup class " + popup_class_name)
             popup_class.show(records, workspaceitem)
         else
             alert('nothing found')
+
+
+    onEmptyMapClick: (gml, layer, event, lonlat, xhr, request, gml_text) ->
+        if gml_text.match(/exception/i)
+            Ext.MessageBox.show(
+                title: 'map klik - server error',
+                msg: 'server response:<br>' + gml_text,
+                closable: true
+            )
+        else
+            Ext.MessageBox.show(
+                title: 'map klik',
+                msg: 'geen items gevonden',
+                closable: false,
+                modal: false
+            )
+
+            setTimeout(
+                ()->
+                    Ext.MessageBox.hide();
+                2000
+            )
+
 
 
     onMapClick: (event, lonlat, callback) ->
@@ -220,6 +243,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
             # Request through a proxy on our server
             url = layer.get('layer').getFullRequestString(params, layer.get('url'));
 
+            me.setLoading(true);
             Ext.Ajax.request({
                 url: '/portal/getFeatureInfo/',
                 reader:{
@@ -230,20 +254,24 @@ Ext.define('Lizard.portlet.MapPortlet', {
                 }
                 method: 'GET',
                 success: (xhr, request) ->
+                     debugger
+                     me.setLoading(false);
                      gml_text = xhr.responseText;
                      format = new OpenLayers.Format.GML.v3();
                      gml = format.read(gml_text);
                      if gml.length > 0
                          me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
-                     # else
-                     #    alert('Niks gevonden proxy debug: ' + gml_text)
+                     else
+                         me.onEmptyMapClick(gml, layer, event, lonlat, xhr, request, gml_text)
                 failure: (xhr) ->
+                    me.setLoading(false);
                     # alert('failure');
                     console.error('Error requesting ajax call to remote url ' + url);
             })
 
         else
             # Direct request to local server.
+            me.setLoading(true);
             Ext.Ajax.request({
                 url: layer.get('url'),
                 reader:{
@@ -252,15 +280,18 @@ Ext.define('Lizard.portlet.MapPortlet', {
                 params: params
                 method: 'GET',
                 success: (xhr, request) ->
+                    debugger
+                    me.setLoading(true);
                     gml_text = xhr.responseText;
                     format = new OpenLayers.Format.GML.v3();
                     gml = format.read(gml_text);
                     if gml.length > 0
                         me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
-                    # else
-                    #     alert('Niks gevonden debug: ' + gml_text)
+                    else
+                        me.onEmptyMapClick(gml, layer, event, lonlat, xhr, request, gml_text)
                 failure: (xhr) ->
                     # alert('failure');
+                    me.setLoading(true);
                     console.error('Error requesting ajax call to local url ' + url);
             });
 

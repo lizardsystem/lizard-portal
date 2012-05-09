@@ -15,6 +15,10 @@ Changelog of lizard-portal
 
 - defined default background map in context (prevent problems with mismatching maps pp 254)
 
+- added feedback of loading layers and map clicks (pp 136)
+
+- only one layer selectable (pp 317)
+
 
 0.54 (2012-04-27)
 -----------------

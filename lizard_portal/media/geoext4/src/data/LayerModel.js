@@ -31,10 +31,15 @@ Ext.define('GeoExt.data.LayerModel', {
 		type : "string",
 		mapping : "name"
 	},{
-		name : "visibility",
+		name : "loading",
 		type : "boolean",
-		mapping : "visibility"
+        defaultValue: false,
+		mapping : "loading"
 	},{
+        name : "visibility",
+        type : "boolean",
+        mapping : "visibility"
+    },{
 		name : "isbaselayer",
 		type : "boolean",
         defaultValue: false,

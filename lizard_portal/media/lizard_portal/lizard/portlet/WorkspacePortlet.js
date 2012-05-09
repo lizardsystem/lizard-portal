@@ -34,12 +34,25 @@
         width: 35,
         dataIndex: 'clickable',
         xtype: 'checkcolumn',
+        onCheckChange: function(column, record, recordIndex, value) {
+          if (value === true) {
+            return record.store.setSelectableLayer(record);
+          } else {
+            return record.store.setSelectableLayer();
+          }
+        },
         sortable: false
       }, {
         text: 'naam',
         flex: 1,
         sortable: false,
         dataIndex: 'title'
+      }, {
+        text: 'laad',
+        width: 35,
+        sortable: false,
+        xtype: 'loadingcolumn',
+        dataIndex: 'loading'
       }
     ],
     clear: function() {

@@ -48,6 +48,7 @@ Ext.application({
     requires: [
         'Lizard.plugin.ApplyContext',
         'Lizard.ux.CheckColumn',
+        'Lizard.ux.LoadingBalk',
         'Lizard.ux.CheckColumnTree',
         'Lizard.ux.VBoxScroll',
         'Lizard.ux.ImageResize',

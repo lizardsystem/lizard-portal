@@ -18,6 +18,11 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
         name: 'text',
         type: 'string'
     },{
+        name: 'loading',
+        type: 'boolean',
+        defaultValue: false,
+        persist: false
+    },{
         name: 'leaf',
         type: 'boolean'
     },{
@@ -110,7 +115,7 @@ Ext.define('Lizard.model.WorkspaceItemModel', {
     },{
         name : "clickable",
         type : "boolean",
-        defaultValue: true,
+        defaultValue: false,
         mapping : "clickable",
         convert: (value, rec) ->
             if rec.get('is_clickable') == true

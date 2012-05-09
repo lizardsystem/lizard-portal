@@ -38,12 +38,24 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
         width: 35,
         dataIndex: 'clickable',
         xtype: 'checkcolumn',
+        onCheckChange: (column, record, recordIndex, value) ->
+            if value == true
+                record.store.setSelectableLayer(record);
+            else
+                record.store.setSelectableLayer();
+
         sortable: false,
     },{
         text: 'naam',
         flex: 1,
         sortable: false,
         dataIndex: 'title'
+    },{
+        text: 'laad',
+        width: 35,
+        sortable: false,
+        xtype: 'loadingcolumn',
+        dataIndex: 'loading'
     }],
 
     clear: () ->

@@ -20,6 +20,11 @@
         name: 'text',
         type: 'string'
       }, {
+        name: 'loading',
+        type: 'boolean',
+        defaultValue: false,
+        persist: false
+      }, {
         name: 'leaf',
         type: 'boolean'
       }, {
@@ -112,7 +117,7 @@
       }, {
         name: "clickable",
         type: "boolean",
-        defaultValue: true,
+        defaultValue: false,
         mapping: "clickable",
         convert: function(value, rec) {
           if (rec.get('is_clickable') === true) {

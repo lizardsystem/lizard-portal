@@ -237,7 +237,24 @@ Ext.define('GeoExt.data.LayerStore', {
 			}
 		}
 	},
-	/** private: method[onAddLayer]
+    /** private: method[setSelectableLayer]
+     * set given layer to selectable and other to unselectable
+     * when no layer is selectable, set upper most layer selectable
+     */
+    setSelectableLayer: function(layer) {
+        //in case of: remove layer, add layer, change layer setting
+        if (!layer) {
+            layer = this.last();
+        }
+        this.each(function(record) {
+            if (record == layer) {
+                record.set('clickable', true);
+            } else {
+                record.set('clickable', false);
+            }
+        })
+    },
+    /** private: method[onAddLayer]
 	 *  :param evt: ``Object``
 	 *
 	 *  Handler for a map's addlayer event
@@ -348,9 +365,24 @@ Ext.define('GeoExt.data.LayerStore', {
 			for(var i = records.length - 1; i >= 0; --i) {
 				layer = records[i].getLayer();
 				me.map.addLayer(layer);
+                layer.events.on(
+                {
+                    "loadstart": function () {
+                        this.set('loading',true)
+                    },
+                    "loadend": function () {
+                        this.set('loading',false)
+                    },
+                    "loadcancel": function () {
+                        this.set('loading',false)
+                    },
+                    scope: records[i]
+                });
+
 				if(index !== me.map.layers.length - 1) {
 					me.map.setLayerIndex(layer, index);
 				}
+                this.setSelectableLayer();
 			}
 			delete me._adding;
 		//}
@@ -372,6 +404,7 @@ Ext.define('GeoExt.data.LayerStore', {
 				me.removeMapLayer(record);
 				delete me._removing;
 			}
+            this.setSelectableLayer();
 		}
 	},
 	/** private: method[onUpdate]
@@ -383,14 +416,14 @@ Ext.define('GeoExt.data.LayerStore', {
 	 */
 	onUpdate : function(store, record, operation) {
 
-        if(operation === Ext.data.Model.EDIT) {
-			if(record.modified && record.modified.title) {
+        if(operation === Ext.data.Model.EDIT && record.modified) {
+			if(record.modified.title) {
 				var layer = record.getLayer();
 				var title = record.get("title");
 				if(title !== layer.name) {
 					layer.setName(title);
 				}
-			} else if(record.modified && typeof(record.modified.visibility) !== "undefined") {
+			} else if(typeof(record.modified.visibility) !== "undefined") {
 				var layer = record.getLayer();
 				var visibility = record.get("visibility");
 				layer.setVisibility(visibility);
@@ -407,8 +440,20 @@ Ext.define('GeoExt.data.LayerStore', {
 	 *  Removes a record's layer from the bound map.
 	 */
 	removeMapLayer : function(record) {
-
-        this.map.removeLayer(record.getLayer());
+        var layer = record.getLayer();
+        layer.events.un({
+            "loadstart": function () {
+            this.set('loading',true)
+        },
+            "loadend": function () {
+            this.set('loading',false)
+        },
+            "loadcancel": function () {
+            this.set('loading',false)
+        },
+            scope: record
+        });
+        this.map.removeLayer(layer);
 	},
 	/** private: method[onReplace]
 	 *  :param key: ``String``

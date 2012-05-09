@@ -143,6 +143,18 @@
     background-image: url('images/checked.gif');
 }
 
+.x-grid-loadingbalk {
+    height: 16px;
+    background-position: 50% -2px;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+
+.x-grid-loadingbalk-checked {
+    background-image: url('images/ajax-loader-balk.gif');
+}
+
 .x-grid-checkheader-hand {
     background-image: url('images/hand.png');
 }

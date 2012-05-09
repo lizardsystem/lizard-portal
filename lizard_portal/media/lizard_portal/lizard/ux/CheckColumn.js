@@ -1,40 +1,5 @@
 /*
-
-This file is part of Ext JS 4
-
-Copyright (c) 2011 Sencha Inc
-
-Contact:  http://www.sencha.com/contact
-
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation and appearing in the file LICENSE included in the packaging of this file.  Please review the following information to ensure the GNU General Public License version 3.0 requirements will be met: http://www.gnu.org/copyleft/gpl.html.
-
-If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
-
-*/
-/**
- * @class Ext.ux.CheckColumn
- * @extends Ext.grid.column.Column
- * <p>A Header subclass which renders a checkbox in each column cell which toggles the truthiness of the associated data field on click.</p>
- * <p><b>Note. As of ExtJS 3.3 this no longer has to be configured as a plugin of the GridPanel.</b></p>
- * <p>Example usage:</p>
- * <pre><code>
-// create the grid
-var grid = Ext.create('Ext.grid.Panel', {
-    ...
-    columns: [{
-           text: 'Foo',
-           ...
-        },{
-           xtype: 'checkcolumn',
-           text: 'Indoor?',
-           dataIndex: 'indoor',
-           width: 55
-        }
-    ]
-    ...
-});
- * </code></pre>
+ *
  * In addition to toggling a Boolean value within the record data, this
  * class adds or removes a css class <tt>'x-grid-checked'</tt> on the td
  * based on whether or not it is checked to alter the background image used
@@ -43,11 +8,10 @@ var grid = Ext.create('Ext.grid.Panel', {
 Ext.define('Lizard.ux.CheckColumn', {
     extend: 'Ext.grid.column.Column',
     alias: 'widget.checkcolumn',
-    config: {
-        class_checked: 'grid-checkheader-checked',
-        class_unchecked: 'grid-checkheader-unchecked',
-        class_null: 'grid-checkheader-null'
-    },
+    class_base: 'grid-checkheader',
+    class_true: 'grid-checkheader-checked',
+    class_false: 'grid-checkheader-unchecked',
+    class_null: 'grid-checkheader-null',
     constructor: function(config) {
         //this.initConfig(config);
         this.addEvents(
@@ -61,17 +25,30 @@ Ext.define('Lizard.ux.CheckColumn', {
             'checkchange'
         );
 
+        var me = this;
 
+        this.renderer = function(value){
+            var cssPrefix = Ext.baseCSSPrefix;
+            var cls = [cssPrefix + me.class_base];
 
+            if (value) {
+                cls.push(cssPrefix + me.class_true);
+            } else if (value===false) {
+                cls.push(cssPrefix + me.class_false);
+            } else if (value===null){
+                cls.push(cssPrefix + me.class_null);
+            }
+
+            return '<div class="' + cls.join(' ') + '">&#160;</div>';
+        }
         this.callParent(arguments);
     },
-
-
     /**
      * @private
      * Process and refire events routed from the GridView's processEvent method.
      */
     processEvent: function(type, view, cell, recordIndex, cellIndex, e) {
+
         if (type == 'mousedown' || (type == 'keydown' && (e.getKey() == e.ENTER || e.getKey() == e.SPACE))) {
             
             var record = view.panel.store.getAt(recordIndex);
@@ -79,29 +56,16 @@ Ext.define('Lizard.ux.CheckColumn', {
             var checked = !record.get(dataIndex);
                 
             record.set(dataIndex, checked);
-            this.fireEvent('checkchange', this, recordIndex, checked);
+            this.fireEvent('checkchange', this, record, dataIndex, checked);
+            this.onCheckChange(this, record, dataIndex, checked);
             // cancel selection.
             return false;
         } else {
             return this.callParent(arguments);
         }
     },
-
-    // Note: class names are not placed on the prototype bc renderer scope
-    // is not in the header.
-    renderer : function(value){
-        var cssPrefix = Ext.baseCSSPrefix;
-        var cls = [cssPrefix + 'grid-checkheader'];
-
-        if (value) {
-            cls.push(cssPrefix + 'grid-checkheader-checked');
-        } else if (value===false) {
-            cls.push(cssPrefix + 'grid-checkheader-unchecked');
-        } else if (value===null){
-            cls.push(cssPrefix + 'grid-checkheader-null');
-        }
-
-        return '<div class="' + cls.join(' ') + '">&#160;</div>';
+    onCheckChange: function() {
+        //overwrite this function
     }
 });
 

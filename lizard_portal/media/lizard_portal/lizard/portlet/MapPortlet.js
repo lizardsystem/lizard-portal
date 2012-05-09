@@ -87,11 +87,30 @@
         popup_class = Ext.ClassManager.get(popup_class_name);
         if (!popup_class) {
           popup_class = Ext.ClassManager.get('Lizard.popup.FeatureInfo');
-          console.error("Cannot find popup class " + popup_class_name);
+          console.info("Cannot find popup class " + popup_class_name);
         }
         return popup_class.show(records, workspaceitem);
       } else {
         return alert('nothing found');
+      }
+    },
+    onEmptyMapClick: function(gml, layer, event, lonlat, xhr, request, gml_text) {
+      if (gml_text.match(/exception/i)) {
+        return Ext.MessageBox.show({
+          title: 'map klik - server error',
+          msg: 'server response:<br>' + gml_text,
+          closable: true
+        });
+      } else {
+        Ext.MessageBox.show({
+          title: 'map klik',
+          msg: 'geen items gevonden',
+          closable: false,
+          modal: false
+        });
+        return setTimeout(function() {
+          return Ext.MessageBox.hide();
+        }, 2000);
       }
     },
     onMapClick: function(event, lonlat, callback) {
@@ -121,6 +140,7 @@
         return alert('Test: Selecteer een andere kaartlaag als bovenste clickable');
       } else if (!layer.get('is_local_server')) {
         url = layer.get('layer').getFullRequestString(params, layer.get('url'));
+        me.setLoading(true);
         return Ext.Ajax.request({
           url: '/portal/getFeatureInfo/',
           reader: {
@@ -131,19 +151,25 @@
           },
           method: 'GET',
           success: function(xhr, request) {
+            debugger;
             var format, gml, gml_text;
+            me.setLoading(false);
             gml_text = xhr.responseText;
             format = new OpenLayers.Format.GML.v3();
             gml = format.read(gml_text);
             if (gml.length > 0) {
               return me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
+            } else {
+              return me.onEmptyMapClick(gml, layer, event, lonlat, xhr, request, gml_text);
             }
           },
           failure: function(xhr) {
+            me.setLoading(false);
             return console.error('Error requesting ajax call to remote url ' + url);
           }
         });
       } else {
+        me.setLoading(true);
         return Ext.Ajax.request({
           url: layer.get('url'),
           reader: {
@@ -152,15 +178,20 @@
           params: params,
           method: 'GET',
           success: function(xhr, request) {
+            debugger;
             var format, gml, gml_text;
+            me.setLoading(true);
             gml_text = xhr.responseText;
             format = new OpenLayers.Format.GML.v3();
             gml = format.read(gml_text);
             if (gml.length > 0) {
               return me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
+            } else {
+              return me.onEmptyMapClick(gml, layer, event, lonlat, xhr, request, gml_text);
             }
           },
           failure: function(xhr) {
+            me.setLoading(true);
             return console.error('Error requesting ajax call to local url ' + url);
           }
         });
