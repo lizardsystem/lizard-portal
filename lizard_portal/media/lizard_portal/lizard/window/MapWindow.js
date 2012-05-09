@@ -88,14 +88,15 @@
           }
         }
         features = final_features;
+        bounds = new OpenLayers.Bounds();
+        if (this.start_extent) {
+          bounds.extend(OpenLayers.Bounds.fromArray(this.start_extent));
+        }
         for (_k = 0, _len3 = features.length; _k < _len3; _k++) {
           feature = features[_k];
-          if (!bounds) {
-            bounds = feature.geometry.getBounds();
-          } else {
-            bounds.extend(feature.geometry.getBounds());
-          }
+          bounds.extend(feature.geometry.getBounds());
         }
+        this.extent = bounds;
         if (!this.active_edit_layer) {
           if ((_ref3 = this.geometry_type) === 'OpenLayers.Geometry.Point' || _ref3 === 'OpenLayers.Geometry.MultiPoint') {
             this.active_edit_layer = this.points;
@@ -192,12 +193,6 @@
         };
         tbar = [
           {
-            xtype: 'button',
-            text: 'Undo',
-            handler: function() {
-              if (me.active_editor.undo) return me.active_editor.undo();
-            }
-          }, {
             xtype: 'button',
             text: 'Verwijder',
             handler: function() {

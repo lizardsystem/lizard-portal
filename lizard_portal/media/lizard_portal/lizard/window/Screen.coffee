@@ -91,7 +91,8 @@ Ext.define 'Lizard.window.Screen',
         window_settings = {
             title: title,
             width: 800,
-            height: 500,
+            height: 600,
+            constrainHeader: true,
             autoScroll: true,
             bodyStyle:
                 background: 'white'
@@ -114,6 +115,7 @@ Ext.define 'Lizard.window.Screen',
         if window_options.save
             window_settings.tools.push({
                 type: 'save',
+                tooltip: window_options.save[0],  # Title
                 handler: (e, target, panelHeader, tool) ->
                     me.linkToPopup.apply(me, window_options.save);
             })
@@ -121,12 +123,14 @@ Ext.define 'Lizard.window.Screen',
         if window_options.search
             window_settings.tools.push({
                                        type: 'search',
+                                       tooltip: window_options.search[0],  # Title
                                        handler: (e, target, panelHeader, tool) ->
                                            me.linkToPopup.apply(me, window_options.search);
                                        })
         if window_options.plus
             window_settings.tools.push({
                                        type: 'plus',
+                                       tooltip: window_options.plus[0],  # Title
                                        handler: (e, target, panelHeader, tool) ->
                                            me.linkToPopup.apply(me, window_options.plus);
                                        })

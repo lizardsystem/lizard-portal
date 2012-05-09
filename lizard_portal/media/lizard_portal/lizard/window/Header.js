@@ -138,6 +138,7 @@
       login_window = Ext.create('Ext.window.Window', {
         id: 'login_window',
         title: 'Login',
+        constrainHeader: true,
         items: {
           frame: true,
           xtype: 'form',
@@ -216,6 +217,7 @@
         return Ext.create('Ext.window.Window', {
           title: 'Periode selectie',
           is_period_selection: true,
+          constrainHeader: true,
           items: {
             frame: true,
             xtype: 'form',
@@ -413,6 +415,7 @@
                   },
                   width: 400,
                   height: 100,
+                  constrainHeader: true,
                   modal: true
                 }).show();
               }

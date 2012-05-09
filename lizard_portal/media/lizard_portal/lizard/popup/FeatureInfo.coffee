@@ -34,6 +34,7 @@ Ext.define('Lizard.popup.FeatureInfo', {
             Ext.create('Ext.window.Window', {
                 title: 'Info',
                 popup_type: 'feature_info'
+                constrainHeader: true,
                 items: [{
                     xtype: 'panel'
                     width: 400

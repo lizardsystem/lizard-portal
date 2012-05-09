@@ -30,7 +30,7 @@
                   width: 800,
                   height: 600,
                   modal: true,
-                  constraint: true,
+                  constrainHeader: true,
                   finish_edit_function: function (updated_record) {
                       var store = Ext.StoreManager.lookup('analyse_store');
                       store.load({params: {object_ident: Lizard.CM.getContext().object.id}});

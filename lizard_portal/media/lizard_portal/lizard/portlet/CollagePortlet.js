@@ -69,6 +69,7 @@
             modal: true,
             xtype: 'leditgrid',
             editpopup: true,
+            constrainHeader: true,
             items: [
               {
                 xtype: 'collagesaveform',
@@ -92,6 +93,7 @@
             width: 600,
             height: window.innerHeight - 200,
             modal: true,
+            constrainHeader: true,
             layout: {
               type: 'vbox',
               align: 'stretch'

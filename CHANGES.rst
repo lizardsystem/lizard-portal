@@ -2,8 +2,39 @@ Changelog of lizard-portal
 ==========================
 
 
-0.51 (unreleased)
+0.55 (unreleased)
 -----------------
+
+- Removed fields in 'waterbalans-configuratie' form, issue #105.
+
+
+0.54 (2012-04-27)
+-----------------
+
+- Added 'constrainHeader: true' to all popup windows.
+
+- Make geometry editor zoom to geom & active object
+
+
+0.53 (2012-04-27)
+-----------------
+
+- Removes the functionality to view ESF configuration diffs - this
+  functionality has been moved to lizard-validation.
+
+
+0.52 (2012-04-27)
+-----------------
+
+- Changed green esf icons to blue.
+
+
+0.51 (2012-04-26)
+-----------------
+
+- Added tooltips for Lizard.screen.linkToPopup tools.
+
+- Added tooltip for "Nieuwe maatregel toevoegen" (2x).
 
 - maatregelen and maatregelen_krw now have wider left ticks and the
   legend on the right side.

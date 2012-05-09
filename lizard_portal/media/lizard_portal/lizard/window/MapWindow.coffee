@@ -115,12 +115,20 @@ Ext.define('Lizard.window.MapWindow',
             features = final_features
 
 
-            # geometry_type = features[0].geometry.CLASS_NAME
+            bounds = new OpenLayers.Bounds()
+            if @start_extent
+                bounds.extend(
+                    OpenLayers.Bounds.fromArray(
+                        @start_extent
+                    )
+                )
+
+            # Extend bounds with geometries
             for feature in features
-                if (!bounds)
-                    bounds = feature.geometry.getBounds()
-                else
-                    bounds.extend(feature.geometry.getBounds())
+                bounds.extend(feature.geometry.getBounds())
+
+            @extent = bounds
+
             if not @active_edit_layer
                 if  @geometry_type in [ 
                     'OpenLayers.Geometry.Point'
@@ -229,21 +237,7 @@ Ext.define('Lizard.window.MapWindow',
                         return null
                 )
 
-            tbar=[{
-                xtype: 'button',
-                text: 'Undo',
-                handler: () ->
-                    if me.active_editor.undo
-                        me.active_editor.undo()
-            }
-#            {
-#                xtype: 'button',
-#                text: 'Cancel toevoegen',
-#                handler: () ->
-#                    if me.active_editor.cancel
-#                        me.active_editor.cancel()
-#            }
-            {
+            tbar = [{
                 xtype: 'button',
                 text: 'Verwijder',
                 handler: () ->
@@ -251,6 +245,20 @@ Ext.define('Lizard.window.MapWindow',
                         feature =  me.active_editor.feature
                         me.active_editor.unselectFeature(feature)
                         me.active_editor.layer.destroyFeatures([feature])
+#            {
+#                xtype: 'button',
+#                text: 'Cancel toevoegen',
+#                handler: () ->
+#                    if me.active_editor.cancel
+#                        me.active_editor.cancel()
+#            }
+#           {
+#               xtype: 'button',
+#               text: 'Undo',
+#               handler: () ->
+#                   if me.active_editor.undo
+#                       me.active_editor.undo()
+#           }
             }]
 
         if not @extent

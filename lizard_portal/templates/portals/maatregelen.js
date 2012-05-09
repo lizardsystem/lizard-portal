@@ -66,6 +66,7 @@
             },
             tools: [{
                 type: 'plus',
+                tooltip: 'Nieuwe maatregel toevoegen',
                 handler: function (e, target, panelHeader, tool) {
                     panel = panelHeader.up('panel');
 
@@ -76,7 +77,7 @@
                         height: 600,
                         modal: true,
                         editpopup: true,
-                        constrain: true,
+                        constrainHeader: true,
                         loader:{
                             loadMask: true,
                             autoLoad: true,

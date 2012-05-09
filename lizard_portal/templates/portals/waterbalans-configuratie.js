@@ -181,8 +181,6 @@
                         {name: 'bottom_min_water_level', title: 'Min waterniveau', editable: true, visible: true, width: 100, type: 'float', editIf: {prop: 'bucket_type', value_in: ['gedraineerd', 'verhard']}}
                     ]},
                     {title: 'Referentie overstort', columns: [
-                        {name: 'referenceoverflow', title: 'Waarde', editable: true, visible: true, width: 100, type: 'float'},
-                        {name: 'referenceoverflow_is_ts', title: 'Is tijdserie?', editable: true, visible: true, width: 65, type: 'boolean'},
                         {name: 'ts_referenceoverflow', title: 'Tijdserie', editable: true, visible: true, width: 100, type: 'text', editIf: {prop: 'bucket_type', value_in: ['stedelijk']}}
                     ]},
                     //kwel
@@ -193,11 +191,7 @@
                     ]},
                 //als niet berekend
                     {title: 'Opgedrukt', columns: [
-                        {name: 'drainageindraft', title: 'Waarde drainage en intrek', editable: true, visible: true, width: 100, type: 'float'},
-                        {name: 'drainageindraft_is_ts', title: 'Is tijdserie drainage en intrek?', editable: true, visible: true, width: 65, type: 'boolean'},
                         {name: 'ts_drainageindraft', title: 'Tijdserie drainage en intrek', editable: true, visible: true, width: 170, type: 'text', editIf: {prop: 'is_computed', value_in: [true]}},
-                        {name: 'flowoff', title: 'Waarde oppervlakte afstroom', editable: true, visible: true, width: 100, type: 'float'},
-                        {name: 'drainageindraft_is_ts', title: 'Is tijdserie oppervlakte afstroom?', editable: true, visible: true, width: 65, type: 'boolean'},
                         {name: 'ts_flowoff', title: 'Tijdserie oppervlakte afstroom', editable: true, visible: true, width: 170, type: 'text', editIf: {prop: 'is_computed', value_in: [true]}}
                      ]},
                 //concentraties

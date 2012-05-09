@@ -15,6 +15,7 @@ Ext.define('Lizard.form.BackgroundLayerSelector', {
                 title: 'Achtergroundkaart selectie'
                 is_background_selection: true,
                 modal: true,
+                constrainHeader: true,
                 items: Ext.create('Lizard.form.BackgroundLayerSelector', config)
             }).show()
 

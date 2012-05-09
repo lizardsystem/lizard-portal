@@ -89,6 +89,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
                 modal: true,
                 xtype: 'leditgrid'
                 editpopup: true,
+                constrainHeader: true,
                 items: [{
                     xtype: 'workspacesaveform',
                     workspaceStore: portlet.workspaceStore
@@ -114,6 +115,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
                 width: 600
                 height: window.innerHeight - 200,
                 modal: true,
+                constrainHeader: true,
                 layout:
                     type: 'vbox'
                     align: 'stretch'

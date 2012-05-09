@@ -74,6 +74,7 @@
           itemId: 'map popup',
           finish_edit_function: function(updated_record) {},
           editpopup: true,
+          constrainHeader: true,
           items: [
             {
               xtype: 'panel',

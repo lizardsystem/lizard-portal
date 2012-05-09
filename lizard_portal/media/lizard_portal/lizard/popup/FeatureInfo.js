@@ -28,6 +28,7 @@
         return Ext.create('Ext.window.Window', {
           title: 'Info',
           popup_type: 'feature_info',
+          constrainHeader: true,
           items: [
             {
               xtype: 'panel',
