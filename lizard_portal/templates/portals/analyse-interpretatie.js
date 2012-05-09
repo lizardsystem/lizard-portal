@@ -76,7 +76,7 @@
                   ],
                   search: [
                     'Geschiedenis',
-                    '/annotation/history/1' + record.data.id,
+                    '/annotation/history/' + record.data.id,
                     {},
                     {},
                     false,

@@ -6,6 +6,7 @@ Changelog of lizard-portal
 -----------------
 
 - Reenabled some javascript, to fix a lot of broken things.
+- Fix annotation history url.
 
 
 0.56 (2012-05-09)
