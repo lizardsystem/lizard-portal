@@ -7,6 +7,10 @@ Changelog of lizard-portal
 
 - Removed fields in 'waterbalans-configuratie' form, issue #105.
 
+- changed layout for analyses screen (pp 253)
+
+- fixed support for IE en firefox (still some layout issues on IE)
+
 
 0.54 (2012-04-27)
 -----------------
@@ -40,9 +44,6 @@ Changelog of lizard-portal
   legend on the right side.
 
 - fixed communique (including support for an enter)
-
-- changed layout for analyses screen (pp 253)
-
 
 
 0.50 (2012-04-25)
