@@ -334,7 +334,22 @@ Ext.application({
                 base_url: '{% url portalpage %}',
                 period_start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5),
                 period_end: new Date(),
-                init_zoom: [500043, 6824175, 600557, 6871566],
+                init_zoom: [{{ extent }}],
+                background_layer: {
+                    layers:"",
+                    is_clickable:false,
+                    request_params: {},
+                    title:"openstreetmap",
+                    single_tile:false,
+                    ollayer_class: "OpenLayers.Layer.OSM",
+                    js_popup_class:"",
+                    plid:164,//todo: link hierna dynamisch maken?
+                    id:164,
+                    is_local_server:false,
+                    options:{},
+                    is_base_layer:true,
+                    url:""
+                },
                 period: {
                     start: Ext.Date.add(new Date(), Ext.Date.YEAR, -5),
                     end: new Date(),

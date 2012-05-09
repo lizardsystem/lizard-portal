@@ -12,6 +12,8 @@ from django.template import Template
 from django.template.loader import get_template
 from django.utils import simplejson
 
+from django.contrib.gis.geos import GEOSGeometry
+
 from lizard_area.models import Area
 from lizard_portal.configurations_retriever import ConfigurationsRetriever
 from lizard_portal.configurations_retriever import create_configurations_retriever
@@ -75,13 +77,25 @@ def application(request, application_name, active_tab_name):
         perms = {}
         perms_list = []
 
+    try:
+        extent_wgs = Area.objects.all().extent()
+        wkt = 'LINESTRING(%f %f,%f %f)'%extent_wgs
+
+        geom = GEOSGeometry(wkt, 4326)
+        extent = geom.transform(900913, clone=True).extent
+    except:
+        #if getting extent failed (no areas or so) use default
+        extent = (479517, 6799646, 584302, 7016613)
+
+
     t = get_template('application/'+application_name+'.js')
     c = RequestContext(request, {
             'application': application_name,
             'active_tab': active_tab_name,
             'context': context,
             'permission_list': perms_list,
-            'perms': perms
+            'perms': perms,
+            'extent': ','.join(['%.0f'%value for value in  extent])
         })
 
     return HttpResponse(t.render(c),
