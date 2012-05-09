@@ -87,7 +87,7 @@
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
-                     handler: function() { Lizard.CM.setContext({portal_template:'unknown'}); }
+                     handler: function() { window.open('/task/') }
                 }
             ]
 		}]

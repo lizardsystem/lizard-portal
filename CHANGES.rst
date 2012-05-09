@@ -5,6 +5,8 @@ Changelog of lizard-portal
 0.56 (unreleased)
 -----------------
 
+- Updated links to serverprocessen (2x).
+
 - Updated tasks to work with lizard-task 0.4.
 
 
