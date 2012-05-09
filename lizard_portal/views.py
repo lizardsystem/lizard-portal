@@ -117,15 +117,15 @@ def json_configuration(request):
             return redirect('lizard_measure.organization_groupedit_portal')
         elif portal_template == 'stuurparameter-overzicht':
             return redirect('lizard_measure.steerparameter_overview')
-        elif portal_template == 'area_link':
+        #elif portal_template == 'area_link':
             # We need the template that couples KRW water bodies and catchment
             # areas which is only allowed if the user is an analyst. We cannot
             # easily detect that in the template itself so we do that here.
-            is_funct_beheerder = request.user.user_group_memberships.filter(
-                permission_mappers__permission_group__permissions__codename='is_funct_beheerder').exists()
-            if not is_funct_beheerder:
-                t = get_template('portals/geen_toegang.js')
-                return HttpResponse(t.render(c),  mimetype="text/plain")
+            #is_funct_beheerder = request.user.user_group_memberships.filter(
+            #    permission_mappers__permission_group__permissions__codename='is_funct_beheerder').exists()
+            #if not is_funct_beheerder:
+            #    t = get_template('portals/geen_toegang.js')
+            #    return HttpResponse(t.render(c),  mimetype="text/plain")
         try:
             t = get_template('portals/'+portal_template+'.js')
         except TemplateDoesNotExist, e:

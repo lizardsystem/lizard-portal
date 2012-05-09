@@ -364,7 +364,6 @@ Ext.define('GeoExt.data.LayerStore', {
 			var layer;
 			for(var i = records.length - 1; i >= 0; --i) {
 				layer = records[i].getLayer();
-				me.map.addLayer(layer);
                 layer.events.on(
                 {
                     "loadstart": function () {
@@ -378,6 +377,7 @@ Ext.define('GeoExt.data.LayerStore', {
                     },
                     scope: records[i]
                 });
+                me.map.addLayer(layer);
 
 				if(index !== me.map.layers.length - 1) {
 					me.map.setLayerIndex(layer, index);

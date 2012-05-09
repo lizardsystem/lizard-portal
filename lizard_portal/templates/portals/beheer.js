@@ -69,7 +69,7 @@
                      handler: function() { Lizard.CM.setContext({portal_template:'area_link'}); }
                 },
                 {
-                   text: 'Waterbalans/ESF configuraties',
+                   text: 'Valideren waterbalans/ESF configuraties',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}

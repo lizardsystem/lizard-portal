@@ -201,13 +201,13 @@ Ext.application({
                 name: 'overzicht',
                 popup_navigation: false,
                 popup_navigation_portal: false,
-                default_portal_template: 'themakaart',
+                default_portal_template: 'themakaart-ekr',
                 menu: [{
                     text: 'Themakaart KRW',
-                    handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'themakaart'}); }
+                    handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'themakaart-ekr'}); }
                 },{
                     text: 'Themakaart ESF',
-                    handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'themakaart'}); }
+                    handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'themakaart-esf'}); }
                 }]
             }),
             Ext.create('Lizard.window.HeaderTab', {
@@ -253,7 +253,7 @@ Ext.application({
                 popup_navigation_portal: false,
                 default_portal_template: 'beheer',
                 menu: [
-		// keep these objects in sync with thos in ../portals/vss.js
+		// keep these objects in sync with those in ../portals/vss.js
                 {
                      text: 'ESF overzicht',
                      {% if user.is_authenticated %}
@@ -304,7 +304,7 @@ Ext.application({
                      handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'area_link'}); }
                 },
                 {
-                   text: 'Waterbalans/ESF configuraties',
+                   text: 'Valideren waterbalans/ESF configuraties',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}

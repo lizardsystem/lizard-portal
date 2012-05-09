@@ -17,6 +17,10 @@ Changelog of lizard-portal
 
 - only one layer selectable (pp 317)
 
+- changed some names of pages (pp 324)
+
+- splitted Themakaarten page into 2 pages and put EKR table in popup (part of pp 179)
+
 
 0.56 (2012-05-09)
 -----------------

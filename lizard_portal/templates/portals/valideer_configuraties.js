@@ -10,7 +10,7 @@
                       link: "beheer"
                   },
                   {
-                      name: "Valideer configuraties"
+                      name: "Valideren waterbalans/ESF configuraties"
                   }],
     items: [{
 		flex: 1,
