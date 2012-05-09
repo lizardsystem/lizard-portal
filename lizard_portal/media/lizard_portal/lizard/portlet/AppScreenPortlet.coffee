@@ -35,14 +35,16 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
         #debugger
         # Check if tab is already created.
         if tab
-            tabpanel.setActiveTab(tab)
+            #pass
         else
             action_type = record.get('action_type')
             if action_type == 10
-                @store.load({
-                    params:
-                        object_id: record.get('target_app_slug')
-                })
+                alert('actiontype not yet supported: ' + action_type)
+                return
+                #@store.load({
+                #    params:
+                #        object_id: record.get('target_app_slug')
+                #})
             else if action_type == 20
                 # Open layer folders
                 app = Ext.create('Lizard.portlet.AvailableLayersPortlet',{
@@ -54,11 +56,19 @@ Ext.define('Lizard.portlet.AppScreenPortlet', {
                 })
 
                 tab = tabpanel.add(app)
+                pos = tabpanel.tabBar.items.indexOf(tab.tab)
+                if pos > 0
+                    tabpanel.tabBar.move(pos,1)
                 tabpanel.setActiveTab(tab)
             else
                 alert('actiontype not yet supported: ' + action_type)
+                return
 
 
+        pos = tabpanel.tabBar.items.indexOf(tab.tab)
+        if pos > 0
+            tabpanel.tabBar.move(pos,1)
+        tabpanel.setActiveTab(tab)
 
     initComponent: () ->
         me = @

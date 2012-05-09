@@ -15,19 +15,14 @@
     tpl: new Ext.XTemplate('<tpl for=".">', '<div class="app_icon" >', '<img src="{icon}" ', 'id="app-{slug}" />', '<div>{name}</div>', '</div>', '</tpl>'),
     itemSelector: 'div.app_icon',
     onAppClick: function(view, record) {
-      var action_type, app, tab, tabpanel;
+      var action_type, app, pos, tab, tabpanel;
       tabpanel = this.up('tabpanel');
       tab = tabpanel.child('#app' + record.get('slug'));
-      if (tab) {
-        return tabpanel.setActiveTab(tab);
-      } else {
+      if (tab) {} else {
         action_type = record.get('action_type');
         if (action_type === 10) {
-          return this.store.load({
-            params: {
-              object_id: record.get('target_app_slug')
-            }
-          });
+          alert('actiontype not yet supported: ' + action_type);
+          return;
         } else if (action_type === 20) {
           app = Ext.create('Lizard.portlet.AvailableLayersPortlet', {
             store: Ext.create('Lizard.store.AvailableLayersStore', {
@@ -39,11 +34,17 @@
             workspaceStore: this.workspaceStore
           });
           tab = tabpanel.add(app);
-          return tabpanel.setActiveTab(tab);
+          pos = tabpanel.tabBar.items.indexOf(tab.tab);
+          if (pos > 0) tabpanel.tabBar.move(pos, 1);
+          tabpanel.setActiveTab(tab);
         } else {
-          return alert('actiontype not yet supported: ' + action_type);
+          alert('actiontype not yet supported: ' + action_type);
+          return;
         }
       }
+      pos = tabpanel.tabBar.items.indexOf(tab.tab);
+      if (pos > 0) tabpanel.tabBar.move(pos, 1);
+      return tabpanel.setActiveTab(tab);
     },
     initComponent: function() {
       var me;

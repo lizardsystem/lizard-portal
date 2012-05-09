@@ -9,7 +9,11 @@ Changelog of lizard-portal
 
 - changed layout for analyses screen (pp 253)
 
-- fixed support for IE en firefox (still some layout issues on IE)
+- fixed support for IE en Firefox (still some layout issues on IE)
+
+- added personal extents based on areas visible by user (pp 226)
+
+- defined default background map in context (prevent problems with mismatching maps pp 254)
 
 
 0.54 (2012-04-27)

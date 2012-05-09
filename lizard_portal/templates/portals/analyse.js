@@ -6,7 +6,7 @@
     items:[{
 	    width: 300,
         items: [{
-            title: 'Navigatie',
+            title: 'Kaartlagen',
             flex:5,
             xtype: 'tabpanel',
             loadTab: function (tab_id) {
