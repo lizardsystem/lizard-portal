@@ -1,8 +1,17 @@
 {% extends "lizard_ui/lizardbase.html" %}{% load compress i18n %}
 
-
-
 {% block javascript %}
+    {% comment %}
+    Needed for reloadGraphs and maybe others to work.
+    {% endcomment %}
+    <script type="text/javascript"
+            src="{{ STATIC_URL }}jquery/jquery.js"></script>
+    <script type="text/javascript"
+            src="{{ STATIC_URL }}jquerytools/jquery.tools.min.js"></script>
+    <script type="text/javascript"
+            src="{{ STATIC_URL }}lizard_ui/lizard.js"></script>
+    <script type="text/javascript"
+            src="{{ STATIC_URL }}tipsy/javascripts/jquery.tipsy.js"></script>
 {% endblock javascript %}
 
 {% block head-extras %}

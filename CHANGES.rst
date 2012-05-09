@@ -2,14 +2,12 @@ Changelog of lizard-portal
 ==========================
 
 
-0.55 (unreleased)
+0.57 (unreleased)
 -----------------
 
-- Removed fields in 'waterbalans-configuratie' form, issue #105.
+- Reenabled some javascript, to fix a lot of broken things.
 
-- changed layout for analyses screen (pp 253)
-
-- fixed support for IE en Firefox (still some layout issues on IE)
+- Fix annotation history url.
 
 - added personal extents based on areas visible by user (pp 226)
 
@@ -19,6 +17,25 @@ Changelog of lizard-portal
 
 - only one layer selectable (pp 317)
 
+
+0.56 (2012-05-09)
+-----------------
+
+- Updated links to serverprocessen (2x).
+
+- Updated tasks to work with lizard-task 0.4.
+
+
+0.55 (2012-05-09)
+-----------------
+
+- Removed fields in 'waterbalans-configuratie' form, issue #105.
+
+- changed layout for analyses screen (pp 253)
+
+- fixed support for IE en Firefox (still some layout issues on IE)
+
+- Makes the configuration diff window scrollable
 
 0.54 (2012-04-27)
 -----------------
