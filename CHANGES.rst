@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57 (unreleased)
+0.57 (2012-05-10)
 -----------------
 
 - Reenabled some javascript, to fix a lot of broken things.
