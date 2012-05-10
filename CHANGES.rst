@@ -21,6 +21,8 @@ Changelog of lizard-portal
 
 - splitted Themakaarten page into 2 pages and put EKR table in popup (part of pp 179)
 
+- bug fix in navigation related to area selection on the map (pp 177)
+
 
 0.56 (2012-05-09)
 -----------------

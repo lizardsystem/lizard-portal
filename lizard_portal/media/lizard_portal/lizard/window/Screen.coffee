@@ -180,7 +180,8 @@ Ext.define 'Lizard.window.Screen',
                     try
                         newComponent = Ext.decode(xhr.responseText)
                         newComponent.params = Ext.merge({}, newComponent.params, Lizard.CM.getContext())
-                        newComponent.headertab = Lizard.CM.context.headertab
+                        if not newComponent.navigation_only
+                            newComponent.headertab = Lizard.CM.context.headertab
 
                         if area_selection_collapse
                             if me.navigation
@@ -193,9 +194,10 @@ Ext.define 'Lizard.window.Screen',
                             @portalContainer.tabBar.move(pos,0)
                         me.portalContainer.setActiveTab(tab)
 
-                        tab.on('activate', (tab) ->
-                            Lizard.CM.setContext({headertab: tab.headertab, portal_template: tab.params.portal_template})
-                        )
+                        if not newComponent.navigation_only
+                            tab.on('activate', (tab) ->
+                                Lizard.CM.setContext({headertab: tab.headertab, portal_template: tab.params.portal_template})
+                            )
                         me.portalContainer.setLoading false
                         me.header.setBreadCrumb(newComponent.breadcrumbs)
                     catch error
@@ -237,9 +239,8 @@ Ext.define 'Lizard.window.Screen',
 
         return true
 
-    #?????
+    #shows area navigation of headertab (function is used in breadcrumb
     showTabMainpage: (animate_navigation_expand=true, expand_navigation=true, show_portal_template=true) ->
-        opmerking = 'wordt deze nog gebruikt'
         context = Lizard.ContextManager.getContext()
         ht = context.headertab
 

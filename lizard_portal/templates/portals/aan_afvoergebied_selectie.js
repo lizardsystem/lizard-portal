@@ -9,6 +9,7 @@
 	itemId: 'aan_afvoergebied_selectie',
     title: 'Overzicht aan/afvoergebied',
     xtype: 'portalpanel',
+    navigation_only: true,
 	items: [{
 		flex: 1,
 		items: [{

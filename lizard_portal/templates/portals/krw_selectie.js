@@ -9,6 +9,7 @@
     itemId: 'krw_selectie',
     title: 'Overzichtskaart KRW waterlichamen',
 	xtype: 'portalpanel',
+    navigation_only: true,
 	items: [{
 		flex: 1,
 		items: [{

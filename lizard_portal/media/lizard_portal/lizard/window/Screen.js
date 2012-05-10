@@ -152,7 +152,9 @@ showNavigationPortalTemplate
             try {
               newComponent = Ext.decode(xhr.responseText);
               newComponent.params = Ext.merge({}, newComponent.params, Lizard.CM.getContext());
-              newComponent.headertab = Lizard.CM.context.headertab;
+              if (!newComponent.navigation_only) {
+                newComponent.headertab = Lizard.CM.context.headertab;
+              }
               if (area_selection_collapse) {
                 if (me.navigation) me.navigation.collapse();
               }
@@ -160,12 +162,14 @@ showNavigationPortalTemplate
               pos = _this.portalContainer.tabBar.items.indexOf(tab.tab);
               if (pos > 0) _this.portalContainer.tabBar.move(pos, 0);
               me.portalContainer.setActiveTab(tab);
-              tab.on('activate', function(tab) {
-                return Lizard.CM.setContext({
-                  headertab: tab.headertab,
-                  portal_template: tab.params.portal_template
+              if (!newComponent.navigation_only) {
+                tab.on('activate', function(tab) {
+                  return Lizard.CM.setContext({
+                    headertab: tab.headertab,
+                    portal_template: tab.params.portal_template
+                  });
                 });
-              });
+              }
               me.portalContainer.setLoading(false);
               return me.header.setBreadCrumb(newComponent.breadcrumbs);
             } catch (error) {
@@ -207,11 +211,10 @@ showNavigationPortalTemplate
       return true;
     },
     showTabMainpage: function(animate_navigation_expand, expand_navigation, show_portal_template) {
-      var context, ht, opmerking;
+      var context, ht;
       if (animate_navigation_expand == null) animate_navigation_expand = true;
       if (expand_navigation == null) expand_navigation = true;
       if (show_portal_template == null) show_portal_template = true;
-      opmerking = 'wordt deze nog gebruikt';
       context = Lizard.ContextManager.getContext();
       ht = context.headertab;
       if (ht.popup_navigation) {
