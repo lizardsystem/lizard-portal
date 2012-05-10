@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.58 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Implement history columns on annotation grid.
 
 
 0.57 (2012-05-10)

@@ -122,7 +122,7 @@
         {
           text: 'Datum laatste wijziging',
           flex: 1,
-          dataIndex: 'date_modified',
+          dataIndex: 'datetime_modified',
           sortable: true,
           renderer: Ext.util.Format.dateRenderer('d-m-Y')
         },
@@ -144,7 +144,7 @@
               {name: 'title', type: 'string'},
               {name: 'annotation_category', type: 'string'},
               {name: 'annotation_status', type: 'string'},
-              {name: 'date_modified', type: 'auto'},
+              {name: 'datetime_modified', type: 'auto'},
               {name: 'created_by', type: 'string'}
             ]
           }),
