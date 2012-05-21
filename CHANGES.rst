@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.57.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Implement history tool for esf-tree.
 
 
 0.57.2 (2012-05-21)
