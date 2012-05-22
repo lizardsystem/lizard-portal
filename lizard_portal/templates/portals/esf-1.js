@@ -28,6 +28,9 @@
                         title: 'Geschiedenis van ESF-configuratie',
                         width: 800,
                         height: 600,
+                        bodyStyle: {
+                          background: 'white'
+                        },
                         modal: true,
                         constrainHeader: true,
                         loader:{
