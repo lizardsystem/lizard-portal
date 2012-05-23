@@ -323,6 +323,13 @@ Ext.application({
                      disabled: false,
                      {% endif %}
                      handler: function() { window.open('/task/') }
+                },
+                {
+                     text: 'Upload configuratie file',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { window.open('/portal/uploadfile/') }
                 }
 		]
             })
