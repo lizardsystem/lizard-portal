@@ -16,9 +16,11 @@ install_requires = [
     'django-nose',
     'lizard-ui >= 3.0',
     'pkginfo',
+    'lizard-geo',
     'lizard-area',
     'lizard-registration',
     'lizard-security',
+    'lizard-task',
     ],
 
 tests_require = [
