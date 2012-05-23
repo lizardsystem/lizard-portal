@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.3 (unreleased)
+0.57.3 (2012-05-23)
 -------------------
 
 - Added functionality to upload esf/wbconfiguration as zip file.
