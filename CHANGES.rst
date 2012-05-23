@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - Implement history tool for esf-tree.
 
+- Implement history tool for waterbalance configuration.
+
 - Add check to apply context plugin for undefined parent.
 
 
