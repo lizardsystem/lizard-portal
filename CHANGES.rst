@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - Implement history tool for esf-tree.
 
+- Add check to apply context plugin for undefined parent.
+
 
 0.57.2 (2012-05-21)
 -------------------
