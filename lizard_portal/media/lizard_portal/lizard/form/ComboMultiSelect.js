@@ -8,7 +8,7 @@
     },
     config: {
       name: '',
-      field_name: 'name',
+      field_name: 'naam',
       read_at_once: false,
       combo_store: null,
       options: null,

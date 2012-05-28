@@ -26,7 +26,7 @@
           type: 'plus',
           handler: function (e, target, panelHeader, tool) {
               Ext.create('Ext.window.Window', {
-                  title: 'Nieuwe annotatie toevoegen',
+                  title: 'Nieuwe analyse interpretatie toevoegen',
                   width: 800,
                   height: 600,
                   modal: true,
@@ -66,7 +66,7 @@
                 {},
                 {
                   save: [
-                    'Bewerken analyseinterpretatie: ' + record.data.title,
+                    'Bewerken analyse interpretatie: ' + record.data.title,
                     '/annotation/annotation_detailedit_portal/',
                     {annotation_id: record.data.id},
                     null,

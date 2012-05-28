@@ -41,6 +41,10 @@ Changelog of lizard-portal
 
 - bug fix in navigation related to area selection on the map (pp 177)
 
+- repeated column area name in steeringparameter overview (pp 333)
+
+- window header name change form ' annotatie' to 'analyse interpretatie'  (pp
+
 
 0.56 (2012-05-09)
 -----------------
