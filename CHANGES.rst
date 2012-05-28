@@ -2,10 +2,22 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.3 (unreleased)
+0.57.4 (unreleased)
 -------------------
 
+- Nothing changed yet.
+
+
+0.57.3 (2012-05-23)
+-------------------
+
+- Added functionality to upload esf/wbconfiguration as zip file.
+
 - Implement history tool for esf-tree.
+
+- Implement history tool for waterbalance configuration.
+
+- Add check to apply context plugin for undefined parent.
 
 
 0.57.2 (2012-05-21)

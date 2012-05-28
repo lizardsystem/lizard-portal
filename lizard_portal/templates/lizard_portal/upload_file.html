@@ -1,0 +1,22 @@
+{% extends "admin/base_site.html" %}
+{% block title %}Upload esf/waterbalans configuratie bestand.{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name">Upload esf/waterbalans-configuratie</h1>
+{% endblock %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+    {% if msg %}
+	<h4>{{ msg }}</h4>
+    {% endif %}
+    {% if allowed %}
+	<form action="/portal/uploadfile/" enctype="multipart/form-data" method="POST">
+	{{ form.as_p }}
+	<p>
+	<input type="submit" value="Upload" />
+	</form>
+    {% endif %}
+{% endblock%}

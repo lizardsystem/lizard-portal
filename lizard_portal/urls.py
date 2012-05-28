@@ -86,5 +86,8 @@ urlpatterns = patterns(
     url(r'^getFeatureInfo',
         'lizard_portal.views.feature_info',
         name='feature_info'),
+
+    url(r'^uploadfile', 'lizard_portal.views.upload_file',
+        name='uploadfile'),
     )
 urlpatterns += debugmode_urlpatterns()

@@ -19,9 +19,9 @@
         }
     ],
 	items:[{
-		flex:1,
-		items: [{
-			title: 'Instellingen',
+          flex:1,
+          items: [{
+          title: 'Instellingen',
             flex:1,
             width: '100%',
             layout:{
@@ -70,6 +70,33 @@
                     }
                 }
             ],
+            tools: [{
+                type: 'search',
+                handler: function (e, target, panelHeader, tool) {
+                    Ext.create('Ext.window.Window', {
+                        title: 'Geschiedenis van waterbalansconfiguratie',
+                        width: 800,
+                        height: 600,
+                        bodyStyle: {
+                          background: 'white'
+                        },
+                        modal: true,
+                        constrainHeader: true,
+                        loader:{
+                            loadMask: true,
+                            autoLoad: true,
+                            url: '/wbconfiguration/history',
+                            baseParams: {
+                               object_id: Lizard.CM.getContext().object.id
+                            },
+                            ajaxOptions: {
+                                method: 'GET'
+                            },
+                            renderer: 'html'
+                        }
+                    }).show();
+                }
+            }],
             {% endif %}
             items:[{
                 anchor: "100%",
