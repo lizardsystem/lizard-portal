@@ -32,6 +32,7 @@ Ext.application({
     stores: [
         'Vss.store.Communique',
         'Vss.store.Esf',
+        'Vss.store.EsfHistory',
         'Vss.store.CatchmentTree',
         'Vss.store.KrwGebiedenTree',
         'Vss.store.WaterbalanceAreaConfig',
@@ -94,6 +95,8 @@ Ext.application({
         'Lizard.window.MapWindow',
         'Lizard.window.Header',
         'Vss.grid.Esf',
+        'Vss.grid.EsfHistory',
+        'Vss.grid.WbHistory',
         'Lizard.window.EditSummaryBox',
         'Lizard.form.FormAutoload',
         'Lizard.grid.GridComboBox',
