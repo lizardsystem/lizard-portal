@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.5 (unreleased)
+0.57.5 (2012-05-29)
 -------------------
 
 - Bugfix: when closing a popup the background would sometimes stay in
