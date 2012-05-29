@@ -32,7 +32,7 @@
                 }
             },
             //proxyUrl: '/portal/wbstructures.json',
-            proxyUrl: '/measure/api/esf_pattern/',
+            proxyUrl: '/esf/api/esf_score_overview/',
             proxyParams: {
                 flat: false,
                 size: 'small',
@@ -57,9 +57,8 @@
 
                 if (record) {
                     params = {
-                        esfpattern_id: record.data.id
+                        object_id: record.get('ident')
                     }
-
                 } else {
                     params = null
                 }
@@ -69,7 +68,7 @@
                     width: 600,
                     height: 600,
                     modal: true,
-		    constrainHeader: true,
+		            constrainHeader: true,
                     finish_edit_function: function (updated_record) {
                         me.store.load();
                     },
@@ -77,7 +76,7 @@
                     loader:{
                         loadMask: true,
                         autoLoad: true,
-                        url: '/measure/esf_pattern_form/',
+                        url: '/esf/main_esf_editor/',
                         ajaxOptions: {
                             method: 'GET'
                         },
@@ -93,15 +92,15 @@
                 {name: 'id', title: 'id', editable: false, visible: false, width: 30, type: 'number'},
                 {name: 'ident', title: 'ident', editable: false, visible: true, width: 50, type: 'text'},
                 {name: 'name', title: 'naam', editable: false, visible: true, width: 150, type: 'text'},
-                {name: 'esf1', title: '1. belasting', editable: false, visible: true, width: 80, type: 'text'},
-                {name: 'esf2', title: '2. licht', editable: false, visible: true, width: 80, type: 'text'},
-                {name: 'esf3', title: '3. bodem', editable: false, visible: true, width: 80, type: 'text'},
-                {name: 'esf4', title: '4. ', editable: false, visible: true, width: 80, type: 'text'},
-                {name: 'esf5', title: '5. habitat', editable: false, visible: true, width: 80, type: 'text'},
-                {name: 'esf6', title: '6. ', editable: false, visible: true, width: 80, type: 'text'},
-                {name: 'esf7', title: '7. ', editable: false, visible: true, width: 80, type: 'text'},
-                {name: 'esf8', title: '8. ', editable: false, visible: true, width: 80, type: 'text'},
-                {name: 'esf9', title: '9. beleving', editable: false, visible: true, width: 80, type: 'text'}
+                {name: 'esf1', title: '1. belasting', editable: false, sortable: false, visible: true, width: 80, type: 'text'},
+                {name: 'esf2', title: '2. licht', editable: false, sortable: false, visible: true, width: 80, type: 'text'},
+                {name: 'esf3', title: '3. bodem', editable: false, sortable: false, visible: true, width: 80, type: 'text'},
+                {name: 'esf4', title: '4. ', editable: false, sortable: false, visible: true, width: 80, type: 'text'},
+                {name: 'esf5', title: '5. habitat', editable: false, sortable: false, visible: true, width: 80, type: 'text'},
+                {name: 'esf6', title: '6. ', editable: false, sortable: false, visible: true, width: 80, type: 'text'},
+                {name: 'esf7', title: '7. ', editable: false, sortable: false, visible: true, width: 80, type: 'text'},
+                {name: 'esf8', title: '8. ', editable: false, sortable: false, visible: true, width: 80, type: 'text'},
+                {name: 'esf9', title: '9. beleving', editable: false, sortable: false, visible: true, width: 80, type: 'text'}
            ]
         }]
 	}]

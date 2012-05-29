@@ -97,6 +97,7 @@ Ext.application({
         'Vss.grid.Esf',
         'Vss.grid.EsfHistory',
         'Vss.grid.WbHistory',
+        'Vss.grid.EsfMainEditor',
         'Lizard.window.EditSummaryBox',
         'Lizard.form.FormAutoload',
         'Lizard.grid.GridComboBox',
