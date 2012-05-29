@@ -19,6 +19,7 @@
             flex:2,
             title: "Opbouw ESF'en",
             xtype: 'esf_grid',
+            store: Ext.create("Vss.store.Esf"),
         {% if user.is_authenticated %}
             editable:true,
         {% else %}
@@ -34,7 +35,6 @@
             flex: 1,
             xtype: 'multigraph',
             open_map: function(workspace_slug, title) {
-                debugger
                 Ext.create('Ext.window.Window', {
                     modal: true,
                     title: title,

@@ -1,9 +1,12 @@
 # (c) Nelen & Schuurmans.  GPL licensed, see LICENSE.txt.
 
+import os
 import logging
 
+from django import forms
+from django.conf import settings
+
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -11,6 +14,7 @@ from django.template import TemplateDoesNotExist
 from django.template import Template
 from django.template.loader import get_template
 from django.utils import simplejson
+from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib.gis.geos import GEOSGeometry
 
@@ -19,12 +23,13 @@ from lizard_portal.configurations_retriever import ConfigurationsRetriever
 from lizard_portal.configurations_retriever import create_configurations_retriever
 from lizard_portal.configurations_retriever import MockConfig
 from lizard_portal.models import PortalConfiguration
-from lizard_portal.models import ConfigurationToValidate
 from lizard_registration.models import SessionContextStore, UserContextStore
 from lizard_registration.utils import auto_login
 from lizard_registration.utils import get_user_permissions_overall
+from lizard_registration.models import UserProfile
 
 logger = logging.getLogger(__name__)
+
 
 def site(request, application_name, active_tab_name, only_portal=False):
     """
@@ -60,7 +65,8 @@ def application(request, application_name, active_tab_name):
         if user.iprangelogin_set.all().count() > 0:
             session_key = request.session.session_key
             try:
-                context_store = user.sessioncontextstore_set.get(session_key=session_key)
+                context_store = user.sessioncontextstore_set.get(
+                    session_key=session_key)
                 context = context_store.context
             except SessionContextStore.DoesNotExist:
                 pass
@@ -79,7 +85,7 @@ def application(request, application_name, active_tab_name):
 
     try:
         extent_wgs = Area.objects.all().extent()
-        wkt = 'LINESTRING(%f %f,%f %f)'%extent_wgs
+        wkt = 'LINESTRING(%f %f,%f %f)' % extent_wgs
 
         geom = GEOSGeometry(wkt, 4326)
         extent = geom.transform(900913, clone=True).extent
@@ -87,15 +93,14 @@ def application(request, application_name, active_tab_name):
         #if getting extent failed (no areas or so) use default
         extent = (479517, 6799646, 584302, 7016613)
 
-
-    t = get_template('application/'+application_name+'.js')
+    t = get_template('application/' + application_name + '.js')
     c = RequestContext(request, {
             'application': application_name,
             'active_tab': active_tab_name,
             'context': context,
             'permission_list': perms_list,
             'perms': perms,
-            'extent': ','.join(['%.0f'%value for value in  extent])
+            'extent': ','.join(['%.0f' % value for value in  extent])
         })
 
     return HttpResponse(t.render(c),
@@ -122,13 +127,13 @@ def json_configuration(request):
             # areas which is only allowed if the user is an analyst. We cannot
             # easily detect that in the template itself so we do that here.
             #is_funct_beheerder = request.user.user_group_memberships.filter(
-            #    permission_mappers__permission_group__permissions__codename='is_funct_beheerder').exists()
+            #permission_mappers__permission_group__permissions__codename='is_funct_beheerder').exists()
             #if not is_funct_beheerder:
             #    t = get_template('portals/geen_toegang.js')
             #    return HttpResponse(t.render(c),  mimetype="text/plain")
         try:
-            t = get_template('portals/'+portal_template+'.js')
-        except TemplateDoesNotExist, e:
+            t = get_template('portals/' + portal_template + '.js')
+        except TemplateDoesNotExist:
             pc = PortalConfiguration.objects.filter(slug=portal_template)[0]
             t = Template(pc.configuration)
 
@@ -150,12 +155,11 @@ def feature_info(request):
 
     split = urls.find('/')
 
-
     conn = httplib.HTTPConnection(urls[:split])
     conn.request('GET', urls[split:])
     resp = conn.getresponse()
 
-    content =  resp.read()
+    content = resp.read()
     return HttpResponse(content,  mimetype="text/plain")
 
 
@@ -163,7 +167,8 @@ def validate(request):
     logger.debug('lizard_portal.views.validate')
     retriever = create_configurations_retriever()
     configurations = retriever.retrieve_configurations_as_dict()
-    json = simplejson.dumps({'data': configurations, 'count': len(configurations)})
+    json = simplejson.dumps(
+        {'data': configurations, 'count': len(configurations)})
     return HttpResponse(json)
 
 
@@ -195,5 +200,69 @@ def local_create_configurations_retriever():
          'action': 'Bewaren'}
         ]
     retriever.retrieve_configurations = \
-        (lambda : [MockConfig(config) for config in configuration_list])
+        (lambda: [MockConfig(config) for config in configuration_list])
     return retriever
+
+
+class UploadFileForm(forms.Form):
+    file = forms.FileField(label="")
+
+
+def directory_mapping(organisation_name):
+    """Map names of organisations with names of
+    directories in vss-shared map."""
+    mapping = {'waternet': 'Waternet',
+               'rijnland': 'Rijnland',
+               'hhnk': 'HHNK'}
+    return mapping.get(organisation_name)
+
+
+def handle_uploaded_file(f, organisation):
+    """Copy file to configured destination directory."""
+    filepath = os.path.join(settings.VALIDATION_ROOT,
+                            directory_mapping(organisation),
+                            f.name)
+    with open(filepath, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+
+def member_of_functioneelbeheerder_group(user):
+    """Return true is the user is a member of
+    functioneelbeheerder usergroup."""
+    functioneelbeheerder_groups = user.user_group_memberships.filter(
+        name__contains='functioneel beheerder')
+    if functioneelbeheerder_groups.exists():
+        return True
+    return False
+
+
+@csrf_exempt
+def upload_file(request):
+    form = None
+    msg = ""
+    username = request.user.username
+    organisation = UserProfile.objects.get(
+        user__username=username).organisation.name
+    allowed = member_of_functioneelbeheerder_group(request.user)
+    if allowed:
+        if request.method == 'POST':
+            form = UploadFileForm(request.POST, request.FILES)
+            if form.is_valid():
+                f = request.FILES.get('file', None)
+                handle_uploaded_file(f, organisation)
+                msg = "File '%s' is uploaded. Voer het serverproces %s %s %s %s." % (
+                    f.name,
+                    "'verwerk zip bestanden met configuraties'",
+                    "uit. Ga vervolgens naar het scherm ",
+                    "'Valideren waterbalans/ESF configuraties'",
+                    "en stel de configuraties in")
+        else:
+            form = UploadFileForm()
+            msg = "Kies een zip bestand met configuraties en klik op upload button."
+    else:
+        msg = "Toegang is geweigerd, u bent geen lied van "\
+            "'functioneel beheerder' gebruikersgroep."
+
+    data = {'form': form, 'msg': msg, 'allowed': allowed}
+    return render_to_response('lizard_portal/upload_file.html', data)

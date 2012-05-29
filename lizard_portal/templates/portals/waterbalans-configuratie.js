@@ -19,9 +19,9 @@
         }
     ],
 	items:[{
-		flex:1,
-		items: [{
-			title: 'Instellingen',
+          flex:1,
+          items: [{
+          title: 'Instellingen',
             flex:1,
             width: '100%',
             layout:{
@@ -70,6 +70,33 @@
                     }
                 }
             ],
+            tools: [{
+                type: 'search',
+                handler: function (e, target, panelHeader, tool) {
+                    Ext.create('Ext.window.Window', {
+                        title: 'Geschiedenis van waterbalansconfiguratie',
+                        width: 800,
+                        height: 600,
+                        bodyStyle: {
+                          background: 'white'
+                        },
+                        modal: true,
+                        constrainHeader: true,
+                        loader:{
+                            loadMask: true,
+                            autoLoad: true,
+                            url: '/wbconfiguration/history',
+                            baseParams: {
+                               object_id: Lizard.CM.getContext().object.id
+                            },
+                            ajaxOptions: {
+                                method: 'GET'
+                            },
+                            renderer: 'html'
+                        }
+                    }).show();
+                }
+            }],
             {% endif %}
             items:[{
                 anchor: "100%",
@@ -230,6 +257,7 @@
                 autoHeight: true,
                 xtype: 'leditgrid',
                 useSaveBar: false,
+                useAddDeleteButtons: false,
                 usePagination: false,
                 plugins: [
                     'applycontext'
@@ -255,7 +283,7 @@
                     {name: 'area', title: 'area', editable: false, visible: false, width: 100, type: 'text'},
                     {name: 'name', title: 'Naam', editable: true, visible: true, width: 170, type: 'text'},
                     {name: 'is_computed', title: 'Berekend', editable: false, visible: true, width: 75, type: 'boolean'},
-                    {name: 'in_out', title: 'In of Uit', editable: true, visible: true, width: 75, type: 'combo', choices: ['in', 'uit']},
+                    {name: 'in_out', title: 'In of Uit', editable: false, visible: true, width: 75, type: 'combo', choices: ['in', 'uit']},
                     //debiet
                     {name: 'deb_is_ts', title: 'Debiet is tijdserie?', editable: true, visible: true, width: 100, type: 'boolean'},
                     {name: 'deb_wint', title: 'Debiet winter', editable: true, visible: true, width: 75, type: 'number', editIf: {prop: 'deb_is_ts', value_in: [false]}},

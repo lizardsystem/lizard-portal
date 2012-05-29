@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = '0.57.2dev'
+version = '0.57.5dev'
 
 long_description = '\n\n'.join([
     open('README.rst').read(),
@@ -16,9 +16,11 @@ install_requires = [
     'django-nose',
     'lizard-ui >= 3.0',
     'pkginfo',
+    'lizard-geo',
     'lizard-area',
     'lizard-registration',
     'lizard-security',
+    'lizard-task',
     ],
 
 tests_require = [

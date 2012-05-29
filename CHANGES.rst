@@ -2,11 +2,34 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.2 (unreleased)
+0.57.5 (unreleased)
 -------------------
 
 - Bugfix: when closing a popup the background would sometimes stay in
   "loading".
+
+
+0.57.4 (2012-05-29)
+-------------------
+
+- added classes for history display of esf and waterbalance configurations
+
+0.57.3 (2012-05-23)
+-------------------
+
+- Added functionality to upload esf/wbconfiguration as zip file.
+
+- Implement history tool for esf-tree.
+
+- Implement history tool for waterbalance configuration.
+
+- Add check to apply context plugin for undefined parent.
+
+
+0.57.2 (2012-05-21)
+-------------------
+
+- Changed and removed fields in waterbalans-configuratie form.
 
 
 0.57.1 (2012-05-10)
@@ -35,6 +58,10 @@ Changelog of lizard-portal
 - splitted Themakaarten page into 2 pages and put EKR table in popup (part of pp 179)
 
 - bug fix in navigation related to area selection on the map (pp 177)
+
+- repeated column area name in steeringparameter overview (pp 333)
+
+- window header name change form ' annotatie' to 'analyse interpretatie'  (pp
 
 
 0.56 (2012-05-09)

@@ -1,9 +1,9 @@
 //TODO: prevent initial load (saves one request)
 
-Ext.define('Vss.grid.Esf', {
+Ext.define('Vss.grid.EsfMainEditor.', {
 
     extend: 'Ext.tree.Panel',
-    alias: 'widget.esf_grid',
+    alias: 'widget.esf_main_editor',
 
     plugins: [
          Ext.create('Ext.grid.plugin.CellEditing', {clicksToEdit: 2}),
@@ -15,45 +15,7 @@ Ext.define('Vss.grid.Esf', {
         editable: true,
         autoLoad: false
     },
-    tools: [{
-        type: 'search',
-        handler: function (e, target, panelHeader, tool) {
-            Ext.create('Ext.window.Window', {
-                title: 'Geschiedenis van ESF-configuratie',
-                width: 800,
-                height: 600,
-                bodyStyle: {
-                    background: 'white'
-                },
-                modal: true,
-                constrainHeader: true,
-                loader:{
-                    loadMask: true,
-                    autoLoad: true,
-                    url: '/esf/history/',
-                    baseParams: {
-                        object_id: Lizard.CM.getContext().object.id
-                    },
-                    ajaxOptions: {
-                        method: 'GET'
-                    },
-                    renderer: 'html'
-                }
-            }).show();
-        }
-    },{//expand tree for extra lines
-        type: 'right',
-        handler: function (e, target, panelHeader, tool) {
-            var portal_col = panelHeader.up('portalcolumn')
-            if (tool.type == 'left') {
-                tool.setType('right');
-                portal_col.setWidth(360);
-            } else {
-                tool.setType('left');
-                portal_col.setWidth(700);
-            }
-        }
-    }],
+    tools: [],
     applyParams: function(params) {
         var params = params|| {};
         if (this.store) {

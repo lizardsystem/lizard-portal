@@ -32,6 +32,7 @@ Ext.application({
     stores: [
         'Vss.store.Communique',
         'Vss.store.Esf',
+        'Vss.store.EsfHistory',
         'Vss.store.CatchmentTree',
         'Vss.store.KrwGebiedenTree',
         'Vss.store.WaterbalanceAreaConfig',
@@ -94,6 +95,9 @@ Ext.application({
         'Lizard.window.MapWindow',
         'Lizard.window.Header',
         'Vss.grid.Esf',
+        'Vss.grid.EsfHistory',
+        'Vss.grid.WbHistory',
+        'Vss.grid.EsfMainEditor',
         'Lizard.window.EditSummaryBox',
         'Lizard.form.FormAutoload',
         'Lizard.grid.GridComboBox',
@@ -323,6 +327,13 @@ Ext.application({
                      disabled: false,
                      {% endif %}
                      handler: function() { window.open('/task/') }
+                },
+                {
+                     text: 'Upload configuratie file',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% endif %}
+                     handler: function() { window.open('/portal/uploadfile/') }
                 }
 		]
             })
