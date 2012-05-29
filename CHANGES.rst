@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.57.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Bugfix: when closing a popup the background would sometimes stay in
+  "loading".
 
 
 0.57.1 (2012-05-10)

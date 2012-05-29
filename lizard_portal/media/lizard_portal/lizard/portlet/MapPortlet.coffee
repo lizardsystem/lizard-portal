@@ -280,14 +280,15 @@ Ext.define('Lizard.portlet.MapPortlet', {
                 params: params
                 method: 'GET',
                 success: (xhr, request) ->
-                    debugger
                     me.setLoading(true);
                     gml_text = xhr.responseText;
                     format = new OpenLayers.Format.GML.v3();
                     gml = format.read(gml_text);
                     if gml.length > 0
+                        me.setLoading(false);
                         me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
                     else
+                        me.setLoading(false);
                         me.onEmptyMapClick(gml, layer, event, lonlat, xhr, request, gml_text)
                 failure: (xhr) ->
                     # alert('failure');
