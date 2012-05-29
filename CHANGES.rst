@@ -2,8 +2,8 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.4. (2012-05-29)
---------------------
+0.57.4 (2012-05-29)
+-------------------
 
 - added classes for history display of esf and waterbalance configurations
 
