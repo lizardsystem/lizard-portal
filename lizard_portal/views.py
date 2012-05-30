@@ -27,6 +27,7 @@ from lizard_registration.models import SessionContextStore, UserContextStore
 from lizard_registration.utils import auto_login
 from lizard_registration.utils import get_user_permissions_overall
 from lizard_registration.models import UserProfile
+from lizard_task.models import SecuredPeriodicTask
 
 logger = logging.getLogger(__name__)
 
@@ -208,7 +209,7 @@ class UploadFileForm(forms.Form):
     file = forms.FileField(label="")
 
 
-def directory_mapping(organisation_name):
+def organisation_mapping(organisation_name):
     """Map names of organisations with names of
     directories in vss-shared map."""
     mapping = {'waternet': 'Waternet',
@@ -219,42 +220,68 @@ def directory_mapping(organisation_name):
 
 def handle_uploaded_file(f, organisation):
     """Copy file to configured destination directory."""
-    filepath = os.path.join(settings.VALIDATION_ROOT,
-                            directory_mapping(organisation),
-                            f.name)
+    if organisation == "":
+        filepath = os.path.join(settings.VALIDATION_ROOT, f.name)
+    else:
+        filepath = os.path.join(settings.VALIDATION_ROOT,
+                                organisation_mapping(organisation),
+                                f.name)
     with open(filepath, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
 
-def member_of_functioneelbeheerder_group(user):
+def check_permission(user):
     """Return true is the user is a member of
-    functioneelbeheerder usergroup."""
+    functioneelbeheerder usergroup or superuser."""
     functioneelbeheerder_groups = user.user_group_memberships.filter(
         name__contains='functioneel beheerder')
-    if functioneelbeheerder_groups.exists():
+    if functioneelbeheerder_groups.exists() or user.is_superuser:
         return True
     return False
+
+
+def run_prepare_configurations_as_task(user, organisation):
+    """Run 'lizard_portal.tasks.prepare_configurations_as_task'."""
+    if user.is_superuser:
+        periodic_tasks = SecuredPeriodicTask.objects.filter(
+            task='lizard_portal.tasks.prepare_configurations_as_task')
+    else:
+        periodic_tasks = SecuredPeriodicTask.objects.filter(
+            data_set__name=organisation_mapping(organisation),
+            task='lizard_portal.tasks.prepare_configurations_as_task')
+    for periodic_task in periodic_tasks:
+        periodic_task.send_task(username=user.username)
+
+
+def get_organisation_name(user):
+    """Retrieve organisation name for the user."""
+    try:
+        organisation = UserProfile.objects.get(
+            user__username=user.username).organisation.name
+        return organisation
+    except:
+        return ''
 
 
 @csrf_exempt
 def upload_file(request):
     form = None
     msg = ""
-    username = request.user.username
-    organisation = UserProfile.objects.get(
-        user__username=username).organisation.name
-    allowed = member_of_functioneelbeheerder_group(request.user)
+    user = request.user
+    organisation = get_organisation_name(user)
+    allowed = check_permission(user)
     if allowed:
         if request.method == 'POST':
             form = UploadFileForm(request.POST, request.FILES)
             if form.is_valid():
                 f = request.FILES.get('file', None)
                 handle_uploaded_file(f, organisation)
-                msg = "File '%s' is uploaded. Voer het serverproces %s %s %s %s." % (
+                run_prepare_configurations_as_task(
+                    user, organisation)
+                msg = "File '%s' is uploaded. %s %s %s." % (
                     f.name,
-                    "'verwerk zip bestanden met configuraties'",
-                    "uit. Ga vervolgens naar het scherm ",
+                    "Ga naar het scherm ",
                     "'Valideren waterbalans/ESF configuraties'",
                     "en stel de configuraties in")
         else:

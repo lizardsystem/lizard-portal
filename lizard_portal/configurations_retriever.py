@@ -93,7 +93,7 @@ class ConfigurationStore(object):
                 attrs.update(attrs_from_name)
                 config.set_attributes(attrs)
                 try:
-                    self.logger.info('Saving configuration %s', config)
+                    self.logger.info('Saving configuration %s' % config)
                     config.save()
                 except:
                     self.logger.warning('Unable to save the configuration: probably it is incomplete')

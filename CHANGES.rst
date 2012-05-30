@@ -5,8 +5,9 @@ Changelog of lizard-portal
 0.57.8 (unreleased)
 -------------------
 
-- Nothing changed yet.
-
+- added functionality to run 'verwerk zip bestanden met configuraties'
+  task on uploading zip-files.
+- added functionality to upload zip-files as superuser.
 
 0.57.7 (2012-05-30)
 -------------------
