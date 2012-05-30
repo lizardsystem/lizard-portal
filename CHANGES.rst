@@ -5,6 +5,8 @@ Changelog of lizard-portal
 0.57.6 (unreleased)
 -------------------
 
+- Themakaart: updated ESF.
+
 - Themakaart: added legend for EKR Doelstelling.
 
 
