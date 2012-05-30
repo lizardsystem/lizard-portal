@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.11 (unreleased)
+0.57.11 (2012-05-30)
 --------------------
 
 - bugfix esf-overzicht-beheer
