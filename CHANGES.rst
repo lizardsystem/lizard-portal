@@ -2,13 +2,28 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.5 (unreleased)
+0.57.7 (unreleased)
 -------------------
 
 - bugfix Communique save  for ie
 - bugfix for ESF overview screen
 - added scale and scale line (par of pp 247)
 - removed area name from header EKR screen
+
+
+0.57.6 (2012-05-30)
+-------------------
+
+- Themakaart: added legend for EKR Doelstelling.
+
+- Esf: Fix 'p op kaart' view.
+
+
+0.57.5 (2012-05-29)
+-------------------
+
+- Bugfix: when closing a popup the background would sometimes stay in
+  "loading".
 
 
 0.57.4 (2012-05-29)

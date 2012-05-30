@@ -106,7 +106,7 @@
             },{
                 text: 'P op kaart',
                 handler: function (button) {
-                    button.up('panel').open_map('P_map', 'P op de kaart ')
+                    button.up('panel').open_map('p_map', 'P op de kaart ')
                 }
             },{
             text: 'AqMad op kaart',

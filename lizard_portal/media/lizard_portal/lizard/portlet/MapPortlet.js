@@ -178,15 +178,16 @@
           params: params,
           method: 'GET',
           success: function(xhr, request) {
-            debugger;
             var format, gml, gml_text;
             me.setLoading(true);
             gml_text = xhr.responseText;
             format = new OpenLayers.Format.GML.v3();
             gml = format.read(gml_text);
             if (gml.length > 0) {
+              me.setLoading(false);
               return me.onMapClickCallback(gml, layer, event, lonlat, xhr, request);
             } else {
+              me.setLoading(false);
               return me.onEmptyMapClick(gml, layer, event, lonlat, xhr, request, gml_text);
             }
           },
