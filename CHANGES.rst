@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.7 (unreleased)
+0.57.7 (2012-05-30)
 -------------------
 
 - bugfix Communique save  for ie
