@@ -212,6 +212,9 @@ Ext.application({
                 },{
                     text: 'Themakaart ESF',
                     handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'themakaart-esf'}); }
+                },{
+                    text: 'Themakaart maatregelen',
+                    handler: function() { Lizard.CM.setContext({headertab: 'overzicht', portal_template:'themakaart-maatregelen'}); }
                 }]
             }),
             Ext.create('Lizard.window.HeaderTab', {
