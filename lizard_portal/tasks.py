@@ -31,7 +31,7 @@ def prepare_configurations_as_task(taskname, levelno=20, username=None):
     This task has the same functionality as function ``prepare_configurations``
     """
     logger = logging.getLogger(taskname)
-    handler = get_handler(taskname=taskname, username=None)
+    handler = get_handler(taskname=taskname, username=username)
     logger.addHandler(handler)
     logger.setLevel(levelno)
 
@@ -44,3 +44,5 @@ def prepare_configurations_as_task(taskname, levelno=20, username=None):
     logger.info('END PREPARATION')
 
     logger.removeHandler(handler)
+
+    return 'ok'

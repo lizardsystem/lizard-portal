@@ -2,11 +2,30 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.8 (unreleased)
--------------------
+0.57.11 (unreleased)
+--------------------
 
 - Nothing changed yet.
 
+
+0.57.10 (2012-05-30)
+--------------------
+
+- Added preparations for themakaart maatregelen.
+
+
+0.57.9 (2012-05-30)
+-------------------
+
+- Themakaart: updated ESF.
+
+
+0.57.8 (2012-05-30)
+-------------------
+
+- added functionality to run 'verwerk zip bestanden met configuraties'
+  task on uploading zip-files.
+- added functionality to upload zip-files as superuser.
 
 0.57.7 (2012-05-30)
 -------------------

@@ -8,11 +8,11 @@
 {% load get_portal_template %}
 
 {
-    itemId: 'themakaart-esf',
-    title: 'Themakaart ESF',
+    itemId: 'themakaart-maatregelen',
+    title: 'Themakaart maatregelen',
     breadcrumbs: [
         {
-            name: 'themakaart ESF'
+            name: 'themakaart maatregelen'
         }
     ],
 	xtype: 'portalpanel',
@@ -29,14 +29,14 @@
             //store: Ext.create('Ext.data.Store',{
                 data: [{
                     name: 'ESF status',
-                    base_url: '/layers/wms/?FORMAT=image%2Fpng&TRANSPARENT=TRUE&STYLE=vss_esf&CQL_FILTER=name%20%3D%20\'ESF-STATUS\'&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&SRS=EPSG%3A900913&BBOX=460467.38252035,6800747.0720688,640132.61747965,6894993.9279312&LAYER=vss:vss_area_value&width=150&height=20'
+                    base_url: '/layers/wms/?FORMAT=image%2Fpng&TRANSPARENT=TRUE&STYLE=vss_maatregelen&CQL_FILTER=name%20%3D%20\'ESF-STATUS\'&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&SRS=EPSG%3A900913&BBOX=460467.38252035,6800747.0720688,640132.61747965,6894993.9279312&LAYER=vss:vss_area_value&width=150&height=20'
                 }]
             }),
             flex: 1
 
         },{
             xtype: 'workspaceportlet',
-            workspaceStore: Lizard.store.WorkspaceStore.get_or_create('themakaart-esf'),
+            workspaceStore: Lizard.store.WorkspaceStore.get_or_create('themakaart-maatregelen'),
             collapsible: true,
             collapsed: true,
             tools:[],
@@ -50,12 +50,12 @@
             xtype: "mapportlet",
             initZoomOnRender: false,
             autoLoadWorkspaceStore: {
-                object_slug: 'thema_kaart_esf'
+                object_slug: 'thema_kaart_maatregelen'
             },
             init_workspace: false,
             controls: [new OpenLayers.Control.LayerSwitcher()
             ],
-            workspaceStore: Lizard.store.WorkspaceStore.get_or_create('themakaart-esf'),
+            workspaceStore: Lizard.store.WorkspaceStore.get_or_create('themakaart-maatregelen'),
             onApplyParams: function(params) {
                 var me = this;
 
