@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.57.11 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- bugfix esf-overzicht-beheer
+- changed look and feel esf-overview
 
 
 0.57.10 (2012-05-30)
