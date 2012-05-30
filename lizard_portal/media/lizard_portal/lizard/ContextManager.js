@@ -175,12 +175,16 @@
           this.fireEvent('contextchange', changed_elements, changed_context, new_context, this);
         }
         if (save_state) {
-          headertab_name = new_context.headertab.name;
-          new_context = Ext.Object.merge({}, new_context, {
-            headertab: headertab_name,
-            active_headertab: headertab_name
-          });
-          return window.history.pushState(new_context, "" + params, "" + new_context.base_url + "#" + headertab_name + "/" + new_context.portal_template);
+          try {
+            headertab_name = new_context.headertab.name;
+            new_context = Ext.Object.merge({}, new_context, {
+              headertab: headertab_name,
+              active_headertab: headertab_name
+            });
+            return window.history.pushState(new_context, "" + params, "" + new_context.base_url + "#" + headertab_name + "/" + new_context.portal_template);
+          } catch (error) {
+            return console.log("not able to set pushState");
+          }
         }
       }
     },

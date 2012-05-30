@@ -5,7 +5,10 @@ Changelog of lizard-portal
 0.57.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- bugfix Communique save  for ie
+- bugfix for ESF overview screen
+- added scale and scale line (par of pp 247)
+- removed area name from header EKR screen
 
 
 0.57.4 (2012-05-29)

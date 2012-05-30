@@ -56,7 +56,7 @@
                         constrain: true,
                         items: {
                             xtype: 'form',
-                            url: '/area/api/area_communique/',
+                            url: '/area/api/area_communique/?_accept=application/json',
                             layout: 'anchor',
                             height: '100%',
                             defaults: {
@@ -95,7 +95,6 @@
                                     if (form.isValid()) {
                                         form.submit({
                                             success: function(form, action) {
-                                                debugger
                                                 console.log('Opslaan gelukt');
                                                 portlet.applyParams({
                                                        object: {
@@ -106,7 +105,6 @@
 
                                             },
                                             failure: function(form, action) {
-                                                debugger
                                                 Ext.Msg.alert('Failed', 'Opslaan mislukt');
                                             }
                                         });
