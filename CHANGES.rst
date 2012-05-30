@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.10 (unreleased)
+0.57.10 (2012-05-30)
 --------------------
 
 - Added preparations for themakaart maatregelen.
