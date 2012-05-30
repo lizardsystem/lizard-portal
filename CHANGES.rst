@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.6 (unreleased)
+0.57.6 (2012-05-30)
 -------------------
 
 - Themakaart: added legend for EKR Doelstelling.
