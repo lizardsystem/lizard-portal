@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.9 (unreleased)
+0.57.9 (2012-05-30)
 -------------------
 
 - Themakaart: updated ESF.
