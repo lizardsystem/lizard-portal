@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - Themakaart: added legend for EKR Doelstelling.
 
+- Esf: Fix 'p op kaart' view.
+
 
 0.57.5 (2012-05-29)
 -------------------
