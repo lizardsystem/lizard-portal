@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.8 (unreleased)
+0.57.8 (2012-05-30)
 -------------------
 
 - added functionality to run 'verwerk zip bestanden met configuraties'
