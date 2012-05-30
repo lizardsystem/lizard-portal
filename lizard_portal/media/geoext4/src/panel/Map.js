@@ -161,6 +161,8 @@ Ext.define('GeoExt.panel.Map', {
         this.map.addControl(zoom_panel);
         this.navigation = new OpenLayers.Control.Navigation();
         this.map.addControl(this.navigation);
+        this.map.addControl(new OpenLayers.Control.Scale);
+        this.map.addControl(new OpenLayers.Control.ScaleLine);
 
         for (var i = 0; i < me.controls.length; i++) {
             me.map.addControl(me.controls[i]);

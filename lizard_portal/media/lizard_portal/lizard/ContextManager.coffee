@@ -198,14 +198,14 @@ Ext.define 'Lizard.ContextManager',
                 )
 
             if save_state
-                #try
-                headertab_name = new_context.headertab.name
-                new_context = Ext.Object.merge({}, new_context, {headertab: headertab_name, active_headertab: headertab_name})
-                window.history.pushState(new_context, "#{params}", "#{new_context.base_url}##{headertab_name}/#{new_context.portal_template}")
-                #selected object is now available though context save and load, so removed object part. This still can be used by
-                # external application to directly link to page of an object  (/#{new_context.object.type}/#{new_context.object.id})
-                #catch error
-                #   console.log "not able to set pushState"
+                try
+                    headertab_name = new_context.headertab.name
+                    new_context = Ext.Object.merge({}, new_context, {headertab: headertab_name, active_headertab: headertab_name})
+                    window.history.pushState(new_context, "#{params}", "#{new_context.base_url}##{headertab_name}/#{new_context.portal_template}")
+                    #selected object is now available though context save and load, so removed object part. This still can be used by
+                    # external application to directly link to page of an object  (/#{new_context.object.type}/#{new_context.object.id})
+                catch error
+                   console.log "not able to set pushState"
 
     #////
     # calcPeriod(period)

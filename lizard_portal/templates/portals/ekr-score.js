@@ -12,7 +12,7 @@
 	items:[{
 		flex: 1,
 		items: [{
-            title: Lizard.CM.context.object.name,
+            title: 'EKR score grafiek',
             flex: 1,
             xtype: 'multigraphstore',
             plugins: [
@@ -39,7 +39,7 @@
                 }]
             })
         },{
-			title: 'EKR scores voor ' + Lizard.CM.context.object.name,
+			title: 'EKR scores ',
             flex:2,
             autoScroll: true,
             plugins: [

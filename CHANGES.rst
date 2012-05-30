@@ -2,12 +2,36 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.6 (unreleased)
+0.57.9 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+0.57.8 (2012-05-30)
+-------------------
+
+- added functionality to run 'verwerk zip bestanden met configuraties'
+  task on uploading zip-files.
+- added functionality to upload zip-files as superuser.
+
+0.57.7 (2012-05-30)
+-------------------
+
+- bugfix Communique save  for ie
+- bugfix for ESF overview screen
+- added scale and scale line (par of pp 247)
+- removed area name from header EKR screen
+
+
+0.57.6 (2012-05-30)
 -------------------
 
 - Themakaart: updated ESF.
 
 - Themakaart: added legend for EKR Doelstelling.
+
+- Esf: Fix 'p op kaart' view.
 
 
 0.57.5 (2012-05-29)
