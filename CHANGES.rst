@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.57.12 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fixed themakaart EKR legend.
 
 
 0.57.11 (2012-05-30)
