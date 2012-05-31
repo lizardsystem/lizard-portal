@@ -10,7 +10,7 @@ import logging
 from celery.task import task
 
 from lizard_portal.configurations_retriever import ConfigurationStore
-from lizard_task.handler import get_handler
+from lizard_task.task import task_logging
 
 
 def prepare_configurations():
@@ -25,15 +25,13 @@ def prepare_configurations():
     ConfigurationStore().supply()
 
 @task()
+@task_logging
 def prepare_configurations_as_task(taskname, levelno=20, username=None):
     """Prepare the configurations for validation.
 
     This task has the same functionality as function ``prepare_configurations``
     """
     logger = logging.getLogger(taskname)
-    handler = get_handler(taskname=taskname, username=username)
-    logger.addHandler(handler)
-    logger.setLevel(levelno)
 
     logger.info('Start the preparations of configurations')
 
@@ -42,7 +40,3 @@ def prepare_configurations_as_task(taskname, levelno=20, username=None):
     config_store.supply()
 
     logger.info('END PREPARATION')
-
-    logger.removeHandler(handler)
-
-    return 'ok'
