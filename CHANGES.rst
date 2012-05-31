@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.13 (unreleased)
+0.57.13 (2012-05-31)
 --------------------
 
 - Added functionality to remove rejected configuration on validation.
