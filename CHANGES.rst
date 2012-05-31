@@ -2,11 +2,36 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.9 (unreleased)
--------------------
+0.57.13 (unreleased)
+--------------------
 
 - Added functionality to remove rejected configuration on validation.
 - Improved logging of celery tasks.
+
+
+0.57.12 (2012-05-31)
+--------------------
+
+- Fixed themakaart EKR legend.
+
+
+0.57.11 (2012-05-30)
+--------------------
+
+- bugfix esf-overzicht-beheer
+- changed look and feel esf-overview
+
+
+0.57.10 (2012-05-30)
+--------------------
+
+- Added preparations for themakaart maatregelen.
+
+
+0.57.9 (2012-05-30)
+-------------------
+
+- Themakaart: updated ESF.
 
 
 0.57.8 (2012-05-30)
