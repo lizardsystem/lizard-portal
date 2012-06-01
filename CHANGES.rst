@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.57.12 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix ESF map popup reopen (part pp 307 + 308)
 
 
 0.57.11 (2012-05-30)
