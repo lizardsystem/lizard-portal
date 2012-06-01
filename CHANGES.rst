@@ -2,10 +2,23 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.12 (unreleased)
+0.57.14 (unreleased)
 --------------------
 
 - Fix ESF map popup reopen (part pp 307 + 308)
+
+
+0.57.13 (2012-05-31)
+--------------------
+
+- Added functionality to remove rejected configuration on validation.
+- Improved logging of celery tasks.
+
+
+0.57.12 (2012-05-31)
+--------------------
+
+- Fixed themakaart EKR legend.
 
 
 0.57.11 (2012-05-30)
