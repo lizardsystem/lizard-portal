@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.57.15 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Changed measure-status legend in themakaart.
 
 
 0.57.14 (2012-06-01)
