@@ -34,7 +34,7 @@
             title: 'Grafieken',
             flex: 1,
             xtype: 'multigraph',
-            open_map: function(workspace_slug, title) {
+            open_map: function(workspace_slug, title, style, layer_name) {
                 Ext.create('Ext.window.Window', {
                     modal: true,
                     title: title,
@@ -61,7 +61,7 @@
                             object_slug: workspace_slug
                         },
                         init_workspace: false,
-                        workspaceStore: Lizard.store.WorkspaceStore.get_or_create('popup_' + workspace_slug),
+                        workspaceStore: Lizard.store.WorkspaceStore.get_or_create('popup_' + workspace_slug + Ext.id()),
                         listeners: {
                             afterRender: function() {
                                 var me = this;
@@ -93,6 +93,10 @@
                                 });
                             }
                         }
+                    },{
+                        xtype: 'image',
+                        src: '/layers/wms/?FORMAT=image%2Fpng&TRANSPARENT=TRUE&STYLE='+ style + '&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&SRS=EPSG%3A900913&BBOX=460467.38252035,6800747.0720688,640132.61747965,6894993.9279312&LAYER='+ layer_name +'&width=100&height=30',
+                        height: 100
                     }]
                }).show()
             },
@@ -101,17 +105,17 @@
             bbar: [{
                 text: 'PO4 op kaart',
                 handler: function (button) {
-                    button.up('panel').open_map('po4_map', 'PO4 op de kaart ')
+                    button.up('panel').open_map('po4_map', 'PO4 op de kaart ', 'vss_ekr_value', 'vss:vss_track_records')
                 }
             },{
                 text: 'P op kaart',
                 handler: function (button) {
-                    button.up('panel').open_map('p_map', 'P op de kaart ')
+                    button.up('panel').open_map('p_map', 'P op de kaart ', 'vss_ekr_value', 'vss:vss_track_records')
                 }
             },{
             text: 'AqMad op kaart',
             handler: function (button) {
-                button.up('panel').open_map('aqmad_map', 'AqMad op de kaart ')
+                button.up('panel').open_map('aqmad_map', 'AqMad op de kaart ', 'vss_ekr_value', 'vss:vss_area_value')
             }
         }],
             graphs: {% get_portal_template graphs-esf %}

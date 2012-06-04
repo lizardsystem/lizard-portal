@@ -37,12 +37,11 @@
 				{name: 'action', title: 'Actie',
 				 editable: true, visible: true,
 				 width: 100, type: 'combo',
-				 choices: [{id:0, name:'Bewaren'}, {id:1, name: 'Valideren'}]},
+				 choices: [{id:0, name:'Bewaren'}, {id:1, name: 'Valideren'}, {id:2, name: 'Afkeuren'}]},
 				{name: 'action_log', title: 'Log van validatie',
 				 editable: false, visible: true, width: 400, type: 'text'}
 			    ],
 			    useAddDeleteButtons: false,
-			    addDeleteIcon: true,
 			    addEditIcon: true,
 			    proxyUrl: '/portal/api/configuration/',
 			    proxyParams: {
