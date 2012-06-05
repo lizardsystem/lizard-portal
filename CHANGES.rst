@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.16 (unreleased)
+0.57.16 (2012-06-05)
 --------------------
 
 - Added new x-tool icons: cancel-yellow, delete-red, delete-single,
