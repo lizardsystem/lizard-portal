@@ -212,23 +212,57 @@
 .x-tree-custom-info_setting {
     background-image: url('/static_media/extjs/resources/themes/images/gray/tree/leaf.gif');
 }
-/* TODO: add border */
+
 .x-tool-over img.x-tool-empty {
-    background-image: url('x-tool-icons/x-tool-empty.png');
+    background-image: url('x-tool-icons/x-tool-empty-mouseover.png');
 }
 
 img.x-tool-empty  {
     background-image: url('x-tool-icons/x-tool-empty.png');
 }
 
-/* TODO: add border */
 .x-tool-over img.x-tool-delete {
-    background-image: url('x-tool-icons/x-tool-delete.png');
+    background-image: url('x-tool-icons/x-tool-delete-mouseover.png');
 }
 
 img.x-tool-delete {
     background-image: url('x-tool-icons/x-tool-delete.png');
 }
+
+.x-tool-over img.x-tool-delete-single {
+    background-image: url('x-tool-icons/x-tool-delete-single-mouseover.png');
+}
+
+img.x-tool-delete-single {
+    background-image: url('x-tool-icons/x-tool-delete-single.png');
+}
+
+
+.x-tool-over img.x-tool-zoom-in {
+    background-image: url('x-tool-icons/x-tool-zoom-in-mouseover.png');
+}
+
+img.x-tool-zoom-in {
+    background-image: url('x-tool-icons/x-tool-zoom-in.png');
+}
+
+.x-tool-over img.x-tool-zoom-out {
+    background-image: url('x-tool-icons/x-tool-zoom-out-mouseover.png');
+}
+
+img.x-tool-zoom-out {
+    background-image: url('x-tool-icons/x-tool-zoom-out.png');
+}
+
+.x-tool-over img.x-tool-edit {
+    background-image: url('x-tool-icons/x-tool-edit-mouseover.png');
+}
+
+img.x-tool-edit {
+    background-image: url('x-tool-icons/x-tool-edit.png');
+}
+
+
 
 .l-icon {
     height: 12px;

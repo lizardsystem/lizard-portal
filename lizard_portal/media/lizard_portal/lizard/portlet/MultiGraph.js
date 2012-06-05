@@ -109,15 +109,15 @@
         items: [],
         tools: [
           {
-            type: 'plus',
+            type: 'zoom-in',
             handler: function(e, target, panelHeader, tool) {
               var portlet;
               portlet = panelHeader.ownerCt;
-              if (tool.type === 'plus') {
-                tool.setType('minus');
+              if (tool.type === 'zoom-in') {
+                tool.setType('zoom-out');
                 return me.setGraphFit(false);
               } else {
-                tool.setType('plus');
+                tool.setType('zoom-in');
                 return me.setGraphFit(true);
               }
             }

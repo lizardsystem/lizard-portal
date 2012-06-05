@@ -84,7 +84,7 @@
     },
     tools: [
       {
-        type: 'empty',
+        type: 'delete',
         tooltip: 'Workspace legen',
         handler: function(e, target, panelHeader, tool) {
           var portlet;
@@ -219,7 +219,7 @@
           }).show();
         }
       }, {
-        type: 'delete',
+        type: 'delete-single',
         tooltip: 'Workspace item verwijderen (na selectie)',
         handler: function(e, target, panelHeader, tool) {
           var portlet, records;

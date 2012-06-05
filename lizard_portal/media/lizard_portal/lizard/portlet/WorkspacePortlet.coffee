@@ -83,7 +83,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
                     config.callback(records, operation, success)
         })
     tools: [{
-        type: 'empty',
+        type: 'delete',
         tooltip: 'Workspace legen'
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
@@ -177,7 +177,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
 
     },
       {
-        type: 'delete'
+        type: 'delete-single'
         tooltip: 'Workspace item verwijderen (na selectie)'
         handler: (e, target, panelHeader, tool) ->
           portlet = panelHeader.ownerCt;

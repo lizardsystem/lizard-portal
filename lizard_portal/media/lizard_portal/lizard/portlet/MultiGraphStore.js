@@ -223,16 +223,16 @@
         if (tool.name === 'resize-graph') resizer_index = me.tools.indexOf(tool);
       }
       resizer_tool = {
-        type: 'plus',
+        type: 'zoom-in',
         name: 'resize-graph',
         handler: function(e, target, panelHeader, tool) {
           var portlet;
           portlet = panelHeader.ownerCt;
-          if (tool.type === 'plus') {
-            tool.setType('minus');
+          if (tool.type === 'zoom-in') {
+            tool.setType('zoom-out');
             return me.setFitInPortal(false);
           } else {
-            tool.setType('plus');
+            tool.setType('zoom-in');
             return me.setFitInPortal(true);
           }
         }

@@ -45,7 +45,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
         context = Ext.getCmp('portalWindow').context_manager.getContext()
         @graphs = []
 
-                
+
         for graph_config in graph_configs
             graph = Ext.create('Lizard.ux.ImageResize', Ext.merge({
                 params:
@@ -81,7 +81,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
 
 
 
-            
+
 
             @tbar.push(graph_button_settings)
     constructor: (config) ->
@@ -107,15 +107,15 @@ Ext.define('Lizard.portlet.MultiGraph', {
             tbar: ['Grafieken:']
             items: []
             tools: [{
-                type: 'plus'
+                type: 'zoom-in'
                 handler: (e, target, panelHeader, tool) ->
                     portlet = panelHeader.ownerCt;
 
-                    if (tool.type == 'plus')
-                        tool.setType('minus')
+                    if (tool.type == 'zoom-in')
+                        tool.setType('zoom-out')
                         me.setGraphFit(false)
                     else
-                        tool.setType('plus')
+                        tool.setType('zoom-in')
                         me.setGraphFit(true)
             }]
         })

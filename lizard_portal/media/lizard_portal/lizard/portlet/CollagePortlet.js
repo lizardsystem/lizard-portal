@@ -51,7 +51,7 @@
     },
     tools: [
       {
-        type: 'empty',
+        type: 'delete',
         tooltip: 'Collage legen',
         handler: function(e, target, panelHeader, tool) {
           var portlet;
@@ -185,7 +185,7 @@
           }).show();
         }
       }, {
-        type: 'delete',
+        type: 'delete-single',
         tooltip: 'Collage item verwijderen (na selectie)',
         handler: function(e, target, panelHeader, tool) {
           var portlet, records;
