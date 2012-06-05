@@ -7,6 +7,7 @@
       type: 'vbox',
       align: 'stretch'
     },
+    height: 600,
     mapeditor: true,
     force_type_selection: true,
     edit_point: true,

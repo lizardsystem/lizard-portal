@@ -266,7 +266,7 @@ Ext.application({
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
-                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'esf-overzicht-beheer'}); }
+                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'esf-overzicht-tabel'}); }
                 },
                 {
                      text: 'Stuurparameters',

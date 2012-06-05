@@ -57,7 +57,7 @@ Ext.define 'Lizard.store.EditGridStore',
         , @)
         @removed = [];
 
-        @getUpdatedRecords().forEach((rec) ->
+        Ext.each(@getUpdatedRecords(), (rec) ->
             if rec.dirty == true
                 rec.reject()
 
@@ -68,7 +68,7 @@ Ext.define 'Lizard.store.EditGridStore',
                     @snapshot.remove(rec)
         , @)
 
-        @getNewRecords().forEach((rec) ->
+        Ext.each(@getNewRecords(), (rec) ->
             @data.remove(rec)
         , @)
         

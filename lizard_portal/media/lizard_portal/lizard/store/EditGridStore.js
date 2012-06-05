@@ -53,7 +53,7 @@
         if (Ext.isDefined(this.snapshot)) return this.snapshot.add(rec);
       }, this);
       this.removed = [];
-      this.getUpdatedRecords().forEach(function(rec) {
+      Ext.each(this.getUpdatedRecords(), function(rec) {
         if (rec.dirty === true) rec.reject();
         if (rec.phantom === true) {
           rec.unjoin(this);
@@ -61,7 +61,7 @@
           if (Ext.isDefined(this.snapshot)) return this.snapshot.remove(rec);
         }
       }, this);
-      this.getNewRecords().forEach(function(rec) {
+      Ext.each(this.getNewRecords(), function(rec) {
         return this.data.remove(rec);
       }, this);
       return this.fireEvent('datachanged', this);

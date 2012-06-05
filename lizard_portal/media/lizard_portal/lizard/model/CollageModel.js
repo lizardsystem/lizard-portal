@@ -11,7 +11,9 @@
         update: "/workspace/api/collage_view/?_accept=application/json&flat=false&action=update&",
         destroy: "/workspace/api/collage_view/?_accept=application/json&flat=false&action=delete&"
       },
-      extraParams: {},
+      extraParams: {
+        _accept: 'application/json'
+      },
       params: {},
       writer: {
         type: 'json',

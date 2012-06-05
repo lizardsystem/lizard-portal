@@ -5,7 +5,11 @@ Changelog of lizard-portal
 0.57.16 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix link to ESF-overzichts-tabel. renamed, because only capital changes are not correct
+
+- ie issues (partly solve pp346)
+
+- Fix loading signal (pp 136)
 
 
 0.57.15 (2012-06-04)

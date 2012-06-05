@@ -20,6 +20,7 @@ Ext.define('Lizard.window.MapWindow',
         type: 'vbox',
         align: 'stretch'
     }
+    height: 600,
     #////
     # mapeditor
     # include edit possibilities in map

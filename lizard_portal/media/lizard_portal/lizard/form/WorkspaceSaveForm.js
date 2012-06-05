@@ -9,6 +9,7 @@
       anchor: '100%'
     },
     width: 400,
+    height: 600,
     save_callback: Ext.emptyFn,
     items: [
       {

@@ -386,3 +386,39 @@ img.x-tool-delete {
 td.padleft {
     padding-left: 3em;
 }
+
+.esfTableSmall td {
+    width: 60px;
+}
+.esfTableSmall tr td {
+    text-align: center;
+}
+.esfTableSmall span {
+    font-size:40px;
+}
+.esfTableSmall span.ok {
+
+}
+.esfTableSmall span.critical {
+    color:red;
+}
+.esfTableSmall span.novalue {
+    color: #ccc;
+}
+.esfTableSmall span.name {
+    font-style:italic;
+    font-size:8px;
+}
+
+.esfTableBig td {
+    width: 100px
+}
+.esfTableBig tr td {
+    text-align: center;
+}
+.esfTableBig tr td.critical {
+    background-color: red;
+}
+.esfTableBig tr td.novalue {
+    /*background-color: #ccc;*/
+}

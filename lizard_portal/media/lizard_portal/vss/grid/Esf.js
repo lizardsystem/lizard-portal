@@ -208,7 +208,7 @@ Ext.define('Vss.grid.Esf', {
             //in case the user is allowed to edit
 
             var manual_editor = function(record) {
-                if (['main_esf', 'expert_result', 'expert_setting'].indexOf(record.data.config_type)>=0) {
+                if (Ext.Array.indexOf(['main_esf', 'expert_result', 'expert_setting'], record.data.config_type)>=0) {
 
                     return {
                         xtype: 'combobox',
@@ -228,8 +228,8 @@ Ext.define('Vss.grid.Esf', {
 
             var value_editor = function(record) {
 
-                if ((['main_esf', 'expert_result', 'expert_setting'].indexOf(record.data.config_type)>=0 && record.data.manual == 1) ||
-                        (['base_setting'].indexOf(record.data.config_type)>=0)) {
+                if ((Ext.Array.indexOf(['main_esf', 'expert_result', 'expert_setting'], record.data.config_type)>=0 && record.data.manual == 1) ||
+                        (Ext.Array.indexOf(['base_setting'], record.data.config_type)>=0)) {
                     if (record.data.type == 'oordeel') {
                         return me.editors.oordeel_editor;
                     } else  if (record.data.type == 'text') {
@@ -284,9 +284,9 @@ Ext.define('Vss.grid.Esf', {
                           console.log(arguments);
                           record = grid.store.getAt(row);
                           var html = ''
-                          if (record.data.manual || ['base_setting'].indexOf(record.data.config_type) >= 0) {
+                          if (record.data.manual || Ext.Array.indexOf(['base_setting'], record.data.config_type) >= 0) {
                               html = record.get('comment') + '<br><i>' + record.get('last_edit_by') + ', ' + record.get('last_edit_date') + '</i>';
-                          } else if (['result', 'expert_result', 'main_esf'].indexOf(record.data.config_type) >= 0 && record.get('auto_value_ts')) {
+                          } else if (Ext.Array.indexOf(['result', 'expert_result', 'main_esf'], record.data.config_type) >= 0 && record.get('auto_value_ts')) {
                               html =  'automatische waarde van ' + record.get('auto_value_ts');
                           }
 

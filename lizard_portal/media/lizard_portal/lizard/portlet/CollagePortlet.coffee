@@ -97,7 +97,7 @@ Ext.define('Lizard.portlet.CollagePortlet', {
                 #alias: 'widget.manageworkspacesportlet'
                 title: 'Beheer collages',
                 width: 600
-                height: window.innerHeight - 200,
+                height: 600,
                 modal: true,
                 constrainHeader: true,
                 layout:

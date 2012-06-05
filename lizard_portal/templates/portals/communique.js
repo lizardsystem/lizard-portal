@@ -13,7 +13,7 @@
                 '<p>',
                 '{[this.transform(values)]}',
                 '</p>',
-                '<hr></hr><p><i>{edited_by}, {edited_at}</i></p>',
+                '<br><hr ></hr><p><i>{edited_by}, {edited_at}</i></p>',
                 '</tpl>',
                 {
                     transform: function(values) {

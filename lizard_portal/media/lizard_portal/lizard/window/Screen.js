@@ -40,9 +40,9 @@ showNavigationPortalTemplate
       if (save_state == null) save_state = true;
       if (area_selection_collapse == null) area_selection_collapse = true;
       if (skip_animation == null) skip_animation = false;
-      args = Ext.Object.merge({}, this.context_manager.getContext(), params);
+      args = Ext.Object.merge({}, Lizard.CM.getContext(), params);
       href = '/portal/only_portal/#' + args.headertab.name + '/' + args.portal_template + '/' + args.object.type + '/' + args.object.id;
-      return window.open(href, args.portal_template + ' ' + args.object.name, 'width=800,height=600,scrollbars=yes');
+      return window.open(href, 'vss', 'width=800,height=600,scrollbars=yes');
     },
     linkToPopup: function(title, url, params, window_options, add_active_object_to_request, renderer, modal, reloadme) {
       var args, cont, me, success, window_settings;

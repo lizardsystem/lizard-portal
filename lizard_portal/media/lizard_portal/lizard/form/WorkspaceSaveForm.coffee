@@ -8,6 +8,7 @@ Ext.define('Lizard.form.WorkspaceSaveForm', {
     defaults:
         anchor: '100%'
     width: 400,
+    height: 600,
     #save_callback: (updated_record) ->
     #    debugger
     save_callback: Ext.emptyFn

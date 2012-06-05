@@ -91,7 +91,7 @@
             extend: 'Ext.grid.Panel',
             title: 'Beheer collages',
             width: 600,
-            height: window.innerHeight - 200,
+            height: 600,
             modal: true,
             constrainHeader: true,
             layout: {

@@ -9,7 +9,9 @@ Ext.define('Lizard.model.CollageModel', {
             read: "/workspace/api/collage_view/?_accept=application/json&" # Called when reading existing records
             update: "/workspace/api/collage_view/?_accept=application/json&flat=false&action=update&" # Called when updating existing records
             destroy: "/workspace/api/collage_view/?_accept=application/json&flat=false&action=delete&" # Called when deleting existing records
-        extraParams: {}
+        extraParams: {
+            _accept: 'application/json'
+        }
 
         params: {}
 

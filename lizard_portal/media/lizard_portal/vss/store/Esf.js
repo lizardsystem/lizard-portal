@@ -30,9 +30,7 @@ Ext.define('Vss.store.Esf', {
     },
     proxy: {
         type: 'ajax',
-        url: '/esf/api/configuration/tree/',
-        extraParams: {
-        },
+        url: '/esf/api/configuration/tree/?_accept=application/json',
         writer: {
             type: 'json',
             writeAllFields: false,
