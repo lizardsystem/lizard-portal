@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.15 (unreleased)
+0.57.16 (unreleased)
 --------------------
 
 - Fix link to ESF-overzichts-tabel. renamed, because only capital changes are not correct
@@ -10,6 +10,12 @@ Changelog of lizard-portal
 - ie issues (partly solve pp346)
 
 - Fix loading signal (pp 136)
+
+
+0.57.15 (2012-06-04)
+--------------------
+
+- Changed measure-status legend in themakaart.
 
 
 0.57.14 (2012-06-01)
