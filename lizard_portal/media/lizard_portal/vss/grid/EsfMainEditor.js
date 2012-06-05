@@ -287,7 +287,7 @@ Ext.define('Vss.grid.EsfMainEditor.', {
                 },{
                     xtype: 'button',
                     id: 'save_button',
-                    text: 'Save',
+                    text: 'Opslaan',
                     iconCls: 'l-icon-disk',
                     handler: function(menuItem) {
 

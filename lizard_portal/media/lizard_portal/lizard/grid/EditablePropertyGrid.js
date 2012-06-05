@@ -134,14 +134,14 @@
         me.bbar = [
           {
             xtype: 'button',
-            text: 'Cancel',
+            text: 'Annuleren',
             iconCls: 'cancel',
             handler: function(menuItem, checked) {
               return me.cancelEdits();
             }
           }, {
             xtype: 'button',
-            text: 'Save',
+            text: 'Opslaan',
             iconCls: 'save',
             handler: function(menuItem) {
               if (me.getEnterEditSummary()) {
