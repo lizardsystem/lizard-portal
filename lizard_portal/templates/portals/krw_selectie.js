@@ -64,12 +64,7 @@
 
                 });
             },
-            extent: new OpenLayers.Bounds(
-                Lizard.CM.getContext().init_zoom[0],
-                Lizard.CM.getContext().init_zoom[1],
-                Lizard.CM.getContext().init_zoom[2],
-                Lizard.CM.getContext().init_zoom[3]
-            ),
+            extent: new OpenLayers.Bounds.fromArray(Lizard.CM.getContext().init_zoom),
             //(4.7221503096837303, 52.097418937370598, 5.3054492200965404, 52.431493172200199)
             layers: [
                 new OpenLayers.Layer.OSM(),

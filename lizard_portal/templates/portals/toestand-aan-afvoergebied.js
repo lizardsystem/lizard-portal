@@ -15,6 +15,7 @@
 	items: [{
     	width: 200,
 		items: [
+            {% get_portal_template communique_map %},
             {% get_portal_template gebiedseigenschappen %},
             {% get_portal_template communique %}
 

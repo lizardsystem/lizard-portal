@@ -17,6 +17,7 @@
 	items:[{
 		width: 300,
 		items: [
+            {% get_portal_template communique_map %},
             {% get_portal_template krw_waterlichaam_eigenschappen %},
             {% get_portal_template communique %},
             {% get_portal_template gebieden_links %}

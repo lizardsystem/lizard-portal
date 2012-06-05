@@ -61,6 +61,8 @@ Ext.define('GeoExt.panel.Map', {
 		}
 	},
 
+    addDefaultControls: true,
+
 	/** api: config[map]
 	 *  ``OpenLayers.Map or Object``  A configured map or a configuration object
 	 *  for the map constructor.  A configured map will be available after
@@ -156,14 +158,15 @@ Ext.define('GeoExt.panel.Map', {
 			me.map = new OpenLayers.Map(Ext.applyIf(me.map || {}, options));
 		}
 
-        zoom_panel = new OpenLayers.Control.Panel();
-        zoom_panel.addControls([ new this.ZoomSlider({ zoomStopHeight: 3 }) ]);
-        this.map.addControl(zoom_panel);
-        this.navigation = new OpenLayers.Control.Navigation();
-        this.map.addControl(this.navigation);
-        this.map.addControl(new OpenLayers.Control.Scale);
-        this.map.addControl(new OpenLayers.Control.ScaleLine);
-
+        if (this.addDefaultControls) {
+            zoom_panel = new OpenLayers.Control.Panel();
+            zoom_panel.addControls([ new this.ZoomSlider({ zoomStopHeight: 3 }) ]);
+            this.map.addControl(zoom_panel);
+            this.navigation = new OpenLayers.Control.Navigation();
+            this.map.addControl(this.navigation);
+            this.map.addControl(new OpenLayers.Control.Scale);
+            this.map.addControl(new OpenLayers.Control.ScaleLine);
+        }
         for (var i = 0; i < me.controls.length; i++) {
             me.map.addControl(me.controls[i]);
         }
