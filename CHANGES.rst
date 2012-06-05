@@ -7,6 +7,10 @@ Changelog of lizard-portal
 
 - Fix link to ESF-overzichts-tabel. renamed, because only capital changes are not correct
 
+- ie issues (partly solve pp346)
+
+- Fix loading signal (pp 136)
+
 
 0.57.14 (2012-06-01)
 --------------------

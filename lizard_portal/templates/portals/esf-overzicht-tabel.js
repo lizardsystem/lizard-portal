@@ -3,7 +3,7 @@
 
 
 {
-    itemId: 'esf-overzicht-beheer',
+    itemId: 'esf-overzicht-tabel',
     title: 'ESF overzicht',
 	xtype: 'portalpanel',
     breadcrumbs: [
