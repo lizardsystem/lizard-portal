@@ -8,6 +8,8 @@ Changelog of lizard-portal
 - Added new x-tool icons: cancel-yellow, delete-red, delete-single,
   edit, zoom-in, zoom-out.
 
+- Added various tooltips.
+
 - Fix link to ESF-overzichts-tabel. renamed, because only capital changes are not correct
 
 - ie issues (partly solve pp346)
