@@ -17,6 +17,7 @@ Ext.define('Vss.grid.Esf', {
     },
     tools: [{
         type: 'search',
+        tooltip: 'Historie',
         handler: function (e, target, panelHeader, tool) {
             Ext.create('Ext.window.Window', {
                 title: 'Geschiedenis van ESF-configuratie',
@@ -43,6 +44,7 @@ Ext.define('Vss.grid.Esf', {
         }
     },{//expand tree for extra lines
         type: 'right',
+        tooltip: 'Schalen',
         handler: function (e, target, panelHeader, tool) {
             var portal_col = panelHeader.up('portalcolumn')
             if (tool.type == 'left') {

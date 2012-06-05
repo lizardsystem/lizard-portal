@@ -108,6 +108,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
             items: []
             tools: [{
                 type: 'zoom-in'
+                tooltip: 'Zoomen'
                 handler: (e, target, panelHeader, tool) ->
                     portlet = panelHeader.ownerCt;
 

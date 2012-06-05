@@ -44,6 +44,7 @@
            }{% if user.is_authenticated %},
             tools: [{
                 type: 'edit',
+                tooltip: 'Bewerken',
                 handler: function(e, target, panelHeader, tool){
                     console.log(arguments)
                     var portlet = panelHeader.up('panel')

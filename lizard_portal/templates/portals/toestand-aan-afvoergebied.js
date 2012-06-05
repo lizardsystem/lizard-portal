@@ -53,6 +53,7 @@
             }),
             tools: [{
                 type: 'edit',
+                tooltip: 'Bewerken',
                 handler: function (e, target, panelHeader, tool) {
                     var cm = Ext.getCmp('portalWindow').context_manager.getContext();
 
