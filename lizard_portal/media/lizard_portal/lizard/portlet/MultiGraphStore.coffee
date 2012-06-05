@@ -212,7 +212,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
 
         url = Ext.String.urlAppend("/graph/window/", querystring)
 
-        window.open(url)
+        return url
 
     initGraphs: () ->
         me = @
@@ -280,9 +280,9 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                                     '<tpl if="detail_link">',
                                          '<a href="javascript:void(0)" onclick="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>&nbsp;',
                                     '</tpl>',
-                                    '<a href="javascript:void(0)" onclick="',
-                                    '{[this.get_function_for_graph_window(values)]}',
-                                    '">groot</a>',
+                                    '<a href="',
+                                    '{[this.get_link_for_graph_window(values)]}',
+                                    '" target="_blank">groot</a>',
                                 '<img src="',
                                 '{[this.get_url(values)]}',
                                 '" height={height} width={width} />',
@@ -297,8 +297,8 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                                 return Lizard.model.Graph.getGraphUrl(values)
                             else
                                 return 'data:image/gif'
-                        get_function_for_graph_window: (values) ->
-                            return "Ext.getCmp('"+me.id+"').open_graph_window('"+values.id+"');"
+                        get_link_for_graph_window: (values) ->
+                            return me.open_graph_window(values.id)
 
                         context_ready:() ->
                            return me.store.context_ready
