@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.57.15 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix link to ESF-overzichts-tabel. renamed, because only capital changes are not correct
 
 
 0.57.14 (2012-06-01)

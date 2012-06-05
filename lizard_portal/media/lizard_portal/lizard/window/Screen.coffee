@@ -57,10 +57,11 @@ Ext.define 'Lizard.window.Screen',
         #console.log('linkToNewWindow, with arguments:')
         #console.log(arguments)
 
-        args = Ext.Object.merge({}, @context_manager.getContext(), params)
+        args = Ext.Object.merge({}, Lizard.CM.getContext(), params)
         href = '/portal/only_portal/#'+args.headertab.name+'/'+args.portal_template+'/'+args.object.type + '/' + args.object.id
+        #i.e. only supports names, without spaces, etc. so name is not: window_name = args.portal_template + ' ' + args.object.id
 
-        window.open( href, args.portal_template + ' ' + args.object.name, 'width=800,height=600,scrollbars=yes')
+        window.open(href, 'vss', 'width=800,height=600,scrollbars=yes')
 
     #////
     #linkToPopup:

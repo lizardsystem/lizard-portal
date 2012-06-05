@@ -125,7 +125,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
                 #alias: 'widget.manageworkspacesportlet'
                 title: 'Beheer workspaces',
                 width: 600
-                height: window.innerHeight - 200,
+                height: 600,
                 modal: true,
                 constrainHeader: true,
                 layout:
