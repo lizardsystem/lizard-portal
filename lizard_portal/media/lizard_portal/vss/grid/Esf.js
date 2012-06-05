@@ -44,7 +44,7 @@ Ext.define('Vss.grid.Esf', {
         }
     },{//expand tree for extra lines
         type: 'right',
-        tooltip: 'Schalen',
+        tooltip: 'In-/uitklappen',
         handler: function (e, target, panelHeader, tool) {
             var portal_col = panelHeader.up('portalcolumn')
             if (tool.type == 'left') {
