@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.17 (unreleased)
+0.57.17 (2012-06-05)
 --------------------
 
 - Fixed geometry editor polygons not changeable.
