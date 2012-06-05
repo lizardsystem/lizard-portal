@@ -341,7 +341,7 @@
         };
         if (this.addEditIcon) {
           colConfig.items.push({
-            icon: '/static_media/lizard_portal/images/settingtable.png',
+            icon: '/static_media/lizard_portal/x-tool-icons/x-tool-edit.png',
             tooltip: 'Edit',
             handler: function(grid, rowIndex, colIndex) {
               var rec;
@@ -360,7 +360,7 @@
         }
         if (this.addDeleteIcon) {
           colConfig.items.push({
-            icon: '/static_media/lizard_portal/images/delete.png',
+            icon: '/static_media/lizard_portal/x-tool-icons/x-tool-delete-single.png',
             tooltip: 'Delete',
             handler: function(grid, rowIndex, colIndex) {
               var rec;

@@ -366,7 +366,7 @@ Ext.define('Lizard.grid.EditableGrid', {
             if @addEditIcon
                 colConfig.items.push({
                         #todo: iconCls is better, but doesn't work
-                        icon: '/static_media/lizard_portal/images/settingtable.png',
+                        icon: '/static_media/lizard_portal/x-tool-icons/x-tool-edit.png',
                         tooltip: 'Edit',
                         handler: (grid, rowIndex, colIndex) ->
                             rec = grid.getStore().getAt(rowIndex)
@@ -382,7 +382,7 @@ Ext.define('Lizard.grid.EditableGrid', {
             if @addDeleteIcon
                 colConfig.items.push({
                         #todo: iconCls is better, but doesn't work
-                        icon: '/static_media/lizard_portal/images/delete.png',
+                        icon: '/static_media/lizard_portal/x-tool-icons/x-tool-delete-single.png',
                         #xtype: 'button'
                         tooltip: 'Delete',
                         handler: (grid, rowIndex, colIndex) ->

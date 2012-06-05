@@ -55,7 +55,7 @@ Ext.define('Lizard.portlet.CollagePortlet', {
                     config.callback(records, operation, success)
         })
     tools: [{
-        type: 'empty',
+        type: 'delete',
         tooltip: 'Collage legen',
         handler: (e, target, panelHeader, tool) ->
             portlet = panelHeader.ownerCt;
@@ -148,7 +148,7 @@ Ext.define('Lizard.portlet.CollagePortlet', {
 
     },
       {
-        type: 'delete'
+        type: 'delete-single'
         tooltip: 'Collage item verwijderen (na selectie)'
         handler: (e, target, panelHeader, tool) ->
           portlet = panelHeader.ownerCt;

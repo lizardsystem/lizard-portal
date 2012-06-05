@@ -236,16 +236,16 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
             if tool.name == 'resize-graph'
                 resizer_index = me.tools.indexOf(tool)
         resizer_tool = {
-            type: 'plus'
+            type: 'zoom-in'
             name: 'resize-graph'
             handler: (e, target, panelHeader, tool) ->
                 portlet = panelHeader.ownerCt;
 
-                if (tool.type == 'plus')
-                    tool.setType('minus')
+                if (tool.type == 'zoom-in')
+                    tool.setType('zoom-out')
                     me.setFitInPortal(false)
                 else
-                    tool.setType('plus')
+                    tool.setType('zoom-in')
                     me.setFitInPortal(true)
         }
         if resizer_index == undefined
