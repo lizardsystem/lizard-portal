@@ -303,12 +303,25 @@ Ext.application({
                      {% endif %}
                      handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'organisatie-beheer'}); }
                 },
-		{
+		        {
                    text: 'Koppeling KRW en aan/afvoergebieden',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
                      handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'area_link'}); }
+                },{
+                    text: 'Upload FEWS import bestanden',
+                    {% if user.is_authenticated %}
+                    disabled: false,
+                    {% endif %}
+                    handler: function() { window.open('/portal/uploadfile/') }
+                },
+                {
+                    text: 'Upload configuratie file',
+                    {% if user.is_authenticated %}
+                    disabled: false,
+                    {% endif %}
+                    handler: function() { window.open('/portal/uploadfile/') }
                 },
                 {
                    text: 'Valideren waterbalans/ESF configuraties',
@@ -320,7 +333,7 @@ Ext.application({
                 {
                      text: 'Gebruikers',
                      {% if user.is_authenticated %}
-                         disabled: false,
+                     disabled: false,
                      {% endif %}
                      handler: function() { window.open('/manager/') }
                 },
@@ -330,13 +343,6 @@ Ext.application({
                      disabled: false,
                      {% endif %}
                      handler: function() { window.open('/task/') }
-                },
-                {
-                     text: 'Upload configuratie file',
-                     {% if user.is_authenticated %}
-                     disabled: false,
-                     {% endif %}
-                     handler: function() { window.open('/portal/uploadfile/') }
                 }
 		]
             })

@@ -201,7 +201,7 @@
         graph_url: graph_url
       });
       url = Ext.String.urlAppend("/graph/window/", querystring);
-      return window.open(url);
+      return url;
     },
     initGraphs: function() {
       var me;
@@ -259,7 +259,7 @@
         items: {
           xtype: 'dataview',
           store: this.store,
-          tpl: new Ext.XTemplate('<tpl if="this.context_ready()">', '<tpl for=".">', '<div class="thumb-wrap">', '<tpl if="visible">', '{name}:   ', '<tpl if="detail_link">', '<a href="javascript:void(0)" onclick="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>&nbsp;', '</tpl>', '<a href="javascript:void(0)" onclick="', '{[this.get_function_for_graph_window(values)]}', '">groot</a>', '<img src="', '{[this.get_url(values)]}', '" height={height} width={width} />', '</tpl>', '</div>', '</tpl>', '</tpl>', {
+          tpl: new Ext.XTemplate('<tpl if="this.context_ready()">', '<tpl for=".">', '<div class="thumb-wrap">', '<tpl if="visible">', '{name}:   ', '<tpl if="detail_link">', '<a href="javascript:void(0)" onclick="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>&nbsp;', '</tpl>', '<a href="', '{[this.get_link_for_graph_window(values)]}', '" target="_blank">groot</a>', '<img src="', '{[this.get_url(values)]}', '" height={height} width={width} />', '</tpl>', '</div>', '</tpl>', '</tpl>', {
             get_url: function(values) {
               if (values.width > 0 && values.height > 0 && values.dt_start && values.dt_end) {
                 return Lizard.model.Graph.getGraphUrl(values);
@@ -267,8 +267,8 @@
                 return 'data:image/gif';
               }
             },
-            get_function_for_graph_window: function(values) {
-              return "Ext.getCmp('" + me.id + "').open_graph_window('" + values.id + "');";
+            get_link_for_graph_window: function(values) {
+              return me.open_graph_window(values.id);
             },
             context_ready: function() {
               return me.store.context_ready;
