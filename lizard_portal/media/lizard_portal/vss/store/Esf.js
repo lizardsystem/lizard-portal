@@ -76,6 +76,10 @@ Ext.define('Vss.store.Esf', {
             });
         }
     },
+    setTempWriteParams: function(params) {
+        this.notTmpParams = Ext.merge({}, this.proxy.extraParams);
+        this.proxy.extraParams = Ext.merge(this.proxy.extraParams, params);
+    },
     rejectChanges : function(){
 
         Ext.each(this.removed, function(rec) {

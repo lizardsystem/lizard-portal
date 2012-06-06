@@ -330,9 +330,16 @@ Ext.define('Vss.grid.Esf', {
                     text: 'Opslaan',
                     iconCls: 'l-icon-disk',
                     handler: function(menuItem) {
-
-                        me.store.sync();
-                    }
+                        Lizard.window.EditSummaryBox.show({
+                            fn: function(btn, text, field) {
+                                if (btn=='ok') {
+                                    me.store.setTempWriteParams({edit_message: text});
+                                    me.store.sync();
+                                    return true;
+                                }
+                            }
+                        });
+                   }
                 }]
             });
         }
