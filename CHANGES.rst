@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.57.18 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Split communique_map template in two, for areas and waterbodies.
 
 
 0.57.17 (2012-06-05)
