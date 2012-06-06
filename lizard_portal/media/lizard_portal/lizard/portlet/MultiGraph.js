@@ -110,6 +110,7 @@
         tools: [
           {
             type: 'zoom-in',
+            tooltip: 'Zoomen',
             handler: function(e, target, panelHeader, tool) {
               var portlet;
               portlet = panelHeader.ownerCt;

@@ -48,7 +48,7 @@
                 },
                 {
                     xtype: 'button',
-                    text: 'Save',
+                    text: 'Opslaan',
                     iconCls: 'l-icon-disk',
                     handler: function (menuItem) {
                         var panel = menuItem.up('panel');

@@ -162,9 +162,9 @@ Ext.define('Lizard.window.MapWindow',
         @height = @height ||  (window.innerHeight - 200)
         @width = @width || 500
 
-        @points = new OpenLayers.Layer.Vector( "Editable points", {geometryType: OpenLayers.Geometry.Point } );
-        @lines = new OpenLayers.Layer.Vector( "Editable lines" , {geometryType: OpenLayers.Geometry.Line });
-        @polygons = new OpenLayers.Layer.Vector( "Editable polygons" , {geometryType: OpenLayers.Geometry.Polygon });
+        @points = new OpenLayers.Layer.Vector("Editable points");
+        @lines = new OpenLayers.Layer.Vector("Editable lines");
+        @polygons = new OpenLayers.Layer.Vector("Editable polygons");
         @active_editable_layer = null
         @active_editor = null
         @active_edit_layer = null
@@ -207,7 +207,6 @@ Ext.define('Lizard.window.MapWindow',
                     me.active_edit_layer = me.lines
                 else if values.geometry == 'polygon'
                     me.active_edit_layer = me.polygons
-
 
                 if values.edit_action == 'modify'
                     if values.geometry == 'point'
@@ -359,14 +358,17 @@ Ext.define('Lizard.window.MapWindow',
             xtype: 'button',
             text: 'Klaar met bewerken',
             handler: (button) ->
-                if me.active_edit_layer
+                if me.active_edit_layer and
+                   me.active_edit_layer.features.length > 0
+                    for k, v of controls
+                        v.deactivate()  # Prevent projection problem.
                     wkt = me.serialize(me.active_edit_layer.features)
                 else
                     wkt = ''
                 if me.callback
                     me.callback(wkt)
-                window = button.up('window')
-                window.close()
+                this_window = button.up('window')
+                this_window.close()
         }
 
 

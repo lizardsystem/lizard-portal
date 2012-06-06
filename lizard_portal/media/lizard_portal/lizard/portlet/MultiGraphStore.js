@@ -224,6 +224,7 @@
       }
       resizer_tool = {
         type: 'zoom-in',
+        tooltip: 'Zoomen',
         name: 'resize-graph',
         handler: function(e, target, panelHeader, tool) {
           var portlet;

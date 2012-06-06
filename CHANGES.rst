@@ -2,11 +2,27 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.16 (unreleased)
+0.57.18 (unreleased)
+--------------------
+
+- Nothing changed yet.
+
+
+0.57.17 (2012-06-05)
+--------------------
+
+- Fixed geometry editor polygons not changeable.
+
+- Fixed geometry editor projection problem when in change mode.
+
+
+0.57.16 (2012-06-05)
 --------------------
 
 - Added new x-tool icons: cancel-yellow, delete-red, delete-single,
   edit, zoom-in, zoom-out.
+
+- Added various tooltips.
 
 - Fix link to ESF-overzichts-tabel. renamed, because only capital changes are not correct
 

@@ -148,7 +148,7 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
             me.bbar = [
                 {
                     xtype: 'button',
-                    text: 'Cancel',
+                    text: 'Annuleren',
                     iconCls: 'cancel',
                     handler:(menuItem, checked) ->
                         me.cancelEdits()
@@ -156,7 +156,7 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
                 }
                 {
                     xtype: 'button',
-                    text: 'Save',
+                    text: 'Opslaan',
                     iconCls: 'save',
                     handler: (menuItem) ->
 
@@ -235,7 +235,7 @@ Ext.define 'Lizard.grid.EditablePropertyGrid',
                     reader:
                         type: 'json'
                         root: 'data',
-                        
+
                     writer:
                         type: 'json',
                         writeAllFields: false,
