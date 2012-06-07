@@ -17,7 +17,7 @@
     },
     //init_workspace: false,
     autoLoadWorkspaceStore: {
-        object_slug: 'minimap_krw'
+        object_slug: 'minimap-krw'
     },
     plugins: [
         'applycontext'

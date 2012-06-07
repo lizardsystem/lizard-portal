@@ -17,7 +17,7 @@
     },
     //init_workspace: false,
     autoLoadWorkspaceStore: {
-        object_slug: 'minimap_area'
+        object_slug: 'minimap-area'
     },
     plugins: [
         'applycontext'
