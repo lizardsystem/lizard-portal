@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.19 (unreleased)
+0.57.19 (2012-06-07)
 --------------------
 
 - Add cql to legend urls for esf popup maps.
