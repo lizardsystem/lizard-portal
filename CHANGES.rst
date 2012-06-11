@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.20 (unreleased)
+0.57.20 (2012-06-11)
 --------------------
 
 - Replace old layer names for 'krw-selectie'
