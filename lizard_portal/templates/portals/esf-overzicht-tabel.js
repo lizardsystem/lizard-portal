@@ -38,56 +38,61 @@
                 size: 'small',
                 include_geom: false
             },
-            addEditIcon: true,
+            editable: false,
+            useSaveBar: false,
             usePagination: true,
-            //read_only_field: 'read_only',
-            actionEditIcon:function(record) {
-                var me = this
-                console.log(this.store.getNewRecords())
-                if (this.store.getNewRecords().length >0 ||
-                    this.store.getUpdatedRecords().length >0 ||
-                    this.store.getRemovedRecords().length >0) {
+            {% if perms.is_analyst %}
+                addEditIcon: true,
 
-                    Ext.Msg.alert("Let op", 'Sla eerst de bewerking(en) in het grid op, voordat een enkel record kan worden bewerkt');
-                    return
-                }
+                //read_only_field: 'read_only',
+                actionEditIcon:function(record) {
+                    var me = this
+                    console.log(this.store.getNewRecords())
+                    if (this.store.getNewRecords().length >0 ||
+                        this.store.getUpdatedRecords().length >0 ||
+                        this.store.getRemovedRecords().length >0) {
 
-                console.log('edit record:');
-                console.log(record);
-
-                if (record) {
-                    params = {
-                        object_id: record.get('ident')
+                        Ext.Msg.alert("Let op", 'Sla eerst de bewerking(en) in het grid op, voordat een enkel record kan worden bewerkt');
+                        return
                     }
-                } else {
-                    params = null
-                }
 
-                Ext.create('Ext.window.Window', {
-                    title: 'ESF',
-                    width: 600,
-                    height: 600,
-                    modal: true,
-		            constrainHeader: true,
-                    finish_edit_function: function (updated_record) {
-                        me.store.load();
-                    },
-                    editpopup: true,
-                    loader:{
-                        loadMask: true,
-                        autoLoad: true,
-                        url: '/esf/main_esf_editor/',
-                        ajaxOptions: {
-                            method: 'GET'
+                    console.log('edit record:');
+                    console.log(record);
+
+                    if (record) {
+                        params = {
+                            object_id: record.get('ident')
+                        }
+                    } else {
+                        params = null
+                    }
+
+                    Ext.create('Ext.window.Window', {
+                        title: 'ESF',
+                        width: 600,
+                        height: 600,
+                        modal: true,
+                        constrainHeader: true,
+                        finish_edit_function: function (updated_record) {
+                            me.store.load();
                         },
-                        params: params,
-                        renderer: 'component'
-                    }
-                }).show();
-            },
-            addRecord: function() {
-                this.actionEditIcon();
-           },
+                        editpopup: true,
+                        loader:{
+                            loadMask: true,
+                            autoLoad: true,
+                            url: '/esf/main_esf_editor/',
+                            ajaxOptions: {
+                                method: 'GET'
+                            },
+                            params: params,
+                            renderer: 'component'
+                        }
+                    }).show();
+                },
+                addRecord: function() {
+                    this.actionEditIcon();
+                },
+            {% endif %}
             dataConfig:[
                 {name: 'id', title: 'id', editable: false, visible: false, width: 30, type: 'number'},
                 {name: 'ident', title: 'ident', editable: false, visible: true, width: 50, type: 'text'},

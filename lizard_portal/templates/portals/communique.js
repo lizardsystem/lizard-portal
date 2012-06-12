@@ -41,10 +41,11 @@
                         object_id: params.object.id
                     }
                 });
-           }{% if user.is_authenticated %},
+           },
             tools: [{
                 type: 'edit',
                 tooltip: 'Bewerken',
+                {% if perms.is_analyst %}
                 handler: function(e, target, panelHeader, tool){
                     console.log(arguments)
                     var portlet = panelHeader.up('panel')
@@ -83,12 +84,14 @@
                                 }
                             },{
                                 text: 'Reset',
+                                iconCls: 'l-icon-cancel',
                                 handler: function(button, ev) {
                                     console.log(arguments)
                                     button.up('form').getForm().reset();
                                 }
                             }, {
                                 text: 'Opslaan',
+                                iconCls: 'l-icon-disk',
                                 formBind: true, //only enabled once the form is valid
                                 //disabled: true,
                                 handler: function() {
@@ -115,5 +118,8 @@
                          }
                     }).show();
                 }
-             }]{% endif %}
+            {% else %}
+            disabled: true
+            {% endif %}
+             }]
 		}

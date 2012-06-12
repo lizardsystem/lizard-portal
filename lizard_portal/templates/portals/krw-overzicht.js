@@ -56,36 +56,42 @@
             }),
             tools: [{
                 type: 'edit',
-                handler: function (e, target, panelHeader, tool) {
-                    var cm = Ext.getCmp('portalWindow').context_manager.getContext();
+                tooltip: 'Bewerken',
+                {% if perms.is_analyst %}
+                    disabled: false,
+                    handler: function (e, target, panelHeader, tool) {
+                        var cm = Ext.getCmp('portalWindow').context_manager.getContext();
 
-                    Ext.create('Ext.window.Window', {
-                        title: 'Stuurparameters instellen',
-                        width: 800,
-                        height: 600,
-                        modal: true,
-                        editpopup: true,
-			constrainHeader: true,
-                        listeners: {
-                            close: function() {
-                                var store = Ext.StoreManager.lookup('krw_overzicht_store');
-                                store.load();
+                        Ext.create('Ext.window.Window', {
+                            title: 'Stuurparameters instellen',
+                            width: 800,
+                            height: 600,
+                            modal: true,
+                            editpopup: true,
+                            constrainHeader: true,
+                            listeners: {
+                                close: function() {
+                                    var store = Ext.StoreManager.lookup('krw_overzicht_store');
+                                    store.load();
+                                }
+                            },
+                            loader:{
+                                loadMask: true,
+                                autoLoad: true,
+                                url: '/measure/steering_parameter_form/',
+                                params: {
+                                    object_id: cm.object.id
+                                },
+                                ajaxOptions: {
+                                    method: 'GET'
+                                },
+                                renderer: 'component'
                             }
-                        },
-                        loader:{
-                            loadMask: true,
-                            autoLoad: true,
-                            url: '/measure/steering_parameter_form/',
-                            params: {
-                                object_id: cm.object.id
-                            },
-                            ajaxOptions: {
-                                method: 'GET'
-                            },
-                            renderer: 'component'
-                        }
-                    }).show();
-                }
+                        }).show();
+                    }
+                {% else %}
+                    disabled: true,
+                {% endif %}
             }]
 		}]
 	}]

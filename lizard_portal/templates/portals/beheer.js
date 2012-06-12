@@ -61,12 +61,18 @@
                      {% endif %}
                      handler: function() { Lizard.CM.setContext({portal_template:'organisatie-beheer'}); }
                 },
-		{
+		        {
                    text: 'Koppeling KRW en aan/afvoergebieden',
                      {% if user.is_authenticated %}
                      disabled: false,
                      {% endif %}
                      handler: function() { Lizard.CM.setContext({portal_template:'area_link'}); }
+                },
+                    text: 'Upload configuratie file',
+                    {% if user.is_authenticated %}
+                    disabled: false,
+                    {% endif %}
+                    handler: function() { window.open('/portal/uploadfile/') }
                 },
                 {
                    text: 'Valideren waterbalans/ESF configuraties',
@@ -88,13 +94,6 @@
                      disabled: false,
                      {% endif %}
                      handler: function() { window.open('/task/') }
-                },
-		{
-                     text: 'Upload configuratie file',
-                     {% if user.is_authenticated %}
-                     disabled: false,
-                     {% endif %}
-                     handler: function() { window.open('/portal/uploadfile/') }
                 }
             ]
 		}]

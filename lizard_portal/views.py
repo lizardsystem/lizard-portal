@@ -112,7 +112,15 @@ def json_configuration(request):
     """
     Return JSON for request.
     """
-    c = RequestContext(request)
+
+
+    perms = dict(get_user_permissions_overall(request.user, 'user', as_list=True))
+
+    c = RequestContext(request, {
+        'perms': perms
+    })
+
+    print perms.keys()
 
     portal_template = request.GET.get('portal_template', 'homepage')
 

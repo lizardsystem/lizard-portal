@@ -305,10 +305,12 @@ Ext.application({
                 },
 		        {
                    text: 'Koppeling KRW en aan/afvoergebieden',
-                     {% if user.is_authenticated %}
-                     disabled: false,
-                     {% endif %}
-                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'area_link'}); }
+                   {% if perms.is_funct_beheerder %}
+                        disabled: false,
+                   {% else %}
+                        disabled: true,
+                    {% endif %}
+                    handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'area_link'}); }
                 },{
                     text: 'Upload FEWS import bestanden',
                     {% if user.is_authenticated %}
@@ -332,8 +334,10 @@ Ext.application({
                 },
                 {
                      text: 'Gebruikers',
-                     {% if user.is_authenticated %}
-                     disabled: false,
+                     {% if perms.is_helpdesk %}
+                        disabled: false,
+                     {% else %}
+                        disabled: true,
                      {% endif %}
                      handler: function() { window.open('/manager/') }
                 },

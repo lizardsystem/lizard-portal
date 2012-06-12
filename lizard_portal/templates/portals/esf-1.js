@@ -20,13 +20,12 @@
             title: "Opbouw ESF'en",
             xtype: 'esf_grid',
             store: Ext.create("Vss.store.Esf"),
-        {% if user.is_authenticated %}
+        {% if perms.is_analyst %}
             editable:true,
         {% else %}
             editable:false,
         {% endif %}
             closable: false
-
         }]
     },{
         flex:1,

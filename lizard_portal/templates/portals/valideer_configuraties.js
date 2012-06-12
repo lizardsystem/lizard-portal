@@ -1,6 +1,7 @@
 {% load get_grid %}
 {% load get_portal_template %}
 
+{% if perms.is_analyst %}
 {
     itemId: "valideer_configuraties",
     title: "Valideer configuraties",
@@ -96,3 +97,6 @@
 			}]
 	    }]
 }
+{% else %}
+{% get_portal_template geen_toegang %}
+{% endif %}

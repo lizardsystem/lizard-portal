@@ -594,7 +594,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                 '-'
                 {
                     xtype: 'button',
-                    text: 'Annuleren',
+                    text: 'Reset',
                     iconCls: 'l-icon-cancel',
                     handler:(menuItem, checked) ->
                         me.cancelEdits()

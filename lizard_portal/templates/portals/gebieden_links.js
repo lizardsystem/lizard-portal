@@ -1,3 +1,6 @@
+{% load get_portal_template %}
+
+{% if perms.appl_beheeder %}
 {
     title: 'Gebieden links',
     flex:1,
@@ -55,3 +58,6 @@
         }
     }
 }
+{% else %}
+{% get_portal_template geen_toegang %}
+{% endif %}

@@ -32,7 +32,7 @@
                 margin: 15
             },
             autoScroll:true,
-            {% if user.is_authenticated %}
+            {% if perms.is_analyst %}
             bbar: [
                 {
                     xtype: 'button',

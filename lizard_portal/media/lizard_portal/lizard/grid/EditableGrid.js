@@ -559,7 +559,7 @@
         me.bbar = me.bbar.concat([
           '-', {
             xtype: 'button',
-            text: 'Annuleren',
+            text: 'Reset',
             iconCls: 'l-icon-cancel',
             handler: function(menuItem, checked) {
               return me.cancelEdits();
