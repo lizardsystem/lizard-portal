@@ -41,7 +41,7 @@
             editable: false,
             useSaveBar: false,
             usePagination: true,
-            {% if perms.is_analyst %}
+            {% if perm.is_analyst %}
                 addEditIcon: true,
 
                 //read_only_field: 'read_only',

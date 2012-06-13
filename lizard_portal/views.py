@@ -100,7 +100,7 @@ def application(request, application_name, active_tab_name):
             'active_tab': active_tab_name,
             'context': context,
             'permission_list': perms_list,
-            'perms': perms,
+            'perm': perms,
             'extent': ','.join(['%.0f' % value for value in  extent])
         })
 
@@ -117,10 +117,10 @@ def json_configuration(request):
     perms = dict(get_user_permissions_overall(request.user, 'user', as_list=True))
 
     c = RequestContext(request, {
-        'perms': perms
+        'perm': perms
     })
 
-    print perms.keys()
+
 
     portal_template = request.GET.get('portal_template', 'homepage')
 

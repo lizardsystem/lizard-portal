@@ -55,7 +55,7 @@
             tools: [{
                 type: 'edit',
                 tooltip: 'Bewerken',
-                {% if perms.is_helpdesk %}
+                {% if perm.is_analyst %}
                     disabled: false,
                     handler: function (e, target, panelHeader, tool) {
                         var cm = Ext.getCmp('portalWindow').context_manager.getContext();

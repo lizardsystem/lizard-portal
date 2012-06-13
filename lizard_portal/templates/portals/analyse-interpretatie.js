@@ -24,6 +24,8 @@
       title: 'Analyse interpretatie',
       tools: [{
           type: 'plus',
+          tooltip: 'nieuwe toevoegen',
+          {% if perm.is_analyst %}
           handler: function (e, target, panelHeader, tool) {
               Ext.create('Ext.window.Window', {
                   title: 'Nieuwe analyse interpretatie toevoegen',
@@ -50,6 +52,9 @@
                   }
               }).show();
           }
+    {% else %}
+        disabled: true
+    {% endif %}
       } ],
       flex:1,
       items: {
@@ -65,6 +70,8 @@
                 '/annotation/view/' + record.data.id,
                 {},
                 {
+                {% if perm.is_analyst %}
+
                   save: [
                     'Bewerken analyse interpretatie: ' + record.data.title,
                     '/annotation/annotation_detailedit_portal/',
@@ -74,6 +81,7 @@
                     'component',
                     true
                   ],
+                {% endif %}
                   search: [
                     'Geschiedenis',
                     '/annotation/history/' + record.data.id,

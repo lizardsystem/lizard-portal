@@ -4,6 +4,7 @@
     extend: 'Ext.grid.Panel',
     alias: 'widget.collageportlet',
     title: 'Collage',
+    read_only: false,
     viewConfig: {
       plugins: {
         ptype: 'gridviewdragdrop',
@@ -49,16 +50,114 @@
         }
       });
     },
+    create_collage_window: function(portlet) {
+      var config, form_window;
+      portlet = portlet;
+      config = {
+        extend: 'Ext.grid.Panel',
+        title: 'Beheer collages',
+        width: 600,
+        height: 600,
+        modal: true,
+        constrainHeader: true,
+        layout: {
+          type: 'vbox',
+          align: 'stretch'
+        },
+        items: [
+          {
+            xtype: 'leditgrid',
+            flex: 1,
+            autoScroll: true,
+            proxyUrl: '/workspace/api/collage_view/',
+            proxyParams: {},
+            enterEditSummary: false,
+            addEditIcon: false,
+            addDeleteIcon: true,
+            usePagination: false,
+            read_only_field: 'read_only',
+            useAddDeleteButtons: false,
+            addExtraActionIcon: true,
+            extraActionIconUrl: '/static_media/lizard_portal/images/hand.png',
+            extraActionIconTooltip: 'openen',
+            actionExtraActionIcon: function(record) {
+              return portlet.loadCollage({
+                params: {
+                  object_id: record.get('id')
+                },
+                callback: function(records, operation, success) {
+                  if (success) {
+                    return form_window.close();
+                  } else {
+                    return alert('laden mislukt');
+                  }
+                }
+              });
+            },
+            dataConfig: [
+              {
+                name: 'id',
+                title: 'id',
+                editable: false,
+                visible: false,
+                width: 50,
+                type: 'number'
+              }, {
+                name: 'name',
+                title: 'Naam',
+                editable: true,
+                visible: true,
+                width: 250,
+                type: 'text'
+              }, {
+                name: 'personal_category',
+                title: 'persoonlijke tag',
+                editable: true,
+                visible: true,
+                width: 200,
+                type: 'text'
+              }, {
+                name: 'owner_type',
+                title: 'Type',
+                editable: false,
+                visible: true,
+                width: 60,
+                type: 'gridcombobox'
+              }, {
+                name: 'data_set',
+                title: 'Dataset',
+                editable: false,
+                visible: false,
+                width: 150,
+                type: 'gridcombobox'
+              }, {
+                name: 'owner',
+                title: 'Eigenaar',
+                editable: false,
+                visible: false,
+                width: 150,
+                type: 'gridcombobox'
+              }, {
+                name: 'read_only',
+                title: 'alleen_lezen',
+                editable: false,
+                visible: false,
+                width: 50,
+                type: 'boolean'
+              }
+            ],
+            storeAutoLoad: true
+          }
+        ]
+      };
+      if (this.read_only) {
+        config.items[0].editable = false;
+        config.items[0].addDeleteIcon = false;
+      }
+      return form_window = Ext.create('Ext.window.Window', config).show();
+    },
     tools: [
       {
-        type: 'delete',
-        tooltip: 'Collage legen',
-        handler: function(e, target, panelHeader, tool) {
-          var portlet;
-          portlet = panelHeader.ownerCt;
-          return portlet.clear();
-        }
-      }, {
         type: 'save',
         tooltip: 'Collage opslaan',
         handler: function(e, target, panelHeader, tool) {
@@ -84,105 +183,18 @@
         type: 'gear',
         tooltip: 'Collages beheren',
         handler: function(e, target, panelHeader, tool) {
-          var a, form_window, portlet;
+          var a, portlet;
           portlet = panelHeader.ownerCt;
           a = portlet.html;
-          return form_window = Ext.create('Ext.window.Window', {
-            extend: 'Ext.grid.Panel',
-            title: 'Beheer collages',
-            width: 600,
-            height: 600,
-            modal: true,
-            constrainHeader: true,
-            layout: {
-              type: 'vbox',
-              align: 'stretch'
-            },
-            items: [
-              {
-                xtype: 'leditgrid',
-                flex: 1,
-                autoScroll: true,
-                proxyUrl: '/workspace/api/collage_view/',
-                proxyParams: {},
-                enterEditSummary: false,
-                addEditIcon: false,
-                addDeleteIcon: true,
-                usePagination: false,
-                read_only_field: 'read_only',
-                addExtraActionIcon: true,
-                extraActionIconUrl: '/static_media/lizard_portal/images/hand.png',
-                extraActionIconTooltip: 'openen',
-                actionExtraActionIcon: function(record) {
-                  return portlet.loadCollage({
-                    params: {
-                      object_id: record.get('id')
-                    },
-                    callback: function(records, operation, success) {
-                      if (success) {
-                        return form_window.close();
-                      } else {
-                        return alert('laden mislukt');
-                      }
-                    }
-                  });
-                },
-                dataConfig: [
-                  {
-                    name: 'id',
-                    title: 'id',
-                    editable: false,
-                    visible: false,
-                    width: 50,
-                    type: 'number'
-                  }, {
-                    name: 'name',
-                    title: 'Naam',
-                    editable: true,
-                    visible: true,
-                    width: 250,
-                    type: 'text'
-                  }, {
-                    name: 'personal_category',
-                    title: 'persoonlijke tag',
-                    editable: true,
-                    visible: true,
-                    width: 200,
-                    type: 'text'
-                  }, {
-                    name: 'owner_type',
-                    title: 'Type',
-                    editable: false,
-                    visible: true,
-                    width: 60,
-                    type: 'gridcombobox'
-                  }, {
-                    name: 'data_set',
-                    title: 'Dataset',
-                    editable: false,
-                    visible: false,
-                    width: 150,
-                    type: 'gridcombobox'
-                  }, {
-                    name: 'owner',
-                    title: 'Eigenaar',
-                    editable: false,
-                    visible: false,
-                    width: 150,
-                    type: 'gridcombobox'
-                  }, {
-                    name: 'read_only',
-                    title: 'alleen_lezen',
-                    editable: false,
-                    visible: false,
-                    width: 50,
-                    type: 'boolean'
-                  }
-                ],
-                storeAutoLoad: true
-              }
-            ]
-          }).show();
+          return portlet.create_collage_window(portlet);
+        }
+      }, {
+        type: 'delete',
+        tooltip: 'Collage legen',
+        handler: function(e, target, panelHeader, tool) {
+          var portlet;
+          portlet = panelHeader.ownerCt;
+          return portlet.clear();
         }
       }, {
         type: 'delete-single',
@@ -228,6 +240,7 @@
     initComponent: function() {
       var me;
       me = this;
+      if (me.read_only) me.tools[0].disabled = true;
       this.store = this.collageStore.collageItemStore;
       Ext.apply(this, {
         listeners: {

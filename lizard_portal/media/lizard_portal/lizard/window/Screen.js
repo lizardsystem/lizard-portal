@@ -100,21 +100,21 @@ showNavigationPortalTemplate
           }
         });
       }
-      if (window_options.search) {
-        window_settings.tools.push({
-          type: 'search',
-          tooltip: window_options.search[0],
-          handler: function(e, target, panelHeader, tool) {
-            return me.linkToPopup.apply(me, window_options.search);
-          }
-        });
-      }
       if (window_options.plus) {
         window_settings.tools.push({
           type: 'plus',
           tooltip: window_options.plus[0],
           handler: function(e, target, panelHeader, tool) {
             return me.linkToPopup.apply(me, window_options.plus);
+          }
+        });
+      }
+      if (window_options.search) {
+        window_settings.tools.push({
+          type: 'search',
+          tooltip: window_options.search[0],
+          handler: function(e, target, panelHeader, tool) {
+            return me.linkToPopup.apply(me, window_options.search);
           }
         });
       }

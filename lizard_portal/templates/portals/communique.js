@@ -45,7 +45,7 @@
             tools: [{
                 type: 'edit',
                 tooltip: 'Bewerken',
-                {% if perms.is_analyst %}
+                {% if perm.is_analyst %}
                 handler: function(e, target, panelHeader, tool){
                     console.log(arguments)
                     var portlet = panelHeader.up('panel')

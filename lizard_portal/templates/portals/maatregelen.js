@@ -67,6 +67,7 @@
             tools: [{
                 type: 'plus',
                 tooltip: 'Nieuwe maatregel toevoegen',
+            {% if perm.is_beleidsmaker %}
                 handler: function (e, target, panelHeader, tool) {
                     panel = panelHeader.up('panel');
 
@@ -92,6 +93,9 @@
                         }
                     }).show();
                 }
+            {% else %}
+                disabled: true
+            {% endif %}
             }]
           }]
 	}]

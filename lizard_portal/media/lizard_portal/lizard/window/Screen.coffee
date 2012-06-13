@@ -121,13 +121,6 @@ Ext.define 'Lizard.window.Screen',
                     me.linkToPopup.apply(me, window_options.save);
             })
 
-        if window_options.search
-            window_settings.tools.push({
-                                       type: 'search',
-                                       tooltip: window_options.search[0],  # Title
-                                       handler: (e, target, panelHeader, tool) ->
-                                           me.linkToPopup.apply(me, window_options.search);
-                                       })
         if window_options.plus
             window_settings.tools.push({
                                        type: 'plus',
@@ -135,6 +128,15 @@ Ext.define 'Lizard.window.Screen',
                                        handler: (e, target, panelHeader, tool) ->
                                            me.linkToPopup.apply(me, window_options.plus);
                                        })
+
+        if window_options.search
+            window_settings.tools.push({
+                                       type: 'search',
+                                       tooltip: window_options.search[0],  # Title
+                                       handler: (e, target, panelHeader, tool) ->
+                                           me.linkToPopup.apply(me, window_options.search);
+                                       })
+
 
         Ext.create('Ext.window.Window', window_settings).show();
 
