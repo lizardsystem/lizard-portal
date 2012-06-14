@@ -2,8 +2,8 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.21 (unreleased)
---------------------
+0.58 (2012-06-14)
+-----------------
 
 - added userrights to views (pp 367)
 
