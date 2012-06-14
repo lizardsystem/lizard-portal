@@ -27,6 +27,10 @@
 {# TO DO add production setting with  disableCaching: false later on. Possibly also add script tags of known files and compress them #}
     Ext.Loader.setConfig({disableCaching: true, enabled: true});
 </script>
+
+<script type="text/javascript"
+        src="{{ STATIC_URL }}extjs/locale/ext-lang-nl.js"></script>
+
 <script type="text/javascript"
         src="/portal/application/{{ application }}/{{ active_tab }}"></script>
 {# TO DO for production, add custom made build of Openlayers #}
