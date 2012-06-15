@@ -7,6 +7,9 @@ Changelog of lizard-portal
 
 - Fixed grammatical mistake in message.
 
+- Changed permissions to upload wb/esf configuration, allowed only for analyst
+  and superuser.
+
 
 0.58.1 (2012-06-14)
 -------------------

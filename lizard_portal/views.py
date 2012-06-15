@@ -240,11 +240,10 @@ def handle_uploaded_file(f, organisation):
 
 
 def check_permission(user):
-    """Return true is the user is a member of
-    functioneelbeheerder usergroup or superuser."""
-    functioneelbeheerder_groups = user.user_group_memberships.filter(
-        name__contains='functioneel beheerder')
-    if functioneelbeheerder_groups.exists() or user.is_superuser:
+    """Return true is the user has permission
+    is_analyst or superuser."""
+    perms = dict(get_user_permissions_overall(user, 'user', as_list=True))
+    if (('is_analyst' in perms) or user.is_superuser):
         return True
     return False
 
@@ -297,7 +296,7 @@ def upload_file(request):
             msg = "Kies een zip bestand met configuraties en klik op upload button."
     else:
         msg = "Toegang is geweigerd, u bent geen lid van "\
-            "'functioneel beheerder' gebruikersgroep."
+            "'analist' gebruikersgroep."
 
     data = {'form': form, 'msg': msg, 'allowed': allowed}
     return render_to_response('lizard_portal/upload_file.html', data)
