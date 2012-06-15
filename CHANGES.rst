@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.58.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed grammatical mistake in message.
 
 
 0.58 (2012-06-14)

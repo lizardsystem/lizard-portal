@@ -296,7 +296,7 @@ def upload_file(request):
             form = UploadFileForm()
             msg = "Kies een zip bestand met configuraties en klik op upload button."
     else:
-        msg = "Toegang is geweigerd, u bent geen lied van "\
+        msg = "Toegang is geweigerd, u bent geen lid van "\
             "'functioneel beheerder' gebruikersgroep."
 
     data = {'form': form, 'msg': msg, 'allowed': allowed}
