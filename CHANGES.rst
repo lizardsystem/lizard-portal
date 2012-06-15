@@ -2,10 +2,16 @@ Changelog of lizard-portal
 ==========================
 
 
-0.58.1 (unreleased)
+0.58.2 (unreleased)
 -------------------
 
 - Fixed grammatical mistake in message.
+
+
+0.58.1 (2012-06-14)
+-------------------
+
+- added language file for ext-js (pp 195)
 
 
 0.58 (2012-06-14)
