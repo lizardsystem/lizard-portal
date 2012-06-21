@@ -2,10 +2,20 @@ Changelog of lizard-portal
 ==========================
 
 
-0.58.3 (unreleased)
+0.58.4 (unreleased)
 -------------------
 
 - Added link to collage screen.
+
+
+0.58.3 (2012-06-21)
+-------------------
+
+- Fixed pylint errors.
+
+- Renamed link to upload dbf file in 'Beheer' form.
+
+- Renamed ESF-themakaart.
 
 
 0.58.2 (2012-06-15)

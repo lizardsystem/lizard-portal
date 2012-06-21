@@ -4,7 +4,6 @@ from django.conf.urls.defaults import patterns
 from django.conf.urls.defaults import url
 from django.contrib import admin
 from django.views.generic.simple import direct_to_template
-from django.views.generic.simple import redirect_to
 
 from lizard_ui.urls import debugmode_urlpatterns
 

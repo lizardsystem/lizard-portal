@@ -324,16 +324,7 @@ Ext.application({
                     {% endif %}
                     handler: function() { Lizard.CM.setContext({headertab: 'beheer',portal_template:'area_link'}); }
                 },{
-                    text: 'Upload FEWS import bestanden',
-                    {% if perm.is_analyst %}
-                    disabled: false,
-                    {% else %}
-                    disabled: true,
-                    {% endif %}
-                    handler: function() { window.open('/portal/uploadfile/') }
-                },
-                {
-                    text: 'Upload configuratie file',
+                    text: 'Upload FEWS waterbalans/ESF bestanden',
                     {% if perm.is_analyst %}
                     disabled: false,
                     {% else %}

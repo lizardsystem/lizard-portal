@@ -85,7 +85,7 @@
                      handler: function() { Lizard.CM.setContext({portal_template:'area_link'}); }
                 },
                 {
-                    text: 'Upload configuratie file',
+                    text: 'Upload FEWS waterbalans/ESF bestanden',
                     {% if perm.is_analyst %}
                     disabled: false,
                      {% else %}
