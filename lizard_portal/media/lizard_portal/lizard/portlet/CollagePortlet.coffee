@@ -122,6 +122,44 @@ Ext.define('Lizard.portlet.CollagePortlet', {
 
     tools: [
         {
+            type: 'collapse',  # Popup
+            tooltip: 'Collage scherm'
+            handler: (e, target, panelHeader, tool) ->
+                # Create new temp collage, then open a new window with that collage
+                portlet = panelHeader.ownerCt;
+
+                # From: CollageSaveForm
+                collage = Ext.create('Lizard.model.CollageModel', {})
+                collage.set('name', 'huidige collage')
+                collage.set('personal_category', '')
+                layers = portlet.collageStore.collageItemStore
+                collage_layers = []
+                order_nr = 0
+
+                layers.each( (record) ->
+
+                    record.order = order_nr
+                    order_nr += 1
+                    record.commit()
+
+                    collage_layers.push(record.store.proxy.writer.getRecordData(record))
+                    return
+                )
+                collage.set('layers', collage_layers)
+                collage.set('is_temp', true)
+                # This "pre-opens" a window in a tab.
+                window.open('/workspace/collage_placeholder/', 'collage-popup')
+                collage.save({
+                    callback: (record, operation) ->
+                        if operation.wasSuccessful()
+                            url = '/workspace/collage/' + record.data.secret_slug + '/'
+                            # Argh callbacks open in a new window which get blocked in the browser by default
+                            # So we pre-opened a page, the window.open is not blocked.
+                            window.open(url, 'collage-popup')
+                })
+
+        },
+        {
             type: 'save',  # Save
             tooltip: 'Collage opslaan',
             handler: (e, target, panelHeader, tool) ->

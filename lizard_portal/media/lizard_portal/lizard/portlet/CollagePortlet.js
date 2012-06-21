@@ -158,6 +158,37 @@
     },
     tools: [
       {
+        type: 'collapse',
+        tooltip: 'Collage scherm',
+        handler: function(e, target, panelHeader, tool) {
+          var collage, collage_layers, layers, order_nr, portlet;
+          portlet = panelHeader.ownerCt;
+          collage = Ext.create('Lizard.model.CollageModel', {});
+          collage.set('name', 'huidige collage');
+          collage.set('personal_category', '');
+          layers = portlet.collageStore.collageItemStore;
+          collage_layers = [];
+          order_nr = 0;
+          layers.each(function(record) {
+            record.order = order_nr;
+            order_nr += 1;
+            record.commit();
+            collage_layers.push(record.store.proxy.writer.getRecordData(record));
+          });
+          collage.set('layers', collage_layers);
+          collage.set('is_temp', true);
+          window.open('/workspace/collage_placeholder/', 'collage-popup');
+          return collage.save({
+            callback: function(record, operation) {
+              var url;
+              if (operation.wasSuccessful()) {
+                url = '/workspace/collage/' + record.data.secret_slug + '/';
+                return window.open(url, 'collage-popup');
+              }
+            }
+          });
+        }
+      }, {
         type: 'save',
         tooltip: 'Collage opslaan',
         handler: function(e, target, panelHeader, tool) {
