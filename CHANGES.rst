@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.60 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Make popup work for layers based on vss_area_value layer. Now the
+  mapportlet adds the 'styles' request parameter to the getfeatureinfo
+  request.
 
 
 0.59 (2012-06-21)
