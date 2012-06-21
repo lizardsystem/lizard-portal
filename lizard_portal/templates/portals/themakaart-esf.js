@@ -45,7 +45,7 @@
 	},{
 		flex: 1,
 		items: [{
-			title: 'themakaart',
+			title: 'Themakaart ESF',
             flex:1,
             xtype: "mapportlet",
             initZoomOnRender: false,
