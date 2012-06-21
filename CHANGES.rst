@@ -9,6 +9,9 @@ Changelog of lizard-portal
   mapportlet adds the 'styles' request parameter to the getfeatureinfo
   request.
 
+- Change layout of legend and workspace for esf theme map and add extra
+  legend for ESF total.
+
 
 0.59 (2012-06-21)
 -----------------
