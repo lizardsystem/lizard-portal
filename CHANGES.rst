@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.58.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed pylint errors.
+
+- Renamed link to upload dbf file in 'Beheer' form.
 
 
 0.58.2 (2012-06-15)

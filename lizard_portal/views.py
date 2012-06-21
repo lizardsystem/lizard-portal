@@ -20,7 +20,8 @@ from django.contrib.gis.geos import GEOSGeometry
 
 from lizard_area.models import Area
 from lizard_portal.configurations_retriever import ConfigurationsRetriever
-from lizard_portal.configurations_retriever import create_configurations_retriever
+from lizard_portal.configurations_retriever import\
+    create_configurations_retriever
 from lizard_portal.configurations_retriever import MockConfig
 from lizard_portal.models import PortalConfiguration
 from lizard_registration.models import SessionContextStore, UserContextStore
@@ -113,14 +114,11 @@ def json_configuration(request):
     Return JSON for request.
     """
 
-
-    perms = dict(get_user_permissions_overall(request.user, 'user', as_list=True))
-
+    perms = dict(get_user_permissions_overall(
+            request.user, 'user', as_list=True))
     c = RequestContext(request, {
         'perm': perms
     })
-
-
 
     portal_template = request.GET.get('portal_template', 'homepage')
 
@@ -136,7 +134,8 @@ def json_configuration(request):
             # areas which is only allowed if the user is an analyst. We cannot
             # easily detect that in the template itself so we do that here.
             #is_funct_beheerder = request.user.user_group_memberships.filter(
-            #permission_mappers__permission_group__permissions__codename='is_funct_beheerder').exists()
+            #permission_mappers__permission_group__permissions__codename=
+            #'is_funct_beheerder').exists()
             #if not is_funct_beheerder:
             #    t = get_template('portals/geen_toegang.js')
             #    return HttpResponse(t.render(c),  mimetype="text/plain")
@@ -293,7 +292,8 @@ def upload_file(request):
                     "en stel de configuraties in")
         else:
             form = UploadFileForm()
-            msg = "Kies een zip bestand met configuraties en klik op upload button."
+            msg = "Kies een zip bestand met configuraties en klik op "\
+                "upload button."
     else:
         msg = "Toegang is geweigerd, u bent geen lid van "\
             "'analist' gebruikersgroep."
