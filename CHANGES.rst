@@ -2,8 +2,8 @@ Changelog of lizard-portal
 ==========================
 
 
-0.58.4 (unreleased)
--------------------
+0.59 (2012-06-21)
+-----------------
 
 - Added link to collage screen.
 
