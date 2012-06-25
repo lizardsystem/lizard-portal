@@ -218,6 +218,7 @@ Ext.define('Lizard.portlet.MapPortlet', {
 
         # SRS: "EPSG:900913" @map.projection.projCode should be 900913
         # but is 4326 instead
+
         params = {
             REQUEST: "GetFeatureInfo",
             EXCEPTIONS: "application/vnd.ogc.se_xml",
@@ -235,6 +236,11 @@ Ext.define('Lizard.portlet.MapPortlet', {
         # Add CQL_FILTER if available.
         if layer.get('filter')
             params['CQL_FILTER'] = layer.get('filter')
+        
+        # Add styles if available.
+        extra_params = layer.get('request_params')
+        if extra_params
+            params['styles'] = JSON.parse(extra_params)['styles']
 
         if layer.get('url') == ''
             alert('Test: Selecteer een andere kaartlaag als bovenste clickable')

@@ -2,10 +2,33 @@ Changelog of lizard-portal
 ==========================
 
 
-0.60 (unreleased)
------------------
+0.61.2 (unreleased)
+-------------------
 
 - Updated link to collage screen with current (client-side) date range.
+
+
+0.61.1 (2012-06-25)
+-------------------
+
+- Renamed layer and legend in thememap tempate.
+
+
+0.61 (2012-06-25)
+-----------------
+
+- Renamed theme map in template.
+
+
+0.60 (2012-06-25)
+-----------------
+
+- Make popup work for layers based on vss_area_value layer. Now the
+  mapportlet adds the 'styles' request parameter to the getfeatureinfo
+  request.
+
+- Change layout of legend and workspace for esf theme map and add extra
+  legend for ESF total.
 
 
 0.59 (2012-06-21)
