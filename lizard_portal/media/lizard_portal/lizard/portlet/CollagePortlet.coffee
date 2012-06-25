@@ -152,7 +152,9 @@ Ext.define('Lizard.portlet.CollagePortlet', {
                 collage.save({
                     callback: (record, operation) ->
                         if operation.wasSuccessful()
-                            url = '/workspace/collage/' + record.data.secret_slug + '/'
+                            context = Ext.getCmp('portalWindow').context_manager.getContext()
+                            dt = '?dt_start=' + Ext.Date.format(context.period.start, 'Y-m-d H:i:s') + '&dt_end=' + Ext.Date.format(context.period.end, 'Y-m-d H:i:s')
+                            url = '/workspace/collage/' + record.data.secret_slug + '/' + dt
                             # Argh callbacks open in a new window which get blocked in the browser by default
                             # So we pre-opened a page, the window.open is not blocked.
                             window.open(url, 'collage-popup')

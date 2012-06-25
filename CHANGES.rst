@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.60 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Updated link to collage screen with current (client-side) date range.
 
 
 0.59 (2012-06-21)

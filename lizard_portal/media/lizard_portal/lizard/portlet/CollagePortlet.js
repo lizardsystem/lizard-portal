@@ -180,9 +180,11 @@
           window.open('/workspace/collage_placeholder/', 'collage-popup');
           return collage.save({
             callback: function(record, operation) {
-              var url;
+              var context, dt, url;
               if (operation.wasSuccessful()) {
-                url = '/workspace/collage/' + record.data.secret_slug + '/';
+                context = Ext.getCmp('portalWindow').context_manager.getContext();
+                dt = '?dt_start=' + Ext.Date.format(context.period.start, 'Y-m-d H:i:s') + '&dt_end=' + Ext.Date.format(context.period.end, 'Y-m-d H:i:s');
+                url = '/workspace/collage/' + record.data.secret_slug + '/' + dt;
                 return window.open(url, 'collage-popup');
               }
             }
