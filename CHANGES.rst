@@ -2,8 +2,8 @@ Changelog of lizard-portal
 ==========================
 
 
-0.62 (unreleased)
------------------
+0.61.1 (2012-06-25)
+-------------------
 
 - Renamed layer and legend in thememap tempate.
 
