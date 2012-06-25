@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.61.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Clean up some code, remove some consolelogs.
 
 
 0.61.2 (2012-06-25)
