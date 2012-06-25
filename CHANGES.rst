@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.60 (unreleased)
+0.60 (2012-06-25)
 -----------------
 
 - Make popup work for layers based on vss_area_value layer. Now the
