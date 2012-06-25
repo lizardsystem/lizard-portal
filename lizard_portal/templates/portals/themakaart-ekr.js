@@ -46,7 +46,6 @@
             autoScroll: true,
             xtype: 'multiimageportlet',
             collapsible: true,
-            //collapsed: true,
             store: Ext.create('Lizard.store.Graph',{
             //store: Ext.create('Ext.data.Store',{
                 data: [{
@@ -69,7 +68,7 @@
 	},{
 		flex: 1,
 		items: [{
-			title: 'themakaart',
+			title: 'Themakaart KRW',
             flex:1,
             xtype: "mapportlet",
             initZoomOnRender: false,

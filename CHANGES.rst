@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.61 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Renamed theme map in template.
 
 
 0.60 (2012-06-25)
