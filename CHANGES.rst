@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.61 (unreleased)
+0.61 (2012-06-25)
 -----------------
 
 - Renamed theme map in template.
