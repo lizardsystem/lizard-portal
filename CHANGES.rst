@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - Bugfix: you can now save workspaces with background (it would crash before).
 
+- Clean up some code, remove some consolelogs.
+
 
 0.61.2 (2012-06-25)
 -------------------

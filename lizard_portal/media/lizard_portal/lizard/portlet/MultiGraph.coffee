@@ -21,10 +21,8 @@ Ext.define('Lizard.portlet.MultiGraph', {
 
 
     updateGraphs: (changes, changed_objects, new_context,  me) ->
-        console.log('update graphs')
 
         for graph in me.graphs
-            console.log(arguments)
             graph.applyParams({
                 dt_start: Ext.Date.format(new_context.period.start,'Y-m-d H:i:s'),
                 dt_end: Ext.Date.format(new_context.period.end,'Y-m-d H:i:s'),
@@ -58,10 +56,8 @@ Ext.define('Lizard.portlet.MultiGraph', {
             #graph.hasResetPeriod
             #graph.hasCumulPeriod
 
-
             @items.push(graph)
             @graphs.push(graph)
-
 
             graph_button_settings = {
                 text: graph_config.title,
@@ -77,22 +73,15 @@ Ext.define('Lizard.portlet.MultiGraph', {
             }
 
             onItemCheck = () ->
-                console.log('klik')
-
-
-
-
-
             @tbar.push(graph_button_settings)
+
+
     constructor: (config) ->
-        console.log(config)
         @initConfig(arguments)
         @callParent(arguments)
 
     initComponent: () ->
         me = @
-
-
 
         Ext.apply(@, {
             layout:
@@ -120,10 +109,7 @@ Ext.define('Lizard.portlet.MultiGraph', {
                         me.setGraphFit(true)
             }]
         })
-        console.log 'cm'
-        console.log @context_manager
         if @context_manager
-            console.log('register contextchange')
             @context_manager.on('contextchange', (change, context, context_m) ->
                 me.updateGraphs(change, context, context_m, me)
             )

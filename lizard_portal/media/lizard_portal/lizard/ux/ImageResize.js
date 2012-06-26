@@ -14,7 +14,7 @@ Ext.define('Lizard.ux.ImageResize', {
         params: {
 
         },
-        link_to : null
+        link_to : null,
     },
 
     applyParams: function(new_params) {
@@ -67,7 +67,6 @@ Ext.define('Lizard.ux.ImageResize', {
         });
 
         if (this.link_to) {
-
             this.listeners = {
                 click: {
                     element: 'el', //bind to the underlying el property on the panel
@@ -77,7 +76,6 @@ Ext.define('Lizard.ux.ImageResize', {
                 }
             }
         }
-
         this.callParent(arguments);
     },
     afterRender: function() {

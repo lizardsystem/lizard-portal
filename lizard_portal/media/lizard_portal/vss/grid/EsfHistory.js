@@ -38,9 +38,6 @@ Ext.define('Vss.grid.EsfHistory', {
 
         */
 
-
-
-       console.log(record)
        //function for formating 1 value
        var format = function(value, record) {
            if (record.data.type == 'oordeel') {
@@ -158,7 +155,6 @@ Ext.define('Vss.grid.EsfHistory', {
                renderer: this.value_renderer,
                listeners: {
                    'mouseover': function(grid, component, row, col){
-                       console.log(arguments);
                        record = grid.store.getAt(row);
                        var html = ''
                        if (record.data.manual || ['base_setting'].indexOf(record.data.config_type) >= 0) {

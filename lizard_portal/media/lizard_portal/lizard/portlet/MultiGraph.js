@@ -26,12 +26,10 @@
     },
     updateGraphs: function(changes, changed_objects, new_context, me) {
       var graph, _i, _len, _ref, _results;
-      console.log('update graphs');
       _ref = me.graphs;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         graph = _ref[_i];
-        console.log(arguments);
         _results.push(graph.applyParams({
           dt_start: Ext.Date.format(new_context.period.start, 'Y-m-d H:i:s'),
           dt_end: Ext.Date.format(new_context.period.end, 'Y-m-d H:i:s'),
@@ -80,15 +78,12 @@
             }
           }
         };
-        onItemCheck = function() {
-          return console.log('klik');
-        };
+        onItemCheck = function() {};
         _results.push(this.tbar.push(graph_button_settings));
       }
       return _results;
     },
     constructor: function(config) {
-      console.log(config);
       this.initConfig(arguments);
       return this.callParent(arguments);
     },
@@ -125,10 +120,7 @@
           }
         ]
       });
-      console.log('cm');
-      console.log(this.context_manager);
       if (this.context_manager) {
-        console.log('register contextchange');
         this.context_manager.on('contextchange', function(change, context, context_m) {
           return me.updateGraphs(change, context, context_m, me);
         });
