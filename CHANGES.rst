@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.61.3 (unreleased)
+0.61.3 (2012-06-26)
 -------------------
 
 - Added datetime created, datetime modified, editable owner type to
