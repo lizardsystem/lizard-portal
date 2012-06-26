@@ -123,7 +123,7 @@
           if (rec.get('is_clickable') === true) {
             return value;
           } else {
-            return null;
+            return false;
           }
         }
       }
