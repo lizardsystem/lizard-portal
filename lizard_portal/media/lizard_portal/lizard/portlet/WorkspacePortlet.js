@@ -93,7 +93,7 @@
       config = {
         extend: 'Ext.grid.Panel',
         title: 'Beheer workspaces',
-        width: 900,
+        width: 1000,
         height: 600,
         modal: true,
         constrainHeader: true,
@@ -156,10 +156,22 @@
               }, {
                 name: 'owner_type',
                 title: 'Type',
-                editable: false,
+                editable: true,
                 visible: true,
                 width: 80,
-                type: 'gridcombobox'
+                type: 'gridcombobox',
+                choices: [
+                  {
+                    id: 0,
+                    name: 'User'
+                  }, {
+                    id: 2,
+                    name: 'Public'
+                  }, {
+                    id: 3,
+                    name: 'Organisatie'
+                  }
+                ]
               }, {
                 name: 'data_set',
                 title: 'Dataset',
@@ -171,8 +183,8 @@
                 name: 'owner',
                 title: 'Eigenaar',
                 editable: false,
-                visible: false,
-                width: 150,
+                visible: true,
+                width: 100,
                 type: 'gridcombobox'
               }, {
                 name: 'read_only',

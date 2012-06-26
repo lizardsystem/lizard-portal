@@ -5,8 +5,8 @@ Changelog of lizard-portal
 0.61.3 (unreleased)
 -------------------
 
-- Added datetime created and modified to Collage and Workspace beheer
-  popups.
+- Added datetime created, datetime modified, editable owner type to
+  Collage and Workspace beheer popups.
 
 - Bugfix: you can now save workspaces with background (it would crash
   before).
