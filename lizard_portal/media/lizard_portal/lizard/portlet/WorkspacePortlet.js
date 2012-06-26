@@ -93,7 +93,7 @@
       config = {
         extend: 'Ext.grid.Panel',
         title: 'Beheer workspaces',
-        width: 600,
+        width: 900,
         height: 600,
         modal: true,
         constrainHeader: true,
@@ -158,7 +158,7 @@
                 title: 'Type',
                 editable: false,
                 visible: true,
-                width: 60,
+                width: 80,
                 type: 'gridcombobox'
               }, {
                 name: 'data_set',
@@ -181,6 +181,20 @@
                 visible: false,
                 width: 50,
                 type: 'boolean'
+              }, {
+                name: 'datetime_created',
+                title: 'aangemaakt',
+                editable: false,
+                visible: true,
+                width: 150,
+                type: 'text'
+              }, {
+                name: 'datetime_modified',
+                title: 'gewijzigd',
+                editable: false,
+                visible: true,
+                width: 150,
+                type: 'text'
               }
             ],
             storeAutoLoad: true

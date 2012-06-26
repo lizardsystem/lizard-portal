@@ -5,7 +5,11 @@ Changelog of lizard-portal
 0.61.3 (unreleased)
 -------------------
 
-- Bugfix: you can now save workspaces with background (it would crash before).
+- Added datetime created and modified to Collage and Workspace beheer
+  popups.
+
+- Bugfix: you can now save workspaces with background (it would crash
+  before).
 
 - Clean up some code, remove some consolelogs.
 

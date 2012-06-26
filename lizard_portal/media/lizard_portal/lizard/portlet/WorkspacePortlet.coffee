@@ -95,7 +95,7 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
             extend: 'Ext.grid.Panel'
             #alias: 'widget.manageworkspacesportlet'
             title: 'Beheer workspaces',
-            width: 600
+            width: 900,
             height: 600,
             modal: true,
             constrainHeader: true,
@@ -136,10 +136,12 @@ Ext.define('Lizard.portlet.WorkspacePortlet', {
                 {name: 'name', title: 'Naam', editable: true, visible: true, width: 250, type: 'text'}
                 {name: 'personal_category', title: 'persoonlijke tag', editable: true, visible: true, width: 200, type: 'text'}
                 #{name: 'category', title: 'Categorie', editable: true, visible: true, width: 150, type: 'gridcombobox', choices:[{id:1, name:'test'},{id:2, name:'testtest'}]}
-                {name: 'owner_type', title: 'Type', editable: false, visible: true, width: 60, type: 'gridcombobox'}
+                {name: 'owner_type', title: 'Type', editable: false, visible: true, width: 80, type: 'gridcombobox'}
                 {name: 'data_set', title: 'Dataset', editable: false, visible: false, width: 150, type: 'gridcombobox'}
                 {name: 'owner', title: 'Eigenaar', editable: false, visible: false, width: 150, type: 'gridcombobox'}
                 {name: 'read_only', title: 'alleen_lezen', editable: false, visible: false, width: 50, type: 'boolean'}
+                {name: 'datetime_created', title: 'aangemaakt', editable: false, visible: true, width: 150, type: 'text'}
+                {name: 'datetime_modified', title: 'gewijzigd', editable: false, visible: true, width: 150, type: 'text'}
             ]
             storeAutoLoad: true
             # How to reload store after a new item has been added?
