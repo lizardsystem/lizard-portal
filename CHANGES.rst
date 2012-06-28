@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.61.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add graph loading indication to multigraph store.
 
 
 0.61.3 (2012-06-26)
