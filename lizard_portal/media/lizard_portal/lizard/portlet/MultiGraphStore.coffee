@@ -273,25 +273,34 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                 xtype: 'dataview',
                 store: @store,
                 tpl: new Ext.XTemplate(
-                    '<tpl if="this.context_ready()">',
-                    '<tpl for=".">',
-                        '<div class="thumb-wrap">',
-                            '<tpl if="visible">',
-                                '{name}:   ',
-                                    '<tpl if="detail_link">',
-                                         '<a href="javascript:void(0)" onclick="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>&nbsp;',
-                                    '</tpl>',
-                                    '<a href="',
-                                    '{[this.get_link_for_graph_window(values)]}',
-                                    '" target="_blank">groot</a>',
-                                '<img src="',
-                                '{[this.get_url(values)]}',
-                                '" height={height} width={width} />',
-                                #'<br/><span>{caption}</span>',
-                            '</tpl>',
-                        '</div>',
-                    '</tpl>',
-                    '</tpl>',
+                    # Stuff that didn't make it in the template
+                    # <br/><span>{caption}</span>
+                    """
+                    <tpl if="this.context_ready()">
+                    <tpl for=".">
+                      <div class="thumb-wrap">
+                        <tpl if="visible">
+                          {name}:
+                          <tpl if="detail_link">
+                            <a href="javascript:void(0)"
+                               onclick="javascript:Lizard.CM.setContext({
+                                 portal_template:'{detail_link}'
+                               })">details</a>&nbsp;
+                          </tpl>
+                          <a href="{[this.get_link_for_graph_window(values)]}"
+                             target="_blank">groot</a>
+
+                          <div class="img-use-my-size",
+                               style="width:{width}px; height:{height}px;" >
+                            <a href="{[Lizard.model.Graph.getGraphUrl(values, true)]}"
+                               class="replace-with-image"
+                               style="display:none;" >Afbeelding nog niet geladen</a>
+                          </div>
+                        </tpl>
+                      </div>
+                    </tpl>
+                    </tpl>
+                    """,
                     {
                         get_url:(values) ->
                             if values.width > 0 and values.height >0 and values.dt_start and values.dt_end
@@ -302,7 +311,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                             return me.open_graph_window(values.id)
 
                         context_ready:() ->
-                           return me.store.context_ready
+                            return me.store.context_ready
                     }
                 ),
                 itemSelector: @itemSelector,
@@ -327,6 +336,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                 me.store.applyContext(null, params)
 
             #me.store.context_ready = true
+            reloadGraphs()
             if me.useGraphButtonBar
                 toolbar = me.down('toolbar')
                 toolbar.removeAll()
