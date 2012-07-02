@@ -5,6 +5,8 @@ Changelog of lizard-portal
 0.61.4 (unreleased)
 -------------------
 
+- Updated legends in maatregel themakaart.
+
 - Add graph loading indication to multigraph store.
 
 
