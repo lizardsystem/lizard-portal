@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.61.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Make site use debug ext-js only in debug mode.
 
 
 0.61.4 (2012-07-02)
@@ -14,8 +14,6 @@ Changelog of lizard-portal
 - Updated legends in maatregel themakaart.
 
 - Add graph loading indication to multigraph store.
-
-- Make site use debug ext-js only in debug mode.
 
 
 0.61.3 (2012-06-26)
