@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.61.5 (unreleased)
+0.61.5 (2012-07-02)
 -------------------
 
 - Make site use debug ext-js only in debug mode.
