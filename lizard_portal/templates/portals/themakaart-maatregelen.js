@@ -28,8 +28,11 @@
             store: Ext.create('Lizard.store.Graph',{
             //store: Ext.create('Ext.data.Store',{
                 data: [{
-                    name: 'ESF status',
+                    name: 'Maatregel status',
                     base_url: '/layers/wms/?FORMAT=image%2Fpng&TRANSPARENT=TRUE&STYLE=vss_measure_status&CQL_FILTER=name%20%3D%20\'ESF-STATUS\'&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&SRS=EPSG%3A900913&BBOX=460467.38252035,6800747.0720688,640132.61747965,6894993.9279312&LAYER=vss:vss_area_value&width=100&height=30'
+                },{
+                    name: 'Aantal maatregelen',
+                    base_url: '/layers/wms/?FORMAT=image%2Fpng&TRANSPARENT=TRUE&STYLE=vss_measure_count&CQL_FILTER=name%20%3D%20\'ESF-STATUS\'&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&SRS=EPSG%3A900913&BBOX=460467.38252035,6800747.0720688,640132.61747965,6894993.9279312&LAYER=vss:vss_area_value&width=100&height=30'
                 }]
             }),
             flex: 1
