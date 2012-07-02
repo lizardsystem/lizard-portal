@@ -16,12 +16,12 @@
 
 {% block head-extras %}
 {# Extjs and app scripts #}
-{% if debug %}
+{% if debug_mode %}
 <script type="text/javascript"
         src="{{ STATIC_URL }}extjs/ext-all-debug.js"></script>
 {% else %}
 <script type="text/javascript"
-        src="{{ STATIC_URL }}extjs/ext-all-debug.js"></script>
+        src="{{ STATIC_URL }}extjs/ext-all.js"></script>
 {% endif %}
 <script>
 {# TO DO add production setting with  disableCaching: false later on. Possibly also add script tags of known files and compress them #}

@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - Add graph loading indication to multigraph store.
 
+- Make site use debug ext-js only in debug mode.
+
 
 0.61.3 (2012-06-26)
 -------------------

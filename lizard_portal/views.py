@@ -47,6 +47,7 @@ def site(request, application_name, active_tab_name, only_portal=False):
 
     t = get_template('portal_pageframe.html')
     c = RequestContext(request, {
+            'debug_mode': settings.DEBUG,
             'application': application_name,
             'active_tab': active_tab_name,
             'only_portal': only_portal
