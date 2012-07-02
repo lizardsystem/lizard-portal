@@ -7,6 +7,8 @@ Changelog of lizard-portal
 
 - Make site use debug ext-js only in debug mode.
 
+- Add spinning disks for loading images in all multigraph views.
+
 
 0.61.4 (2012-07-02)
 -------------------

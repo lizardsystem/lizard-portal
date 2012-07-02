@@ -456,3 +456,9 @@ td.padleft {
 .esfTableBig tr td.novalue {
     /*background-color: #ccc;*/
 }
+
+img.loading {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url('/static_media/lizard_ui/ajax-loader.gif');
+}

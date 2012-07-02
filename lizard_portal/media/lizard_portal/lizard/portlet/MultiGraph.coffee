@@ -21,7 +21,6 @@ Ext.define('Lizard.portlet.MultiGraph', {
 
 
     updateGraphs: (changes, changed_objects, new_context,  me) ->
-
         for graph in me.graphs
             graph.applyParams({
                 dt_start: Ext.Date.format(new_context.period.start,'Y-m-d H:i:s'),

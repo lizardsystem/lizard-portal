@@ -289,13 +289,10 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                           </tpl>
                           <a href="{[this.get_link_for_graph_window(values)]}"
                              target="_blank">groot</a>
-
-                          <div class="img-use-my-size",
-                               style="width:{width}px; height:{height}px;" >
-                            <a href="{[Lizard.model.Graph.getGraphUrl(values, true)]}"
-                               class="replace-with-image"
-                               style="display:none;" >Afbeelding nog niet geladen</a>
-                          </div>
+                          <img src="{[this.get_url(values)]}"
+                               height={height} 
+                               width={width}
+                               class="loading" />
                         </tpl>
                       </div>
                     </tpl>
@@ -336,7 +333,6 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                 me.store.applyContext(null, params)
 
             #me.store.context_ready = true
-            reloadGraphs()
             if me.useGraphButtonBar
                 toolbar = me.down('toolbar')
                 toolbar.removeAll()
