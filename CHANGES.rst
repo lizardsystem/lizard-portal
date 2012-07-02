@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.61.4 (unreleased)
+0.61.4 (2012-07-02)
 -------------------
 
 - Updated legends in maatregel themakaart.
