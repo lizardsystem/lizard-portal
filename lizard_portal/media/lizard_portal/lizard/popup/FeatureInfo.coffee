@@ -19,12 +19,23 @@ Ext.define('Lizard.popup.FeatureInfo', {
             )
 
             tpl = new Ext.XTemplate(
-                '<div class="lizard">'
-                '<h2>Kaartlaag: {layer_name}</h2>',
-                '<table>',
-                '<tpl for="fields">',
-                '<tr><td>{key}</td><td>{value}</td></tr>',
-                '</tpl></table></div>'
+                """
+                <div class="lizard">
+                  <h2>Kaartlaag: {layer_name}</h2>
+                  <table>
+                    <tr>
+                        <th style="width:50px;">Veld</th>
+                        <th style="width:50px;">Waarde</th>
+                    </tr>
+                    <tpl for="fields">
+                      <tr>
+                          <td style="width:50px;">{key}</td>
+                          <td style="width:50px;">{value}</td>
+                      </tr>
+                    </tpl>
+                  </table>
+                </div>
+                """
             );
             html = tpl.applyTemplate({
                 layer_name: workspaceitem.get('title'),
