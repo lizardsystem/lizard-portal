@@ -11,7 +11,9 @@
         update: "/workspace/api/collage_view/?_accept=application/json&flat=false&action=update&",
         destroy: "/workspace/api/collage_view/?_accept=application/json&flat=false&action=delete&"
       },
-      extraParams: {},
+      extraParams: {
+        _accept: 'application/json'
+      },
       params: {},
       writer: {
         type: 'json',
@@ -27,10 +29,12 @@
       },
       afterRequest: function(request, success) {
         if (request.method === 'POST') {
-          if (success) {
-            return Ext.MessageBox.alert('Opslaan gelukt');
-          } else {
-            return Ext.MessageBox.alert('Opslaan mislukt');
+          if (request.params.data.indexOf("is_temp") === -1) {
+            if (success) {
+              return Ext.MessageBox.alert('Opslaan gelukt');
+            } else {
+              return Ext.MessageBox.alert('Opslaan mislukt');
+            }
           }
         }
       }
@@ -40,6 +44,9 @@
         name: 'id',
         mapping: 'id',
         type: 'number'
+      }, {
+        name: 'secret_slug',
+        type: 'string'
       }, {
         name: 'name',
         type: 'string'
@@ -51,6 +58,9 @@
         type: 'auto'
       }, {
         name: 'read_only',
+        type: 'boolean'
+      }, {
+        name: 'is_temp',
         type: 'boolean'
       }, {
         name: 'layers',

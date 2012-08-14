@@ -57,10 +57,11 @@ Ext.define 'Lizard.window.Screen',
         #console.log('linkToNewWindow, with arguments:')
         #console.log(arguments)
 
-        args = Ext.Object.merge({}, @context_manager.getContext(), params)
+        args = Ext.Object.merge({}, Lizard.CM.getContext(), params)
         href = '/portal/only_portal/#'+args.headertab.name+'/'+args.portal_template+'/'+args.object.type + '/' + args.object.id
+        #i.e. only supports names, without spaces, etc. so name is not: window_name = args.portal_template + ' ' + args.object.id
 
-        window.open( href, args.portal_template + ' ' + args.object.name, 'width=800,height=600,scrollbars=yes')
+        window.open(href, 'vss', 'width=800,height=600,scrollbars=yes')
 
     #////
     #linkToPopup:
@@ -120,13 +121,6 @@ Ext.define 'Lizard.window.Screen',
                     me.linkToPopup.apply(me, window_options.save);
             })
 
-        if window_options.search
-            window_settings.tools.push({
-                                       type: 'search',
-                                       tooltip: window_options.search[0],  # Title
-                                       handler: (e, target, panelHeader, tool) ->
-                                           me.linkToPopup.apply(me, window_options.search);
-                                       })
         if window_options.plus
             window_settings.tools.push({
                                        type: 'plus',
@@ -134,6 +128,15 @@ Ext.define 'Lizard.window.Screen',
                                        handler: (e, target, panelHeader, tool) ->
                                            me.linkToPopup.apply(me, window_options.plus);
                                        })
+
+        if window_options.search
+            window_settings.tools.push({
+                                       type: 'search',
+                                       tooltip: window_options.search[0],  # Title
+                                       handler: (e, target, panelHeader, tool) ->
+                                           me.linkToPopup.apply(me, window_options.search);
+                                       })
+
 
         Ext.create('Ext.window.Window', window_settings).show();
 

@@ -366,7 +366,7 @@ Ext.define('Lizard.grid.EditableGrid', {
             if @addEditIcon
                 colConfig.items.push({
                         #todo: iconCls is better, but doesn't work
-                        icon: '/static_media/lizard_portal/images/settingtable.png',
+                        icon: '/static_media/lizard_portal/x-tool-icons/x-tool-edit.png',
                         tooltip: 'Edit',
                         handler: (grid, rowIndex, colIndex) ->
                             rec = grid.getStore().getAt(rowIndex)
@@ -382,9 +382,9 @@ Ext.define('Lizard.grid.EditableGrid', {
             if @addDeleteIcon
                 colConfig.items.push({
                         #todo: iconCls is better, but doesn't work
-                        icon: '/static_media/lizard_portal/images/delete.png',
+                        icon: '/static_media/lizard_portal/x-tool-icons/x-tool-delete-single.png',
                         #xtype: 'button'
-                        tooltip: 'Delete',
+                        tooltip: 'Verwijderen',
                         handler: (grid, rowIndex, colIndex) ->
                             rec = grid.getStore().getAt(rowIndex)
                             if me.read_only_field and rec.data[me.read_only_field] == true
@@ -581,7 +581,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                     }
                     {
                         xtype: 'button',
-                        text: 'Delete',
+                        text: 'Verwijderen',
                         iconCls: 'l-icon-delete',
                         handler:(menuItem, checked) ->
                             me.deleteSelectedRecord()
@@ -594,7 +594,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                 '-'
                 {
                     xtype: 'button',
-                    text: 'Cancel',
+                    text: 'Reset',
                     iconCls: 'l-icon-cancel',
                     handler:(menuItem, checked) ->
                         me.cancelEdits()
@@ -602,7 +602,7 @@ Ext.define('Lizard.grid.EditableGrid', {
                 }
                 {
                     xtype: 'button',
-                    text: 'Save',
+                    text: 'Opslaan',
                     iconCls: 'l-icon-disk',
                     handler: (menuItem) ->
 

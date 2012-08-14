@@ -314,10 +314,23 @@ Ext.define('GeoExt.data.LayerStore', {
 			// layers has already been added to map on "add" event
 			var len = records.length;
 			if(len > 0) {
-				var layers = new Array(len);
+                var layers = new Array(len);
 				for(var j = 0; j < len; j++) {
 					layers[j] = records[j].getLayer();
-				}
+                    layers[j].events.on(
+                        {
+                            "loadstart": function () {
+                                this.set('loading',true)
+                            },
+                            "loadend": function () {
+                                this.set('loading',false)
+                            },
+                            "loadcancel": function () {
+                                this.set('loading',false)
+                            },
+                            scope: records[j]
+                        });
+                }
 				me._adding = true;
 				me.map.addLayers(layers);
 				delete me._adding;

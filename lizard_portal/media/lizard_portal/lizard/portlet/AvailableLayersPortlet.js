@@ -9,10 +9,10 @@
     title: 'Layers',
     rootVisible: false,
     autoLoad: false,
-    onLayerClick: function(view, record, item, index, event, eOpts) {
+    onLayerClick: function(record, checked, event, eOpts) {
       var rec;
       if (record.dirty === true) {
-        if (record.get('checked')) {
+        if (checked) {
           rec = record.raw;
           rec.title = rec.text;
           this.workspaceItemStore.createWorkspaceItem(record.raw);
@@ -28,7 +28,7 @@
       me = this;
       Ext.apply(this, {
         listeners: {
-          itemclick: this.onLayerClick
+          checkchange: this.onLayerClick
         }
       });
       this.callParent(arguments);

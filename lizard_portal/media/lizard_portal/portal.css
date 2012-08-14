@@ -212,23 +212,57 @@
 .x-tree-custom-info_setting {
     background-image: url('/static_media/extjs/resources/themes/images/gray/tree/leaf.gif');
 }
-/* TODO: add border */
+
 .x-tool-over img.x-tool-empty {
-    background-image: url('x-tool-icons/x-tool-empty.png');
+    background-image: url('x-tool-icons/x-tool-empty-mouseover.png');
 }
 
 img.x-tool-empty  {
     background-image: url('x-tool-icons/x-tool-empty.png');
 }
 
-/* TODO: add border */
 .x-tool-over img.x-tool-delete {
-    background-image: url('x-tool-icons/x-tool-delete.png');
+    background-image: url('x-tool-icons/x-tool-delete-mouseover.png');
 }
 
 img.x-tool-delete {
     background-image: url('x-tool-icons/x-tool-delete.png');
 }
+
+.x-tool-over img.x-tool-delete-single {
+    background-image: url('x-tool-icons/x-tool-delete-single-mouseover.png');
+}
+
+img.x-tool-delete-single {
+    background-image: url('x-tool-icons/x-tool-delete-single.png');
+}
+
+
+.x-tool-over img.x-tool-zoom-in {
+    background-image: url('x-tool-icons/x-tool-zoom-in-mouseover.png');
+}
+
+img.x-tool-zoom-in {
+    background-image: url('x-tool-icons/x-tool-zoom-in.png');
+}
+
+.x-tool-over img.x-tool-zoom-out {
+    background-image: url('x-tool-icons/x-tool-zoom-out-mouseover.png');
+}
+
+img.x-tool-zoom-out {
+    background-image: url('x-tool-icons/x-tool-zoom-out.png');
+}
+
+.x-tool-over img.x-tool-edit {
+    background-image: url('x-tool-icons/x-tool-edit-mouseover.png');
+}
+
+img.x-tool-edit {
+    background-image: url('x-tool-icons/x-tool-edit.png');
+}
+
+
 
 .l-icon {
     height: 12px;
@@ -246,7 +280,7 @@ img.x-tool-delete {
 }
 
 .l-icon-delete{
-    background-image: url('images/delete.png');
+    background-image: url('images/delete-cross.png');
 }
 
 .l-icon-add{
@@ -266,7 +300,7 @@ img.x-tool-delete {
 }
 
 .l-icon-cancel{
-    background-image: url('images/cancel.png');
+    background-image: url('images/cancel-yellow.png');
 }
 
 .x-grid-cell-inner { white-space: normal; }
@@ -385,4 +419,46 @@ img.x-tool-delete {
 
 td.padleft {
     padding-left: 3em;
+}
+
+.esfTableSmall td {
+    width: 60px;
+}
+.esfTableSmall tr td {
+    text-align: center;
+}
+.esfTableSmall span {
+    font-size:40px;
+}
+.esfTableSmall span.ok {
+
+}
+.esfTableSmall span.critical {
+    color:red;
+}
+.esfTableSmall span.novalue {
+    color: #ccc;
+}
+.esfTableSmall span.name {
+    font-style:italic;
+    font-size:8px;
+}
+
+.esfTableBig td {
+    width: 100px
+}
+.esfTableBig tr td {
+    text-align: center;
+}
+.esfTableBig tr td.critical {
+    background-color: red;
+}
+.esfTableBig tr td.novalue {
+    /*background-color: #ccc;*/
+}
+
+img.loading {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url('/static_media/lizard_ui/ajax-loader.gif');
 }

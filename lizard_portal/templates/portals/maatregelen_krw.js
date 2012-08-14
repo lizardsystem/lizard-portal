@@ -67,6 +67,7 @@
             tools: [{
                 type: 'plus',
                 tooltip: 'Nieuwe maatregel toevoegen',
+            {% if perm.is_beleidsmaker %}
                 handler: function (e, target, panelHeader, tool) {
                     Ext.create('Ext.window.Window', {
                         measureScreen: true,
@@ -90,6 +91,9 @@
                         }
                     }).show();
                 }
+            {% else %}
+                disabled: true
+            {% endif %}
             }]
 		}]
 	}]

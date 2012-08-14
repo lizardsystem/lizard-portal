@@ -63,6 +63,9 @@
     proxy: {
       type: 'ajax',
       url: '/workspace/api/app_layer_tree/',
+      extraParams: {
+        _accept: 'application/json'
+      },
       reader: {
         type: 'json'
       }

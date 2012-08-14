@@ -1,3 +1,5 @@
+{% load get_portal_template %}
+
 {
     title: 'Gebieden links',
     flex:1,

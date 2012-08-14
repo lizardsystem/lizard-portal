@@ -7,6 +7,7 @@
       type: 'vbox',
       align: 'stretch'
     },
+    height: 600,
     mapeditor: true,
     force_type_selection: true,
     edit_point: true,
@@ -121,15 +122,9 @@
       me = this;
       this.height = this.height || (window.innerHeight - 200);
       this.width = this.width || 500;
-      this.points = new OpenLayers.Layer.Vector("Editable points", {
-        geometryType: OpenLayers.Geometry.Point
-      });
-      this.lines = new OpenLayers.Layer.Vector("Editable lines", {
-        geometryType: OpenLayers.Geometry.Line
-      });
-      this.polygons = new OpenLayers.Layer.Vector("Editable polygons", {
-        geometryType: OpenLayers.Geometry.Polygon
-      });
+      this.points = new OpenLayers.Layer.Vector("Editable points");
+      this.lines = new OpenLayers.Layer.Vector("Editable lines");
+      this.polygons = new OpenLayers.Layer.Vector("Editable polygons");
       this.active_editable_layer = null;
       this.active_editor = null;
       this.active_edit_layer = null;
@@ -329,15 +324,19 @@
         xtype: 'button',
         text: 'Klaar met bewerken',
         handler: function(button) {
-          var window, wkt;
-          if (me.active_edit_layer) {
+          var k, this_window, v, wkt;
+          if (me.active_edit_layer && me.active_edit_layer.features.length > 0) {
+            for (k in controls) {
+              v = controls[k];
+              v.deactivate();
+            }
             wkt = me.serialize(me.active_edit_layer.features);
           } else {
             wkt = '';
           }
           if (me.callback) me.callback(wkt);
-          window = button.up('window');
-          return window.close();
+          this_window = button.up('window');
+          return this_window.close();
         }
       };
       Ext.apply(this, config);

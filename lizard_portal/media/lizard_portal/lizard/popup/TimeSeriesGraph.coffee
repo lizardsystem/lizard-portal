@@ -53,7 +53,12 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
             if record.data.is_collage_item == true
                 graph_title = 'Collage popup voor ' + record.data.grouping_hint
                 title = record.data.grouping_hint
-                bbar = []
+                bbar = [{
+                    text: 'Ga naar collagescherm'
+                    handler: (btn, event) ->
+                        # Push current collage to server
+                        # Wait for server to respond, then open the collage page in separate window.
+                }]
             else
                 graph_title = 'Grafiek voor ' + record.data.geo_ident + ' ' + record.data.par_ident + ' ' + record.data.mod_ident + ' ' + record.data.stp_ident
                 title = workspaceitem.get('title') + ' - ' + record.data.geo_ident

@@ -2,10 +2,153 @@ Changelog of lizard-portal
 ==========================
 
 
-0.57.15 (unreleased)
+0.61.6 (unreleased)
+-------------------
+
+- Changed featureinfopopup html template to heredoc for easier editing.
+
+- Added 'Name' field to ConfigurationToValidate table and form (pp 373).
+
+
+0.61.5 (2012-07-02)
+-------------------
+
+- Make site use debug ext-js only in debug mode.
+
+- Add spinning disks for loading images in all multigraph views.
+
+
+0.61.4 (2012-07-02)
+-------------------
+
+- Updated legends in maatregel themakaart.
+
+- Add graph loading indication to multigraph store.
+
+
+0.61.3 (2012-06-26)
+-------------------
+
+- Added datetime created, datetime modified, editable owner type to
+  Collage and Workspace beheer popups.
+
+- Bugfix: you can now save workspaces with background (it would crash
+  before).
+
+- Clean up some code, remove some consolelogs.
+
+
+0.61.2 (2012-06-25)
+-------------------
+
+- Updated link to collage screen with current (client-side) date range.
+
+
+0.61.1 (2012-06-25)
+-------------------
+
+- Renamed layer and legend in thememap tempate.
+
+
+0.61 (2012-06-25)
+-----------------
+
+- Renamed theme map in template.
+
+
+0.60 (2012-06-25)
+-----------------
+
+- Make popup work for layers based on vss_area_value layer. Now the
+  mapportlet adds the 'styles' request parameter to the getfeatureinfo
+  request.
+
+- Change layout of legend and workspace for esf theme map and add extra
+  legend for ESF total.
+
+
+0.59 (2012-06-21)
+-----------------
+
+- Added link to collage screen.
+
+
+0.58.3 (2012-06-21)
+-------------------
+
+- Fixed pylint errors.
+
+- Renamed link to upload dbf file in 'Beheer' form.
+
+- Renamed ESF-themakaart.
+
+
+0.58.2 (2012-06-15)
+-------------------
+
+- Fixed grammatical mistake in message.
+
+- Changed permissions to upload wb/esf configuration, allowed only for analyst
+  and superuser.
+
+
+0.58.1 (2012-06-14)
+-------------------
+
+- added language file for ext-js (pp 195)
+
+
+0.58 (2012-06-14)
+-----------------
+
+- added userrights to views (pp 367)
+
+
+0.57.20 (2012-06-11)
 --------------------
 
-- Added 'Name' field to ConfigurationToValidate table and form (pp 373)
+- Replace old layer names for 'krw-selectie'
+
+
+0.57.19 (2012-06-07)
+--------------------
+
+- Add cql to legend urls for esf popup maps.
+
+
+0.57.18 (2012-06-07)
+--------------------
+
+- Split communique_map template in two, for areas and waterbodies.
+
+
+0.57.17 (2012-06-05)
+--------------------
+
+- Fixed geometry editor polygons not changeable.
+
+- Fixed geometry editor projection problem when in change mode.
+
+
+0.57.16 (2012-06-05)
+--------------------
+
+- Added new x-tool icons: cancel-yellow, delete-red, delete-single,
+  edit, zoom-in, zoom-out.
+
+- Added various tooltips.
+
+- Fix link to ESF-overzichts-tabel. renamed, because only capital changes are not correct
+
+- ie issues (partly solve pp346)
+
+- Fix loading signal (pp 136)
+
+
+0.57.15 (2012-06-04)
+--------------------
+
+- Changed measure-status legend in themakaart.
 
 
 0.57.14 (2012-06-01)

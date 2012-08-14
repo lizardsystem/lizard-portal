@@ -22,12 +22,12 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
     rootVisible: false
     autoLoad:false
 
-    onLayerClick: (view, record, item, index, event, eOpts) ->
+    onLayerClick: (record, checked, event, eOpts) ->
         # What is record kind of object or class?
         # Looks like a treenode thing, the raw property has the actual
         # workspace item data.
         if record.dirty == true
-            if record.get('checked')
+            if checked
                 rec = record.raw
                 rec.title = rec.text
                 @workspaceItemStore.createWorkspaceItem(record.raw)
@@ -36,11 +36,12 @@ Ext.define('Lizard.portlet.AvailableLayersPortlet', {
             @workspaceItemStore.sync()
             record.commit()
 
+
     initComponent: () ->
         me = @
         Ext.apply(@,
             listeners:
-                itemclick: @onLayerClick
+                checkchange: @onLayerClick
         )
 
         @callParent(arguments)

@@ -9,7 +9,9 @@ Ext.define('Lizard.model.CollageModel', {
             read: "/workspace/api/collage_view/?_accept=application/json&" # Called when reading existing records
             update: "/workspace/api/collage_view/?_accept=application/json&flat=false&action=update&" # Called when updating existing records
             destroy: "/workspace/api/collage_view/?_accept=application/json&flat=false&action=delete&" # Called when deleting existing records
-        extraParams: {}
+        extraParams: {
+            _accept: 'application/json'
+        }
 
         params: {}
 
@@ -27,14 +29,18 @@ Ext.define('Lizard.model.CollageModel', {
         afterRequest: (request, success) ->
             # debugger
             if request.method == 'POST'
-                if success
-                    Ext.MessageBox.alert('Opslaan gelukt')
-                else
-                    Ext.MessageBox.alert('Opslaan mislukt')
+                # Only display popup when we are not saving a temp collage.
+                if request.params.data.indexOf("is_temp") == -1
+                    if success
+                        Ext.MessageBox.alert('Opslaan gelukt')
+                    else
+                        Ext.MessageBox.alert('Opslaan mislukt')
     fields: [{name: 'id', mapping: 'id', type: 'number'},
+            {name: 'secret_slug', type: 'string'},
             {name: 'name', type: 'string'},
             {name: 'personal_category', type: 'string'},
             {name: 'category', type: 'auto'},
             {name: 'read_only', type: 'boolean'},
+            {name: 'is_temp', type: 'boolean'},
             {name: 'layers', type: 'auto'}]
 });

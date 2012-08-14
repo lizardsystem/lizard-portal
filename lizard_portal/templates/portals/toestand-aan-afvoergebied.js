@@ -15,6 +15,7 @@
 	items: [{
     	width: 200,
 		items: [
+            {% get_portal_template communique_map_area %},
             {% get_portal_template gebiedseigenschappen %},
             {% get_portal_template communique %}
 
@@ -52,37 +53,43 @@
                 }
             }),
             tools: [{
-                type: 'save',
-                handler: function (e, target, panelHeader, tool) {
-                    var cm = Ext.getCmp('portalWindow').context_manager.getContext();
+                type: 'edit',
+                tooltip: 'Bewerken',
+                {% if perm.is_analyst %}
+                    disabled: false,
+                    handler: function (e, target, panelHeader, tool) {
+                        var cm = Ext.getCmp('portalWindow').context_manager.getContext();
 
-                    Ext.create('Ext.window.Window', {
-                        title: 'Stuurparameters instellen',
-                        width: 800,
-                        height: 600,
-                        modal: true,
-			constrainHeader: true,
-                        listeners: {
-                            close: function() {
-                                var store = Ext.StoreManager.lookup('toestand_store');
-                                store.load();
+                        Ext.create('Ext.window.Window', {
+                            title: 'Stuurparameters instellen',
+                            width: 800,
+                            height: 600,
+                            modal: true,
+                            constrainHeader: true,
+                            listeners: {
+                                close: function() {
+                                    var store = Ext.StoreManager.lookup('toestand_store');
+                                    store.load();
+                                }
+                            },
+                            editpopup: true,
+                            loader:{
+                                loadMask: true,
+                                autoLoad: true,
+                                url: '/measure/steering_parameter_form/',
+                                params: {
+                                    object_id: cm.object.id
+                                },
+                                ajaxOptions: {
+                                    method: 'GET'
+                                },
+                                renderer: 'component'
                             }
-                        },
-                        editpopup: true,
-                        loader:{
-                            loadMask: true,
-                            autoLoad: true,
-                            url: '/measure/steering_parameter_form/',
-                            params: {
-                                object_id: cm.object.id
-                            },
-                            ajaxOptions: {
-                                method: 'GET'
-                            },
-                            renderer: 'component'
-                        }
-                    }).show();
-                }
+                        }).show();
+                    }
+                {% else %}
+                    disabled: true,
+                {% endif %}
             }]
         }]
     },

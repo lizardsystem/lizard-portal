@@ -212,7 +212,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
 
         url = Ext.String.urlAppend("/graph/window/", querystring)
 
-        window.open(url)
+        return url
 
     initGraphs: () ->
         me = @
@@ -236,16 +236,17 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
             if tool.name == 'resize-graph'
                 resizer_index = me.tools.indexOf(tool)
         resizer_tool = {
-            type: 'plus'
+            type: 'zoom-in'
+            tooltip: 'Zoomen'
             name: 'resize-graph'
             handler: (e, target, panelHeader, tool) ->
                 portlet = panelHeader.ownerCt;
 
-                if (tool.type == 'plus')
-                    tool.setType('minus')
+                if (tool.type == 'zoom-in')
+                    tool.setType('zoom-out')
                     me.setFitInPortal(false)
                 else
-                    tool.setType('plus')
+                    tool.setType('zoom-in')
                     me.setFitInPortal(true)
         }
         if resizer_index == undefined
@@ -272,36 +273,42 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                 xtype: 'dataview',
                 store: @store,
                 tpl: new Ext.XTemplate(
-                    '<tpl if="this.context_ready()">',
-                    '<tpl for=".">',
-                        '<div class="thumb-wrap">',
-                            '<tpl if="visible">',
-                                '{name}:   ',
-                                    '<tpl if="detail_link">',
-                                         '<a href="javascript:Lizard.CM.setContext({portal_template:\'{detail_link}\'})">details</a>&nbsp;',
-                                    '</tpl>',
-                                    '<a href="javascript:',
-                                    '{[this.get_function_for_graph_window(values)]}',
-                                    '">groot</a>',
-                                '<img src="',
-                                '{[this.get_url(values)]}',
-                                '" height={height} width={width} />',
-                                #'<br/><span>{caption}</span>',
-                            '</tpl>',
-                        '</div>',
-                    '</tpl>',
-                    '</tpl>',
+                    # Stuff that didn't make it in the template
+                    # <br/><span>{caption}</span>
+                    """
+                    <tpl if="this.context_ready()">
+                    <tpl for=".">
+                      <div class="thumb-wrap">
+                        <tpl if="visible">
+                          {name}:
+                          <tpl if="detail_link">
+                            <a href="javascript:void(0)"
+                               onclick="javascript:Lizard.CM.setContext({
+                                 portal_template:'{detail_link}'
+                               })">details</a>&nbsp;
+                          </tpl>
+                          <a href="{[this.get_link_for_graph_window(values)]}"
+                             target="_blank">groot</a>
+                          <img src="{[this.get_url(values)]}"
+                               height={height} 
+                               width={width}
+                               class="loading" />
+                        </tpl>
+                      </div>
+                    </tpl>
+                    </tpl>
+                    """,
                     {
                         get_url:(values) ->
                             if values.width > 0 and values.height >0 and values.dt_start and values.dt_end
                                 return Lizard.model.Graph.getGraphUrl(values)
                             else
                                 return 'data:image/gif'
-                        get_function_for_graph_window: (values) ->
-                            return "Ext.getCmp('"+me.id+"').open_graph_window('"+values.id+"');"
+                        get_link_for_graph_window: (values) ->
+                            return me.open_graph_window(values.id)
 
                         context_ready:() ->
-                           return me.store.context_ready
+                            return me.store.context_ready
                     }
                 ),
                 itemSelector: @itemSelector,

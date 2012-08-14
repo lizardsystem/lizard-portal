@@ -341,7 +341,7 @@
         };
         if (this.addEditIcon) {
           colConfig.items.push({
-            icon: '/static_media/lizard_portal/images/settingtable.png',
+            icon: '/static_media/lizard_portal/x-tool-icons/x-tool-edit.png',
             tooltip: 'Edit',
             handler: function(grid, rowIndex, colIndex) {
               var rec;
@@ -360,8 +360,8 @@
         }
         if (this.addDeleteIcon) {
           colConfig.items.push({
-            icon: '/static_media/lizard_portal/images/delete.png',
-            tooltip: 'Delete',
+            icon: '/static_media/lizard_portal/x-tool-icons/x-tool-delete-single.png',
+            tooltip: 'Verwijderen',
             handler: function(grid, rowIndex, colIndex) {
               var rec;
               rec = grid.getStore().getAt(rowIndex);
@@ -546,7 +546,7 @@
               }
             }, {
               xtype: 'button',
-              text: 'Delete',
+              text: 'Verwijderen',
               iconCls: 'l-icon-delete',
               handler: function(menuItem, checked) {
                 return me.deleteSelectedRecord();
@@ -559,14 +559,14 @@
         me.bbar = me.bbar.concat([
           '-', {
             xtype: 'button',
-            text: 'Cancel',
+            text: 'Reset',
             iconCls: 'l-icon-cancel',
             handler: function(menuItem, checked) {
               return me.cancelEdits();
             }
           }, {
             xtype: 'button',
-            text: 'Save',
+            text: 'Opslaan',
             iconCls: 'l-icon-disk',
             handler: function(menuItem) {
               if (me.getEnterEditSummary()) {

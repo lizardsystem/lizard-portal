@@ -17,6 +17,7 @@ Ext.define('Vss.grid.Esf', {
     },
     tools: [{
         type: 'search',
+        tooltip: 'Historie',
         handler: function (e, target, panelHeader, tool) {
             Ext.create('Ext.window.Window', {
                 title: 'Geschiedenis van ESF-configuratie',
@@ -43,6 +44,7 @@ Ext.define('Vss.grid.Esf', {
         }
     },{//expand tree for extra lines
         type: 'right',
+        tooltip: 'In-/uitklappen',
         handler: function (e, target, panelHeader, tool) {
             var portal_col = panelHeader.up('portalcolumn')
             if (tool.type == 'left') {
@@ -116,9 +118,6 @@ Ext.define('Vss.grid.Esf', {
 
         */
 
-
-
-        console.log(record)
         //function for formating 1 value
         var format = function(value, record) {
             if (record.data.type == 'oordeel') {
@@ -208,7 +207,7 @@ Ext.define('Vss.grid.Esf', {
             //in case the user is allowed to edit
 
             var manual_editor = function(record) {
-                if (['main_esf', 'expert_result', 'expert_setting'].indexOf(record.data.config_type)>=0) {
+                if (Ext.Array.indexOf(['main_esf', 'expert_result', 'expert_setting'], record.data.config_type)>=0) {
 
                     return {
                         xtype: 'combobox',
@@ -228,8 +227,8 @@ Ext.define('Vss.grid.Esf', {
 
             var value_editor = function(record) {
 
-                if ((['main_esf', 'expert_result', 'expert_setting'].indexOf(record.data.config_type)>=0 && record.data.manual == 1) ||
-                        (['base_setting'].indexOf(record.data.config_type)>=0)) {
+                if ((Ext.Array.indexOf(['main_esf', 'expert_result', 'expert_setting'], record.data.config_type)>=0 && record.data.manual == 1) ||
+                        (Ext.Array.indexOf(['base_setting'], record.data.config_type)>=0)) {
                     if (record.data.type == 'oordeel') {
                         return me.editors.oordeel_editor;
                     } else  if (record.data.type == 'text') {
@@ -281,12 +280,11 @@ Ext.define('Vss.grid.Esf', {
                 renderer: this.value_renderer,
                 listeners: {
                       'mouseover': function(grid, component, row, col){
-                          console.log(arguments);
                           record = grid.store.getAt(row);
                           var html = ''
-                          if (record.data.manual || ['base_setting'].indexOf(record.data.config_type) >= 0) {
+                          if (record.data.manual || Ext.Array.indexOf(['base_setting'], record.data.config_type) >= 0) {
                               html = record.get('comment') + '<br><i>' + record.get('last_edit_by') + ', ' + record.get('last_edit_date') + '</i>';
-                          } else if (['result', 'expert_result', 'main_esf'].indexOf(record.data.config_type) >= 0 && record.get('auto_value_ts')) {
+                          } else if (Ext.Array.indexOf(['result', 'expert_result', 'main_esf'], record.data.config_type) >= 0 && record.get('auto_value_ts')) {
                               html =  'automatische waarde van ' + record.get('auto_value_ts');
                           }
 
@@ -325,12 +323,19 @@ Ext.define('Vss.grid.Esf', {
                 },{
                     xtype: 'button',
                     id: 'save_button',
-                    text: 'Save',
+                    text: 'Opslaan',
                     iconCls: 'l-icon-disk',
                     handler: function(menuItem) {
-
-                        me.store.sync();
-                    }
+                        Lizard.window.EditSummaryBox.show({
+                            fn: function(btn, text, field) {
+                                if (btn=='ok') {
+                                    me.store.setTempWriteParams({edit_message: text});
+                                    me.store.sync();
+                                    return true;
+                                }
+                            }
+                        });
+                   }
                 }]
             });
         }

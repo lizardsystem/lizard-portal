@@ -40,7 +40,10 @@
     ],
     proxy: {
       type: 'ajax',
-      url: '/workspace/api/appscreen',
+      url: '/workspace/api/appscreen/',
+      extraParams: {
+        _accept: 'application/json'
+      },
       reader: {
         type: 'json',
         root: 'data'

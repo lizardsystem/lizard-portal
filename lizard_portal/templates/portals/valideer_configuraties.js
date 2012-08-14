@@ -44,14 +44,17 @@
 				{name: 'action_log', title: 'Log van validatie',
 				 editable: false, visible: true, width: 400, type: 'text'}
 			    ],
+
+
 			    useAddDeleteButtons: false,
-			    addEditIcon: true,
+
 			    proxyUrl: '/portal/api/configuration/',
 			    proxyParams: {
 				flat: false,
 				size: 'small',
 				include_geom: false
 			    },
+                addEditIcon: true,
 			    actionEditIcon: function(record) {
 				var me = this;
 				console.log(this.store.getNewRecords());
@@ -96,6 +99,11 @@
 					       }
 					   }).show();
 			    }
+            {% if perm.is_funct_beheerder %}
+            {% else %}
+                ,editable: false
+            {% endif %}
 			}]
+
 	    }]
 }

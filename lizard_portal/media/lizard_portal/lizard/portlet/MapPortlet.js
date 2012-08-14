@@ -114,7 +114,7 @@
       }
     },
     onMapClick: function(event, lonlat, callback) {
-      var layer, me, params, url;
+      var extra_params, layer, me, params, url;
       me = this;
       layer = this.layers.findRecord('clickable', true);
       if (!layer) {
@@ -136,6 +136,8 @@
         SRS: "EPSG:900913"
       };
       if (layer.get('filter')) params['CQL_FILTER'] = layer.get('filter');
+      extra_params = layer.get('request_params');
+      if (extra_params) params['styles'] = JSON.parse(extra_params)['styles'];
       if (layer.get('url') === '') {
         return alert('Test: Selecteer een andere kaartlaag als bovenste clickable');
       } else if (!layer.get('is_local_server')) {

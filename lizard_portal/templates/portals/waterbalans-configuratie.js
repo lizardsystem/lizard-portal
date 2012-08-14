@@ -32,7 +32,7 @@
                 margin: 15
             },
             autoScroll:true,
-            {% if user.is_authenticated %}
+            {% if perm.is_analyst %}
             bbar: [
                 {
                     xtype: 'button',
@@ -48,7 +48,7 @@
                 },
                 {
                     xtype: 'button',
-                    text: 'Save',
+                    text: 'Opslaan',
                     iconCls: 'l-icon-disk',
                     handler: function (menuItem) {
                         var panel = menuItem.up('panel');

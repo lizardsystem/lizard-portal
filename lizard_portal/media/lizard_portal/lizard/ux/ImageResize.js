@@ -14,11 +14,11 @@ Ext.define('Lizard.ux.ImageResize', {
         params: {
 
         },
-        link_to : null
+        link_to : null,
     },
 
     applyParams: function(new_params) {
-        if (this.orig_src.indexOf('?') < 0) {
+        if (this.orig_src.indexOf('?') < 0 && this.orig_src.length > 0) {
             var url = this.orig_src + '?'
         } else {
             var url = this.orig_src;
@@ -40,11 +40,12 @@ Ext.define('Lizard.ux.ImageResize', {
                     url += paramString(key, params[key][i]);
                 }
             } else {
-
                 url += paramString(key, params[key]);
             }
         }
-
+        // Before setting the new src, load a transparent dummy image
+        // to reveal the spinning disk background image.
+        this.setSrc('/static_media/lizard_portal/pixel.png');
         this.setSrc(url);
     },
 
@@ -55,8 +56,8 @@ Ext.define('Lizard.ux.ImageResize', {
     initComponent: function() {
         var me = this;
 
-        //this.init_src = this.src;
-        this.setSrc('data:img/gif');
+        this.setSrc(this.src)
+        this.addClass('loading')
 
         this.on({
             resize: function(Component, adjWidth, adjHeight, eOpts) {
@@ -67,7 +68,6 @@ Ext.define('Lizard.ux.ImageResize', {
         });
 
         if (this.link_to) {
-
             this.listeners = {
                 click: {
                     element: 'el', //bind to the underlying el property on the panel
@@ -77,7 +77,6 @@ Ext.define('Lizard.ux.ImageResize', {
                 }
             }
         }
-
         this.callParent(arguments);
     },
     afterRender: function() {

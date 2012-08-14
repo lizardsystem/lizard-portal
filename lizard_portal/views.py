@@ -20,7 +20,8 @@ from django.contrib.gis.geos import GEOSGeometry
 
 from lizard_area.models import Area
 from lizard_portal.configurations_retriever import ConfigurationsRetriever
-from lizard_portal.configurations_retriever import create_configurations_retriever
+from lizard_portal.configurations_retriever import\
+    create_configurations_retriever
 from lizard_portal.configurations_retriever import MockConfig
 from lizard_portal.models import PortalConfiguration
 from lizard_registration.models import SessionContextStore, UserContextStore
@@ -46,6 +47,7 @@ def site(request, application_name, active_tab_name, only_portal=False):
 
     t = get_template('portal_pageframe.html')
     c = RequestContext(request, {
+            'debug_mode': settings.DEBUG,
             'application': application_name,
             'active_tab': active_tab_name,
             'only_portal': only_portal
@@ -100,7 +102,7 @@ def application(request, application_name, active_tab_name):
             'active_tab': active_tab_name,
             'context': context,
             'permission_list': perms_list,
-            'perms': perms,
+            'perm': perms,
             'extent': ','.join(['%.0f' % value for value in  extent])
         })
 
@@ -112,7 +114,12 @@ def json_configuration(request):
     """
     Return JSON for request.
     """
-    c = RequestContext(request)
+
+    perms = dict(get_user_permissions_overall(
+            request.user, 'user', as_list=True))
+    c = RequestContext(request, {
+        'perm': perms
+    })
 
     portal_template = request.GET.get('portal_template', 'homepage')
 
@@ -128,7 +135,8 @@ def json_configuration(request):
             # areas which is only allowed if the user is an analyst. We cannot
             # easily detect that in the template itself so we do that here.
             #is_funct_beheerder = request.user.user_group_memberships.filter(
-            #permission_mappers__permission_group__permissions__codename='is_funct_beheerder').exists()
+            #permission_mappers__permission_group__permissions__codename=
+            #'is_funct_beheerder').exists()
             #if not is_funct_beheerder:
             #    t = get_template('portals/geen_toegang.js')
             #    return HttpResponse(t.render(c),  mimetype="text/plain")
@@ -232,11 +240,10 @@ def handle_uploaded_file(f, organisation):
 
 
 def check_permission(user):
-    """Return true is the user is a member of
-    functioneelbeheerder usergroup or superuser."""
-    functioneelbeheerder_groups = user.user_group_memberships.filter(
-        name__contains='functioneel beheerder')
-    if functioneelbeheerder_groups.exists() or user.is_superuser:
+    """Return true is the user has permission
+    is_analyst or superuser."""
+    perms = dict(get_user_permissions_overall(user, 'user', as_list=True))
+    if (('is_analyst' in perms) or user.is_superuser):
         return True
     return False
 
@@ -286,10 +293,11 @@ def upload_file(request):
                     "en stel de configuraties in")
         else:
             form = UploadFileForm()
-            msg = "Kies een zip bestand met configuraties en klik op upload button."
+            msg = "Kies een zip bestand met configuraties en klik op "\
+                "upload button."
     else:
-        msg = "Toegang is geweigerd, u bent geen lied van "\
-            "'functioneel beheerder' gebruikersgroep."
+        msg = "Toegang is geweigerd, u bent geen lid van "\
+            "'analist' gebruikersgroep."
 
     data = {'form': form, 'msg': msg, 'allowed': allowed}
     return render_to_response('lizard_portal/upload_file.html', data)

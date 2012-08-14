@@ -22,10 +22,20 @@
             }]
         },{
             xtype: 'workspaceportlet',
+            {% if perm.is_analyst %}
+                read_only: false,
+            {% else %}
+                read_only: true,
+            {% endif %}
             flex:3,
             workspaceStore: Lizard.store.WorkspaceStore.get_or_create('analyse')
         },{
             xtype: 'collageportlet',
+            {% if perm.is_analyst %}
+                read_only: false,
+            {% else %}
+                read_only: true,
+            {% endif %}
             flex:2,
             collageStore: Lizard.store.CollageStore.get_or_create('analyse')
         }]
