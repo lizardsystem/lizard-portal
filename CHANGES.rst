@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.61.6 (unreleased)
+0.61.6 (2012-08-14)
 -------------------
 
 - Changed featureinfopopup html template to heredoc for easier editing.
