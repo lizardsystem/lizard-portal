@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.57.15 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Added 'Name' field to ConfigurationToValidate table and form (pp 373)
 
 
 0.57.14 (2012-06-01)

@@ -9,7 +9,6 @@ import logging
 
 from lizard_api.base import BaseApiView
 from lizard_portal.models import ConfigurationToValidate
-from lizard_security.models import DataSet
 
 logger = logging.getLogger(__name__)
 
@@ -21,12 +20,13 @@ class ConfigurationToValidateView(BaseApiView):
 
     field_mapping = {
         'id':         'id',
+        'name':       'name',
         'polder':     'area__name',
         'type':       'config_type',
         'user':       'user',
         'date':       'date',
         'action':     'action',
-        'action_log': 'action_log'
+        'action_log': 'action_log',
         }
 
     read_only_fields = [
@@ -43,6 +43,7 @@ class ConfigurationToValidateView(BaseApiView):
 
         output = {
             'id':            config.id,
+            'name':          config.name,
             'polder':        config.area.name,
             'type':          config.config_type,
             'user':          config.user,

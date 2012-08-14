@@ -85,10 +85,13 @@ class ConfigurationStore(object):
         for zip_name in self.retrieve_zip_names():
             attrs_from_name = self.retrieve_attrs_from_name(zip_name)
             if self.required_attrs_are_missing(attrs_from_name):
-                self.logger.warning("Unable to parse the name '%s': required info is missing", zip_name)
+                self.logger.warning(
+                    "Unable to parse the name '%s': required info is missing",
+                    zip_name)
                 continue
             self.extract(zip_name, attrs_from_name['file_path'])
-            for attrs in self.retrieve_attrs_from_config(attrs_from_name['file_path'], attrs_from_name['config_type']):
+            for attrs in self.retrieve_attrs_from_config(
+                attrs_from_name['file_path'], attrs_from_name['config_type']):
                 config = self.db.ConfigurationToValidate()
                 attrs.update(attrs_from_name)
                 config.set_attributes(attrs)
