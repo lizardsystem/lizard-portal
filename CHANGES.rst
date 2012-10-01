@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.61.7 (unreleased)
+0.61.7 (2012-10-01)
 -------------------
 
 - Fixed styling of 'Beleid gebied selectie' map pp379.
