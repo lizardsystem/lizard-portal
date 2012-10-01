@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.61.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed styling of 'Beleid gebied selectie' map pp379.
+
+- Fixed link to "KRW Overzicht" on klick in 'Beleid gebied selectie' map pp379.
 
 
 0.61.6 (2012-08-14)

@@ -24,13 +24,13 @@ Ext.define('Lizard.popup.FeatureInfo', {
                   <h2>Kaartlaag: {layer_name}</h2>
                   <table>
                     <tr>
-                        <th style="width:50px;">Veld</th>
-                        <th style="width:50px;">Waarde</th>
+                        <th>Veld</th>
+                        <th>Waarde</th>
                     </tr>
                     <tpl for="fields">
                       <tr>
-                          <td style="width:50px;">{key}</td>
-                          <td style="width:50px;">{value}</td>
+                          <td>{key}</td>
+                          <td>{value}</td>
                       </tr>
                     </tpl>
                   </table>
@@ -48,7 +48,7 @@ Ext.define('Lizard.popup.FeatureInfo', {
                 constrainHeader: true,
                 items: [{
                     xtype: 'panel'
-                    width: 400
+                    width: 500
                     html: html
                 }]
             }).show()

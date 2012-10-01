@@ -73,8 +73,7 @@
                   '/layers/wms/?',
                   {
                     layers:[
-                      'vss:vss_krw_waterbody_polygon',
-                      'vss:vss_krw_waterbody_linestring'
+                      'vss:vss_krw_waterbody_polygon,vss:vss_krw_waterbody_linestring'
                     ],
                     transparent: true,
                     format: 'image/png'
