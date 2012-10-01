@@ -6,7 +6,11 @@ Ext.Loader.setPath('GeoExt', '{{ STATIC_URL }}geoext4/src');
 
 if (typeof(console)=='undefined') {
     console = {
-        log: function() {}
+        log: function() {},
+        error: function() {},
+        info: function() {},
+        warn: function() {},
+        debug: function() {}
     }
 }
 

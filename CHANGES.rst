@@ -9,6 +9,8 @@ Changelog of lizard-portal
 
 - Fixed link to "KRW Overzicht" on klick in 'Beleid gebied selectie' map pp379.
 
+- Fixed popup problem on colling console. in js for IE.
+
 
 0.61.6 (2012-08-14)
 -------------------
