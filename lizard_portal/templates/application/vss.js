@@ -432,17 +432,34 @@ Ext.application({
             var hash = window.location.hash;
             var parts = hash.replace('#', '').split('/');
 
-            hash_context = {}
+            var hash_context = {}
             hash_context.headertab = parts[0];
             hash_context.portal_template = parts[1];
-            if (parts.length > 3) {
-                hash_context.object = {
-                    type:  parts[2],
-                    id: parts[3],
-                    name: ''
-                }
+            var obj_type = parts[2];
+	    var obj_id = parts[3];
+	    var obj_types = ['aan_afvoergebied','krw_gebied'];
+	    if (obj_types.indexOf(obj_type) >= 0) {
+                //request to the server to check 'gebied_id'
+		Ext.Ajax.request({
+		  async: false,
+		  url: '/area/api/area_exists/?_accept=application/json&object_id=' + obj_id,
+		  method: 'GET',
+                  dataType:'json',
+		  success: function(data) {
+		      var name = Ext.decode(data.responseText).name;
+                      hash_context.object = {type:  obj_type, id: obj_id, name: name};
+                      Lizard.ContextManager.setContext(hash_context, false);
+                  },
+		  failure: function(error) {
+		      console.log(error);
+                      Ext.Msg.alert(
+                          "Fout", "Link met hash naar gebiedid=" + obj_id + " is incorrect.");
+		  }
+		});		
+	    } else {
+                Ext.Msg.alert(
+                   "Fout", "Link met hash naar gebiedtype=" + obj_type + " is incorrect.");
             }
-            Lizard.ContextManager.setContext(hash_context, false)
         }
 
         Ext.create('Lizard.window.Screen', {

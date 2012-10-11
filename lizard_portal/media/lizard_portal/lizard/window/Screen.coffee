@@ -402,21 +402,6 @@ Ext.define 'Lizard.window.Screen',
 
     afterRender: ->
         @callParent(arguments)
-
-        #when url has some kind of status information, set context
-        if window.location.hash
-            hash = window.location.hash
-            parts = hash.replace('#', '').split('/');
-            Lizard.CM.setContext({
-                headertab: parts[0]
-                portal_template: parts[1]
-                object: {
-                    type: parts[2]
-                    id: parts[3]
-                }
-            }, false, true, false)
-
-
         if not @showOnlyPortal
             #set navigation of active tab
             activetab = Lizard.CM.context.headertab

@@ -5,7 +5,9 @@ Changelog of lizard-portal
 0.61.8 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed problem on closing 'importreeksen' window in IE9, pp390.
+
+- Fixed problem on requesting of an onknown area's id and/or type, pp391.  
 
 
 0.61.7 (2012-10-01)

@@ -81,7 +81,7 @@ Ext.define('Lizard.popup.TimeSeriesGraph', {
 
             Ext.create('Ext.window.Window', {
                 title: title,
-                modal: true,
+                modal: false,
 
                 xtype: 'leditgrid'
                 itemId: 'map popup'
