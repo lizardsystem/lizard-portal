@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.61.8 (unreleased)
+0.61.8 (2012-10-11)
 -------------------
 
 - Fixed problem on closing 'importreeksen' window in IE9, pp390.
