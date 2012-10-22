@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.61.9 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed hash context.
 
 
 0.61.8 (2012-10-11)
