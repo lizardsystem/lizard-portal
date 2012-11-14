@@ -152,7 +152,7 @@
               {name: 'title', type: 'string'},
               {name: 'annotation_category', type: 'string'},
               {name: 'annotation_status', type: 'string'},
-              {name: 'datetime_modified', type: 'auto'},
+              {name: 'datetime_modified', type: 'date', dateFormat: 'Y-m-d H:i:s'},
               {name: 'created_by', type: 'string'}
             ]
           }),
