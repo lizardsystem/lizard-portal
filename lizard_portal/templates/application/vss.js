@@ -321,7 +321,7 @@ Ext.application({
                 },
 		        {
                    text: 'Koppeling KRW en aan/afvoergebieden',
-                   {% if perms.is_funct_beheerder %}
+                   {% if perm.is_funct_beheerder %}
                         disabled: false,
                    {% else %}
                         disabled: true,
