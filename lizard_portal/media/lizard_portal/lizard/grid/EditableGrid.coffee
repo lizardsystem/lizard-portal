@@ -447,14 +447,15 @@ Ext.define('Lizard.grid.EditableGrid', {
                 return false
             else
                 if @msgDeleteSelectedRecord
+                    me = @
                     Ext.Msg.show({
                         title:'let op',
                         msg: @msgDeleteSelectedRecord,
                         buttons: Ext.Msg.YESNO,
                         icon: Ext.Msg.QUESTION,
                         fn: (buttonId, text, opt) ->
-                            if buttonId == yes
-                                @store.remove(selection)
+                            if buttonId == 'yes'
+                                me.store.remove(selection)
                     })
                 else
                     @store.remove(selection)

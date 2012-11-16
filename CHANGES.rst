@@ -6,7 +6,8 @@ Changelog of lizard-portal
 -------------------
 
 - Fixed problem by formating datetime in IE&Firefox pp398.
-- Fixed permissions bug in 'Beheer' menu by 'Koppeling KRW en aan...' .  
+- Fixed permissions bug in 'Beheer' menu by 'Koppeling KRW en aan...'.
+- Fixed problem on delete selected measure pp392.
 
 0.61.9 (2012-10-22)
 -------------------
