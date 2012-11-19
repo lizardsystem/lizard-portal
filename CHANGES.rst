@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.62.1 (unreleased)
+0.62.1 (2012-11-19)
 -------------------
 
 - Fixed problem by formating datetime in IE&Firefox pp398.
