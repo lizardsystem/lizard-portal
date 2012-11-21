@@ -10,43 +10,32 @@ Ext.define('Lizard.popup.MeasurePopup', {
 
     statics:
       show: (records, workspaceitem) ->
+        permissions = Lizard.CM.getContext().user.permissions
+        controls = {}
+        if permissions.indexOf('Is beleidsmaker') >= 0
+          controls['save'] = [
+            'Bewerken maatregel: ' + records[0].data.title, 
+            '/measure/measure_detailedit_portal/',
+            { measure_id: records[0].data.id },
+            null, false, 'component', true]
+          controls['plus'] = [
+            'Deelmaatregel toevoegen', '/measure/measure_detailedit_portal/',
+            {
+              parent_id: records[0].data.id,
+              area_id: Lizard.CM.getContext().object.id
+            }
+            , null, false, 'component', true]
+
+        controls['search'] = [
+          'Geschiedenis',
+          '/measure/history/' + records[0].data.id,
+          {}, {}, false, 'html', false, false]
+
         Ext.getCmp('portalWindow').linkToPopup(
           'Maatregel: ' + records[0].data.title,
           '/measure/measure/' + records[0].data.id,
           {},
-          {
-            save: [
-              'Bewerken maatregel: ' + records[0].data.title,
-              '/measure/measure_detailedit_portal/',
-              {measure_id: records[0].data.id},
-              null,
-              false,
-              'component',
-              true
-            ],
-            plus: [
-              'Deelmaatregel toevoegen',
-              '/measure/measure_detailedit_portal/',
-              {
-                parent_id: records[0].data.id,
-                area_id: Lizard.CM.getContext().object.id
-              },
-              null,
-              false,
-              'component',
-              true
-            ],
-            search: [
-              'Geschiedenis',
-              '/measure/history/' + records[0].data.id,
-              {},
-              {},
-              false,
-              'html',
-              false,
-              false
-            ]
-          },
+          controls,
           false,
           'html',
           false,

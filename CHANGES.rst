@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.62.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed permission bug by MeasurePopup pp397.
 
 
 0.62.1 (2012-11-19)
