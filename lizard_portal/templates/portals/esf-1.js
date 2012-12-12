@@ -39,15 +39,14 @@
                     title: title,
                     width: 600,
                     height: 600,
+		    autoScroll: true,
 		    constrainHeader: true,
-                    layout: {
-                        type: 'vbox',
-                        align: 'stretch'
-                    },
                     items: [{
                         flex:1,
                         title: null,
                         xtype: "mapportlet",
+			height: 500,
+			width: '100%',		
                         initZoomOnRender: false,
                         plugins:[],
                         extent: new OpenLayers.Bounds(
@@ -93,8 +92,7 @@
                         }
                     },{
                         xtype: 'image',
-                        src: '/layers/wms/?FORMAT=image%2Fpng&TRANSPARENT=TRUE&STYLE='+ style + '&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&SRS=EPSG%3A900913&BBOX=460467.38252035,6800747.0720688,640132.61747965,6894993.9279312&LAYER='+ layer_name +'&width=100&height=30' + extra,
-                        height: 100
+                        src: '/layers/wms/?FORMAT=image%2Fpng&TRANSPARENT=TRUE&STYLE='+ style + '&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetLegendGraphic&SRS=EPSG%3A900913&BBOX=460467.38252035,6800747.0720688,640132.61747965,6894993.9279312&LAYER='+ layer_name +'&width=100&height=30' + extra
                     }]
                }).show()
             },

@@ -5,7 +5,8 @@ Changelog of lizard-portal
 0.62.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix the legend in 'AqMad op kaar', 'P op kaart' and 'PO4 op kaart' windows
+  issue 403 
 
 
 0.62.3 (2012-12-12)
