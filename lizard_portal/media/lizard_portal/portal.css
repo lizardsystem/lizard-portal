@@ -462,3 +462,62 @@ img.loading {
     background-repeat: no-repeat;
     background-image: url('/static_media/lizard_ui/ajax-loader.gif');
 }
+
+/*wb configuraton summury*/
+
+.wbsummary h1, h2, h3, h4 {
+    font-weight:normal;
+    color:#111;
+}
+.wbsummary h1 {
+    font-size:1.4em;
+    line-height:1;
+    margin-bottom:0.5em;
+}
+.wbsummary h2 {
+    font-size:1.3em;
+    margin-bottom:0.75em;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.wbsummary h3 {
+    font-size:1.1em;
+    line-height:1;
+    margin-bottom:1em;
+    font-weight: bold;
+}
+.wbsummary h4 {
+    font-size:1.1em;
+    line-height:1.25;
+    margin-bottom:1.25em;
+}
+
+.wbsummary p {
+    margin:0 0 1.5em;
+}
+
+
+.wbsummary table {
+	font: 11px/24px Verdana, Arial, Helvetica, sans-serif;
+	width: 280px;
+	border-top: 1px solid #CCC;
+	}
+
+.wbsummary th {
+	padding: 0 0.5em;
+	text-align: left;
+	font-weight: bold;
+	border-bottom: 1px solid #CCC;
+	}
+
+.wbsummary tr {
+	border-bottom: 1px solid #CCC;
+	}
+
+.wbsummary td {
+	padding: 0 0.5em;
+	}
+
+.wbsummary td.width {
+	width: 140px;
+	}

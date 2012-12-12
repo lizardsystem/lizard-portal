@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.62.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix summary overview of 'waterbalans-configuratie' issue 408.
 
 
 0.62.2 (2012-11-21)

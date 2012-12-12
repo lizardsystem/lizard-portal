@@ -31,11 +31,10 @@
                 var me = this;
                 me.setLoading(true);
                 var cm = Ext.getCmp('portalWindow').context_manager.getContext();
-
                 me.loader.load({
                     url: '/wbconfiguration/api/summary/',
                     params: {
-                        object_id: cm.object_id
+                        object_id: cm.object.id
                     },
                     method: 'GET',
                     success: function() {
