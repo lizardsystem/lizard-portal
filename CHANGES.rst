@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.62.6 (unreleased)
+0.62.6 (2012-12-13)
 -------------------
 
 - Remove debugger from javascript.
