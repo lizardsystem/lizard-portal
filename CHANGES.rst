@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.62.5 (unreleased)
+0.62.5 (2012-12-13)
 -------------------
 
 - Fix bug by setting in/out multiple graphs pp(402). 
