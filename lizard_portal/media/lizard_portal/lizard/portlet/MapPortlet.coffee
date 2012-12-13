@@ -260,7 +260,6 @@ Ext.define('Lizard.portlet.MapPortlet', {
                 }
                 method: 'GET',
                 success: (xhr, request) ->
-                     debugger
                      me.setLoading(false);
                      gml_text = xhr.responseText;
                      format = new OpenLayers.Format.GML.v3();
