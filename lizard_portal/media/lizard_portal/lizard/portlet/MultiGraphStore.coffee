@@ -41,7 +41,7 @@ Ext.define('Lizard.portlet.MultiGraphStore', {
                     # button.pressed for visible buttons
                     # button.activated/checked for buttons in pull down
                     # stupid extjs thing to have different properties
-                    if button.pressed or (button.activated and button.checked)
+                    if (button.pressed  and (typeof(button.checked) == 'undefined')) or (button.activated and button.checked)
                         button.graph.set('visible', true)
                     else
                         button.graph.set('visible', false)

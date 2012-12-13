@@ -35,7 +35,7 @@
           graph: graph,
           handler: function(button) {
             button.graph.beginEdit();
-            if (button.pressed || (button.activated && button.checked)) {
+            if ((button.pressed && (typeof button.checked === 'undefined')) || (button.activated && button.checked)) {
               button.graph.set('visible', true);
             } else {
               button.graph.set('visible', false);
