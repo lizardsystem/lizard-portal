@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.62.7 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix combobox to remove selected value pp411.
 
 
 0.62.6 (2012-12-13)

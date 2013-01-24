@@ -106,6 +106,7 @@ Ext.application({
         'Lizard.form.FormAutoload',
         'Lizard.grid.GridComboBox',
         'Lizard.grid.ComboDict',
+        'Lizard.grid.ClearableCombo',
         'Lizard.grid.CellEditing',
         'Lizard.form.TableField'
     ],

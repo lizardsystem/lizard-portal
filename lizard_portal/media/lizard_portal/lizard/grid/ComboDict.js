@@ -4,19 +4,11 @@ Combobox fields which can handle dictionaries with valueField, DisplayField as i
 
 */
 
-
-
-
 Ext.define('Lizard.grid.ComboDict', {
     extend: 'Ext.form.field.ComboBox',
     alias: 'widget.combodict',
-
     return_dict: true,
-
     return_json: false, //otherwise an array with dicts
-
-
-
 
     setValue: function(value, doSelect) {
 
