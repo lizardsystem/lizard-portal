@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.62.8 (unreleased)
+0.62.8 (2013-01-31)
 -------------------
 
 - Changed layer's name for ESF-STATUS to ESF-opgeteld, pp359.
