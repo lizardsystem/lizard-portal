@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.62.9 (unreleased)
+0.62.9 (2013-02-01)
 -------------------
 
 - Update layout of esf-thememap's legend, pp359.
