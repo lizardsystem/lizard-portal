@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.62.10 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix url's parameter to 'timestep' for graphs.
 
 
 0.62.9 (2013-02-01)

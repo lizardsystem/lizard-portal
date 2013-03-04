@@ -40,7 +40,7 @@
           } else {
             qua_ident_extra = '';
           }
-          graph_item_html += '&item={%22fews_norm_source_slug%22:%22' + single_record.data.fews_norm_popup_slug + '%22,%22location%22:%22' + single_record.data.geo_ident + '%22,%22parameter%22:%22' + single_record.data.par_ident + '%22,%22type%22:%22line%22,%22time_step%22:%22' + single_record.data.stp_ident + '%22,%22module%22:%22' + single_record.data.mod_ident + '%22' + qua_ident_extra + '}';
+          graph_item_html += '&item={%22fews_norm_source_slug%22:%22' + single_record.data.fews_norm_popup_slug + '%22,%22location%22:%22' + single_record.data.geo_ident + '%22,%22parameter%22:%22' + single_record.data.par_ident + '%22,%22type%22:%22line%22,%22timestep%22:%22' + single_record.data.stp_ident + '%22,%22module%22:%22' + single_record.data.mod_ident + '%22' + qua_ident_extra + '}';
         }
         img_html = '<img src="/graph/?dt_start=' + dt_start + '&dt_end=' + dt_end + '&width=1000&height=550&legend-location=4' + graph_item_html + '" />';
         if (record.data.is_collage_item === true) {
