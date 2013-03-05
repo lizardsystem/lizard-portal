@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.62.10 (unreleased)
+0.62.10 (2013-03-05)
 --------------------
 
 - Fix url's parameter to 'timestep' for graphs.
