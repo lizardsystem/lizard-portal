@@ -99,7 +99,8 @@ class ConfigurationStore(object):
                     self.logger.info('Saving configuration %s' % config)
                     config.save()
                 except:
-                    self.logger.warning('Unable to save the configuration: probably it is incomplete')
+                    self.logger.warning(
+                        'Unable to save the config: probably it is incomplete')
             self.delete(zip_name)
 
     def retrieve_zip_names(self):
@@ -177,9 +178,9 @@ class AttributesFromNameRetriever(object):
 
     def retrieve(self, zip_name):
         self.zip_name = zip_name
-        return { 'file_path':   self.file_path,
-                 'config_type': self.config_type,
-                 'data_set':    self.data_set }
+        return {'file_path':   self.file_path,
+                'config_type': self.config_type,
+                'data_set':    self.data_set}
 
     @property
     def file_path(self):

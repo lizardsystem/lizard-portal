@@ -18,11 +18,12 @@ class PortalTemplate(Node):
     def render(self, context):
         slug = self.template_slug
         try:
-            t = get_template('portals/'+slug+'.js')
-        except TemplateDoesNotExist, e:
+            t = get_template('portals/' + slug + '.js')
+        except TemplateDoesNotExist:
             pc = PortalConfiguration.objects.filter(slug=slug)[0]
             t = Template(pc.configuration)
         return t.render(context)
+
 
 #@register.filter
 def get_portal_template(parser, token):
@@ -31,4 +32,3 @@ def get_portal_template(parser, token):
     return PortalTemplate(bits[1])
 
 get_portal_template = register.tag('get_portal_template', get_portal_template)
-
