@@ -2,7 +2,7 @@ Changelog of lizard-portal
 ==========================
 
 
-0.62.11 (unreleased)
+0.62.11 (2013-03-14)
 --------------------
 
 - Added functionality to open ftp url in webbrowser pp419.
