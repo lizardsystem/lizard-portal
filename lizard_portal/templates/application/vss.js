@@ -363,6 +363,17 @@ Ext.application({
                     disabled: true,
                     {% endif %}
                      handler: function() { window.open('/task/') }
+                },
+		{
+                    text: 'Upload naar FTP',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% else %}
+                        disabled: true,
+                     {% endif %}
+
+                    handler: function() {
+			window.open({% autoescape off %}{{ftp_url}}{% endautoescape %}) }
                 }
 		]
             })

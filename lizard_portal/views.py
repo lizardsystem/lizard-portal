@@ -103,6 +103,7 @@ def application(request, application_name, active_tab_name):
             'context': context,
             'permission_list': perms_list,
             'perm': perms,
+            'ftp_url': settings.FTP_URL,
             'extent': ','.join(['%.0f' % value for value in  extent])
         })
 
@@ -118,9 +119,9 @@ def json_configuration(request):
     perms = dict(get_user_permissions_overall(
             request.user, 'user', as_list=True))
     c = RequestContext(request, {
-        'perm': perms
+        'perm': perms,
+        'ftp_url': settings.FTP_URL
     })
-
     portal_template = request.GET.get('portal_template', 'homepage')
 
     if request.user.is_authenticated():
@@ -148,7 +149,6 @@ def json_configuration(request):
 
     else:
         t = get_template('portals/geen_toegang.js')
-
     return HttpResponse(t.render(c),  mimetype="text/plain")
 
 

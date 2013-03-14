@@ -20,7 +20,7 @@
             items: [
 		// keep these objects in sync with those in ../application/vss.js
                 {
-                     text: 'ESF overzicht',
+                    text: 'ESF overzicht',
                      {% if user.is_authenticated %}
                      disabled: false,
                     {% else %}
@@ -121,6 +121,17 @@
                      {% endif %}
 
                      handler: function() { window.open('/task/') }
+                },
+		{
+                    text: 'Upload naar FTP',
+                     {% if user.is_authenticated %}
+                     disabled: false,
+                     {% else %}
+                        disabled: true,
+                     {% endif %}
+
+                    handler: function() {
+			window.open({% autoescape off %}{{ftp_url}}{% endautoescape %}) }
                 }
             ]
 		}]
