@@ -33,6 +33,14 @@ from lizard_task.models import SecuredPeriodicTask
 logger = logging.getLogger(__name__)
 
 
+def get_ftp_url():
+    """ Obtain url of ftp-server from settings. """
+    ftp_url = ""
+    if hasattr(settings, 'FTP_URL'):
+        ftp_url = getattr(settings, 'FTP_URL')
+    return ftp_url
+
+
 def site(request, application_name, active_tab_name, only_portal=False):
     """
         returns html page which loads specified (ext-js) application
@@ -103,7 +111,7 @@ def application(request, application_name, active_tab_name):
             'context': context,
             'permission_list': perms_list,
             'perm': perms,
-            'ftp_url': settings.FTP_URL,
+            'ftp_url': get_ftp_url(),
             'extent': ','.join(['%.0f' % value for value in  extent])
         })
 
@@ -120,7 +128,7 @@ def json_configuration(request):
             request.user, 'user', as_list=True))
     c = RequestContext(request, {
         'perm': perms,
-        'ftp_url': settings.FTP_URL
+        'ftp_url': get_ftp_url
     })
     portal_template = request.GET.get('portal_template', 'homepage')
 

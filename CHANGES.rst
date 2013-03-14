@@ -5,7 +5,7 @@ Changelog of lizard-portal
 0.63.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix error on condition 'FTP_URL is not set'.
 
 
 0.62.11 (2013-03-14)
