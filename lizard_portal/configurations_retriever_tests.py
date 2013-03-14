@@ -172,21 +172,21 @@ class ZipFileNameRetrieverTestSuite(TestCase):
     def test_a(self):
         """Test no files are returned when there are no files present."""
         retriever = ZipFileNameRetriever()
-        retriever.retrieve_file_names = (lambda : [])
+        retriever.retrieve_file_names = (lambda: [])
         file_names = retriever.retrieve()
         self.assertEqual([], file_names)
 
     def test_b(self):
         """Test no files are returned when there are no zip files present."""
         retriever = ZipFileNameRetriever()
-        retriever.retrieve_file_names = (lambda : ['hello.txt'])
+        retriever.retrieve_file_names = (lambda: ['hello.txt'])
         file_names = retriever.retrieve()
         self.assertEqual([], file_names)
 
     def test_c(self):
         """Test the single zip file is returned."""
         retriever = ZipFileNameRetriever()
-        retriever.retrieve_file_names = (lambda : ['hello.zip'])
+        retriever.retrieve_file_names = (lambda: ['hello.zip'])
         file_names = retriever.retrieve()
         self.assertEqual(['hello.zip'], file_names)
 
@@ -303,6 +303,7 @@ def get_self(self):
 
 global_s = None
 
+
 def get_self_c():
     return global_s
 
@@ -321,7 +322,7 @@ class ConfigurationStoreTestSuite(TestCase):
         self.store.db = self.db
         self.store.extract = Mock()
         self.store.delete = Mock()
-        self.store.retrieve_zip_names = lambda : ['waterbalans_Waternet_04042012_081400.zip']
+        self.store.retrieve_zip_names = lambda: ['waterbalans_Waternet_04042012_081400.zip']
         self.store.retrieve_attrs_from_config = lambda dir_name, config_type: [{'area_code': '3201'}]
 
     def get_file_path(self, zip_name):
@@ -340,7 +341,8 @@ class ConfigurationStoreTestSuite(TestCase):
         """
         self.store.supply()
         config = self.db.configurations.all()[0]
-        self.assertEqual(self.get_file_path('waterbalans_Waternet_04042012_081400'),
+        self.assertEqual(
+            self.get_file_path('waterbalans_Waternet_04042012_081400'),
             config.file_path)
 
     def test_c(self):
@@ -349,10 +351,11 @@ class ConfigurationStoreTestSuite(TestCase):
         The zip name contains a path.
 
         """
-        self.store.retrieve_zip_names = lambda : ['/mnt/vss-shared/te-valideren-configuraties/waterbalans_Waternet_04042012_081400.zip']
+        self.store.retrieve_zip_names = lambda: ['/mnt/vss-shared/te-valideren-configuraties/waterbalans_Waternet_04042012_081400.zip']
         self.store.supply()
         config = self.db.configurations.all()[0]
-        self.assertEqual(self.get_file_path('waterbalans_Waternet_04042012_081400'),
+        self.assertEqual(
+            self.get_file_path('waterbalans_Waternet_04042012_081400'),
             config.file_path)
 
     def test_d(self):
@@ -362,13 +365,17 @@ class ConfigurationStoreTestSuite(TestCase):
         self.assertEqual(self.db.areas.all()[0], config.area)
 
     def test_e(self):
-        """Test the config type of the new ConfigurationToValidate is correct."""
+        """Test the config type of
+        the new ConfigurationToValidate is correct.
+        """
         self.store.supply()
         config = self.db.configurations.all()[0]
         self.assertEqual('waterbalans', config.config_type)
 
     def test_f(self):
-        """Test the water manager of the new ConfigurationToValidate is correct."""
+        """Test the water manager of
+        the new ConfigurationToValidate is correct.
+        """
         self.store.supply()
         config = self.db.configurations.all()[0]
         self.assertEqual('Waternet', config.data_set.name)
@@ -381,10 +388,14 @@ class ConfigurationStoreTestSuite(TestCase):
 
     def test_h(self):
         """Test retrieve_attrs_from_config is called correctly."""
-        self.store.retrieve_attrs_from_config = Mock(return_value=self.store.retrieve_attrs_from_config("don't care", "don't care"))
+        self.store.retrieve_attrs_from_config = Mock(
+            return_value=self.store.retrieve_attrs_from_config(
+                "don't care", "don't care"))
         self.store.supply()
         args, kwargs = self.store.retrieve_attrs_from_config.call_args
-        self.assertEqual(self.get_file_path('waterbalans_Waternet_04042012_081400'), args[0])
+        self.assertEqual(
+            self.get_file_path('waterbalans_Waternet_04042012_081400'),
+            args[0])
         self.assertEqual('waterbalans', args[1])
 
     def test_i(self):
@@ -395,7 +406,7 @@ class ConfigurationStoreTestSuite(TestCase):
 
     def test_j(self):
         """Test a zip file that is named incorrectly, is skipped."""
-        self.store.retrieve_zip_names = lambda : ['incorrectly named.zip']
+        self.store.retrieve_zip_names = lambda: ['incorrectly named.zip']
         self.store.supply()
         self.assertFalse(self.store.extract.called)
 
@@ -412,7 +423,7 @@ class AttributesFromNameRetrieverTestSuite(TestCase):
         retriever.dbf_directory = '/tmp'
         attrs = retriever.retrieve(self.zip_name)
         self.assertEqual('/tmp/waterbalans_Waternet_20120228_141234',
-            attrs['file_path'])
+                         attrs['file_path'])
 
     def test_b(self):
         """Test the retrieval of the configuration type."""
@@ -440,7 +451,8 @@ class ConfigurationSpecRetrieverTestSuite(TestCase):
     def setUp(self):
         self.retriever = ConfigurationSpecRetriever()
         self.retriever.retrieve_area_codes = Mock(return_value=['3201'])
-        self.retriever.retrieve_meta_info = Mock(return_value={'user': 'Pieter Swinkels'})
+        self.retriever.retrieve_meta_info = Mock(
+            return_value={'user': 'Pieter Swinkels'})
 
     def test_a(self):
         """Test the construction of a single ConfigurationSpec."""
@@ -456,7 +468,9 @@ class ConfigurationSpecRetrieverTestSuite(TestCase):
         config_type = 'waterbalans'
         self.retriever.retrieve(dir_name, config_type)
         args, kwargs = self.retriever.retrieve_area_codes.call_args
-        self.assertEqual('/path/to/configuration/directory/aanafvoer_waterbalans.dbf', args[0])
+        self.assertEqual(
+            '/path/to/configuration/directory/aanafvoer_waterbalans.dbf',
+            args[0])
 
     def test_c(self):
         """Test retrieve_area_codes_from_dbf is called correctly."""
@@ -464,7 +478,8 @@ class ConfigurationSpecRetrieverTestSuite(TestCase):
         config_type = 'esf1'
         self.retriever.retrieve(dir_name, config_type)
         args, kwargs = self.retriever.retrieve_area_codes.call_args
-        self.assertEqual('/path/to/configuration/directory/aanafvoer_esf1.dbf', args[0])
+        self.assertEqual('/path/to/configuration/directory/aanafvoer_esf1.dbf',
+                         args[0])
 
     def test_d(self):
         """Test the retrieval of the 'user' attribute."""
@@ -480,4 +495,5 @@ class ConfigurationSpecRetrieverTestSuite(TestCase):
         config_type = 'waterbalans'
         self.retriever.retrieve(dir_name, config_type)
         args, kwargs = self.retriever.retrieve_meta_info.call_args
-        self.assertEqual('/path/to/configuration/directory/description.txt', args[0])
+        self.assertEqual('/path/to/configuration/directory/description.txt',
+                         args[0])

@@ -24,6 +24,7 @@ def prepare_configurations():
     """
     ConfigurationStore().supply()
 
+
 @task()
 @task_logging
 def prepare_configurations_as_task(taskname, levelno=20, username=None):

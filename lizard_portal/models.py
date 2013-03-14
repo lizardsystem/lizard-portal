@@ -55,8 +55,7 @@ class ConfigurationToValidate(models.Model):
     ACTIONS = (
         (KEEP, _('Keep')),
         (VALIDATE, _('Validate')),
-        (REJECT, _('Afkeuren')),
-        )
+        (REJECT, _('Afkeuren')),)
 
     area = models.ForeignKey(Area, help_text='Link to the area')
     config_type = models.CharField(
@@ -86,7 +85,8 @@ class ConfigurationToValidate(models.Model):
         null=True, blank=True, max_length=256)
 
     supports_object_permissions = True
-    data_set = models.ForeignKey(DataSet,
+    data_set = models.ForeignKey(
+        DataSet,
         help_text='Link to the water manager of the area',
         null=True, blank=True)
     objects = FilteredManager()
@@ -102,12 +102,15 @@ class ConfigurationToValidate(models.Model):
                 try:
                     self.area = self.db.areas.get(ident=value)
                 except Area.DoesNotExist:
-                    logger.warning("Unable to find the area with ident '%s'", value)
+                    logger.warning(
+                        "Unable to find the area with ident '%s'", value)
             elif key == 'data_set':
                 try:
                     self.data_set = self.db.data_sets.get(name__iexact=value)
                 except DataSet.DoesNotExist:
-                    logger.warning("Unable to find the data set with name '%s'", value)
+                    logger.warning(
+                        "Unable to find the data set with name '%s'",
+                        value)
             elif key in ['file_path', 'config_type', 'date', 'user', 'name']:
                 setattr(self, key, value)
             else:
@@ -123,8 +126,7 @@ class ConfigurationToValidate(models.Model):
             'date':       self.date,
             'action':     self.get_action_display(),
             'action_log': self.action_log,
-            'name':       self.name,
-            }
+            'name':       self.name}
 
     @property
     def pumpingstations_dbf(self):
